@@ -21,7 +21,7 @@ class CreateTVoucherTable extends Migration
             $table->integer('voucher_max_usage')->default(99999);
             $table->integer('voucher_usage')->default(0);
             $table->integer('voucher_nominal');
-            $table->enum('voucher_discount_type', ['NOMINAL', 'PERCENTAGE', '', '']);
+            $table->enum('voucher_discount_type', ['NOMINAL', 'PERCENTAGE']);
             $table->integer('min_transaction')->default(0);
             $table->date('expired_date')->nullable();
             $table->string('is_active', 1)->default('Y');
