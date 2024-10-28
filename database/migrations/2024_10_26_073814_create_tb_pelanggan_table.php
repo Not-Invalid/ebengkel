@@ -14,15 +14,17 @@ class CreateTbPelangganTable extends Migration
     public function up()
     {
         Schema::create('tb_pelanggan', function (Blueprint $table) {
-            $table->integer('id_pelanggan')->primary();
+            $table->integer('id_pelanggan')->autoIncrement()->primary();
             $table->string('nama_pelanggan')->nullable();
             $table->string('telp_pelanggan')->nullable();
             $table->string('email_pelanggan')->nullable();
             $table->string('password_pelanggan')->nullable();
+            $table->string('password_reset_token')->nullable();
             $table->text('foto_pelanggan')->nullable();
             $table->string('role_pelanggan', 20)->default('pembeli');
             $table->string('status_pelanggan', 11)->default('Aktif');
-            $table->dateTime('create_pelanggan')->nullable();
+            $table->timestamp('created_pelanggan')->nullable();
+            $table->timestamp('updated_pelanggan')->nullable();    
             $table->string('delete_pelanggan', 1)->default('N');
         });
     }
