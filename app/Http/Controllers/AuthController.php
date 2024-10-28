@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function index()
+    public function showLoginForm()
     {
         return view('auth.login');
     }
@@ -37,6 +37,11 @@ class AuthController extends Controller
         return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
     public function register(Request $request)
     {
         $request->validate([
@@ -51,10 +56,10 @@ class AuthController extends Controller
             'telp_pelanggan' => $request->telp,
             'email_pelanggan' => $request->email,
             'password_pelanggan' => Hash::make($request->password),
-            'foto_pelanggan' => 'logos/avatar.png',
+            'foto_pelanggan' => 'assets/components/logos/avatar.png',
         ]);
 
-        return redirect()->route('index')->with('status', 'Registration successful!');
+        return redirect()->route('login')->with('status', 'Registration successful!');
     }
 
     public function logout()
