@@ -11,7 +11,7 @@
 <body>
   <div class="wrapper">
     <h2>Login</h2>
-    <form action="#" method="POST">
+    <form action="{{ route('login-send') }}" method="POST">
       <div class="input-box">
         <input type="text" name="email" placeholder="Enter your email" required>
       </div>
@@ -28,7 +28,7 @@
         <input type="Submit" value="Register Now">
       </div>
       <div class="text">
-        <h3>Don't have an account? <a href="#"> Register</a></h3>
+        <h3>Don't have an account? <a href="{{ route('register') }}">Login</a></h3>
       </div>
     </form>
   </div>
