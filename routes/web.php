@@ -1,14 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-// Redirect the root to the login page
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('index')->name('home');
 });
 
-
+// Auth routes
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login'])->name('login-send');
 Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
@@ -18,3 +18,4 @@ Route::get('forgot-password', [AuthController::class, 'showForgotPasswordForm'])
 Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('forgot-password-send');
 Route::get('reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('reset-password');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password-send');
+
