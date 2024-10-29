@@ -5,19 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ebengkel | Register</title> 
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="wrapper">
         <h2>Register</h2>
         <form action="{{ route('register-send') }}" method="POST">
@@ -39,7 +30,7 @@
             </div>
             <div class="input-box">
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm your password" required>
-                <span class="toggle-password" onclick="togglePasswordVisibility('confirm_password', 'toggle-icon2')">
+                <span class="toggle-password" onclick="togglePasswordVisibility('password_confirmation', 'toggle-icon2')">
                     <i class="bx bx-show" id="toggle-icon2"></i>
                 </span>
             </div>
@@ -47,8 +38,15 @@
                 <input type="checkbox" required>
                 <h3>I accept all terms & conditions</h3>
             </div> --}}
+            @if ($errors->any())
+                <div class="fs-6 text-danger">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
             <div class="input-box button">
-                <input type="submit" value="Register Now">
+                <input type="submit" value="Register">
             </div>
             <div class="text">
                 <h3>Already have an account? <a href="{{ route('login') }}">Login now</a></h3>
