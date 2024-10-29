@@ -27,7 +27,7 @@
                 </li>
               @else
                 <li>
-                  <a class="main-btn btn-one" href="{{ route('home', ['register' => 'data']) }}">
+                  <a class="main-btn btn-one" href="{{ route('register') }}">
                     REGISTER NOW
                   </a>
                 </li>
