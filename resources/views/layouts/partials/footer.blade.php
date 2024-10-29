@@ -6,8 +6,8 @@
           <div class="footer-link">
             <h6 class="footer-title">Company</h6>
             <ul>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="{{ route('about') }}">About</a></li>
+              <li><a href="{{ route('contact') }}">Contact</a></li>
               <li><a href="#">Career</a></li>
             </ul>
           </div> <!-- footer link -->
