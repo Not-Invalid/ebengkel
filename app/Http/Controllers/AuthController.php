@@ -31,10 +31,12 @@ class AuthController extends Controller
         if ($pelanggan && Hash::check($request->password, $pelanggan->password_pelanggan)) {
             Session::put('id_pelanggan', $pelanggan->id_pelanggan);
 
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }
 
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
     }
 
     public function showRegisterForm()
@@ -65,7 +67,7 @@ class AuthController extends Controller
     public function logout()
     {
         Session::forget('id_pelanggan');
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 
     public function showForgotPasswordForm()
@@ -79,7 +81,7 @@ class AuthController extends Controller
 
         $pelanggan = Pelanggan::where('email_pelanggan', $request->email)->first();
         if (!$pelanggan) {
-            return back()->withErrors(['email' => 'Email not found']);
+            return back()->with('status', 'Email not found');
         }
 
         $token = Str::random(60);
@@ -87,7 +89,7 @@ class AuthController extends Controller
 
         Mail::to($pelanggan->email_pelanggan)->send(new PasswordResetMail($token));
 
-        return back()->with('status', 'Reset link sent! Please check your email.');
+        return redirect()->route('login')->with('status', 'Reset link sent! Please check your email.');
     }
 
     public function showResetPasswordForm($token)
