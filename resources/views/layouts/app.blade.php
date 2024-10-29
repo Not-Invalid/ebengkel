@@ -6,15 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
-  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
+  
+  {{-- Bootstrap CSS --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+  {{-- Boxicons --}}
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  {{-- Custom styles --}}
+  <link rel="stylesheet" href="{{ asset('assets/css/partials.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+  {{-- Poppins font --}}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
 </head>
 
 <body>
-  {{-- loader --}}
+  {{-- Loader --}}
   <div id="loader">
     <div id="center">
       <center>
@@ -23,34 +29,44 @@
       </center>
     </div>
   </div>
+
+  {{-- JavaScript --}}
   @yield('script')
+
+  {{-- Header --}}
   <header>
-    @include('layouts.partials.navbar') 
+    @include('layouts.partials.navbar')
   </header>
-  {{-- content --}}
+
+  {{-- Main content --}}
   <main>
     @yield('content')
   </main>
+
+  {{-- Footer --}}
   @include('layouts.partials.footer')
+
+  {{-- Bootstrap JS --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  {{-- Loader script --}}
   <script>
     function show(value) {
       document.getElementById('loader').style.display = value ? 'block' : 'none';
     }
-
     function loadPage(URL) {
       show(true);
       location = URL;
     }
-
     function newTab(URL) {
       window.open(URL, '_blank');
     }
-
     setTimeout(function() {
       show(false);
     }, 2000);
   </script>
+
+  {{-- Currency format --}}
   <script type="text/javascript">
     function formatRupiah(angka) {
       var number_string = angka.toString(),
@@ -67,20 +83,6 @@
       rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
       return rupiah;
     }
-
-    $(document).ready(function() {
-      $('select').selectize({
-        sortField: 'text'
-      });
-
-      @if (Session::has('id_pelanggan'))
-        $("#countCart").text("{{ $getItem }}");
-      @endif
-    });
-
-    $('#input-number').maskNumber({
-      integer: true
-    });
   </script>
 </body>
 
