@@ -1,0 +1,33 @@
+:root {
+    --main-dark: #121212;
+    --main-blue: #007bff;
+    --main-grey-light: #9f9f9f;
+    --main-blue-dark: #0067f4;
+    --main-grey: #6c6c6c;
+    --main-red: #dc3545;
+    --main-light-grey: #f4f6f7;
+    --main-dark-blue: #2b354f;
+    --main-cyan: #17a2b8;
+    --main-white: #ffffff;
+    --main-light-blue: #3a6fb0;
+    --main-black: #000000;
+    --main-green: #28a745;
+    --bg-transparent: rgba(0, 0, 0, 0);
+}
+
+/*=========================== Contact css ===========================*/
+.btn-custom {
+    background-color: var(--main-blue);
+    color: var(--main-white);
+}
+
+.text-p {
+    color: var(--main-blue-dark);
+}
+
+.fact {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(../images/bg/sparepart.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
