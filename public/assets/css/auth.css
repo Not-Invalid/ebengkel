@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+:root {
+    --main-dark: #121212;
+    --main-blue: #007bff;
+    --main-grey-light: #9f9f9f;
+    --main-blue-dark: #0067f4;
+    --main-grey: #6c6c6c;
+    --main-red: #dc3545;
+    --main-light-grey: #f4f6f7;
+    --main-dark-blue: #2b354f;
+    --main-cyan: #17a2b8;
+    --main-white: #ffffff;
+    --main-light-blue: #3a6fb0;
+    --main-black: #000000;
+    --main-green: #28a745;
+    --bg-transparent: rgba(0, 0, 0, 0);
+  
+}
+
+body{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-transparent);
+}
+
+.wrapper{
+  position: relative;
+  max-width: 430px;
+  width: 100%;
+  background: var(--main-white);
+  padding: 34px;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+.wrapper h2{
+  position: relative;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--main-dark);
+}
+
+.wrapper h2::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 28px;
+  border-radius: 12px;
+  background: var(--main-blue);
+}
+
+.wrapper form{
+  margin-top: 30px;
+}
+
+.wrapper form .input-box{
+  height: 52px;
+  margin: 18px 0;
+}
+
+form .input-box input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  padding: 0 15px;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--main-dark);
+  border: 1.5px solid #C7BEBE;
+  border-bottom-width: 2.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.input-box {
+    position: relative;
+}
+  
+.input-box .toggle-password {
+    position: absolute;
+    top: 55%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--main-grey);
+}
+  
+.input-box .toggle-password:hover {
+    color: var(--main-blue-dark);
+}
+  
+
+.input-box input:focus,
+.input-box input:valid{
+  border-color: var(--main-blue-dark);
+}
+
+.forgot a {
+    text-decoration: none;
+    color: var(--main-blue-dark);
+}
+
+.forgot a:hover {
+    text-decoration: underline;
+}
+
+
+form h3 {
+  color: var(--main-dark);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input-box.button input{
+  color: var(--main-white);
+  letter-spacing: 1px;
+  border: none;
+  background: var(--main-blue);
+  cursor: pointer;
+}
+
+.input-box.button input:hover{
+  background: var(--main-blue-dark);
+}
+
+form .text h3{
+ color: var(--main-dark);
+ width: 100%;
+ text-align: center;
+}
+
+form .text h3 a{
+  color: var(--main-blue-dark);
+  text-decoration: none;
+}
+
+form .text h3 a:hover{
+  text-decoration: underline;
+}
