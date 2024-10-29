@@ -6,15 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
-  {{-- favicon --}}
-  <link rel="apple-touch-icon" sizes="76x76" href="<?= url('logos/icon.png') ?>">
-  {{-- bootstrap css --}}
+  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-  {{-- boxicon --}}
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  {{-- style css --}}
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  {{-- poppins --}}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
 </head>
 
@@ -28,27 +23,16 @@
       </center>
     </div>
   </div>
-  {{-- JavaScript Section --}}
   @yield('script')
-  {{-- end JavaScript Section --}}
-  {{-- header --}}
   <header>
-    @include('layouts.partials.navbar') <!-- Ensure the navbar is included here -->
+    @include('layouts.partials.navbar') 
   </header>
-  {{-- end header --}}
   {{-- content --}}
   <main>
     @yield('content')
   </main>
-  {{-- end content --}}
-  {{-- footer --}}
   @include('layouts.partials.footer')
-  {{-- end footer --}}
-  {{-- bootstrap js --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  {{-- main js --}}
-  {{-- <script src="{{ asset('js/main.js') }}"></script> --}}
-  {{-- loader --}}
   <script>
     function show(value) {
       document.getElementById('loader').style.display = value ? 'block' : 'none';
@@ -67,8 +51,6 @@
       show(false);
     }, 2000);
   </script>
-  {{-- end loader --}}
-  {{-- cart --}}
   <script type="text/javascript">
     function formatRupiah(angka) {
       var number_string = angka.toString(),
@@ -100,7 +82,6 @@
       integer: true
     });
   </script>
-  {{-- end cart --}}
 </body>
 
 </html>
