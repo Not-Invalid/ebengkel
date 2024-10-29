@@ -6,14 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
-  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon"  />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/partials.css') }}">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
+  @stack('css')
 </head>
 
-<body>
+<body class="@yield('body-class')">
+
+
   {{-- loader --}}
   <div id="loader">
     <div id="center">
@@ -25,14 +28,15 @@
   </div>
   @yield('script')
   <header>
-    @include('layouts.partials.navbar') 
+    @include('layouts.partials.navbar')
   </header>
-  {{-- content --}}
   <main>
     @yield('content')
   </main>
   @include('layouts.partials.footer')
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
   <script>
     function show(value) {
       document.getElementById('loader').style.display = value ? 'block' : 'none';
@@ -67,20 +71,6 @@
       rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
       return rupiah;
     }
-
-    $(document).ready(function() {
-      $('select').selectize({
-        sortField: 'text'
-      });
-
-      @if (Session::has('id_pelanggan'))
-        $("#countCart").text("{{ $getItem }}");
-      @endif
-    });
-
-    $('#input-number').maskNumber({
-      integer: true
-    });
   </script>
 </body>
 
