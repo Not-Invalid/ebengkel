@@ -3,8 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
@@ -24,7 +24,8 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/send-message', [MessageController::class, 'sendContactMessage'])->name('message-send');
 
-
 Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 
+// Profile route
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
