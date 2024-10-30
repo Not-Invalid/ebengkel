@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebengkel | Register</title> 
+@extends('layouts.app')
+
+@section('title', 'Ebengkel | Register')
+
+@push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
-</head>
-<body>
+@endpush
+
+@section('content')
+
+<div class="auth-container register">
     <div class="wrapper">
         <h2>Register</h2>
         <form action="{{ route('register-send') }}" method="POST">
@@ -34,10 +34,6 @@
                     <i class="bx bx-show" id="toggle-icon2"></i>
                 </span>
             </div>
-            {{-- <div class="policy">
-                <input type="checkbox" required>
-                <h3>I accept all terms & conditions</h3>
-            </div> --}}
             @if ($errors->any())
                 <div class="fs-6 text-danger">
                     @foreach ($errors->all() as $error)
@@ -53,19 +49,19 @@
             </div>
         </form>
     </div>
-    <script>
-        function togglePasswordVisibility(inputId, iconId) {
-            const passwordInput = document.getElementById(inputId);
-            const toggleIcon = document.getElementById(iconId);
-            
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                toggleIcon.classList.replace("bx-show", "bx-hide");
-            } else {
-                passwordInput.type = "password";
-                toggleIcon.classList.replace("bx-hide", "bx-show");
-            }
+</div>
+<script>
+    function togglePasswordVisibility(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleIcon = document.getElementById(iconId);
+        
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.replace("bx-show", "bx-hide");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.replace("bx-hide", "bx-show");
         }
-    </script>
-</body>
-</html>
+    }
+</script>
+@endsection
