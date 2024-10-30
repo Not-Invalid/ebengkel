@@ -42,18 +42,10 @@
                 </li>
                 @if (Session::has('id_pelanggan'))
                   <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <a href="{{ route('home') }}">
+                    <a href="{{ route('home', ['visit' => '', 'page' => 'home']) }}">
                       <i class='bx bx-user'></i> Profile
                     </a>
                   </li>
-                  {{-- <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                      @csrf
-                      <button type="submit" class="nav-link" style="border: none; background: none; padding: 0;">
-                        <i class='bx bx-log-out'></i> Logout
-                      </button>
-                    </form>
-                  </li> --}}
                 @else
                   <li class="nav-item {{ request()->routeIs('login') ? 'active' : '' }}">
                     <a href="{{ route('login') }}">
@@ -71,12 +63,13 @@
                 </li>
               </ul>
             </div>
-          </nav>
+          </nav> <!-- navbar -->
         </div>
-      </div>
-    </div> 
-  </div>
+      </div> <!-- row -->
+    </div> <!-- container -->
+  </div> <!-- navgition -->
 </header>
+{{-- sticky nav --}}
 <script>
   window.onscroll = function() {
     var header = document.querySelector('.navgition');
@@ -89,3 +82,4 @@
     }
   };
 </script>
+{{-- end sticky nav --}}
