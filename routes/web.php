@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +20,11 @@ Route::get('reset-password/{token}', [AuthController::class, 'showResetPasswordF
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password-send');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+// Contact Routes
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/send-message', [MessageController::class, 'sendContactMessage'])->name('message-send');
+
+
 Route::get('about', [PageController::class, 'about'])->name('about');
+Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 
