@@ -52,23 +52,26 @@
 
       <div class="col-xl-6">
         <h2 class="pb-4">Leave a message</h2>
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Nama Lengkap</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Tulis Nama Lengkap Anda">
-          </div>
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Email</label>
-          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email@contoh.com">
-        </div>
-        <div class="mb-3">
-          <label for="exampleFormControlInput1" class="form-label">Nomor Telepon</label>
-          <input type="tel" class="form-control" id="exampleFormControlInput1" placeholder="+62XXXXXXXX">
-        </div>
-        <div class="mb-3">
-          <label for="exampleFormControlTextarea1" class="form-label">Message</label>
-          <textarea class="form-control" style="resize: none;" id="exampleFormControlTextarea1" rows="3"></textarea>
-        </div>
-        <button type="button" class="btn btn-custom">Kirim Pesan</button>
+        <form action="{{ route('message-send') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" id="nama" name="nama" placeholder="Tulis Nama Lengkap Anda" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="email@contoh.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="telepon" class="form-label">Nomor Telepon</label>
+                <input type="tel" class="form-control" id="telepon" name="telepon" placeholder="+62XXXXXXXX" required>
+            </div>
+            <div class="mb-3">
+                <label for="pesan" class="form-label">Pesan</label>
+                <textarea class="form-control" style="resize: none;" id="pesan" name="pesan" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-custom">Kirim Pesan</button>
+        </form>
       </div>
     </div>
   </div>
