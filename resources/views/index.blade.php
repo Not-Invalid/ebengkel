@@ -1,4 +1,8 @@
 @extends('layouts.app')
+@push('css')
+  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+@endpush
+
 @section('content')
   <div id="home" class="header-hero bg_cover"
     style="background-image: url('{{ asset('assets/images/bg/wallpaper.png') }}')">
@@ -76,8 +80,8 @@
             @endif --}}
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="btn btn-primary">
-              More <i class="bx bx-chevron-right align-icon"></i>
+            <a href="#" class="btn btn-more">
+              More Event <i class="bx bx-chevron-right align-icon"></i>
             </a>
           </div>
         </div>
@@ -113,8 +117,8 @@
             @endif --}}
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="btn btn-primary">
-              More <i class="bx bx-chevron-right align-icon"></i>
+            <a href="#" class="btn btn-more">
+              More Workshop <i class="bx bx-chevron-right align-icon"></i>
             </a>
           </div>
         </div>
@@ -151,8 +155,8 @@
             @endif --}}
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="btn btn-primary">
-              More <i class="bx bx-chevron-right align-icon"></i>
+            <a href="#" class="btn btn-more">
+              More Spare Part <i class="bx bx-chevron-right align-icon"></i>
             </a>
           </div>
         </div>
@@ -188,8 +192,8 @@
             @endif --}}
           </div>
           <div class="text-center mt-4">
-            <a href="#" class="btn btn-primary">
-              More <i class="bx bx-chevron-right align-icon"></i>
+            <a href="#" class="btn btn-more">
+              More Product <i class="bx bx-chevron-right align-icon"></i>
             </a>
           </div>
         </div>

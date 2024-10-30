@@ -7,19 +7,23 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
   <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
-  
+
   {{-- Bootstrap CSS --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+  
   {{-- Boxicons --}}
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
   {{-- Custom styles --}}
   <link rel="stylesheet" href="{{ asset('assets/css/partials.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+
   {{-- Poppins font --}}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
+  @stack('css')
 </head>
 
-<body>
+<body class="@yield('body-class')">
   {{-- Loader --}}
   <div id="loader">
     <div id="center">
@@ -48,6 +52,8 @@
 
   {{-- Bootstrap JS --}}
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 
   {{-- Loader script --}}
   <script>

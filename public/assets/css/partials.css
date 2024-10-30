@@ -369,6 +369,17 @@ p {
 }
 
 
+.chevron-icon {
+    transition: transform 0.1s ease; 
+    font-size: 1.2em;
+
+    vertical-align: middle;
+}
+
+.rotate {
+    transform: rotate(90deg); 
+}
+
 .header-hero {
     height: 850px;
     position: relative;
@@ -457,8 +468,8 @@ p {
     align-items: center; /* Vertically aligns icon and text */
 }
 .align-icon {
-    font-size: 1.2em; /* Adjust as needed */
-    margin-left: 5px; /* Space between text and icon */
+    font-size: 1.2em;
+    margin-left: 5px;
     vertical-align: middle;
 }
 .header-hero .header-content .header-btn li a.main-btn.btn-one {
@@ -1180,3 +1191,5 @@ p.form-message.error {
     background-color: #005ad5;
     color: #fff;
 }
+
+

@@ -7,7 +7,7 @@
             <a class="navbar-brand" href="{{ route('home') }}">
               <img src="{{ asset('assets/images/logo/logo_side.png') }}" alt="eBengkelku - Logo" style="width: 150px;">
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarOne"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarOne"
               aria-controls="navbarOne" aria-expanded="false" aria-label="Toggle navigation">
               <span class="toggler-icon"></span>
               <span class="toggler-icon"></span>
