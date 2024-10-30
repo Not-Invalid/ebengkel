@@ -10,7 +10,10 @@
 
   {{-- Bootstrap CSS --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-  
+
+  {{-- Toastr CSS --}}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
   {{-- Boxicons --}}
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -55,6 +58,23 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 
+  {{-- Toastr JS --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script>
+        // Initialize Toastr settings
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000"
+        };
+
+        // Display Toastr notification for Laravel flash messages
+        @if (session('status'))
+            toastr.success("{{ session('status') }}");
+        @endif
+  </script>
   {{-- Loader script --}}
   <script>
     function show(value) {
