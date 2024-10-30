@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+:root {
+    --main-dark: #121212;
+    --main-blue: #007bff;
+    --main-grey-light: #9f9f9f;
+    --main-blue-dark: #0067f4;
+    --main-grey: #6c6c6c;
+    --main-red: #dc3545;
+    --main-light-grey: #f4f6f7;
+    --main-dark-blue: #2b354f;
+    --main-cyan: #17a2b8;
+    --main-white: #ffffff;
+    --main-light-blue: #3a6fb0;
+    --main-black: #000000;
+    --main-green: #28a745;
+    --bg-transparent: rgba(0, 0, 0, 0);
+}
+
+.custom {
+    min-height: 100vh;
+    transition: 0.3s;
+    position: relative;
+}
+
+.sidebar {
+    background: var(--main-light-blue);
+    color: white;
+    padding: 1rem;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.content {
+    background: transparent;
+    transition: 0.3s;
+}
+.bx {
+    font-size: 26px;
+}
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-top: 5px;
+    z-index: 1001;
+}
+
+.navbar {
+    width: 100%;
+    background: var(--bg-transparent);
+    padding: 12px;
+    display: flex;
+    justify-content: end;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+.mobile-toggle {
+    border: none;
+    background-color: transparent;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.main {
+    display: flex;
+    padding: 2rem;
+    background-color: var(--main-white);
+    border-radius: 12px;
+    margin: 1rem;
+}
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #3498db;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dropdown-menu a {
+    display: block;
+    color: #2c3e50;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Desktop Layout */
+@media (min-width: 1024px) {
+    .custom {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+    }
+
+    .sidebar {
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .custom.collapsed {
+        grid-template-columns: 90px 1fr;
+    }
+
+    .custom.collapsed .menu-text {
+        display: none;
+    }
+
+    .toggle-btn {
+        display: block;
+    }
+    .mobile-toggle {
+        display: none;
+    }
+
+    .overlay {
+        display: none !important;
+    }
+}
+
+/* Tablet and Mobile Layout */
+@media (max-width: 1023px) {
+    .toggle-btn {
+        display: none;
+    }
+    .custom {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .mobile-toggle {
+        border: none;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .navbar {
+        justify-content: space-between;
+    }
+}
+
+/* Animation for menu items */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.menu-item {
+    animation: slideIn 0.3s ease forwards;
+}
+/* loader */
+#loader {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #fff;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    opacity: 0.9;
+}
+
+#center {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
