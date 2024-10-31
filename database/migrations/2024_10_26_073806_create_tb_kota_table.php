@@ -14,7 +14,7 @@ class CreateTbKotaTable extends Migration
     public function up()
     {
         Schema::create('tb_kota', function (Blueprint $table) {
-            $table->integer('id_kota')->primary();
+            $table->integer('id_kota')->primary()->autoIncrement();
             $table->integer('id_provinsi')->nullable();
             $table->string('nama_kota')->nullable();
             $table->string('delete_kota', 1)->default('N');

@@ -14,7 +14,7 @@ class CreateMTargetBulananTable extends Migration
     public function up()
     {
         Schema::create('m_target_bulanan', function (Blueprint $table) {
-            $table->integer('id_target_bulanan')->primary();
+            $table->integer('id_target_bulanan')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('bulan');
             $table->integer('tahun');

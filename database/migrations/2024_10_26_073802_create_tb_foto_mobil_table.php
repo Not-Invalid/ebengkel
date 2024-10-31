@@ -14,7 +14,7 @@ class CreateTbFotoMobilTable extends Migration
     public function up()
     {
         Schema::create('tb_foto_mobil', function (Blueprint $table) {
-            $table->increments('id_foto_mobil');
+            $table->increments('id_foto_mobil')->autoIncrement();
             $table->string('id_mobil', 20);
             $table->string('id_pelanggan', 20);
             $table->text('file_foto_mobil');

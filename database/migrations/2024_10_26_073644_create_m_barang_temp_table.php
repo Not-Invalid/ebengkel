@@ -14,7 +14,7 @@ class CreateMBarangTempTable extends Migration
     public function up()
     {
         Schema::create('m_barang_temp', function (Blueprint $table) {
-            $table->integer('id_barang_temp')->primary();
+            $table->integer('id_barang_temp')->primary()->autoIncrement();
             $table->string('barcode', 50);
             $table->string('nama_barang', 50);
             $table->string('warna', 50);

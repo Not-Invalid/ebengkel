@@ -14,7 +14,7 @@ class CreateMBarangMentahTable extends Migration
     public function up()
     {
         Schema::create('m_barang_mentah', function (Blueprint $table) {
-            $table->integer('id_barang_mentah')->primary();
+            $table->integer('id_barang_mentah')->primary()->autoIncrement();
             $table->string('nama_barang', 100);
             $table->string('keterangan', 500);
             $table->string('satuan', 50);

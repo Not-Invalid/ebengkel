@@ -14,7 +14,7 @@ class CreateTBarangMasukTable extends Migration
     public function up()
     {
         Schema::create('t_barang_masuk', function (Blueprint $table) {
-            $table->integer('id_barang_masuk')->primary();
+            $table->integer('id_barang_masuk')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('jenis_barang', 50);
             $table->date('tanggal');

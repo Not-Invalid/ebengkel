@@ -14,7 +14,7 @@ class CreateTPoCustomItemTable extends Migration
     public function up()
     {
         Schema::create('t_po_custom_item', function (Blueprint $table) {
-            $table->integer('id_po_custom_detail')->primary();
+            $table->integer('id_po_custom_detail')->primary()->autoIncrement();
             $table->integer('id_po_custom');
             $table->integer('id_outlet');
             $table->integer('id_category');

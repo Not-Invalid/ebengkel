@@ -14,7 +14,7 @@ class CreateTbLogPegawaiTable extends Migration
     public function up()
     {
         Schema::create('tb_log_pegawai', function (Blueprint $table) {
-            $table->integer('id_log_pegawai')->primary();
+            $table->integer('id_log_pegawai')->primary()->autoIncrement();
             $table->integer('id_pegawai')->nullable();
             $table->dateTime('tgl_log_pegawai')->nullable();
             $table->string('delete_log_pegawai', 1)->default('N');

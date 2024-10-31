@@ -14,7 +14,7 @@ class CreateTbMerkSparePartTable extends Migration
     public function up()
     {
         Schema::create('tb_merk_spare_part', function (Blueprint $table) {
-            $table->increments('id_merk_spare_part');
+            $table->increments('id_merk_spare_part')->autoIncrement();
             $table->string('nama_merk_spare_part')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->dateTime('updated_date')->nullable();

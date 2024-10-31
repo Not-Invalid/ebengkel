@@ -14,7 +14,7 @@ class CreateMMemberEventTable extends Migration
     public function up()
     {
         Schema::create('m_member_event', function (Blueprint $table) {
-            $table->integer('id_member')->primary();
+            $table->integer('id_member')->primary()->autoIncrement();
             $table->string('nama');
             $table->integer('id_event');
             $table->string('nohp', 15);

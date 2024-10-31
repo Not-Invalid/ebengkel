@@ -14,7 +14,7 @@ class CreateTPoCustomTable extends Migration
     public function up()
     {
         Schema::create('t_po_custom', function (Blueprint $table) {
-            $table->integer('id_po_custom')->primary();
+            $table->integer('id_po_custom')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_wo')->nullable();
             $table->string('kode_po_custom', 50);

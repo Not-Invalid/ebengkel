@@ -14,7 +14,7 @@ class CreateTbPegawaiTable extends Migration
     public function up()
     {
         Schema::create('tb_pegawai', function (Blueprint $table) {
-            $table->integer('id_pegawai')->primary();
+            $table->integer('id_pegawai')->primary()->autoIncrement();
             $table->string('nama_pegawai')->nullable();
             $table->string('telp_pegawai')->nullable();
             $table->string('email_pegawai')->nullable();

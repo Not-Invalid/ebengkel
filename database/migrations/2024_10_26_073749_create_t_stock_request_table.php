@@ -14,7 +14,7 @@ class CreateTStockRequestTable extends Migration
     public function up()
     {
         Schema::create('t_stock_request', function (Blueprint $table) {
-            $table->integer('id_stock_request')->primary();
+            $table->integer('id_stock_request')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('kode_po', 50);
             $table->string('jenis_barang', 50)->default('BARANG JADI');

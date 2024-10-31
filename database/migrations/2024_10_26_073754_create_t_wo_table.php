@@ -14,7 +14,7 @@ class CreateTWoTable extends Migration
     public function up()
     {
         Schema::create('t_wo', function (Blueprint $table) {
-            $table->integer('id_wo')->primary();
+            $table->integer('id_wo')->primary()->autoIncrement();
             $table->integer('id_po_custom');
             $table->integer('id_stock_request')->nullable();
             $table->integer('id_outlet');

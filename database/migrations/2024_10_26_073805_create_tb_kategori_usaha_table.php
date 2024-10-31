@@ -14,7 +14,7 @@ class CreateTbKategoriUsahaTable extends Migration
     public function up()
     {
         Schema::create('tb_kategori_usaha', function (Blueprint $table) {
-            $table->integer('id_kategori_usaha')->primary();
+            $table->integer('id_kategori_usaha')->primary()->autoIncrement();
             $table->string('nama_kategori_usaha')->nullable();
             $table->text('foto_kategori_usaha')->nullable();
             $table->string('delete_kategori_usaha', 1)->default('N');

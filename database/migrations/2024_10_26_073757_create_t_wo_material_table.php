@@ -14,7 +14,7 @@ class CreateTWoMaterialTable extends Migration
     public function up()
     {
         Schema::create('t_wo_material', function (Blueprint $table) {
-            $table->integer('id_wo_material')->primary();
+            $table->integer('id_wo_material')->primary()->autoIncrement();
             $table->integer('id_wo')->nullable();
             $table->integer('id_material');
             $table->integer('id_proses');

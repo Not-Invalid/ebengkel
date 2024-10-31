@@ -14,7 +14,7 @@ class CreateMProsesTable extends Migration
     public function up()
     {
         Schema::create('m_proses', function (Blueprint $table) {
-            $table->integer('id_proses')->primary();
+            $table->integer('id_proses')->primary()->autoIncrement();
             $table->string('nama_proses', 500);
             $table->string('keterangan', 1000);
             $table->string('is_delete', 1)->default('N');

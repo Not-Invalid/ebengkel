@@ -14,7 +14,7 @@ class CreateTbAlamatPengirimanTable extends Migration
     public function up()
     {
         Schema::create('tb_alamat_pengiriman', function (Blueprint $table) {
-            $table->integer('id_alamat_pengiriman')->primary();
+            $table->integer('id_alamat_pengiriman')->primary()->autoIncrement();
             $table->integer('id_pelanggan')->nullable();
             $table->text('nama_alamat_pengiriman')->nullable();
             $table->string('kodepos_alamat_pengiriman')->nullable();

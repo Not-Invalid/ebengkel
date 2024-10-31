@@ -14,7 +14,7 @@ class CreateMProvinsiTable extends Migration
     public function up()
     {
         Schema::create('m_provinsi', function (Blueprint $table) {
-            $table->integer('id_provinsi')->primary();
+            $table->integer('id_provinsi')->primary()->autoIncrement();
             $table->string('provinsi', 100)->nullable();
         });
     }

@@ -14,7 +14,7 @@ class CreateTPoMaterialTable extends Migration
     public function up()
     {
         Schema::create('t_po_material', function (Blueprint $table) {
-            $table->integer('id_po_material')->primary();
+            $table->integer('id_po_material')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('kode_po_material', 50);
             $table->date('tanggal');

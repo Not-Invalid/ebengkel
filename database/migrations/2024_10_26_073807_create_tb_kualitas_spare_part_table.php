@@ -14,7 +14,7 @@ class CreateTbKualitasSparePartTable extends Migration
     public function up()
     {
         Schema::create('tb_kualitas_spare_part', function (Blueprint $table) {
-            $table->integer('id_kualitas_spare_part')->primary();
+            $table->integer('id_kualitas_spare_part')->primary()->autoIncrement();
             $table->string('nama_kualitas_spare_part')->nullable();
             $table->string('delete_kualitas_spare_part', 1)->default('N');
         });

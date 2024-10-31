@@ -14,7 +14,7 @@ class CreateTbServicesTable extends Migration
     public function up()
     {
         Schema::create('tb_services', function (Blueprint $table) {
-            $table->integer('id_services')->primary();
+            $table->integer('id_services')->primary()->autoIncrement();
             $table->integer('id_bengkel')->nullable();
             $table->string('nama_services')->nullable();
             $table->text('keterangan_services')->nullable();

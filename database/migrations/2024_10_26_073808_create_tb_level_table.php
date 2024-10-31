@@ -14,7 +14,7 @@ class CreateTbLevelTable extends Migration
     public function up()
     {
         Schema::create('tb_level', function (Blueprint $table) {
-            $table->integer('id_level')->primary();
+            $table->integer('id_level')->primary()->autoIncrement();
             $table->integer('id_pelanggan')->nullable();
             $table->string('nama_level')->nullable();
             $table->string('delete_level', 1)->default('N');

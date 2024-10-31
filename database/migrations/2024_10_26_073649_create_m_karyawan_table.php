@@ -14,7 +14,7 @@ class CreateMKaryawanTable extends Migration
     public function up()
     {
         Schema::create('m_karyawan', function (Blueprint $table) {
-            $table->integer('id_karyawan')->primary();
+            $table->integer('id_karyawan')->primary()->autoIncrement();
             $table->integer('id_pengguna')->nullable();
             $table->integer('id_outlet')->default(1);
             $table->string('username', 30)->nullable();

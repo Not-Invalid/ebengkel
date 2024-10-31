@@ -14,7 +14,7 @@ class CreateTStockOpnameTable extends Migration
     public function up()
     {
         Schema::create('t_stock_opname', function (Blueprint $table) {
-            $table->integer('id_stock_opname')->primary();
+            $table->integer('id_stock_opname')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->date('tanggal');
             $table->integer('qty_before');

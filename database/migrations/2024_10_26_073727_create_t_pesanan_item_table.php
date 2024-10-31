@@ -14,7 +14,7 @@ class CreateTPesananItemTable extends Migration
     public function up()
     {
         Schema::create('t_pesanan_item', function (Blueprint $table) {
-            $table->integer('id_pesanan_item')->primary();
+            $table->integer('id_pesanan_item')->primary()->autoIncrement();
             $table->integer('id_pesanan');
             $table->integer('id_outlet');
             $table->integer('id_barang');

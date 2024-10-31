@@ -14,7 +14,7 @@ class CreateTWoItemTable extends Migration
     public function up()
     {
         Schema::create('t_wo_item', function (Blueprint $table) {
-            $table->integer('id_wo_item')->primary();
+            $table->integer('id_wo_item')->primary()->autoIncrement();
             $table->integer('id_wo')->nullable();
             $table->integer('id_barang')->nullable();
             $table->string('nama_barang', 100);

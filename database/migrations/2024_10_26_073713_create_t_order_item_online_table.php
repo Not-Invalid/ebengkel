@@ -14,7 +14,7 @@ class CreateTOrderItemOnlineTable extends Migration
     public function up()
     {
         Schema::create('t_order_item_online', function (Blueprint $table) {
-            $table->integer('id_order_item_online')->primary();
+            $table->integer('id_order_item_online')->primary()->autoIncrement();
             $table->integer('id_order_online');
             $table->integer('id_outlet');
             $table->integer('id_barang');

@@ -14,7 +14,7 @@ class CreateMOutletTable extends Migration
     public function up()
     {
         Schema::create('m_outlet', function (Blueprint $table) {
-            $table->integer('id_outlet')->primary();
+            $table->integer('id_outlet')->primary()->autoIncrement();
             $table->integer('id_bengkel');
             $table->string('nama_outlet', 100);
             $table->string('alamat', 500);

@@ -14,7 +14,7 @@ class CreateTSuratJalanTable extends Migration
     public function up()
     {
         Schema::create('t_surat_jalan', function (Blueprint $table) {
-            $table->integer('id_surat_jalan')->primary();
+            $table->integer('id_surat_jalan')->primary()->autoIncrement();
             $table->integer('id_po_custom');
             $table->string('no_surat_jalan', 50);
             $table->date('tanggal');

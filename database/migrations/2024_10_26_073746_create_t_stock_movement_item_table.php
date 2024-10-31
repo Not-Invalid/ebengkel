@@ -14,7 +14,7 @@ class CreateTStockMovementItemTable extends Migration
     public function up()
     {
         Schema::create('t_stock_movement_item', function (Blueprint $table) {
-            $table->integer('id_stock_movement_detail')->primary();
+            $table->integer('id_stock_movement_detail')->primary()->autoIncrement();
             $table->integer('id_stock_movement');
             $table->integer('id_barang');
             $table->integer('qty');

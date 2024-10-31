@@ -14,7 +14,7 @@ class CreateTReturTable extends Migration
     public function up()
     {
         Schema::create('t_retur', function (Blueprint $table) {
-            $table->integer('id_retur')->primary();
+            $table->integer('id_retur')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_po');
             $table->date('tanggal');

@@ -14,7 +14,7 @@ class CreateTPenerimaanBarangMentahItemTable extends Migration
     public function up()
     {
         Schema::create('t_penerimaan_barang_mentah_item', function (Blueprint $table) {
-            $table->integer('id_penerimaan_barang_mentah_item')->primary();
+            $table->integer('id_penerimaan_barang_mentah_item')->primary()->autoIncrement();
             $table->integer('id_penerimaan_barang_mentah');
             $table->integer('id_outlet');
             $table->integer('id_barang_mentah');

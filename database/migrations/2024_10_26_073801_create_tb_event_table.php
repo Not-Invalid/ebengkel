@@ -14,7 +14,7 @@ class CreateTbEventTable extends Migration
     public function up()
     {
         Schema::create('tb_event', function (Blueprint $table) {
-            $table->integer('id_event')->primary();
+            $table->integer('id_event')->primary()->autoIncrement();
             $table->string('nama_event')->nullable();
             $table->date('event_start_date')->nullable();
             $table->text('deskripsi')->nullable();

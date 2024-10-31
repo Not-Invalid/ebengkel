@@ -14,7 +14,7 @@ class CreateMRoleLinkTable extends Migration
     public function up()
     {
         Schema::create('m_role_link', function (Blueprint $table) {
-            $table->integer('id_role_link')->primary();
+            $table->integer('id_role_link')->primary()->autoIncrement();
             $table->integer('id_role');
             $table->integer('id_menu');
             $table->integer('can_access')->default(0);

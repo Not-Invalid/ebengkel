@@ -14,7 +14,7 @@ class CreateMMaterialTable extends Migration
     public function up()
     {
         Schema::create('m_material', function (Blueprint $table) {
-            $table->integer('id_material')->primary();
+            $table->integer('id_material')->primary()->autoIncrement();
             $table->string('nama_material', 100);
             $table->string('keterangan', 500);
             $table->string('satuan', 50);

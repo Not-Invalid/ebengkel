@@ -14,7 +14,7 @@ class CreateTReturBarangMentahTable extends Migration
     public function up()
     {
         Schema::create('t_retur_barang_mentah', function (Blueprint $table) {
-            $table->integer('id_retur_barang_mentah')->primary();
+            $table->integer('id_retur_barang_mentah')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_po_barang_mentah');
             $table->date('tanggal');

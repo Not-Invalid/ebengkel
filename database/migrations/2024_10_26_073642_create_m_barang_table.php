@@ -14,7 +14,7 @@ class CreateMBarangTable extends Migration
     public function up()
     {
         Schema::create('m_barang', function (Blueprint $table) {
-            $table->integer('id_barang')->primary();
+            $table->integer('id_barang')->primary()->autoIncrement();
             $table->string('id_outlet', 50)->default('1');
             $table->string('barcode', 50)->nullable();
             $table->string('barcode_asli', 50)->nullable();

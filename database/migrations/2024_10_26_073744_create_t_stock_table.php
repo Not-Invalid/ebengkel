@@ -14,7 +14,7 @@ class CreateTStockTable extends Migration
     public function up()
     {
         Schema::create('t_stock', function (Blueprint $table) {
-            $table->integer('id_stock')->primary();
+            $table->integer('id_stock')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_barang');
             $table->integer('stock_akhir');

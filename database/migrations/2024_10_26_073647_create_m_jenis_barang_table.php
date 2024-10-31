@@ -14,7 +14,7 @@ class CreateMJenisBarangTable extends Migration
     public function up()
     {
         Schema::create('m_jenis_barang', function (Blueprint $table) {
-            $table->integer('id_jenis_barang')->primary();
+            $table->integer('id_jenis_barang')->primary()->autoIncrement();
             $table->string('nama_jenis_barang', 50);
             $table->string('is_delete', 1)->default('N');
         });

@@ -14,7 +14,7 @@ class CreateTCancelTransaksiTable extends Migration
     public function up()
     {
         Schema::create('t_cancel_transaksi', function (Blueprint $table) {
-            $table->integer('id_cancel_transaksi')->primary();
+            $table->integer('id_cancel_transaksi')->primary()->autoIncrement();
             $table->integer('id_order')->nullable();
             $table->integer('total_qty')->nullable();
             $table->integer('total_harga')->nullable();

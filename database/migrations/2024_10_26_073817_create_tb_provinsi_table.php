@@ -14,7 +14,7 @@ class CreateTbProvinsiTable extends Migration
     public function up()
     {
         Schema::create('tb_provinsi', function (Blueprint $table) {
-            $table->integer('id_provinsi')->primary();
+            $table->integer('id_provinsi')->primary()->autoIncrement();
             $table->string('nama_provinsi')->nullable();
             $table->string('delete_provinsi', 1)->default('N');
         });

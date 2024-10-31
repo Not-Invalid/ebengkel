@@ -14,7 +14,7 @@ class CreateTbPenjualTable extends Migration
     public function up()
     {
         Schema::create('tb_penjual', function (Blueprint $table) {
-            $table->integer('id_penjual')->primary();
+            $table->integer('id_penjual')->primary()->autoIncrement();
             $table->string('nama_penjual')->nullable();
             $table->string('jenkel_penjual')->nullable();
             $table->date('tgl_lahir_penjual')->nullable();

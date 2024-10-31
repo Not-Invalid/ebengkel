@@ -14,7 +14,7 @@ class CreateTPengembalianItemTable extends Migration
     public function up()
     {
         Schema::create('t_pengembalian_item', function (Blueprint $table) {
-            $table->integer('id_pengembalian_item')->primary();
+            $table->integer('id_pengembalian_item')->primary()->autoIncrement();
             $table->integer('id_pengembalian');
             $table->integer('id_outlet');
             $table->integer('id_order');

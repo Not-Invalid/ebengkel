@@ -14,7 +14,7 @@ class CreateTbBengkelTable extends Migration
     public function up()
     {
         Schema::create('tb_bengkel', function (Blueprint $table) {
-            $table->integer('id_bengkel')->primary();
+            $table->integer('id_bengkel')->primary()->autoIncrement();
             $table->integer('id_pelanggan')->nullable();
             $table->string('nama_bengkel')->nullable();
             $table->string('tagline_bengkel')->nullable();

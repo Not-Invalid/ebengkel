@@ -14,7 +14,7 @@ class CreateTPoTable extends Migration
     public function up()
     {
         Schema::create('t_po', function (Blueprint $table) {
-            $table->integer('id_po')->primary();
+            $table->integer('id_po')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('kode_po', 50);
             $table->string('jenis_barang', 50)->default('BARANG JADI');

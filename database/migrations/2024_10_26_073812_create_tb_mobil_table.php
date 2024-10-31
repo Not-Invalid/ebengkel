@@ -14,7 +14,7 @@ class CreateTbMobilTable extends Migration
     public function up()
     {
         Schema::create('tb_mobil', function (Blueprint $table) {
-            $table->increments('id_mobil');
+            $table->increments('id_mobil')->primary()->autoIncrement();
             $table->integer('id_pelanggan')->nullable();
             $table->string('nama_mobil')->nullable();
             $table->string('jenis_mobil')->nullable();

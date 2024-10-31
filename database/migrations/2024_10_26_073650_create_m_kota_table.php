@@ -14,7 +14,7 @@ class CreateMKotaTable extends Migration
     public function up()
     {
         Schema::create('m_kota', function (Blueprint $table) {
-            $table->integer('id_kota')->primary();
+            $table->integer('id_kota')->primary()->autoIncrement();
             $table->integer('id_provinsi');
             $table->string('tipe', 50);
             $table->string('kota', 100);

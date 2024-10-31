@@ -14,7 +14,7 @@ class CreateTVoucherUsageTable extends Migration
     public function up()
     {
         Schema::create('t_voucher_usage', function (Blueprint $table) {
-            $table->integer('id_voucher_usage')->primary();
+            $table->integer('id_voucher_usage')->primary()->autoIncrement();
             $table->integer('id_voucher');
             $table->integer('id_order');
             $table->dateTime('usage_date')->useCurrent();

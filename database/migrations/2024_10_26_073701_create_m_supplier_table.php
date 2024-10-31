@@ -14,7 +14,7 @@ class CreateMSupplierTable extends Migration
     public function up()
     {
         Schema::create('m_supplier', function (Blueprint $table) {
-            $table->integer('id_supplier')->primary();
+            $table->integer('id_supplier')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('nama_supplier', 100);
             $table->string('alamat', 500);

@@ -23,8 +23,8 @@ class CreateTbPelangganTable extends Migration
             $table->text('foto_pelanggan')->nullable();
             $table->string('role_pelanggan', 20)->default('pembeli');
             $table->string('status_pelanggan', 11)->default('Aktif');
-            $table->timestamp('created_pelanggan')->nullable();
-            $table->timestamp('updated_pelanggan')->nullable();    
+            $table->timestamp('created_pelanggan')->useCurrent();
+            $table->timestamp('updated_pelanggan')->nullable()->nullable()->default(null);
             $table->string('delete_pelanggan', 1)->default('N');
         });
     }

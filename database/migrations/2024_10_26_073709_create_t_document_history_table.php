@@ -14,7 +14,7 @@ class CreateTDocumentHistoryTable extends Migration
     public function up()
     {
         Schema::create('t_document_history', function (Blueprint $table) {
-            $table->integer('id_document_history')->primary();
+            $table->integer('id_document_history')->primary()->autoIncrement();
             $table->integer('id_karyawan')->nullable();
             $table->integer('id_content')->nullable();
             $table->string('type_content', 30)->nullable();

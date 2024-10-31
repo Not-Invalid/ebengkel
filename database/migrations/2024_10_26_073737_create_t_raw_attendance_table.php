@@ -14,7 +14,7 @@ class CreateTRawAttendanceTable extends Migration
     public function up()
     {
         Schema::create('t_raw_attendance', function (Blueprint $table) {
-            $table->bigInteger('id_raw_attendance')->primary();
+            $table->bigInteger('id_raw_attendance')->primary()->autoIncrement();
             $table->integer('id_karyawan');
             $table->string('type', 50)->default('IN');
             $table->string('latitude', 50);

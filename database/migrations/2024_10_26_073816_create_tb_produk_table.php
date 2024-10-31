@@ -14,7 +14,7 @@ class CreateTbProdukTable extends Migration
     public function up()
     {
         Schema::create('tb_produk', function (Blueprint $table) {
-            $table->increments('id_produk');
+            $table->increments('id_produk')->autoIncrement();
             $table->integer('id_bengkel')->nullable();
             $table->integer('id_kategori_produk')->nullable();
             $table->integer('id_kualitas_produk')->nullable();

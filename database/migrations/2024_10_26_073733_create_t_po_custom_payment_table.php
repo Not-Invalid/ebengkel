@@ -14,7 +14,7 @@ class CreateTPoCustomPaymentTable extends Migration
     public function up()
     {
         Schema::create('t_po_custom_payment', function (Blueprint $table) {
-            $table->integer('id_po_custom_payment')->primary();
+            $table->integer('id_po_custom_payment')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_po_custom');
             $table->date('tanggal_bayar');

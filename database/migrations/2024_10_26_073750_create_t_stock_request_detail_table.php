@@ -14,7 +14,7 @@ class CreateTStockRequestDetailTable extends Migration
     public function up()
     {
         Schema::create('t_stock_request_detail', function (Blueprint $table) {
-            $table->integer('id_stock_request_detail')->primary();
+            $table->integer('id_stock_request_detail')->primary()->autoIncrement();
             $table->integer('id_stock_request');
             $table->integer('id_outlet');
             $table->integer('id_barang');

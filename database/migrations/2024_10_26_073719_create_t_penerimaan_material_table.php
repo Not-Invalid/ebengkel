@@ -14,7 +14,7 @@ class CreateTPenerimaanMaterialTable extends Migration
     public function up()
     {
         Schema::create('t_penerimaan_material', function (Blueprint $table) {
-            $table->integer('id_penerimaan_material')->primary();
+            $table->integer('id_penerimaan_material')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_po_material')->nullable();
             $table->date('tanggal');

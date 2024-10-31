@@ -14,7 +14,7 @@ class CreateTReturMaterialTable extends Migration
     public function up()
     {
         Schema::create('t_retur_material', function (Blueprint $table) {
-            $table->integer('id_retur_material')->primary();
+            $table->integer('id_retur_material')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->integer('id_po_material');
             $table->date('tanggal');

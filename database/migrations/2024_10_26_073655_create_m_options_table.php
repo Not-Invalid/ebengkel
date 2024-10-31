@@ -14,7 +14,7 @@ class CreateMOptionsTable extends Migration
     public function up()
     {
         Schema::create('m_options', function (Blueprint $table) {
-            $table->integer('id_option')->primary();
+            $table->integer('id_option')->primary()->autoIncrement();
             $table->string('option_name', 500);
             $table->string('option_value', 5000);
         });

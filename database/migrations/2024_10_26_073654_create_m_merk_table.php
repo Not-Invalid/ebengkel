@@ -14,7 +14,7 @@ class CreateMMerkTable extends Migration
     public function up()
     {
         Schema::create('m_merk', function (Blueprint $table) {
-            $table->integer('id_merk')->primary();
+            $table->integer('id_merk')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('nama_merk', 50);
             $table->string('is_delete', 1)->default('N');

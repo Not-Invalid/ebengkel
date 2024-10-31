@@ -14,7 +14,7 @@ class CreateTbBarangServicesTable extends Migration
     public function up()
     {
         Schema::create('tb_barang_services', function (Blueprint $table) {
-            $table->integer('id_barang_services')->primary();
+            $table->integer('id_barang_services')->primary()->autoIncrement();
             $table->integer('id_services')->nullable();
             $table->integer('id_spare_part')->nullable();
             $table->string('delete_barang_services', 1)->default('N');

@@ -14,7 +14,7 @@ class CreateTbJenisSparePartTable extends Migration
     public function up()
     {
         Schema::create('tb_jenis_spare_part', function (Blueprint $table) {
-            $table->increments('id_jenis_spare_part');
+            $table->increments('id_jenis_spare_part')->autoIncrement();
             $table->string('nama_jenis_spare_part')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->dateTime('updated_date');

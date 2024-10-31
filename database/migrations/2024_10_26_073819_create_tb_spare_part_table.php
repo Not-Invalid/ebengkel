@@ -14,7 +14,7 @@ class CreateTbSparePartTable extends Migration
     public function up()
     {
         Schema::create('tb_spare_part', function (Blueprint $table) {
-            $table->integer('id_spare_part')->primary();
+            $table->integer('id_spare_part')->primary()->autoIncrement();
             $table->integer('id_bengkel')->nullable();
             $table->integer('id_jenis_spare_part')->nullable();
             $table->integer('id_kategori_spare_part')->nullable();

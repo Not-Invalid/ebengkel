@@ -14,7 +14,7 @@ class CreateMCategoryTable extends Migration
     public function up()
     {
         Schema::create('m_category', function (Blueprint $table) {
-            $table->integer('id_category')->primary();
+            $table->integer('id_category')->primary()->autoIncrement();
             $table->integer('id_outlet');
             $table->string('nama_category', 50);
             $table->string('is_delete', 1)->default('N');

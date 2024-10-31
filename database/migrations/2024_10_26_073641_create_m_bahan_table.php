@@ -14,7 +14,7 @@ class CreateMBahanTable extends Migration
     public function up()
     {
         Schema::create('m_bahan', function (Blueprint $table) {
-            $table->integer('id_bahan')->primary();
+            $table->integer('id_bahan')->primary()->autoIncrement();
             $table->string('nama_bahan', 500);
             $table->string('is_delete', 1)->default('N');
         });

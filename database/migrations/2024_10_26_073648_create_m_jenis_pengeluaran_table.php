@@ -14,7 +14,7 @@ class CreateMJenisPengeluaranTable extends Migration
     public function up()
     {
         Schema::create('m_jenis_pengeluaran', function (Blueprint $table) {
-            $table->integer('id_jenis_pengeluaran')->primary();
+            $table->integer('id_jenis_pengeluaran')->primary()->autoIncrement();
             $table->string('nama_jenis_pengeluaran', 100);
             $table->string('keterangan', 1000);
             $table->string('is_delete', 1)->default('N');

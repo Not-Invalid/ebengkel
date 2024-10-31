@@ -14,7 +14,7 @@ class CreateTPengeluaranTable extends Migration
     public function up()
     {
         Schema::create('t_pengeluaran', function (Blueprint $table) {
-            $table->integer('id_pengeluaran')->primary();
+            $table->integer('id_pengeluaran')->primary()->autoIncrement();
             $table->integer('id_jenis_pengeluaran');
             $table->integer('id_outlet');
             $table->string('keterangan', 1000);

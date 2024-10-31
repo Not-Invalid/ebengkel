@@ -14,7 +14,7 @@ class CreatePaymentMethodTable extends Migration
     public function up()
     {
         Schema::create('payment_method', function (Blueprint $table) {
-            $table->integer('id_payment')->primary();
+            $table->integer('id_payment')->primary()->autoIncrement();
             $table->string('bank_name', 150)->nullable();
             $table->string('inisial', 50)->nullable();
             $table->enum('type', ['MANUAL_TRANSFER', 'VIRTUAL_ACCOUNT', 'E_WALLET'])->default('MANUAL_TRANSFER');

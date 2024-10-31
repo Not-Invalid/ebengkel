@@ -14,7 +14,7 @@ class CreateTVoucherTable extends Migration
     public function up()
     {
         Schema::create('t_voucher', function (Blueprint $table) {
-            $table->integer('id_voucher')->primary();
+            $table->integer('id_voucher')->primary()->autoIncrement();
             $table->string('voucher_code', 50);
             $table->integer('id_customer')->nullable();
             $table->enum('voucher_type', ['ALL', 'MEMBER', 'SPECIFIC', ''])->default('');
