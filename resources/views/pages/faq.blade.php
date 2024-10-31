@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Ebengkel | FAQs')
+@section('title')
+    eBengkelku | FAQs
+@stop
 
 @section('content')
 <section class="mt-5 py-3">
@@ -23,62 +25,66 @@
   <div class="container py-2">
     <div class="row justify-content-center">
       <div class="col-md-5 py-2">
-        <h2 class="pb-2 fw-bold">Frequently Asked Questions</h2>
-        <p>eBengkelku adalah platform digital terpercaya untuk manajemen bengkel otomotif, menghadirkan solusi inovatif bagi pemilik bengkel dalam mengelola data kendaraan, riwayat servis, dan jadwal servis. Dengan fitur direktori bengkel, marketplace mobil bekas & suku cadang, serta sistem POS, eBengkelku mendukung operasional bisnis secara efisien, kapan saja dan di mana saja, melalui web dan mobile.</p>
-        <a class="btn btn-custom mt-3" href="#">Contact us</a>
+        <h2 class="pb-2 fw-bold">Have Any Question?</h2>
+        <a class="btn btn-custom mt-3" href="{{ route('contact') }}">Contact us</a>
       </div>
       <div class="col-md-7">
         <div class="accordion" id="Questions-accordion">
-          <div class="accordion-item">
+          <div class="accordion-item mb-1">
             <h2 class="accordion-header" id="Questions-headingOne">
-              <button class="accordion-button collapsed bg-light" data-bs-target="#Questions-collapseOne" data-bs-toggle="collapse" type="button">
-                Lorem ipsum dolor sit amet adipisicing?
+              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseOne" data-bs-toggle="collapse" type="button">
+                <i class="bx bx-chevron-down me-2 fs-4"></i>
+                Apa itu eBengkelku?
               </button>
             </h2>
             <div id="Questions-collapseOne" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingOne">
               <div class="accordion-body">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime quos voluptatum at, quibusdam blanditiis saepe soluta laborum, repellendus nemo id porro dolor eveniet perspiciatis veritatis doloremque aliquam nam! Libero, nostrum!
+                eBengkelku adalah platform digital yang dirancang untuk membantu pemilik bengkel otomotif dalam mengelola operasional bisnis mereka. Dengan fitur-fitur canggih seperti manajemen data kendaraan pelanggan, marketplace untuk mobil bekas dan suku cadang, serta sistem POS, eBengkelku memudahkan pengelolaan bengkel dari mana saja.
               </div>
             </div>
           </div>
-          <div class="accordion-item">
+          <div class="accordion-item mb-1">
             <h2 class="accordion-header" id="Questions-headingTwo">
-              <button class="accordion-button collapsed bg-light" data-bs-target="#Questions-collapseTwo" data-bs-toggle="collapse" type="button">
-                Lorem ipsum dolor sit amet adipisicing?
+              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseTwo" data-bs-toggle="collapse" type="button">
+                <i class="bx bx-chevron-down me-2 fs-4"></i>
+                Fitur apa saja yang ditawarkan oleh eBengkelku?
               </button>
             </h2>
             <div id="Questions-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingTwo">
               <div class="accordion-body">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime quos voluptatum at, quibusdam blanditiis saepe soluta laborum, repellendus nemo id porro dolor eveniet perspiciatis veritatis doloremque aliquam nam! Libero, nostrum!
+                eBengkelku menawarkan berbagai fitur unggulan, termasuk manajemen data kendaraan dan riwayat servis, marketplace untuk mobil bekas dan suku cadang, direktori workshop untuk menemukan bengkel dengan berbagai keahlian, sistem Point of Sale (POS) untuk memudahkan transaksi, serta fitur Event untuk mempromosikan acara otomotif.
               </div>
             </div>
           </div>
-          <div class="accordion-item">
+          <div class="accordion-item mb-1">
             <h2 class="accordion-header" id="Questions-headingThree">
-              <button class="accordion-button collapsed bg-light" data-bs-target="#Questions-collapseThree" data-bs-toggle="collapse" type="button">
-                Lorem ipsum dolor sit amet adipisicing?
+              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseThree" data-bs-toggle="collapse" type="button">
+                <i class="bx bx-chevron-down me-2 fs-4"></i>
+                Bagaimana cara eBengkelku membantu pengelolaan bengkel?
               </button>
             </h2>
             <div id="Questions-collapseThree" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingThree">
               <div class="accordion-body">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime quos voluptatum at, quibusdam blanditiis saepe soluta laborum, repellendus nemo id porro dolor eveniet perspiciatis veritatis doloremque aliquam nam! Libero, nostrum!
+                eBengkelku membantu pengelolaan bengkel dengan menyediakan alat untuk menyederhanakan administrasi, seperti mengelola data pelanggan dan jadwal servis kendaraan. Platform ini juga memperlancar proses penjualan dengan POS dan memudahkan pencarian suku cadang atau mobil bekas yang dibutuhkan oleh pelanggan.
               </div>
             </div>
           </div>
-          <div class="accordion-item">
+          <div class="accordion-item mb-1">
             <h2 class="accordion-header" id="Questions-headingFour">
-              <button class="accordion-button collapsed bg-light" data-bs-target="#Questions-collapseFour" data-bs-toggle="collapse" type="button">
-                Lorem ipsum dolor sit amet adipisicing?
+              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseFour" data-bs-toggle="collapse" type="button">
+                <i class="bx bx-chevron-down me-2 fs-4"></i>
+                Apakah eBengkelku dapat diakses melalui perangkat mobile?
               </button>
             </h2>
             <div id="Questions-collapseFour" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingFour">
               <div class="accordion-body">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime quos voluptatum at, quibusdam blanditiis saepe soluta laborum, repellendus nemo id porro dolor eveniet perspiciatis veritatis doloremque aliquam nam! Libero, nostrum!
+                Ya, eBengkelku tersedia di web dan perangkat mobile. Hal ini memungkinkan pemilik bengkel dan pengguna untuk mengakses platform dengan mudah dari mana saja, sehingga manajemen bengkel bisa dilakukan secara fleksibel.
               </div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
