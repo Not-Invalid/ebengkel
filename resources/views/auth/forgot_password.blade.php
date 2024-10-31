@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Ebengkel | Login</title> 
-    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+@extends('layouts.app')
 
-  </head>
-<body>
+@section('title')
+    eBengkelku | Forgot Password
+@stop
+
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+@endpush
+
+@section('content')
+<div class="auth-container forgot-pw">
   <div class="wrapper">
     <h2>Forgot Your Password</h2>
-    @if (session('status'))
-        <div class="alert alert-danger">
-            {{ session('status') }}
-        </div>
-    @endif
-
     <form action="{{ route('forgot-password-send') }}" method="POST">
     @csrf
       <div class="input-box">
@@ -28,5 +22,5 @@
       </div>
     </form>
   </div>
-</body>
-</html>
+</div>
+@endsection
