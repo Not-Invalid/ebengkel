@@ -61,8 +61,8 @@
   {{-- Toastr JS --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-  <script>
-        // Initialize Toastr settings
+    <script>
+        // Toastr configuration
         toastr.options = {
             "closeButton": true,
             "progressBar": true,
@@ -70,11 +70,16 @@
             "timeOut": "5000"
         };
 
-        // Display Toastr notification for Laravel flash messages
+        // Display success message
         @if (session('status'))
             toastr.success("{{ session('status') }}");
         @endif
-  </script>
+
+        // Display error message
+        @if (session('status_error'))
+            toastr.error("{{ session('status_error') }}");
+        @endif
+    </script>
   {{-- Loader script --}}
   <script>
     function show(value) {
