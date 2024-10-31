@@ -1,7 +1,7 @@
 @extends('layouts.partials.sidebar')
 
 @section('title')
-    eBengkelku - Profile
+    eBengkelku | Profile
 @stop
 
 @section('content')
