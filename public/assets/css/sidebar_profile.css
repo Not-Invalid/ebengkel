@@ -83,6 +83,9 @@
 .bx {
     font-size: 26px;
 }
+.bx-log-out {
+    font-size: 20px;
+}
 .toggle-btn {
     background: none;
     border: none;
@@ -94,10 +97,14 @@
 
 .navbar {
     width: 100%;
-    background: var(--bg-transparent);
+    background: var(--main-white);
     padding: 12px;
     display: flex;
     justify-content: end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 
 .overlay {
@@ -112,36 +119,34 @@
 }
 .mobile-toggle {
     border: none;
-    background-color: transparent;
-    color: white;
+    background-color: var(--main-light-blue);
+    color: #000;
     padding: 0.5rem;
     border-radius: 4px;
     cursor: pointer;
 }
 .main {
-    display: flex;
-    padding: 2rem;
-    background-color: var(--main-white);
-    border-radius: 12px;
-    margin: 1rem;
+    margin: 1.5rem;
+    padding-top: 60px;
 }
 .profile-pic {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #3498db;
+    border: 1px solid var(--main-blue);
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
-    right: 0;
+    right: 5px;
     background-color: #ffffff;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 8px;
     overflow: hidden;
+    border: none;
 }
 
 .dropdown-menu a {
@@ -202,7 +207,7 @@
         position: fixed;
         left: -280px;
         top: 0;
-        height: 100vh;
+        height: 100%;
         width: 280px;
         box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
     }
