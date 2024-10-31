@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordResetMail;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\PasswordResetMail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -23,17 +24,18 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
-
         $pelanggan = Pelanggan::where('email_pelanggan', $request->email)
             ->where('delete_pelanggan', 'N')
             ->first();
-
         if ($pelanggan && Hash::check($request->password, $pelanggan->password_pelanggan)) {
             Session::put('id_pelanggan', $pelanggan->id_pelanggan);
-
+            $logData = [
+                'id_pelanggan' => $pelanggan->id_pelanggan,
+                'tgl_log_pelanggan' => now(),
+            ];
+            DB::table('tb_log_pelanggan')->insert($logData);
             return redirect()->route('home');
         }
-
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
@@ -58,7 +60,7 @@ class AuthController extends Controller
             'telp_pelanggan' => $request->telp,
             'email_pelanggan' => $request->email,
             'password_pelanggan' => Hash::make($request->password),
-            'foto_pelanggan' => 'assets/components/logos/avatar.png',
+            'foto_pelanggan' => asset('assets/images/components/avatar.png'),
         ]);
 
         return redirect()->route('login')->with('status', 'Registration successful!');
