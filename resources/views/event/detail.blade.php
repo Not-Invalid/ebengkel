@@ -119,7 +119,7 @@
                 width="50">
               <div>
                 <span class="title-desc">Fawas Alexandre Steven</span><br>
-                Ahli Teknologi Yali Yali
+                Ahli Teknologi
               </div>
             </div>
             <div class="d-flex align-items-center">
