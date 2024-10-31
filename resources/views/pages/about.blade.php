@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+
+@section('title')
+    eBengkelku | About us
+@stop
+
 @section('content')
 <section class="mt-5 py-3">
   <div class="bg-light py-5">
@@ -52,15 +57,12 @@
       </div>
       <div class="col-lg-6">
         <h6 class="text-title">Tentang Kami</h6>
-        <h2 class="mb-4"><span class="text-p">eBengkelku</span> Solusi Terbaik untuk Manajemen Bengkel Anda</h2>
-        <p class="mb-4">
-          eBengkelku adalah platform digital yang dirancang untuk menyediakan solusi inovatif bagi pemilik bengkel otomotif. Platform kami membantu menyederhanakan pengelolaan data kendaraan pelanggan, termasuk riwayat servis dan jadwal servis mendatang. Dengan bergabung di eBengkelku, para pengusaha mendapatkan akses ke berbagai fitur canggih yang mendukung operasional bisnis mereka.
+        <h2 class="mb-2"><span class="text-p">eBengkelku</span> Solusi Terbaik untuk Manajemen Bengkel Anda</h2>
+        <p class="mb-2">
+            eBengkelku adalah platform digital yang menyederhanakan pengelolaan bengkel otomotif, membantu pemilik bengkel dalam mencatat data kendaraan, melacak riwayat dan jadwal servis, serta mengoptimalkan operasional bisnis. Dengan berbagai fitur canggih, eBengkelku mendukung pengusaha bengkel dalam mengelola usaha mereka dengan lebih efisien.
         </p>
-        <p class="mb-4">
-          Fitur unggulan termasuk direktori <strong>Workshop</strong> yang memungkinkan pengguna menemukan berbagai bengkel terdaftar dengan keahlian beragam, serta marketplace <strong>Mobil Bekas & Suku Cadang</strong> yang memudahkan pelanggan dalam mencari produk atau kendaraan yang dibutuhkan. Kami juga menyediakan fitur <strong>Event</strong> untuk mempromosikan acara otomotif serta sistem <strong>Point of Sale (POS)</strong> yang memperlancar proses penjualan dan memudahkan transaksi pelanggan.
-        </p>
-        <p class="mb-4">
-          Tersedia di web dan mobile, eBengkelku menawarkan pengalaman yang mulus bagi pengguna dan pemilik bisnis, memungkinkan pemilik bengkel mengelola usaha mereka dari mana saja. Dikembangkan dan didukung oleh CN PLUS, eBengkelku berkomitmen untuk memajukan layanan otomotif dan memberikan pengalaman terbaik bagi pelanggan dan pengelola bengkel.
+        <p class="mb-2">
+            Platform ini menawarkan direktori Workshop untuk menemukan bengkel dengan berbagai keahlian, marketplace Mobil Bekas & Suku Cadang, serta fitur Event untuk promosi acara otomotif. Dilengkapi dengan sistem POS, eBengkelku memudahkan transaksi dan penjualan pelanggan. Tersedia di web dan mobile, platform ini dikembangkan oleh CNPLUS untuk memberikan pengalaman terbaik bagi pelanggan dan pemilik bengkel.
         </p>
       </div>
     </div>
