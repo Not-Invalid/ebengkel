@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+
+@section('title')
+    eBengkelku | Contact us
+@stop
+
 @section('content')
 <section class="mt-5 py-3">
   <div class="bg-light py-5">
