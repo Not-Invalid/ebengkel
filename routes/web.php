@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
@@ -29,3 +30,7 @@ Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 
 // Profile route
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
+// Event route
+Route::get('/event', [EventController::class, 'show'])->name('event.show');
+Route::get('/event/detail', [EventController::class, 'detail'])->name('event.detail');
