@@ -26,7 +26,7 @@
           <div class="footer-link">
             <h6 class="footer-title">Help & Support</h6>
             <ul>
-              <li><a href="#">Support Center</a></li>
+              <li><a href="{{ route('support-center') }}">Support Center</a></li>
               <li><a href="{{ route('faqs') }}">FAQs</a></li>
               <li><a href="#">Terms & Conditions</a></li>
             </ul>
