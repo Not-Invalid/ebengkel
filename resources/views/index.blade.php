@@ -62,7 +62,7 @@
             <!-- Change this to your actual data check -->
 
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="card-event p-3">
+              <a href="{{ route('event.detail') }}" class="card-event p-3">
                 <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
                   class="card-img-top" alt="Event Image">
                 <div class="card-body text-start">
