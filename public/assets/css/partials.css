@@ -368,18 +368,6 @@ p {
     background-color: #dc3545;
 }
 
-
-.chevron-icon {
-    transition: transform 0.1s ease; 
-    font-size: 1.2em;
-
-    vertical-align: middle;
-}
-
-.rotate {
-    transform: rotate(90deg); 
-}
-
 .header-hero {
     height: 850px;
     position: relative;
