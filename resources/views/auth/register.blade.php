@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Ebengkel | Register')
+@section('title')
+    eBengkelku | Register
+@stop
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
@@ -25,22 +27,15 @@
             <div class="input-box">
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 <span class="toggle-password" onclick="togglePasswordVisibility('password', 'toggle-icon1')">
-                    <i class="bx bx-show" id="toggle-icon1"></i>
+                    <i class="bx bx-hide" id="toggle-icon1"></i>
                 </span>
             </div>
             <div class="input-box">
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm your password" required>
                 <span class="toggle-password" onclick="togglePasswordVisibility('password_confirmation', 'toggle-icon2')">
-                    <i class="bx bx-show" id="toggle-icon2"></i>
+                    <i class="bx bx-hide" id="toggle-icon2"></i>
                 </span>
             </div>
-            @if ($errors->any())
-                <div class="fs-6 text-danger">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
             <div class="input-box button">
                 <input type="submit" value="Register">
             </div>
@@ -54,13 +49,13 @@
     function togglePasswordVisibility(inputId, iconId) {
         const passwordInput = document.getElementById(inputId);
         const toggleIcon = document.getElementById(iconId);
-        
+
         if (passwordInput.type === "password") {
             passwordInput.type = "text";
-            toggleIcon.classList.replace("bx-show", "bx-hide");
+            toggleIcon.classList.replace("bx-hide", "bx-show");
         } else {
             passwordInput.type = "password";
-            toggleIcon.classList.replace("bx-hide", "bx-show");
+            toggleIcon.classList.replace("bx-show", "bx-hide");
         }
     }
 </script>

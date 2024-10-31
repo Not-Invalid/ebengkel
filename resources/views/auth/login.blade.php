@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Ebengkel | Login')
+@section('title')
+    eBengkelku | Login
+@stop
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
@@ -10,12 +12,6 @@
 <div class="auth-container login">
     <div class="wrapper">
         <h2>Login</h2>
-        @if (session('status'))
-           <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
-
         <form action="{{ route('login-send') }}" method="POST">
             @csrf
             <div class="input-box">
@@ -24,19 +20,12 @@
             <div class="input-box">
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 <span class="toggle-password" onclick="togglePasswordVisibility()">
-                    <i class="bx bx-show" id="toggle-icon"></i>
+                    <i class="bx bx-hide" id="toggle-icon"></i>
                 </span>
             </div>
             <div class="forgot">
                 <h3><a href="{{ route('forgot-password') }}">Forgot Password</a></h3>
             </div>
-            @if ($errors->any())
-                <div class="fs-6 text-danger">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
             <div class="input-box button">
                 <input type="submit" value="Login">
             </div>
@@ -54,10 +43,10 @@
 
         if (passwordInput.type === "password") {
             passwordInput.type = "text";
-            toggleIcon.classList.replace("bx-show", "bx-hide");
+            toggleIcon.classList.replace("bx-hide", "bx-show");
         } else {
             passwordInput.type = "password";
-            toggleIcon.classList.replace("bx-hide", "bx-show");
+            toggleIcon.classList.replace("bx-show", "bx-hide");
         }
     }
 </script>
