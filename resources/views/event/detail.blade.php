@@ -164,13 +164,13 @@
     <div class="row py-5">
       <div class="col-md-12 text-center">
         <h5 class="fw-bold py-3">Bagikan Acara</h5>
-        <a href="#" class="btn btn-outline-primary me-2">
+        <a href="#" class="btn btn-outline-primary my-3">
           <i class='bx bxl-facebook-circle'></i> Facebook
         </a>
-        <a href="#" class="btn btn-outline-info me-2">
+        <a href="#" class="btn btn-outline-info my-3">
           <i class='bx bxl-twitter'></i> Twitter
         </a>
-        <a href="#" class="btn btn-outline-danger">
+        <a href="#" class="btn btn-outline-danger my-3">
           <i class='bx bxl-instagram'></i> Instagram
         </a>
       </div>
