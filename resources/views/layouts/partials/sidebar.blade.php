@@ -82,12 +82,14 @@
                     <i class="bx bx-menu"></i>
                 </button>
                 <div class="profile-dropdown">
-                    <img src="https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png"
-                        alt="Profile Picture" class="profile-pic" onclick="toggleDropdown()" />
+                    <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"alt="Profile Picture"
+                        class="profile-pic" onclick="toggleDropdown()" />
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
-                            <i class='bx bx-log-out'></i> Logout
+                            <div class="d-flex align-items-center">
+                                <i class='bx bx-log-out mx-2'></i> Logout
+                            </div>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;"
                                 id="logout-form">
                                 @csrf
@@ -98,7 +100,7 @@
                 </div>
             </nav>
 
-            <div class="main shadow">
+            <div class="main">
                 @yield('content')
             </div>
 
