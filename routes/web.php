@@ -26,6 +26,7 @@ Route::post('/send-message', [MessageController::class, 'sendContactMessage'])->
 
 Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
+Route::get('support-center', [PageController::class, 'supportCenter'])->name('support-center');
 
 // Profile route
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
