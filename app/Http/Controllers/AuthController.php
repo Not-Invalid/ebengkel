@@ -31,12 +31,12 @@ class AuthController extends Controller
         if ($pelanggan && Hash::check($request->password, $pelanggan->password_pelanggan)) {
             Session::put('id_pelanggan', $pelanggan->id_pelanggan);
 
-            return redirect()->route('home');
+            return redirect()->route('home')->with('status', 'Login successful!');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        ])->with('status_error', 'Login failed. Please check your credentials.');
     }
 
     public function showRegisterForm()
@@ -53,7 +53,7 @@ class AuthController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $pelanggan = Pelanggan::create([
+        Pelanggan::create([
             'nama_pelanggan' => $request->nama,
             'telp_pelanggan' => $request->telp,
             'email_pelanggan' => $request->email,
@@ -67,7 +67,7 @@ class AuthController extends Controller
     public function logout()
     {
         Session::forget('id_pelanggan');
-        return redirect()->route('home');
+        return redirect()->route('home')->with('status', 'Logout successful!');
     }
 
     public function showForgotPasswordForm()
@@ -81,7 +81,7 @@ class AuthController extends Controller
 
         $pelanggan = Pelanggan::where('email_pelanggan', $request->email)->first();
         if (!$pelanggan) {
-            return back()->with('status', 'Email not found');
+            return back()->with('status_error', 'Email not found');
         }
 
         $token = Str::random(60);
@@ -106,7 +106,7 @@ class AuthController extends Controller
 
         $pelanggan = Pelanggan::where('password_reset_token', $request->token)->first();
         if (!$pelanggan) {
-            return back()->withErrors(['token' => 'Invalid token']);
+            return back()->withErrors(['token' => 'Invalid token'])->with('status_error', 'Invalid token');
         }
 
         $pelanggan->update([
