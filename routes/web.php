@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -31,3 +32,7 @@ Route::get('support-center', [PageController::class, 'supportCenter'])->name('su
 // Profile route
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
+// Event route
+Route::get('/event', [EventController::class, 'show'])->name('event.show');
+Route::get('/event/detail', [EventController::class, 'detail'])->name('event.detail');

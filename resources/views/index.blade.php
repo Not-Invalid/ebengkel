@@ -61,78 +61,78 @@
                         {{-- @if (false) --}}
                         <!-- Change this to your actual data check -->
 
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <a href="#" class="card-event p-3">
-                                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title mt-4">Mercy Fest 2024</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <i class='bx bx-calendar'></i>
-                                        <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp50.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <a href="#" class="card-event p-3">
-                                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title mt-4">Mercy Fest 2024</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <i class='bx bx-calendar'></i>
-                                        <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp50.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <a href="#" class="card-event p-3">
-                                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title mt-4">Mercy Fest 2024</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <i class='bx bx-calendar'></i>
-                                        <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp50.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                            <a href="#" class="card-event p-3">
-                                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title mt-4">Mercy Fest 2024</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <i class='bx bx-calendar'></i>
-                                        <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp50.000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <a href="{{ route('event.detail') }}" class="card-event p-3">
+                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
+                  class="card-img-top" alt="Event Image">
+                <div class="card-body text-start">
+                  <p class="card-title mt-4">Mercy Fest 2024</p>
+                  <div class="d-flex align-items-center event-date">
+                    <i class='bx bx-calendar'></i>
+                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
+                  </div>
+                  <div class="footer-card">
+                    <div class="price d-flex justify-content-start">
+                      <span class="price">Rp50.000</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <a href="#" class="card-event p-3">
+                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
+                  class="card-img-top" alt="Event Image">
+                <div class="card-body text-start">
+                  <p class="card-title mt-4">Mercy Fest 2024</p>
+                  <div class="d-flex align-items-center event-date">
+                    <i class='bx bx-calendar'></i>
+                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
+                  </div>
+                  <div class="footer-card">
+                    <div class="price d-flex justify-content-start">
+                      <span class="price">Rp50.000</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <a href="#" class="card-event p-3">
+                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
+                  class="card-img-top" alt="Event Image">
+                <div class="card-body text-start">
+                  <p class="card-title mt-4">Mercy Fest 2024</p>
+                  <div class="d-flex align-items-center event-date">
+                    <i class='bx bx-calendar'></i>
+                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
+                  </div>
+                  <div class="footer-card">
+                    <div class="price d-flex justify-content-start">
+                      <span class="price">Rp50.000</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <a href="#" class="card-event p-3">
+                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
+                  class="card-img-top" alt="Event Image">
+                <div class="card-body text-start">
+                  <p class="card-title mt-4">Mercy Fest 2024</p>
+                  <div class="d-flex align-items-center event-date">
+                    <i class='bx bx-calendar'></i>
+                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
+                  </div>
+                  <div class="footer-card">
+                    <div class="price d-flex justify-content-start">
+                      <span class="price">Rp50.000</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
 
                         <!-- Repeat cards as needed -->
                         {{-- @else
