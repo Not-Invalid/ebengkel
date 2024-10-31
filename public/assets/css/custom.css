@@ -49,7 +49,7 @@
     align-items: center;
 }
 .did-floating-label {
-    color: #000;
+    color: var(--main-light-blue);
     font-size: 15px;
     font-weight: 400;
     position: absolute;
@@ -71,8 +71,8 @@
     height: 36px;
     padding: 0 20px;
     background: #fff;
-    color: #000;
-    border: 1px solid #000;
+    color: #4a4a4a;
+    border: 1px solid var(--main-light-blue);
     border-radius: 4px;
     box-sizing: border-box;
     &:focus {
@@ -133,7 +133,7 @@ select.did-floating-select::-ms-expand {
     font-size: 18px;
     text-align: center;
     white-space: nowrap;
-    border: 1px solid #000;
+    border: 1px solid var(--main-blue);
     border-radius: 4px 0 0 4px;
     border-right: none;
 }
