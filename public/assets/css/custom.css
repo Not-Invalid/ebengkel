@@ -27,6 +27,19 @@
     color: var(--main-white);
     transform: translateY(2px);
 }
+.btn.btn-custom-2 {
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    background-color: var(--main-blue);
+    color: var(--main-white);
+}
+
+.btn.btn-custom-2:active {
+    background-color: var(--main-blue-dark);
+    color: var(--main-white);
+    transform: translateY(2px);
+}
 
 /*=========================== About css ===========================*/
 .text-p {
@@ -214,16 +227,17 @@ h2 {
 .border-0 {
     border: 0!important;
 }
-.card {
+.category {
     position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: var(--main-white);
     background-clip: border-box;
     border: 1px solid rgba(30,46,80,.09);
     border-radius: 0.25rem;
+    height: 180px;
 }
 
 .icon-circle-lg {
@@ -240,7 +254,7 @@ h2 {
     border-radius: 50%;
 }
 .bg-pastel-primary {
-    background-color: #e9f3ff!important;
+    background-color: var(--main-light-grey)!important;
 }
 
 .mt-6 {
@@ -261,7 +275,7 @@ h2 {
     font-size: .85rem!important;
 }
 .bg-pastel-primary {
-    background-color: #e9f3ff!important;
+    background-color: var(--main-light-grey)!important;
 }
 
 .icon-circle-lg {
@@ -278,7 +292,7 @@ h2 {
     border-radius: 50%;
 }
 .bg-pastel-primary {
-    background-color: #e9f3ff!important;
+    background-color: var(--main-light-grey)!important;
 }
 
 .icon-circle[class*=text-] [fill]:not([fill=none]), .icon-circle[class*=text-] svg:not([fill=none]), .svg-icon[class*=text-] [fill]:not([fill=none]), .svg-icon[class*=text-] svg:not([fill=none]) {
