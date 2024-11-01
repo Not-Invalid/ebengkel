@@ -43,7 +43,7 @@
                 <label class="did-floating-label">No. Telp</label>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-warning" id="editBtn" onclick="toggleEdit()">Edit</button>
+                <button type="button" class="btn btn-outline-secondary" id="editBtn" onclick="toggleEdit()">Edit</button>
                 <button type="submit" id="saveBtn" class="btn btn-primary" style="display: none;">Save</button>
                 <button type="button" id="cancelBtn" class="btn btn-danger mx-2" onclick="cancelEdit()"
                     style="display: none;">Cancel</button>

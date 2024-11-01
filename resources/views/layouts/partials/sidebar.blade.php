@@ -57,7 +57,8 @@
                 <i class="bx bx-user"></i>
                 <span class="menu-text">Account</span>
             </a>
-            <a href="profile.html" class="menu-item">
+            <a href="{{ route('profile.address') }}"
+                class="menu-item {{ request()->routeIs('profile.address') ? 'active' : '' }}">
                 <i class='bx bxs-map'></i>
                 <span class="menu-text">Address</span>
             </a>
