@@ -29,7 +29,8 @@
                             <div class="row">
                                 <div class="col-12 col-md-3 d-flex align-items-center justify-content-center mb-3">
                                     <div class="d-flex align-items-center">
-                                        <iframe src="https://www.google.com/maps/embed?pb=-6.2766717,106.570193"
+                                        <iframe
+                                            src="https://www.google.com/maps/embed?pb={{ $address->lat_alamat_pengiriman }},{{ $address->long_alamat_pengiriman }}"
                                             width="180" height="180" style="border:0; border-radius: 4px"
                                             allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                                         </iframe>
