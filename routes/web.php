@@ -5,6 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupportCenterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -28,6 +29,9 @@ Route::post('/send-message', [MessageController::class, 'sendContactMessage'])->
 Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 Route::get('support-center', [PageController::class, 'supportCenter'])->name('support-center');
+Route::get('detail', [PageController::class, 'detail'])->name('detail');
+Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
+Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
 
 // Profile route
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
