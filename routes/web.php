@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UsedCarController;
+use App\Http\Controllers\ProductSparePartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -19,6 +21,13 @@ Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('
 Route::get('reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('reset-password');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('reset-password-send');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+// UsedCar
+Route::get('usedCar', [UsedCarController::class, 'index'])->name('usedCar');
+Route::get('usedCar/detail', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+
+// Product & SparePart
+Route::get('ProductSparePart', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
 
 // Contact Routes
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
