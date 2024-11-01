@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlamatPengiriman;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -79,5 +80,53 @@ class ProfileController extends Controller
         $pelanggan->save();
 
         return back()->with('alert', 'success_Success to change your profile.');
+    }
+    public function showAddress()
+    {
+        $address = AlamatPengiriman::with('pelanggan')
+            ->where('id_pelanggan', Session::get('id_pelanggan'))
+            ->where('delete_alamat_pengiriman', 'N')
+            ->get();
+        return view('profile.address.index', compact('address'));
+    }
+
+    public function addAddress()
+    {
+        return view('profile.address.create');
+    }
+    public function storeAddress(Request $request)
+    {
+        // Validasi data
+        $request->validate([
+            'nama_alamat_pengiriman' => 'nullable|string',
+            'kodepos_alamat_pengiriman' => 'nullable|string',
+            'lat_alamat_pengiriman' => 'nullable|string',
+            'long_alamat_pengiriman' => 'nullable|string',
+            'lokasi_alamat_pengiriman' => 'nullable|string',
+            'status_alamat_pengiriman' => 'nullable|string',
+            'kota' => 'nullable|string',
+            'provinsi' => 'nullable|string',
+            'kecamatan' => 'nullable|string',
+        ]);
+
+        // Ambil id pelanggan dari session
+        $customerId = Session::get('id_pelanggan');
+
+        // Simpan data ke dalam tabel
+        AlamatPengiriman::create([
+            'id_pelanggan' => $customerId,
+            'nama_alamat_pengiriman' => $request->nama_alamat_pengiriman,
+            'kodepos_alamat_pengiriman' => $request->kodepos_alamat_pengiriman,
+            'lat_alamat_pengiriman' => $request->lat_alamat_pengiriman,
+            'long_alamat_pengiriman' => $request->long_alamat_pengiriman,
+            'lokasi_alamat_pengiriman' => $request->lokasi_alamat_pengiriman,
+            'status_alamat_pengiriman' => $request->status_alamat_pengiriman,
+            'kota' => $request->kota,
+            'provinsi' => $request->provinsi,
+            'kecamatan' => $request->kecamatan,
+            'delete_alamat_pengiriman' => 'N',
+        ]);
+
+        return redirect()->route('profile.address')->with('success', 'Alamat pengiriman berhasil disimpan.');
     }
 }

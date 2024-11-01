@@ -14,10 +14,15 @@ class Pelanggan extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'nama_pelanggan', 'telp_pelanggan', 'email_pelanggan', 'password_pelanggan', 'password_reset_token', 'foto_pelanggan', 'role_pelanggan', 'status_pelanggan'
+        'nama_pelanggan', 'telp_pelanggan', 'email_pelanggan', 'password_pelanggan', 'password_reset_token', 'foto_pelanggan', 'role_pelanggan', 'status_pelanggan',
     ];
 
     protected $hidden = [
         'password_pelanggan',
     ];
+
+    public function alamatPengiriman()
+    {
+        return $this->hasMany(AlamatPengiriman::class, 'id_pelanggan', 'id_pelanggan');
+    }
 }
