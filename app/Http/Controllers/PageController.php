@@ -31,4 +31,14 @@ class PageController extends Controller
     {
         return view('pages.support_center');
     }
+
+    public function superAdmin()
+    {
+        return view('superadmin.index');
+    }
+
+    public function detail()
+    {
+        return view('pages.detail');
+    }
 }
