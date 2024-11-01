@@ -22,9 +22,9 @@ class CreateTbAlamatPengirimanTable extends Migration
             $table->string('long_alamat_pengiriman')->nullable();
             $table->text('lokasi_alamat_pengiriman')->nullable();
             $table->string('status_alamat_pengiriman')->nullable();
-            $table->integer('id_kota')->nullable();
-            $table->integer('id_provinsi')->nullable();
-            $table->integer('id_kecamatan')->nullable();
+            $table->string('kota')->nullable();
+            $table->string('provinsi')->nullable();
+            $table->string('kecamatan')->nullable();
             $table->timestamps();
             $table->string('delete_alamat_pengiriman', 1)->default('N');
         });
