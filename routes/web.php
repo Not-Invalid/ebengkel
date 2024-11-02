@@ -5,7 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SupportCenterController;
+use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\ProductSparePartController;
 use Illuminate\Support\Facades\Route;
