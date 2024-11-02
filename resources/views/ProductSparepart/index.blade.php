@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/productSparepart.css') }}">
 @endpush
 @section('title')
-    eBengkelku - Profil
+    eBengkelku - Produk & Sparepart
 @stop
 
 @section('content')
