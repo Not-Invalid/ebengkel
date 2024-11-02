@@ -25,15 +25,15 @@ Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('r
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // UsedCar
-Route::get('usedCar', [UsedCarController::class, 'index'])->name('usedCar');
-Route::get('usedCar/detail', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+Route::get('used-car', [UsedCarController::class, 'index'])->name('used-car');
+Route::get('used car', [UsedCarController::class, 'detail'])->name('usedcar.detail');
 
 // Product & SparePart
 Route::get('ProductSparePart', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
 
 // Contact Routes
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
-Route::post('/send-message', [MessageController::class, 'sendContactMessage'])->name('message-send');
+Route::post('contact', [MessageController::class, 'sendContactMessage'])->name('message-send');
 
 Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
