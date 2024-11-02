@@ -36,6 +36,9 @@ Route::get('support-center-category', [SupportCenterController::class, 'category
 // Profile route
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::get('/profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
+Route::get('/profile/address/create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
+Route::post('/profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
 
 // Event route
 Route::get('/event', [EventController::class, 'show'])->name('event.show');
