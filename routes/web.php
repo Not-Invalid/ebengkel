@@ -5,6 +5,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -36,3 +37,8 @@ Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->nam
 // Event route
 Route::get('/event', [EventController::class, 'show'])->name('event.show');
 Route::get('/event/detail', [EventController::class, 'detail'])->name('event.detail');
+
+
+// Workshop route
+Route::get('/workshop', [WorkshopController::class, 'show'])->name('workshop.show');
+Route::get('/workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
