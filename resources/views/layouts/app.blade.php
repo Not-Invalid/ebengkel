@@ -7,8 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
   <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
-  <title>@yield('title')</title>
-
 
     {{-- Bootstrap CSS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
@@ -26,6 +24,8 @@
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
     @stack('css')
+  <title>@yield('title')</title>
+
 </head>
 
 <body class="@yield('body-class')">
@@ -101,6 +101,25 @@
         }, 2000);
     </script>
 
+    {{-- Loader script --}}
+    <script>
+        function show(value) {
+            document.getElementById('loader').style.display = value ? 'block' : 'none';
+        }
+
+        function loadPage(URL) {
+            show(true);
+            location = URL;
+        }
+
+        function newTab(URL) {
+            window.open(URL, '_blank');
+        }
+        setTimeout(function() {
+            show(false);
+        }, 2000);
+    </script>
+
     {{-- Currency format --}}
     <script type="text/javascript">
         function formatRupiah(angka) {
@@ -117,6 +136,74 @@
 
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
             return rupiah;
+        }
+    </script>
+
+    {{-- UsedCar --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const offcanvas = document.getElementById('offcanvasExample');
+            const toggleText = document.getElementById('toggle-other-brands');
+            const otherBrands = document.getElementById('other-brands');
+
+            // Event listener for opening the offcanvas
+            offcanvas.addEventListener('show.bs.offcanvas', function() {
+                // Reset "Lihat Semuanya" text and hide other brands every time sidebar opens
+                otherBrands.style.display = 'none';
+                toggleText.innerText = 'Lihat Semuanya';
+
+                // Show main sections by setting visibility and height
+                const sections = document.querySelectorAll('.filter-section');
+                sections.forEach(section => {
+                    section.style.opacity = '1';
+                    section.style.maxHeight = '500px';
+                });
+            });
+
+            // Function to toggle visibility of other brands
+            window.toggleOtherBrands = function() {
+                const isVisible = otherBrands.style.display === 'block';
+
+                // Toggle other brands visibility and update toggle text
+                otherBrands.style.display = isVisible ? 'none' : 'block';
+                toggleText.innerText = isVisible ? 'Lihat Semuanya' : 'Sembunyikan';
+            };
+
+            // Function to toggle individual sections
+            window.toggleSection = function(sectionId) {
+                const section = document.getElementById(sectionId);
+                const chevron = document.getElementById(`chevron-icon-${sectionId}`);
+                const isVisible = section.style.opacity === '1';
+
+                // Toggle the clicked section
+                if (isVisible) {
+                    section.style.opacity = '0';
+                    section.style.maxHeight = '0';
+                    chevron.style.transform = 'rotate(0deg)'; // Chevron points up
+                } else {
+                    section.style.opacity = '1';
+                    section.style.maxHeight = '500px'; // Adjust to your desired max height
+                    chevron.style.transform = 'rotate(180deg)'; // Chevron points down
+                }
+            };
+        });
+    </script>
+
+    {{-- Product SparePart --}}
+    <script>
+        function filterCategory(category) {
+            // Dapatkan semua elemen produk
+            const items = document.querySelectorAll('.col-12');
+
+            // Loop melalui setiap item dan atur tampilannya
+            items.forEach(item => {
+                // Jika kategori adalah 'all' atau sesuai dengan kategori item, tampilkan item
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
         }
     </script>
 </body>
