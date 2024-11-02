@@ -30,8 +30,8 @@
                     <i class='bx bx-buildings'></i> Workshop
                   </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                  <a href="{{ route('home') }}">
+                <li class="nav-item {{ request()->routeIs('ProductSparePart') ? 'active' : '' }}">
+                  <a href="{{ route('ProductSparePart') }}">
                     <i class='bx bx-box'></i> Product & Spare Parts
                   </a>
                 </li>
