@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
   <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
-
+  <title>@yield('title')</title>
   {{-- Bootstrap CSS --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
 
@@ -61,34 +61,36 @@
   {{-- Toastr JS --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script>
-        // Toastr configuration
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "5000"
-        };
+  <script>
+    // Toastr configuration
+    toastr.options = {
+      "closeButton": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "5000"
+    };
 
-        // Display success message
-        @if (session('status'))
-            toastr.success("{{ session('status') }}");
-        @endif
+    // Display success message
+    @if (session('status'))
+      toastr.success("{{ session('status') }}");
+    @endif
 
-        // Display error message
-        @if (session('status_error'))
-            toastr.error("{{ session('status_error') }}");
-        @endif
-    </script>
+    // Display error message
+    @if (session('status_error'))
+      toastr.error("{{ session('status_error') }}");
+    @endif
+  </script>
   {{-- Loader script --}}
   <script>
     function show(value) {
       document.getElementById('loader').style.display = value ? 'block' : 'none';
     }
+
     function loadPage(URL) {
       show(true);
       location = URL;
     }
+
     function newTab(URL) {
       window.open(URL, '_blank');
     }
