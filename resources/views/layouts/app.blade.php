@@ -63,19 +63,19 @@
     {{-- Toastr JS --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script>
-        // Toastr configuration
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "5000"
-        };
+  <script>
+    // Toastr configuration
+    toastr.options = {
+      "closeButton": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "5000"
+    };
 
-        // Display success message
-        @if (session('status'))
-            toastr.success("{{ session('status') }}");
-        @endif
+    // Display success message
+    @if (session('status'))
+      toastr.success("{{ session('status') }}");
+    @endif
 
         // Display error message
         @if (session('status_error'))

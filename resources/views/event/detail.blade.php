@@ -2,7 +2,9 @@
 @push('css')
   <link rel="stylesheet" href="{{ asset('assets/css/event.css') }}">
 @endpush
-
+@section('title')
+  eBengkelku | Event Detail
+@stop
 @section('content')
   <section class="section section-white"
     style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom: 20px;">

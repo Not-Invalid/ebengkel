@@ -25,8 +25,8 @@
                     <i class='bx bx-calendar'></i> Event
                   </a>
                 </li>
-                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                  <a href="{{ route('home') }}">
+                <li class="nav-item {{ request()->routeIs('workshop.show') ? 'active' : '' }}">
+                  <a href="{{ route('workshop.show') }}">
                     <i class='bx bx-buildings'></i> Workshop
                   </a>
                 </li>

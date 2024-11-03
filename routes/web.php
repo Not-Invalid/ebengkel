@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\ProductSparePartController;
+use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -52,3 +53,8 @@ Route::post('/profile/address/store', [ProfileController::class, 'storeAddress']
 // Event route
 Route::get('/event', [EventController::class, 'show'])->name('event.show');
 Route::get('/event/detail', [EventController::class, 'detail'])->name('event.detail');
+
+
+// Workshop route
+Route::get('/workshop', [WorkshopController::class, 'show'])->name('workshop.show');
+Route::get('/workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
