@@ -1,0 +1,173 @@
+
+:root {
+    --main-dark: #121212;
+    --main-blue: #007bff;
+    --main-grey-light: #9f9f9f;
+    --main-blue-dark: #0067f4;
+    --main-grey: #6c6c6c;
+    --main-red: #dc3545;
+    --main-light-grey: #f4f6f7;
+    --main-dark-blue: #2b354f;
+    --main-cyan: #17a2b8;
+    --main-white: #ffffff;
+    --main-light-blue: #3a6fb0;
+    --main-black: #000000;
+    --main-green: #28a745;
+    --bg-transparent: rgba(0, 0, 0, 0);
+}
+
+.title-header {
+    color: var(--main-blue);
+    position: relative;
+    z-index: 10;
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+    box-shadow: inset 0 -1px 0 #ddd;
+}
+.custom-tab-link {
+    color: #000;
+    font-weight: 600;
+    text-align: center; /* Center the text */
+    text-decoration: none;
+    padding: 1.2rem 2rem; /* Adjust padding for better alignment */
+    position: relative;
+    cursor: pointer;
+    display: block;
+    transition: color 0.3s ease;
+ }
+ 
+ .custom-tabs {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .custom-tab-item {
+    margin-bottom: -1px;
+    position: relative;
+ }
+ 
+ .custom-tab-item::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 15%;
+    height: 70%;
+    width: 0.1px;
+    background-color: #d7e2ee;
+ }
+ 
+ .custom-tab-item:last-child::after {
+    display: none;
+ }
+ 
+ .custom-tab-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 50%;
+    height: 2px;
+    background-color: var(--main-blue);
+    transition: transform 0.3s ease;
+ }
+ 
+ .custom-tab-link.active {
+    color: #000;
+ }
+ 
+ .custom-tab-link.active::after {
+    transform: translateX(-50%) scaleX(1);
+ }
+ 
+  .custom-tabs-container {
+     position: relative;
+  }
+  
+  .custom-dropdown {
+     display: none;
+     width: 100%;
+     padding: 1rem;
+     font-size: 1rem;
+     border-radius: 10px;
+     border: none;
+     background-color: white;
+     outline: none;
+  }
+  .custom-dropdown:focus,
+  .custom-dropdown:active {
+     border: none;
+  }
+  @media (max-width: 1024px) {
+    .custom-tabs {
+       display: none;
+    }
+    .custom-dropdown {
+       display: block;
+    }
+ }
+
+ @media (max-width: 768) {
+    .custom-tabs {
+       display: none;
+       
+    }
+    .custom-dropdown {
+       display: block;
+    }
+}
+ .input-box {
+     position: relative;
+     display: flex;
+     align-items: center;
+ }
+
+ .toggle-password {
+    position: absolute;
+    right: 10px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    cursor: pointer; 
+}
+
+.bx-show, .bx-hide {
+    font-size: 16px; 
+    color: var(--main-grey); 
+}
+.bx-show:hover, .bx-hide:hover {
+    color: var(--main-blue); 
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+ .form-control {
+     padding-right: 40px; 
+}
+.btn.btn-save {
+    color: var(--main-white);
+    background-color: var(--main-blue);
+ }
+ .btn.btn-save:hover {
+    color: var(--main-white);
+    background-color: var(--main-blue-dark);
+ }
+ .btn.btn-save:active {
+ transform: translateY(2px);
+ }

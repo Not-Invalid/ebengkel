@@ -61,7 +61,7 @@
     <div class="row">
       <!-- Left Column - Main Details -->
       <div class="col-md-8">
-        <div class="card mb-4">
+        <div class="card info-event mb-4" style="border: 0;">
           <div class="card-body">
             <!-- Date and Time -->
             <div class="d-flex align-items-center mb-3">
@@ -111,8 +111,9 @@
       <!-- Right Column - Additional Info -->
       <div class="col-md-4">
         <!-- Speakers Section -->
-        <div class="card mb-4">
-          <div class="card-header title-desc">
+        <div class="card info-event mb-4" style="border: 0;">
+          <div class="card-header title-desc"
+            style="outline:none; border-start-end-radius: 10px; border-start-start-radius: 10px;">
             Pembicara Acara
           </div>
           <div class="card-body">
@@ -136,8 +137,9 @@
         </div>
 
         <!-- Ticket Section -->
-        <div class="card mb-4">
-          <div class="card-header title-desc">
+        <div class="card info-event mb-4" style="border: 0;">
+          <div class="card-header title-desc"
+            style="outline:none; border-start-end-radius: 10px; border-start-start-radius: 10px;">
             Tiket Acara
           </div>
           <div class="card-body text-center">
@@ -149,8 +151,9 @@
         </div>
 
         <!-- Contact Info -->
-        <div class="card">
-          <div class="card-header title-desc">
+        <div class="card info-event mb-4" style="border: 0;">
+          <div class="card-header title-desc"
+            style="outline:none; border-start-end-radius: 10px; border-start-start-radius: 10px;">
             Hubungi Kami
           </div>
           <div class="card-body">
@@ -167,13 +170,13 @@
       <div class="col-md-12 text-center">
         <h5 class="fw-bold py-3">Bagikan Acara</h5>
         <a href="#" class="btn btn-outline-primary my-3">
-          <i class='bx bxl-facebook-circle'></i> Facebook
+          <i class='bx bxl-facebook-circle align-icon'></i> Facebook
         </a>
         <a href="#" class="btn btn-outline-info my-3">
-          <i class='bx bxl-twitter'></i> Twitter
+          <i class='bx bxl-twitter align-icon'></i> Twitter
         </a>
         <a href="#" class="btn btn-outline-danger my-3">
-          <i class='bx bxl-instagram'></i> Instagram
+          <i class='bx bxl-instagram align-icon'></i> Instagram
         </a>
       </div>
     </div>
