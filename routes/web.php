@@ -49,6 +49,9 @@ Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->nam
 Route::get('/profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
 Route::get('/profile/address/create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
 Route::post('/profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
+Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
+Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
+
 
 // Event route
 Route::get('/event', [EventController::class, 'show'])->name('event.show');
