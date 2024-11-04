@@ -218,11 +218,6 @@ input[type=number]:focus,
  .custom-dropdown:active {
     border: none;
  }
- .booking-card {
-    border: 1px solid #eee;
-    margin: 1rem 0;
-    border-radius: 10px;
- }
 
  .title-info {
     font-weight: 600;
@@ -288,7 +283,6 @@ transform: translateY(2px);
 .reviews {
    margin-top: 30px;
 }
-
    .overall-rating {
        display: flex;
        align-items: center;
