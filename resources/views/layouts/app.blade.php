@@ -69,7 +69,7 @@
       "closeButton": true,
       "progressBar": true,
       "positionClass": "toast-top-right",
-      "timeOut": "5000"
+      "timeOut": "3000"
     };
 
     // Display success message
