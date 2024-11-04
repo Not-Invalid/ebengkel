@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AlamatPengiriman;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -129,4 +130,66 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.address')->with('success', 'Alamat pengiriman berhasil disimpan.');
     }
+    public function showSetting(Request $request)
+    {
+        if (!Session::has('id_pelanggan')) {
+            return redirect()->back()->withErrors('Customer ID not found in session.');
+        }
+
+        $data_pelanggan = DB::table('ebengkel_pkl.tb_pelanggan')
+            ->where('id_pelanggan', Session::get('id_pelanggan'))
+            ->first();
+
+        if (!$data_pelanggan) {
+            return redirect()->back()->withErrors('Customer data not found.');
+        }
+        $bulan = $request->input('bulan', date('Y-m'));
+        $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        $logCounts = [];
+
+        foreach ($days as $day) {
+            $logCount = DB::table('tb_pelanggan')
+                ->join('tb_log_pelanggan', 'tb_log_pelanggan.id_pelanggan', '=', 'tb_pelanggan.id_pelanggan')
+                ->where('tb_log_pelanggan.delete_log_pelanggan', '=', 'N')
+                ->whereRaw('date_format(tb_log_pelanggan.tgl_log_pelanggan, \'%Y-%m\') = ?', [$bulan])
+                ->whereRaw('date_format(tb_log_pelanggan.tgl_log_pelanggan, \'%a\') = ?', [$day])
+                ->where('tb_log_pelanggan.id_pelanggan', '=', Session::get('id_pelanggan'))
+                ->count();
+
+            $logCounts[$day] = $logCount;
+        }
+
+        return view('profile.setting.index', [
+            'data_pelanggan' => $data_pelanggan,
+            'logCounts' => $logCounts,
+            'days' => $days,
+        ]);
+    }
+    public function resetPassword(Request $request)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'currentPassword' => 'required|string',
+        'newPassword' => 'required|string|min:8|confirmed',
+    ]);
+
+    // Fetch the currently authenticated user
+    $pelanggan = Pelanggan::where('id_pelanggan', Session::get('id_pelanggan'))->first();
+
+    if (!$pelanggan) {
+        return back()->withErrors('User not found.');
+    }
+
+    // Check if the current password matches
+    if (!password_verify($request->input('currentPassword'), $pelanggan->password_pelanggan)) {
+        return back()->withErrors('Current password is incorrect.');
+    }
+
+    // Update the password
+    $pelanggan->update([
+        'password_pelanggan' => Hash::make($request->input('newPassword')),
+    ]);
+
+    return redirect()->route('login')->with('status', 'Password successfully reset!');
+}
 }
