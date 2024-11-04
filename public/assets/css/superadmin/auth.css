@@ -50,43 +50,6 @@ body {
     color: var(--main-dark-blue);
 }
 
-/* Google & Apple button styling */
-.login_form .login_option {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.login_form .login_option .option {
-    width: calc(100% / 2 - 12px);
-}
-
-.login_form .login_option .option a {
-    height: 56px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    background: var(--main-light-grey);
-    border: 1px solid var(--main-grey-light);
-    border-radius: 5px;
-    margin: 34px 0 24px 0;
-    text-decoration: none;
-    color: var(--main-dark-blue);
-    font-weight: 500;
-    transition: 0.2s ease;
-}
-
-.login_form .login_option .option a:hover {
-    background: var(--main-grey-light);
-    border-color: var(--main-light-blue);
-}
-
-.login_form .login_option .option a img {
-    max-width: 25px;
-}
-
 .login_form p {
     text-align: center;
     font-weight: 500;
@@ -96,25 +59,6 @@ body {
 .login_form .separator {
     position: relative;
     margin-bottom: 24px;
-}
-
-/* Login option separator styling */
-.login_form .separator span {
-    background: var(--main-white);
-    z-index: 1;
-    padding: 0 10px;
-    position: relative;
-}
-
-.login_form .separator::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 0;
-    height: 1px;
-    background: var(--main-grey-light);
-    display: block;
 }
 
 form .input_box label {
@@ -180,6 +124,7 @@ form button {
     transition: 0.3s ease;
 }
 
-form button:hover {
+form button:active {
+    transform: translateY(2px);
     background: var(--main-blue-dark);
 }
