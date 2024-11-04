@@ -14,11 +14,11 @@
         </div>
         <div class="col-lg-3 col-md-4 col-sm-6">
           <div class="footer-link">
-            <h6 class="footer-title">Product & Services</h6>
+            <h6 class="footer-title">Our Product</h6>
             <ul>
-              <li><a href="#">Products</a></li>
-              <li><a href="#">Business</a></li>
-              <li><a href="#">Developer</a></li>
+              <li><a href="{{ route('ProductSparePart') }}">Products & Sparepart</a></li>
+              <li><a href="{{ route('workshop.show') }}">Workshop</a></li>
+              <li><a href="{{ route('event.show') }}">Event</a></li>
             </ul>
           </div> <!-- footer link -->
         </div>
@@ -28,7 +28,7 @@
             <ul>
               <li><a href="{{ route('support-center') }}">Support Center</a></li>
               <li><a href="{{ route('faqs') }}">FAQs</a></li>
-              <li><a href="#">Terms & Conditions</a></li>
+              <li><a href="{{ route('terms') }}">Terms & Conditions</a></li>
             </ul>
           </div> <!-- footer link -->
         </div>
