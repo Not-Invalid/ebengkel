@@ -27,6 +27,11 @@ class PageController extends Controller
         return view('pages.faq');
     }
 
+    public function terms()
+    {
+        return view('pages.terms');
+    }
+
     public function supportCenter()
     {
         return view('pages.support_center');
