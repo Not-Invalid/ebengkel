@@ -369,8 +369,8 @@ h2 {
 
 /*=========================== Terms & Condition css ===========================*/
 .welcome-text {
-    font-size: 14px;
     font-weight: 500;
+    text-align: justify;
 }
 
 .terms-detail {
