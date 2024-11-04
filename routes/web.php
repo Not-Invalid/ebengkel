@@ -6,6 +6,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
+use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\WorkshopController;
@@ -38,23 +39,27 @@ Route::post('contact', [MessageController::class, 'sendContactMessage'])->name('
 
 Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
+Route::get('terms', [PageController::class, 'terms'])->name('terms');
 Route::get('support-center', [PageController::class, 'supportCenter'])->name('support-center');
 Route::get('detail', [PageController::class, 'detail'])->name('detail');
+Route::get('login-admin', [SuperAdminAuthController::class, 'showLogin'])->name('login-admin');
+Route::post('login-admin', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
 Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
 
+
 // Profile route
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-Route::get('/profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
-Route::get('/profile/address/create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
-Route::post('/profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
+Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::post('profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::get('profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
+Route::get('profile/address/create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
+Route::post('profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
 
 // Event route
-Route::get('/event', [EventController::class, 'show'])->name('event.show');
-Route::get('/event/detail', [EventController::class, 'detail'])->name('event.detail');
+Route::get('event', [EventController::class, 'show'])->name('event.show');
+Route::get('event/detail', [EventController::class, 'detail'])->name('event.detail');
 
 
 // Workshop route
-Route::get('/workshop', [WorkshopController::class, 'show'])->name('workshop.show');
-Route::get('/workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
+Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
+Route::get('workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
