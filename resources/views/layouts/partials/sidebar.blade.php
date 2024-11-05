@@ -51,7 +51,7 @@
           <i class="bx bx-menu"></i>
         </button>
       </div>
-      <a href="{{ route('profile.show') }}" class="menu-item {{ request()->routeIs('profile.show') ? 'active' : '' }}">
+      <a href="{{ route('profile') }}" class="menu-item {{ request()->routeIs('profile') ? 'active' : '' }}">
         <i class="bx bx-user"></i>
         <span class="menu-text">Account</span>
       </a>
@@ -63,6 +63,10 @@
       <a href="messages.html" class="menu-item">
         <i class='bx bx-building-house'></i>
         <span class="menu-text">Workshop</span>
+      </a>
+      <a href="{{ route('profile-used-car') }}" class="menu-item">
+        <i class='bx bxs-car'></i>
+        <span class="menu-text">Used Car</span>
       </a>
       <a href="{{ route('profile.setting') }}"
         class="menu-item {{ request()->routeIs('profile.setting') ? 'active' : '' }}">
