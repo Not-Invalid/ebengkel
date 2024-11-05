@@ -1151,6 +1151,9 @@ p.form-message.error {
 .footer-copyright {
     background-color: #2b354f;
 }
+.link-cnplus{
+    color: var(--main-green);
+}
 .copyright {
     padding: 23px 0;
 }
