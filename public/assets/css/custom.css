@@ -55,6 +55,24 @@
     transform: translateY(2px);
 }
 
+.btn.btn-custom-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0.4rem 0.9rem;
+    background-color: var(--main-blue);
+    color: var(--main-white);
+    cursor: pointer;
+}
+
+.btn.btn-custom-icon:active {
+    background-color: var(--main-blue-dark);
+    color: var(--main-white);
+    transform: translateY(2px);
+}
+
+
 .badge {
     background-color: var(--main-light-blue);
     font-weight: 500;
@@ -168,6 +186,12 @@ select.did-floating-select::-ms-expand {
     border: 1px solid var(--main-blue);
     border-radius: 4px 0 0 4px;
     border-right: none;
+}
+
+@media (max-width: 1023px) {
+    .did-floating-label.car {
+        font-size: 12px;
+    }
 }
 
 /*=========================== FAQs css ===========================*/
