@@ -54,96 +54,35 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="row ">
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
-                                <img src="https://ebengkelku.com/images/foto_mobil_20220118_145102.png" class="card-img-top"
-                                    alt="Event Image">
-                                <div class="card-body text-start">
-                                    <div class="d-flex align-items-center location-map mt-3">
-                                        <i class='bx bx-map-pin'></i>
-                                        <p class="location ms-2">Curug, Kab. Tangerang</p>
-                                    </div>
-                                    <p class="card-title">Mercedes Benz</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <span class="jenis">Mercedes-Benz E200</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp. 160,000,000</span>
-                                        </div>
+                @foreach ($cars as $car)
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
+                        <a href="{{ route('usedcar.detail', $car->id) }}" class="card-event p-3">
+                            <img src="{{ asset('storage/' . $car->image) }}" class="card-img-top" alt="{{ $car->name }}">
+                            <div class="card-body text-start">
+                                <div class="d-flex align-items-center location-map mt-3">
+                                    <i class='bx bx-map-pin'></i>
+                                    <p class="location ms-2">{{ $car->location }}</p>
+                                </div>
+                                <p class="card-title">{{ $car->brand }}</p>
+                                <div class="d-flex align-items-center event-date">
+                                    <span class="jenis">{{ $car->model }}</span>
+                                </div>
+                                <div class="footer-card">
+                                    <div class="price d-flex justify-content-start">
+                                        <span class="price">Rp{{ number_format($car->price, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
-                                <img src="https://ebengkelku.com/images/foto_mobil_20211012_164138.jpg" class="card-img-top"
-                                    alt="Event Image">
-                                <div class="card-body text-start">
-                                    <div class="d-flex align-items-center location-map mt-3">
-                                        <i class='bx bx-map-pin'></i>
-                                        <p class="location ms-2">Legok, Kab. Tangerang</p>
-                                    </div>
-                                    <p class="card-title">BMW</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <span class="jenis">BMW 520i</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp450,000,000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
-                                <img src="https://ebengkelku.com/images/foto_mobil_20230612_120220.jpeg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <div class="d-flex align-items-center location-map mt-3">
-                                        <i class='bx bx-map-pin'></i>
-                                        <p class="location ms-2">Legok, Kab. Tangerang</p>
-                                    </div>
-                                    <p class="card-title">Honda</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <span class="jenis">Honda City type E / RS</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp135,000,000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
-                                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <div class="d-flex align-items-center location-map mt-3">
-                                        <i class='bx bx-map-pin'></i>
-                                        <p class="location ms-2">Legok, Kab. Tangerang</p>
-                                    </div>
-                                    <p class="card-title">Mercedes Benz</p>
-                                    <div class="d-flex align-items-center event-date">
-                                        <span class="jenis">Mercedes-Benz A200</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp585,000,000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            {{ $cars->links() }}
+        </div>
+
 
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
             aria-labelledby="offcanvasExampleLabel">
