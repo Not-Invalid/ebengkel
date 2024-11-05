@@ -41,4 +41,7 @@ class PageController extends Controller
     {
         return view('pages.detail');
     }
+    public function career(){
+        return view('pages.career');
+    }
 }
