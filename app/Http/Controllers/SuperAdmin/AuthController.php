@@ -5,8 +5,6 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-
 
 class AuthController extends Controller
 {
@@ -22,13 +20,19 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::guard('superadmin')->attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
-            return redirect()->intended('/superadmin');
+            return redirect()->intended('/superadmin')->with('status', 'Login successful!');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->with('status_error', 'Login failed. Please check your credentials.');
+    }
+
+    public function logout()
+    {
+        Auth::guard('superadmin')->logout();
+        return redirect()->route('login-admin')->with('status', 'Logout successful!');
     }
 }
