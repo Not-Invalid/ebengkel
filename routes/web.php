@@ -31,6 +31,7 @@ Route::get('used car', [UsedCarController::class, 'detail'])->name('usedcar.deta
 
 // Product & SparePart
 Route::get('ProductSparePart', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
+Route::get('/detail-ProductSparePart', [ProductSparePartController::class, 'detail'])->name('Detail-ProductSparePart');
 
 // Contact Routes
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
@@ -40,6 +41,7 @@ Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 Route::get('support-center', [PageController::class, 'supportCenter'])->name('support-center');
 Route::get('detail', [PageController::class, 'detail'])->name('detail');
+Route::get('career', [PageController::class, 'career'])->name('career');
 Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
 
