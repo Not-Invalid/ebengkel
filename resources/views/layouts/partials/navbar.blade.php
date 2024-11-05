@@ -40,9 +40,9 @@
                     <i class='bx bx-car'></i> Used Car
                   </a>
                 </li>
-                @if (Session::has('id_pelanggan'))
+                @if (auth('pelanggan')->check())
                   <li class="nav-item">
-                    <a href="{{ route('profile.show') }}">
+                    <a href="{{ route('profile') }}">
                       <i class='bx bx-user'></i> Profile
                     </a>
                   </li>
