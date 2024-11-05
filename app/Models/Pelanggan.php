@@ -25,4 +25,16 @@ class Pelanggan extends Authenticatable
     {
         return $this->hasMany(AlamatPengiriman::class, 'id_pelanggan', 'id_pelanggan');
     }
+
+    public function Mobil()
+    {
+        return $this->hasMany(UsedCar::class, 'id_pelanggan', 'id_pelanggan');
+    }
+
+    public function fotoMobil()
+    {
+        return $this->hasMany(FotoMobil::class, 'id_pelanggan', 'id_pelanggan');
+    }
+
+
 }
