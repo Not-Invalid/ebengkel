@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
-  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
 
     {{-- Bootstrap CSS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
@@ -17,6 +17,9 @@
     {{-- Boxicons --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
+    {{-- Aos --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
     {{-- Custom styles --}}
     <link rel="stylesheet" href="{{ asset('assets/css/partials.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -24,7 +27,7 @@
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
     @stack('css')
-  <title>@yield('title')</title>
+    <title>@yield('title')</title>
 
 </head>
 
@@ -60,22 +63,25 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 
+    {{-- Aos --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
     {{-- Toastr JS --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-  <script>
-    // Toastr configuration
-    toastr.options = {
-      "closeButton": true,
-      "progressBar": true,
-      "positionClass": "toast-top-right",
-      "timeOut": "5000"
-    };
+    <script>
+        // Toastr configuration
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000"
+        };
 
-    // Display success message
-    @if (session('status'))
-      toastr.success("{{ session('status') }}");
-    @endif
+        // Display success message
+        @if (session('status'))
+            toastr.success("{{ session('status') }}");
+        @endif
 
         // Display error message
         @if (session('status_error'))
@@ -205,6 +211,60 @@
                 }
             });
         }
+    </script>
+    {{-- Aos --}}
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+    {{-- Misi --}}
+    <script>
+        // Animate elements when they come into view
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.stat-number, .section-title, .process-card');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            animateOnScroll();
+
+            // Counter animation for stats
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const value = stat.innerText;
+                let start = 0;
+                const end = parseInt(value.replace(/[+,k]/g, ''));
+                const duration = 2000;
+                const increment = end / (duration / 16);
+
+                const counter = setInterval(() => {
+                    start += increment;
+                    if (start >= end) {
+                        clearInterval(counter);
+                        stat.innerText = value;
+                    } else {
+                        stat.innerText = Math.floor(start) + (value.includes('k') ? 'k' : value
+                            .includes('+') ? '+' : '');
+                    }
+                }, 16);
+            });
+        });
     </script>
 </body>
 
