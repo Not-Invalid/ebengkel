@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Mail\PasswordResetMail;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -19,33 +20,41 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:8',
+    ]);
 
-        $pelanggan = Pelanggan::where('email_pelanggan', $request->email)
-            ->where('delete_pelanggan', 'N')
-            ->first();
+    // Manually check credentials by retrieving the user and verifying the password
+    $user = Pelanggan::where('email_pelanggan', $request->email)->first();
 
-        if ($pelanggan && Hash::check($request->password, $pelanggan->password_pelanggan)) {
-            Session::put('id_pelanggan', $pelanggan->id_pelanggan);
+    // Check if user exists and password matches
+    if ($user && Hash::check($request->password, $user->password_pelanggan)) {
+        // Log the user in
+        Auth::guard('pelanggan')->login($user);
+        $request->session()->regenerate();
 
-            // Log the login time
-            $logData = [
-                'id_pelanggan' => $pelanggan->id_pelanggan,
-                'tgl_log_pelanggan' => now(),
-            ];
-            DB::table('tb_log_pelanggan')->insert($logData);
+        // Set the session variable
+        Session::put('id_pelanggan', $user->id_pelanggan);
 
-            return redirect()->route('home')->with('status', 'Login successful!');
-        }
+        // Log the login time
+        $logData = [
+            'id_pelanggan' => $user->id_pelanggan,
+            'tgl_log_pelanggan' => now(),
+        ];
+        DB::table('tb_log_pelanggan')->insert($logData);
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->with('status_error', 'Login failed. Please check your credentials.');
+        return redirect()->route('home')->with('status', 'Login successful!');
     }
+
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ])->with('status_error', 'Login failed. Please check your credentials.');
+}
+
+
+
 
     public function showRegisterForm()
     {
@@ -74,7 +83,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Session::forget('id_pelanggan');
+        Auth::guard('pelanggan')->logout();
+        session()->invalidate();
+        session()->regenerateToken();
         return redirect()->route('home')->with('status', 'Logout successful!');
     }
 
