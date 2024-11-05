@@ -28,7 +28,7 @@
             <ul class="header-btn">
               @if (Session::has('id_pelanggan'))
                 <li>
-                  <a class="main-btn btn-one" href="{{ route('profile.show') }}">
+                  <a class="main-btn btn-one" href="{{ route('profile') }}">
                     <i class='bx bx-user'></i> PROFILE
                   </a>
                 </li>
