@@ -15,9 +15,13 @@ class CreateTbFotoMobilTable extends Migration
     {
         Schema::create('tb_foto_mobil', function (Blueprint $table) {
             $table->increments('id_foto_mobil')->autoIncrement();
-            $table->string('id_mobil', 20);
-            $table->string('id_pelanggan', 20);
-            $table->text('file_foto_mobil');
+            $table->integer('id_mobil');
+            $table->integer('id_pelanggan');
+            $table->text('file_foto_mobil_1');
+            $table->text('file_foto_mobil_2')->nullable();
+            $table->text('file_foto_mobil_3')->nullable();
+            $table->text('file_foto_mobil_4')->nullable();
+            $table->text('file_foto_mobil_5')->nullable();
             $table->dateTime('create_file_foto_mobil');
             $table->string('delete_file_foto_mobil', 1)->default('N');
         });
