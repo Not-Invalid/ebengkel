@@ -120,7 +120,7 @@
                             <div class="d-flex align-items-center">
                                 <i class='bx bx-log-out mx-2'></i> Logout
                             </div>
-                            <form action="{{ route('logout') }}" method="POST" style="display: inline;"
+                            <form action="{{ route('logout-admin') }}" method="POST" style="display: inline;"
                                 id="logout-form">
                                 @csrf
 
