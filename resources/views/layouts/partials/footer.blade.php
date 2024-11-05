@@ -58,7 +58,7 @@
           <div class="copyright text-center">
             <p class="text">
               Copyright &copy; {{ now()->year }} eBengkelku - Service, Spare Part & Smart Tools
-              Powered By <a href="https://cnplus.id/" target="_blank" class="text-success">CNPLUS</a>
+              Powered By <a href="https://cnplus.id/" target="_blank" class="link-cnplus text-decoration-none fw-semibold">CNPLUS</a>
             </p>
           </div>
         </div>
