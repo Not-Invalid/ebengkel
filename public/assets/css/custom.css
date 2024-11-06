@@ -17,65 +17,66 @@
 
 /*=========================== Custom Button css ===========================*/
 .btn.btn-custom {
-    padding: 0.7rem 1.2rem;
-    background-color: var(--main-blue);
-    color: var(--main-white);
+    padding: 0.7rem 1.2rem !important;
+    background-color: var(--main-blue) !important;
+    color: var(--main-white) !important;
 }
 
 .btn.btn-custom:active {
-    background-color: var(--main-blue-dark);
-    color: var(--main-white);
-    transform: translateY(2px);
+    background-color: var(--main-blue-dark) !important;
+    color: var(--main-white) !important;
+    transform: translateY(2px) !important;
 }
+
 .btn.btn-custom-2 {
-    padding: 0.3rem 0.8rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    background-color: var(--main-blue);
-    color: var(--main-white);
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 4px !important;
+    font-size: 0.8rem !important;
+    background-color: var(--main-blue) !important;
+    color: var(--main-white) !important;
 }
 
 .btn.btn-custom-2:active {
-    background-color: var(--main-blue-dark);
-    color: var(--main-white);
-    transform: translateY(2px);
+    background-color: var(--main-blue-dark) !important;
+    color: var(--main-white) !important;
+    transform: translateY(2px) !important;
 }
+
 .btn.btn-custom-3 {
-    padding: 0.2rem 1rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    background-color: var(--bg-transparent);
-    color: var(--main-black);
-    border: 1px solid var(--main-grey);
+    padding: 0.2rem 1rem !important;
+    border-radius: 4px !important;
+    font-size: 0.9rem !important;
+    background-color: var(--bg-transparent) !important;
+    color: var(--main-black) !important;
+    border: 1px solid var(--main-grey) !important;
 }
 
 .btn.btn-custom-3:active {
-    background-color: var(--bg-transparent);
-    color: var(--main-black);
-    transform: translateY(2px);
+    background-color: var(--bg-transparent) !important;
+    color: var(--main-black) !important;
+    transform: translateY(2px) !important;
 }
 
 .btn.btn-custom-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 0.4rem 0.9rem;
-    background-color: var(--main-blue);
-    color: var(--main-white);
-    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    padding: 0.4rem 0.9rem !important;
+    background-color: var(--main-blue) !important;
+    color: var(--main-white) !important;
+    cursor: pointer !important;
 }
 
 .btn.btn-custom-icon:active {
-    background-color: var(--main-blue-dark);
-    color: var(--main-white);
-    transform: translateY(2px);
+    background-color: var(--main-blue-dark) !important;
+    color: var(--main-white) !important;
+    transform: translateY(2px) !important;
 }
 
-
 .badge {
-    background-color: var(--main-light-blue);
-    font-weight: 500;
+    background-color: var(--main-light-blue) !important;
+    font-weight: 500 !important;
 }
 
 /*=========================== About css ===========================*/
@@ -302,6 +303,11 @@ h2 {
     height: 3.2rem;
     border-radius: 50%;
 }
+
+.icon-circle i {
+    color: var(--main-blue-dark);
+}
+
 .bg-pastel-primary {
     background-color: var(--main-light-grey) !important;
 }
@@ -417,4 +423,10 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+/*=========================== SC Category css ===========================*/
+.icon-support-center{
+    font-size: 40px;
+    color: var(--main-blue-dark);
 }
