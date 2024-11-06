@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
+use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
@@ -84,3 +85,6 @@ Route::get('event/detail', [EventController::class, 'detail'])->name('event.deta
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
 Route::get('workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
+
+// POS
+Route::get('pos', [PosHomeController::class, 'index'])->name('home.pos');
