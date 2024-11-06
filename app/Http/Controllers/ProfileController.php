@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\AlamatPengiriman;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
@@ -84,6 +84,9 @@ class ProfileController extends Controller
     }
     public function showAddress()
     {
+        if (!Session::has('id_pelanggan')) {
+            return redirect()->route('home')->with('error_status', 'You must be logged in to add an address.');
+        }
         $address = AlamatPengiriman::with('pelanggan')
             ->where('id_pelanggan', Session::get('id_pelanggan'))
             ->where('delete_alamat_pengiriman', 'N')
