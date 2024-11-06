@@ -9,14 +9,13 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
     <title>@yield('title')</title>
 
-    {{-- Boxicons --}}
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     {{-- Custom styles --}}
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
-
 
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
@@ -46,52 +45,58 @@
                             <a href="index.html"><img src="{{ asset('assets/images/logo/logo_side.png') }}"
                                     alt="Logo" srcset="" style="height: 50px"></a>
                         </div>
-                        <div class="sidebar-toggler  x">
-                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class='bx bx-x'></i></a>
+                        <div class="sidebar-toggler x">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="fas fa-times"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
-                        <li class="sidebar-item  {{ request()->routeIs('superadmin') ? 'active' : '' }}">
-                            <a href="{{ route('superadmin') }}" class='sidebar-link'>
-                                <i class='bx bxs-dashboard'></i>
+                        <li class="sidebar-item {{ request()->routeIs('superadmin') ? 'active' : '' }}">
+                            <a href="{{ route('superadmin') }}" class="sidebar-link">
+                                <i class="fas fa-grip-horizontal"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class='bx bxs-data'></i>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="fas fa-database"></i>
                                 <span>Master Data</span>
                             </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item  has-sub">
+                            <ul class="submenu">
+                                <li class="submenu-item has-sub">
                                     <a href="#" class="submenu-link">Category</a>
-                                    <ul class="submenu submenu-level-2 ">
-                                        <li class="submenu-item ">
-                                            <a href="ui-multi-level-menu.html" class="submenu-link">Support Center</a>
+                                    <ul class="submenu submenu-level-2">
+                                        <li class="submenu-item">
+                                            <a href="{{ route('support-center-category') }}" class="submenu-link">Support Center</a>
                                         </li>
-                                        <li class="submenu-item ">
+                                        <li class="submenu-item">
                                             <a href="#" class="submenu-link">Mobil</a>
                                         </li>
-                                        <li class="submenu-item ">
+                                        <li class="submenu-item">
                                             <a href="#" class="submenu-link">Product & Spare Parts</a>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
+                        <li class="sidebar-item {{ request()->routeIs('support-center-data') ? 'active' : '' }}">
+                            <a href="{{ route('support-center-data') }}" class="sidebar-link">
+                                <i class="fas fa-circle-question"></i>
+                                <span>Support Center Data</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div id="main" class='layout-navbar navbar-fixed'>
+        <div id="main" class="layout-navbar navbar-fixed">
             <header>
                 <nav class="navbar navbar-expand navbar-light navbar-top">
                     <div class="container-fluid">
                         <a href="#" class="burger-btn d-block">
-                            <i class='bx bx-menu-alt-left fs-3'></i>
+                            <i class="fas fa-bars fs-3"></i>
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -108,8 +113,7 @@
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img
-                                                    src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}">
+                                                <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -124,10 +128,9 @@
                                             @csrf
                                         </form>
                                         <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            <i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
                                         </a>
                                     </li>
-
                                 </ul>
                             </div>
                         </div>
@@ -137,17 +140,13 @@
             <div id="main-content">
                 <div class="page-heading">
                     <section class="section">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">About Vertical Navbar</h4>
-                            </div>
-                            <div class="card-body">
+                        <div class="">
+                            <div class="">
                                 @yield('content')
                             </div>
                         </div>
                     </section>
                 </div>
-
             </div>
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
@@ -204,6 +203,29 @@
             return rupiah;
         }
     </script>
+
+<script>
+    function updateIconPreview() {
+        const iconInput = document.getElementById('icon');
+        const iconPreview = document.getElementById('icon-preview');
+        const iconClass = iconInput.value.trim();
+
+        iconPreview.className = 'fas fa-' + iconClass;
+
+        if (window.getComputedStyle(iconPreview, ':before').content !== 'none') {
+            iconPreview.style.backgroundColor = '#f0f0f0';
+        } else {
+            iconPreview.style.backgroundColor = '#ffcccc';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const iconInput = document.getElementById('icon');
+        iconInput.addEventListener('input', updateIconPreview);
+
+        updateIconPreview();
+    });
+</script>
 </body>
 
 </html>
