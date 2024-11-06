@@ -18,40 +18,83 @@ class SupportCenterController extends Controller
     // Show form to create a new category
     public function createCategory()
     {
-        return view('support-center.create-category');
+        return view('superadmin.masterdata-category.support-center.create');
     }
 
     // Store a new support category
     public function storeCategory(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nama_category' => 'required|string|max:255',
+            'icon' => 'required|string|max:50',
+        ]);
+
+        // Create new category
+        $category = new SupportCategory();
+        $category->nama_category = $request->nama_category;
+        $category->icon = $request->icon;
+        $category->save();
+
+        // Redirect with success message
+        return redirect()->route('support-center-category')->with('success', 'Category added successfully!');
+    }
+
+    public function editCategory($id)
+    {
+        // Retrieve the category by ID
+        $category = SupportCategory::findOrFail($id);
+
+        // Return the edit view with the category data
+        return view('superadmin.masterdata-category.support-center.edit', compact('category'));
+    }
+
+
+    public function updateCategory(Request $request, $id)
+    {
+        // Validate the incoming data
+        $validated = $request->validate([
+            'nama_category' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
         ]);
 
-        SupportCategory::create($request->only('name', 'icon'));
+        // Retrieve the category to update
+        $category = SupportCategory::findOrFail($id);
 
-        return redirect()->route('support-center.index')->with('success', 'Category created successfully.');
+        // Update the category with the new data
+        $category->update([
+            'nama_category' => $validated['nama_category'],
+            'icon' => $validated['icon'],
+        ]);
+
+        // Redirect back with a success message
+        return redirect()->route('support-center-category-edit', $id)->with('success', 'Category updated successfully!');
     }
 
+
     // Show form to create a new detail for a category
-    public function createDetail($categoryId)
+    public function showInfoSuppCenter($categoryId)
     {
         $category = SupportCategory::findOrFail($categoryId);
-        return view('support-center.create-detail', compact('category'));
+        return view('superadmin.support-center.index', compact('category'));
     }
 
     // Store a new support detail
     public function storeDetail(Request $request, $categoryId)
     {
-        $request->validate([
-            'question' => 'required|string',
+        $validatedData = $request->validate([
+            'support_category_id' => 'required|exists:tb_support_categories,id', // Ensure the category exists
+            'question' => 'required|string|max:255',
             'answer' => 'required|string',
         ]);
 
-        $category = SupportCategory::findOrFail($categoryId);
-        $category->details()->create($request->only('question', 'answer'));
+        // Store the validated data into the 'tb_support_info' table
+        $supportInfo = SupportInfo::create([
+            'support_category_id' => $validatedData['support_category_id'],
+            'question' => $validatedData['question'],
+            'answer' => $validatedData['answer'],
+        ]);
 
-        return redirect()->route('support-center.index')->with('success', 'Detail added successfully.');
+        // Optionally, redirect back or to another page with a success message
+        return redirect()->route('supp')->with('success', 'Support information saved successfully!');
     }
 }
