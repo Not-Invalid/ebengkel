@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
 
+
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
 </head>
@@ -32,7 +33,10 @@
         </div>
     </div>
 
-    {{-- Sidebar --}}
+    {{-- JavaScript --}}
+    @yield('script')
+
+    {{-- sidebar --}}
     <div id="app">
         <div id="sidebar">
             <div class="sidebar-wrapper active">
@@ -42,7 +46,7 @@
                             <a href="index.html"><img src="{{ asset('assets/images/logo/logo_side.png') }}"
                                     alt="Logo" srcset="" style="height: 50px"></a>
                         </div>
-                        <div class="sidebar-toggler x">
+                        <div class="sidebar-toggler  x">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class='bx bx-x'></i></a>
                         </div>
                     </div>
@@ -50,61 +54,44 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
-                        <li class="sidebar-item {{ request()->routeIs('superadmin') ? 'active' : '' }}">
-                            <a href="{{ route('superadmin') }}" class="sidebar-link">
-                                <i class="bx bxs-dashboard"></i>
+                        <li class="sidebar-item  {{ request()->routeIs('superadmin') ? 'active' : '' }}">
+                            <a href="{{ route('superadmin') }}" class='sidebar-link'>
+                                <i class='bx bxs-dashboard'></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="sidebar-item has-sub">
-                            <a href="#" class="sidebar-link">
-                                <i class="bx bxs-data"></i>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class='bx bxs-data'></i>
                                 <span>Master Data</span>
                             </a>
-                            <ul class="submenu">
-                                <li class="submenu-item">
-                                    <a href="#"><i class="bx bx-category"></i> Categories</a>
-                                </li>
-                                <li class="submenu-item">
-                                    <a href="#"><i class="bx bx-tag"></i> Brands</a>
-                                </li>
-                                <li class="submenu-item">
-                                    <a href="#"><i class="bx bx-box"></i> Products</a>
-                                </li>
-                                <li class="submenu-item">
-                                    <a href="#"><i class="bx bx-user"></i> Users</a>
+                            <ul class="submenu ">
+                                <li class="submenu-item  has-sub">
+                                    <a href="#" class="submenu-link">Category</a>
+                                    <ul class="submenu submenu-level-2 ">
+                                        <li class="submenu-item ">
+                                            <a href="ui-multi-level-menu.html" class="submenu-link">Support Center</a>
+                                        </li>
+                                        <li class="submenu-item ">
+                                            <a href="#" class="submenu-link">Mobil</a>
+                                        </li>
+                                        <li class="submenu-item ">
+                                            <a href="#" class="submenu-link">Product & Spare Parts</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('support-center-category') }}" class="sidebar-link">
-                                <i class="bx bx-building-house"></i>
-                                <span>Support Center Category</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="settings.html" class="sidebar-link">
-                                <i class="bx bx-cog"></i>
-                                <span>Settings</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('home') }}" class="sidebar-link">
-                                <i class="bx bx-chevron-left"></i>
-                                <span>Back To Home</span>
-                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-
-        <div id="main" class="layout-navbar navbar-fixed">
+        <div id="main" class='layout-navbar navbar-fixed'>
             <header>
                 <nav class="navbar navbar-expand navbar-light navbar-top">
                     <div class="container-fluid">
                         <a href="#" class="burger-btn d-block">
-                            <i class="bx bx-menu-alt-left fs-3"></i>
+                            <i class='bx bx-menu-alt-left fs-3'></i>
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -121,7 +108,8 @@
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}">
+                                                <img
+                                                    src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -132,20 +120,20 @@
                                         <h6 class="dropdown-header">Hello, John!</h6>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
-                                            <i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout
-                                        </a>
-                                        <form action="{{ route('logout-admin') }}" method="POST" style="display: none;" id="logout-form">
+                                        <form id="logout-form" action="{{ route('logout-admin') }}" method="POST" style="display: none;">
                                             @csrf
                                         </form>
+                                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout
+                                        </a>
                                     </li>
+
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </nav>
             </header>
-
             <div id="main-content">
                 <div class="page-heading">
                     <section class="section">
@@ -159,8 +147,8 @@
                         </div>
                     </section>
                 </div>
-            </div>
 
+            </div>
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="d-flex justify-content-center">

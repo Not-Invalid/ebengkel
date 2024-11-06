@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Models\UsedCar;
 use App\Models\FotoMobil;
 use Illuminate\Http\Request;
@@ -60,68 +61,78 @@ class UsedCarController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validate the request data
-    $request->validate([
-        'nama_mobil' => 'required|string|max:255',
-        'merk_mobil' => 'required|string|max:255',
-        'harga_mobil' => 'required|numeric',
-        'plat_nomor_mobil' => 'required|string|max:255',
-        'tahun_mobil' => 'required|integer',
-        'km_mobil' => 'required|integer',
-        'nomor_rangka_mobil' => 'required|string|max:255',
-        'nomor_mesin_mobil' => 'required|string|max:255',
-        'kapasitas_mesin_mobil' => 'required|string|max:255',
-        'bahan_bakar_mobil' => 'required|string',
-        'jenis_transmisi_mobil' => 'required|string|max:255',
-        'bulan_pajak_mobil' => 'required|date',
-        'tahun_pajak_mobil' => 'required|integer',
-        'terakhir_pajak_mobil' => 'required|date',
-        'keterangan_mobil' => 'nullable|string',
-        'lokasi_mobil' => 'nullable|string',
-        'file_foto_mobil_1' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'file_foto_mobil_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'file_foto_mobil_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'file_foto_mobil_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'file_foto_mobil_5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
+        // Validate the request data
+        $request->validate([
+            'nama_mobil' => 'required|string|max:255',
+            'merk_mobil' => 'required|string|max:255',
+            'harga_mobil' => 'required|numeric',
+            'plat_nomor_mobil' => 'required|string|max:255',
+            'tahun_mobil' => 'required|integer',
+            'km_mobil' => 'required|integer',
+            'nomor_rangka_mobil' => 'required|string|max:255',
+            'nomor_mesin_mobil' => 'required|string|max:255',
+            'kapasitas_mesin_mobil' => 'required|string|max:255',
+            'bahan_bakar_mobil' => 'required|string',
+            'jenis_transmisi_mobil' => 'required|string|max:255',
+            'bulan_pajak_mobil' => 'required|date',
+            'tahun_pajak_mobil' => 'required|integer',
+            'terakhir_pajak_mobil' => 'required|date',
+            'keterangan_mobil' => 'nullable|string',
+            'lokasi_mobil' => 'nullable|string',
+            'file_foto_mobil_1' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'file_foto_mobil_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'file_foto_mobil_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'file_foto_mobil_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'file_foto_mobil_5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Create the used car entry
-    $usedCar = UsedCar::create($request->except('file_foto_mobil_1', 'file_foto_mobil_2', 'file_foto_mobil_3', 'file_foto_mobil_4', 'file_foto_mobil_5'));
+        // Retrieve id_pelanggan from session
+        $customerId = Session::get('id_pelanggan');
 
-    // Prepare to store the photos
-    $fotoMobilData = [
-        'id_mobil' => $usedCar->id_mobil, // Ensure this references the correct field
-        'id_pelanggan' => Auth::id(), // Get the currently authenticated user's ID
-    ];
-
-    // Handle photo uploads
-    for ($i = 1; $i <= 5; $i++) {
-        $fileKey = 'file_foto_mobil_' . $i;
-        if ($request->hasFile($fileKey)) {
-            $file = $request->file($fileKey);
-            $fileName = time() . '_' . $file->getClientOriginalName();
-
-            // Move the uploaded file to the public/fotomobil directory
-            $file->move(public_path('fotomobil'), $fileName);
-
-            // Store the file path in the data array
-            $fotoMobilData['file_foto_mobil_' . $i] = 'fotomobil/' . $fileName;
+        // Check if id_pelanggan is present in the session
+        if (!$customerId) {
+            return redirect()->back()->with('error', 'User ID is missing. Please log in again.');
         }
-    }
 
-    // Check if any photos are set before attempting to save
-    if (!empty($fotoMobilData['file_foto_mobil_1']) || !empty($fotoMobilData['file_foto_mobil_2']) ||
-        !empty($fotoMobilData['file_foto_mobil_3']) || !empty($fotoMobilData['file_foto_mobil_4']) ||
-        !empty($fotoMobilData['file_foto_mobil_5'])) {
+        // Prepare data for UsedCar model
+        $data = $request->except('file_foto_mobil_1', 'file_foto_mobil_2', 'file_foto_mobil_3', 'file_foto_mobil_4', 'file_foto_mobil_5');
+        $data['id_pelanggan'] = $customerId;
 
-        // Save the photos data
+        // Create new UsedCar entry
+        $usedCar = UsedCar::create($data);
+
+        // Prepare data for FotoMobil model with a default empty string for each file field
+        $fotoMobilData = [
+            'id_mobil' => $usedCar->id_mobil,
+            'id_pelanggan' => $customerId,
+            'file_foto_mobil_1' => '',
+            'file_foto_mobil_2' => '',
+            'file_foto_mobil_3' => '',
+            'file_foto_mobil_4' => '',
+            'file_foto_mobil_5' => ''
+        ];
+
+        // Loop through uploaded files and save file paths
+        for ($i = 1; $i <= 5; $i++) {
+            $fileKey = 'file_foto_mobil_' . $i;
+            if ($request->hasFile($fileKey)) {
+                $file = $request->file($fileKey);
+                $fileName = time() . '_' . $file->getClientOriginalName();
+
+                // Move file to fotomobil directory
+                $file->move(public_path('fotomobil'), $fileName);
+
+                // Store file path in fotoMobilData
+                $fotoMobilData[$fileKey] = 'fotomobil/' . $fileName;
+            }
+        }
+
+        // Save FotoMobil entry
         FotoMobil::create($fotoMobilData);
-    } else {
-        return redirect()->back()->with('error', 'No photos uploaded.');
+
+        return redirect()->route('profile-used-car')->with('success', 'Used car added successfully!');
     }
 
-    return redirect()->route('profile-used-car')->with('success', 'Used car added successfully!');
-}
 
 }

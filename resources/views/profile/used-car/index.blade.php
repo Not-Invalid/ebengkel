@@ -34,10 +34,10 @@
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <span class="badge">{{ $mobil->status_mobil }}</span>
-                                    <h5 class="card-title mt-3">{{ $mobil->pelanggan->nama_pelanggan ?? 'No name' }}</h5>
-                                    <h6 class="card-title mt-3">{{ $mobil->pelanggan->telp_pelanggan ?? 'No phone number' }}</h6>
+                                    <h5 class="card-title mt-3">{{ $mobil->nama_mobil ?? 'No name' }}</h5>
+                                    <h6 class="card-title mt-3">{{ $mobil->harga_mobil ?? 'No phone number' }}</h6>
                                     <p class="card-text text-secondary" style="font-size: 14px">
-                                        {{ $mobil->nama_mobil ?? 'No car name' }}
+                                        {{ $mobil->merk_mobil ?? 'No car name' }}
                                     </p>
                                     <a href="{{-- route('mobil.edit', $mobil->id_mobil) --}}" class="btn btn-custom-3">Edit</a>
                                 </div>
