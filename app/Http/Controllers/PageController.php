@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SupportCategory;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,8 @@ class PageController extends Controller
 
     public function supportCenter()
     {
-        return view('pages.support_center');
+        $categories = SupportCategory::all();
+        return view('pages.support_center',  compact('categories'));
     }
 
     public function superAdmin()
