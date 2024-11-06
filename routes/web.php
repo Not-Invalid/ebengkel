@@ -57,6 +57,11 @@ Route::get('detail', [PageController::class, 'detail'])->name('detail');
 Route::get('career', [PageController::class, 'career'])->name('career');
 Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
+Route::get('support-center-category/create', [SupportCenterController::class, 'createCategory'])->name('support-center-category-create');
+Route::post('support-center-category/store', [SupportCenterController::class, 'storeCategory'])->name('support-center-category-send');
+Route::get('support-center-category/edit/{id}', [SupportCenterController::class, 'editCategory'])->name('support-center-category-edit');
+Route::post('support-center-category/update{id}', [SupportCenterController::class, 'updateCategory'])->name('support-center-category-update');
+Route::get('support-center-data', [SupportCenterController::class, 'showInfoSuppCenter'])->name('support-center-data');
 
 // Profile route
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
