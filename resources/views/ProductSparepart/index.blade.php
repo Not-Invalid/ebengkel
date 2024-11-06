@@ -58,7 +58,7 @@
                     <div class="row ">
                         <!-- Item 1 - Product -->
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="product">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
+                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
                                 <img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/18/5c98527e-2296-4cbb-9595-065cf85f3d98.jpg"
                                     class="card-img-top" alt="Event Image">
                                 <div class="card-body text-start">
@@ -76,7 +76,7 @@
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="product">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
+                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM7_mrU1UgeKqkdz_if2Zz4doIBEgY8kRmcA&s"
                                     class="card-img-top" alt="Event Image">
                                 <div class="card-body text-start">
@@ -96,7 +96,7 @@
 
                         <!-- Item 2 - Sparepart -->
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="sparepart">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
+                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
                                 <img src="https://thumbs.dreamstime.com/b/windshield-wiper-blade-spare-part-windshield-wiper-blade-spare-part-isolated-white-background-car-detail-repair-engine-gear-163373523.jpg?w=1600"
                                     class="card-img-top" alt="Event Image">
                                 <div class="card-body text-start">
@@ -114,7 +114,7 @@
                             </a>
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="sparepart">
-                            <a href="{{ route('usedcar.detail') }}" class="card-event p-3">
+                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg8MuQLbZ6gme1vFtLnc-7LgPGOYSRgLT71w&s"
                                     class="card-img-top" alt="Event Image">
                                 <div class="card-body text-start">

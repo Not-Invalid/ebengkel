@@ -1,0 +1,24 @@
+:root {
+    --main-dark: #121212;
+    --main-blue: #007bff;
+    --main-grey-light: #9f9f9f;
+    --main-blue-dark: #0067f4;
+    --main-grey: #6c6c6c;
+    --main-red: #dc3545;
+    --main-light-grey: #f4f6f7;
+    --main-dark-blue: #2b354f;
+    --main-cyan: #17a2b8;
+    --main-white: #ffffff;
+    --main-light-blue: #3a6fb0;
+    --main-black: #000000;
+    --main-green: #28a745;
+    --bg-transparent: rgba(0, 0, 0, 0);
+}
+.bullet-list {
+    list-style-type: disc; /* Tampilkan titik bulat */
+    padding-left: 30px; /* Beri jarak dari sisi kiri */
+}
+
+.bullet-list li {
+    margin-bottom: 5px; /* Tambahkan jarak antar item */
+}

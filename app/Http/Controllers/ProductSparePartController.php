@@ -10,4 +10,7 @@ class ProductSparePartController extends Controller
     public function index() {
         return view('ProductSparepart.index');
     }
+    public function detail() {
+        return view('ProductSparepart.detail-ProductSparePart');
+    }
 }
