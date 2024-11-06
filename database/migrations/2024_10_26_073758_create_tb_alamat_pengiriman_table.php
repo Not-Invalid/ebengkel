@@ -16,11 +16,12 @@ class CreateTbAlamatPengirimanTable extends Migration
         Schema::create('tb_alamat_pengiriman', function (Blueprint $table) {
             $table->integer('id_alamat_pengiriman')->primary()->autoIncrement();
             $table->integer('id_pelanggan')->nullable();
-            $table->text('nama_alamat_pengiriman')->nullable();
+            $table->text('nama_penerima')->nullable();
+            $table->string('telp_penerima')->nullable();
+            $table->text('lokasi_alamat_pengiriman')->nullable();
             $table->string('kodepos_alamat_pengiriman')->nullable();
             $table->string('lat_alamat_pengiriman')->nullable();
             $table->string('long_alamat_pengiriman')->nullable();
-            $table->text('lokasi_alamat_pengiriman')->nullable();
             $table->string('status_alamat_pengiriman')->nullable();
             $table->string('kota')->nullable();
             $table->string('provinsi')->nullable();

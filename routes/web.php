@@ -4,11 +4,11 @@ use App\Http\Controllers\AuthController as PelangganAuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SuperAdmin\SupportCenterController;
-use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
-use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\ProductSparePartController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
+use App\Http\Controllers\SuperAdmin\SupportCenterController;
+use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,7 +56,6 @@ Route::get('detail', [PageController::class, 'detail'])->name('detail');
 Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
 
-
 // Profile route
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 Route::get('/profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
@@ -67,12 +66,13 @@ Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword
 Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
 Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
 Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
-
+Route::get('/profile/address/edit/{id_alamat_pengiriman}', [ProfileController::class, 'editAddress'])->name('address.edit');
+Route::post('/profile/address/update/{id_alamat_pengiriman}', [ProfileController::class, 'updateAddress'])->name('address.update');
+Route::delete('/profile/address/delete/{id_alamat_pengiriman}', [ProfileController::class, 'delete'])->name('address.delete');
 
 // Event route
 Route::get('event', [EventController::class, 'show'])->name('event.show');
 Route::get('event/detail', [EventController::class, 'detail'])->name('event.detail');
-
 
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');

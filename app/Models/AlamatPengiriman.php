@@ -17,11 +17,12 @@ class AlamatPengiriman extends Model
 
     protected $fillable = [
         'id_pelanggan',
-        'nama_alamat_pengiriman',
+        'nama_penerima',
+        'telp_penerima',
+        'lokasi_alamat_pengiriman',
         'kodepos_alamat_pengiriman',
         'lat_alamat_pengiriman',
         'long_alamat_pengiriman',
-        'lokasi_alamat_pengiriman',
         'status_alamat_pengiriman',
         'kota',
         'provinsi',

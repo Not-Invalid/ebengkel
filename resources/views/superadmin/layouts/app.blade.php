@@ -9,20 +9,16 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
     <title>@yield('title')</title>
 
-    {{-- Bootstrap CSS --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-
     {{-- Boxicons --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     {{-- Custom styles --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/superadmin/layouts.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
 
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
-    @stack('css')
 </head>
 
 <body class="@yield('body-class')">
@@ -36,112 +32,150 @@
         </div>
     </div>
 
-    {{-- JavaScript --}}
-    @yield('script')
-
-    {{-- sidebar --}}
-    <div class="custom">
-        <div class="overlay"></div>
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <span class="menu-text">eBengkelku</span>
-                </div>
-                <button class="toggle-btn">
-                    <i class="bx bx-menu"></i>
-                </button>
-            </div>
-            <a href="{{ route('superadmin') }}"
-                class="menu-item {{ request()->routeIs('superadmin') ? 'active' : '' }}">
-                <i class="bx bxs-dashboard"></i>
-                <span class="menu-text">Dashboard</span>
-            </a>
-            <a href="#" class="menu-item d-flex align-items-center" data-bs-toggle="collapse" data-bs-target="#masterDataDropdown" aria-expanded="false" aria-controls="masterDataDropdown" onclick="toggleChevron(this)">
-                <i class='bx bxs-data'></i>
-                <span class="menu-text">Master Data</span>
-                <i class='bx bx-chevron-right chevron-icon'></i>
-            </a>
-
-            <div class="collapse" id="masterDataDropdown">
-                <ul class="submenu list-unstyled">
-                    <li>
-                        <a href="" class="menu-item">
-                            <i class='bx bx-category'></i> Categories
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="menu-item">
-                            <i class='bx bx-tag'></i> Brands
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="menu-item">
-                            <i class='bx bx-box'></i> Products
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="menu-item">
-                            <i class='bx bx-user'></i> Users
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <a href="messages.html" class="menu-item">
-                <i class='bx bx-building-house'></i>
-                <span class="menu-text">Support Center</span>
-            </a>
-            <a href="{{ route('support-center-category') }}" class="menu-item">
-                <i class='bx bx-building-house'></i>
-                <span class="menu-text">Support Center Category</span>
-            </a>
-            <a href="settings.html" class="menu-item">
-                <i class="bx bx-cog"></i>
-                <span class="menu-text">Settings</span>
-            </a>
-            <a href="{{ route('home') }}" class="menu-item">
-                <i class="bx bx-chevron-left"></i>
-                <span class="menu-text">Back To Home</span>
-            </a>
-        </div>
-
-
-        <main class="content">
-            <nav class="navbar shadow">
-                <button class="mobile-toggle">
-                    <i class="bx bx-menu"></i>
-                </button>
-                <div class="profile-dropdown">
-                    <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"alt="Profile Picture"
-                        class="profile-pic" onclick="toggleDropdown()" />
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
-                            <div class="d-flex align-items-center">
-                                <i class='bx bx-log-out mx-2'></i> Logout
-                            </div>
-                            <form action="{{ route('logout-admin') }}" method="POST" style="display: inline;"
-                                id="logout-form">
-                                @csrf
-
-                            </form>
-                        </a>
+    {{-- Sidebar --}}
+    <div id="app">
+        <div id="sidebar">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header position-relative">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="logo">
+                            <a href="index.html"><img src="{{ asset('assets/images/logo/logo_side.png') }}"
+                                    alt="Logo" srcset="" style="height: 50px"></a>
+                        </div>
+                        <div class="sidebar-toggler x">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class='bx bx-x'></i></a>
+                        </div>
                     </div>
                 </div>
-            </nav>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Menu</li>
+                        <li class="sidebar-item {{ request()->routeIs('superadmin') ? 'active' : '' }}">
+                            <a href="{{ route('superadmin') }}" class="sidebar-link">
+                                <i class="bx bxs-dashboard"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="bx bxs-data"></i>
+                                <span>Master Data</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="#"><i class="bx bx-category"></i> Categories</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="#"><i class="bx bx-tag"></i> Brands</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="#"><i class="bx bx-box"></i> Products</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="#"><i class="bx bx-user"></i> Users</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('support-center-category') }}" class="sidebar-link">
+                                <i class="bx bx-building-house"></i>
+                                <span>Support Center Category</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="settings.html" class="sidebar-link">
+                                <i class="bx bx-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('home') }}" class="sidebar-link">
+                                <i class="bx bx-chevron-left"></i>
+                                <span>Back To Home</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-            <div class="main">
-                @yield('content')
+        <div id="main" class="layout-navbar navbar-fixed">
+            <header>
+                <nav class="navbar navbar-expand navbar-light navbar-top">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bx bx-menu-alt-left fs-3"></i>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <div class="dropdown ms-auto">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">John Ducky</h6>
+                                            <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
+                                    style="min-width: 11rem;">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, John!</h6>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                                            <i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout
+                                        </a>
+                                        <form action="{{ route('logout-admin') }}" method="POST" style="display: none;" id="logout-form">
+                                            @csrf
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <div id="main-content">
+                <div class="page-heading">
+                    <section class="section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">About Vertical Navbar</h4>
+                            </div>
+                            <div class="card-body">
+                                @yield('content')
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
 
-        </main>
+            <footer>
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="d-flex justify-content-center">
+                        Copyright &copy; {{ now()->year }} eBengkelku - Service, Spare Part & Smart Tools
+                        Powered By <a href="https://cnplus.id/" target="_blank" class="text-success">CNPLUS</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
 
-
-
-
     {{-- Bootstrap JS --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('template/assets/static/js/components/dark.js') }}"></script>
+    <script src="{{ asset('template/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('template/assets/compiled/js/app.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 
@@ -181,83 +215,6 @@
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
             return rupiah;
         }
-    </script>
-
-    <script>
-        function toggleChevron(element) {
-            const chevron = element.querySelector('.chevron-icon');
-            chevron.classList.toggle('rotate');
-        }
-
-    </script>
-
-    {{-- sidebar script --}}
-    <script>
-        const toggleBtn = document.querySelector(".toggle-btn");
-        const mobileToggle = document.querySelector(".mobile-toggle");
-        const sidebar = document.querySelector(".sidebar");
-        const container = document.querySelector(".custom");
-        const overlay = document.querySelector(".overlay");
-
-        // Desktop toggle
-        toggleBtn.addEventListener("click", () => {
-            container.classList.toggle("collapsed");
-        });
-
-        // Mobile toggle
-        mobileToggle.addEventListener("click", () => {
-            sidebar.classList.add("active");
-            overlay.style.display = "block";
-        });
-
-        // Close sidebar when clicking overlay
-        overlay.addEventListener("click", () => {
-            sidebar.classList.remove("active");
-            overlay.style.display = "none";
-        });
-
-        // Add click event to menu items
-        const menuItems = document.querySelectorAll(".menu-item");
-        menuItems.forEach((item) => {
-            item.addEventListener("click", () => {
-                menuItems.forEach((i) => i.classList.remove("active"));
-                item.classList.add("active");
-
-                // Close sidebar on mobile when menu item is clicked
-                if (window.innerWidth < 1024) {
-                    sidebar.classList.remove("active");
-                    overlay.style.display = "none";
-                }
-            });
-        });
-
-        // Handle resize events
-        window.addEventListener("resize", () => {
-            if (window.innerWidth >= 1024) {
-                overlay.style.display = "none";
-                sidebar.classList.remove("active");
-            }
-        });
-
-        function toggleDropdown() {
-            const dropdownMenu = document.getElementById("dropdownMenu");
-            dropdownMenu.style.display =
-                dropdownMenu.style.display === "block" ? "none" : "block";
-        }
-
-        // Close dropdown when clicking outside
-        window.onclick = function(event) {
-            if (!event.target.matches(".profile-pic")) {
-                const dropdowns =
-                    document.getElementsByClassName("dropdown-menu");
-                for (let i = 0; i < dropdowns.length; i++) {
-                    const openDropdown = dropdowns[i];
-                    if (openDropdown.style.display === "block") {
-                        openDropdown.style.display = "none";
-                    }
-                }
-            }
-        };
     </script>
 </body>
 
