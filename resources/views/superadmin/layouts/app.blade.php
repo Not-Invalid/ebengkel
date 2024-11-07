@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/assets/extensions/flatpickr/flatpickr.min.css') }}">
+
 
      {{-- Toastr CSS --}}
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -75,7 +77,8 @@
                                     </a>
                                     <ul class="submenu submenu-level-2">
                                         <li class="submenu-item">
-                                            <a href="{{ route('support-center-category') }}" class="submenu-link">Support Center</a>
+                                            <a href="{{ route('support-center-category') }}"
+                                                class="submenu-link">Support Center</a>
                                         </li>
                                         <li class="submenu-item">
                                             <a href="{{ route('product-sparepart-category') }}" class="submenu-link">Product & Spare Parts</a>
@@ -102,6 +105,12 @@
                             <a href="{{ route('support-center-info') }}" class="sidebar-link">
                                 <i class="fas fa-circle-question"></i>
                                 <span>Support Center</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('event.admin') ? 'active' : '' }}">
+                            <a href="{{ route('event.admin') }}" class="sidebar-link">
+                                <i class="fas fa-circle-question"></i>
+                                <span>Event</span>
                             </a>
                         </li>
                     </ul>
@@ -141,10 +150,12 @@
                                         <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}!</h6>
                                     </li>
                                     <li>
-                                        <form id="logout-form" action="{{ route('logout-admin') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ route('logout-admin') }}" method="POST"
+                                            style="display: none;">
                                             @csrf
                                         </form>
-                                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <a class="dropdown-item" href="#"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             <i class="fas fa-sign-out-alt me-2"></i> Logout
                                         </a>
                                     </li>
@@ -180,6 +191,8 @@
     <script src="{{ asset('template/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('template/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('template/assets/compiled/js/app.js') }}"></script>
+    <script src="{{ asset('template/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('template/assets/static/js/pages/date-picker.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 
@@ -247,28 +260,28 @@
         }
     </script>
 
-<script>
-    function updateIconPreview() {
-        const iconInput = document.getElementById('icon');
-        const iconPreview = document.getElementById('icon-preview');
-        const iconClass = iconInput.value.trim();
+    <script>
+        function updateIconPreview() {
+            const iconInput = document.getElementById('icon');
+            const iconPreview = document.getElementById('icon-preview');
+            const iconClass = iconInput.value.trim();
 
-        iconPreview.className = 'fas fa-' + iconClass;
+            iconPreview.className = 'fas fa-' + iconClass;
 
-        if (window.getComputedStyle(iconPreview, ':before').content !== 'none') {
-            iconPreview.style.backgroundColor = '#f0f0f0';
-        } else {
-            iconPreview.style.backgroundColor = '#ffcccc';
+            if (window.getComputedStyle(iconPreview, ':before').content !== 'none') {
+                iconPreview.style.backgroundColor = '#f0f0f0';
+            } else {
+                iconPreview.style.backgroundColor = '#ffcccc';
+            }
         }
-    }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const iconInput = document.getElementById('icon');
-        iconInput.addEventListener('input', updateIconPreview);
+        document.addEventListener('DOMContentLoaded', function() {
+            const iconInput = document.getElementById('icon');
+            iconInput.addEventListener('input', updateIconPreview);
 
-        updateIconPreview();
-    });
-</script>
+            updateIconPreview();
+        });
+    </script>
 </body>
 
 </html>

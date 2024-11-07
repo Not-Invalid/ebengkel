@@ -15,7 +15,7 @@
     --bg-transparent: rgba(0, 0, 0, 0);
 }
 
-/*=========================== Custom Button css ===========================*/
+/* /=========================== Custom Button css ===========================/ */
 .btn.btn-custom {
     padding: 0.7rem 1.2rem !important;
     background-color: var(--main-blue) !important;
@@ -99,7 +99,7 @@
     font-weight: 500 !important;
 }
 
-/*=========================== About css ===========================*/
+/* /=========================== About css ===========================/ */
 .text-p {
     color: var(--main-blue-dark);
 }
@@ -112,7 +112,7 @@
     background-size: cover;
 }
 
-/*=========================== Custom Input css ===========================*/
+/* /=========================== Custom Input css ===========================/ */
 .did-floating-label-content {
     position: relative;
     margin-bottom: 20px;
@@ -215,7 +215,7 @@ select.did-floating-select::-ms-expand {
     }
 }
 
-/*=========================== FAQs css ===========================*/
+/* /=========================== FAQs css ===========================/ */
 .accordion-button {
     background-color: #f8f9fa;
     color: var(--main-dark-blue);
@@ -274,7 +274,7 @@ h2 {
     color: var(--main-dark);
 }
 
-/*=========================== Support Center css ===========================*/
+/* /=========================== Support Center css ===========================/ */
 .hover-lift-light {
     transition: box-shadow 0.25s ease, transform 0.25s ease, color 0.25s ease,
         background-color 0.15s ease-in;
@@ -417,7 +417,7 @@ h2 {
     border-radius: 0.25rem;
 }
 
-/*=========================== Terms & Condition css ===========================*/
+/* /=========================== Terms & Condition css ===========================/ */
 .welcome-text {
     font-weight: 500;
     text-align: justify;
@@ -445,8 +445,8 @@ h2 {
     transform: translate(-50%, -50%);
 }
 
-/*=========================== SC Category css ===========================*/
-.icon-support-center{
+/* /=========================== SC Category css ===========================/ */
+.icon-support-center {
     font-size: 40px;
     color: var(--main-blue-dark);
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
+use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
 use App\Http\Controllers\UsedCarController;
@@ -37,6 +38,9 @@ Route::prefix('superadmin')->group(function () {
     Route::get('login', [SuperAdminAuthController::class, 'showLogin'])->name('login-admin');
     Route::post('login', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
     Route::post('logout/admin', [SuperAdminAuthController::class, 'logout'])->name('logout-admin');
+    Route::get('event/admin', [SuperAdminEventController::class, 'index'])->name('event.admin');
+    Route::get('event-create/admin', [SuperAdminEventController::class, 'create'])->name('event-create.admin');
+    Route::post('event-store/admin', [SuperAdminEventController::class, 'store'])->name('event-store.admin');
 });
 
 // UsedCar
