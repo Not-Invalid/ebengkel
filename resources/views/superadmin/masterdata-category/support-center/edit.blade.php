@@ -5,7 +5,6 @@
 @stop
 
 @push('css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     #icon-preview {
         display: inline-block;
@@ -24,11 +23,6 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <h4>Edit Category</h4>
-
-        <!-- Check for any success messages -->
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
 
         <form class="py-4" action="{{ route('support-center-category-update', $category->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -54,21 +48,24 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-custom-icon mt-3">
-                <i class='fas fa-floppy-disk fs-6'></i> Simpan
-            </button>
+            <div class="mt-3 d-flex gap-2">
+                <a href="{{ route('support-center-category') }}" class="btn btn-cancel ms-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-custom-icon">
+                    <i class='fas fa-floppy-disk fs-6'></i> Save
+                </button>
+            </div>
         </form>
     </div>
 @endsection
 
 @push('js')
 <script>
-    // Function to update the icon preview
     function updateIconPreview() {
-        var iconClass = document.getElementById('icon').value;  // Get the input value
-        var iconPreview = document.getElementById('icon-preview');  // Get the icon preview element
+        var iconClass = document.getElementById('icon').value;
+        var iconPreview = document.getElementById('icon-preview');
 
-        // Dynamically update the class of the icon preview element by prepending "fas fa-" to the input value
         iconPreview.className = "fas fa-" + iconClass;
     }
 </script>
