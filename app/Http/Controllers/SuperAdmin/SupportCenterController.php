@@ -74,9 +74,11 @@ class SupportCenterController extends Controller
     // Show form to create a new detail for a category
     public function showInfoSuppCenter($categoryId)
     {
-        $category = SupportCategory::findOrFail($categoryId);
-        return view('superadmin.support-center.index', compact('category'));
+        $supportInfo = SupportInfo::with('category')->orderBy('id', 'DESC')->get();
+
+        return view('superadmin.support-center.index', compact('supportInfo'));
     }
+
 
     // Store a new support detail
     public function storeDetail(Request $request, $categoryId)

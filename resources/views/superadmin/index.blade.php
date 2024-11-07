@@ -26,9 +26,9 @@
     <div class="d-flex justify-content-center flex-wrap gap-4 mt-4">
         <!-- Box 1 -->
         <div class="bg-white shadow rounded-3 p-4 d-flex align-items-center gap-3">
-            <div class="bg-light rounded-circle d-flex justify-content-center align-items-center"
+            <div class="bg-emphasis shadow-lg rounded-circle d-flex justify-content-center align-items-center"
                 style="width: 64px; height: 64px;">
-                <i class="bx bx-wrench text-primary fs-2"></i>
+                <i class="fas fa-wrench text-primary fs-2"></i>
             </div>
             <div>
                 <div class="text-secondary">Bengkel Terdaftar</div>
@@ -38,9 +38,9 @@
 
         <!-- Box 2 -->
         <div class="bg-white shadow rounded-3 p-4 d-flex align-items-center gap-3">
-            <div class="bg-light rounded-circle d-flex justify-content-center align-items-center"
+            <div class="bg-emphasis shadow-lg rounded-circle d-flex justify-content-center align-items-center"
                 style="width: 64px; height: 64px;">
-                <i class="bx bx-user text-primary fs-2"></i>
+                <i class="fas fa-user text-primary fs-2"></i>
             </div>
             <div>
                 <div class="text-secondary">User Terdaftar</div>

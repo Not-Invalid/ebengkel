@@ -12,7 +12,7 @@ class SupportCategory extends Model
     protected $table = 'tb_support_categories';
     protected $fillable = ['nama_category', 'icon'];
 
-    public function details()
+    public function info()
     {
         return $this->hasMany(SupportInfo::class);
     }

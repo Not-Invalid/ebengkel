@@ -84,7 +84,7 @@
                         <li class="sidebar-item {{ request()->routeIs('support-center-data') ? 'active' : '' }}">
                             <a href="{{ route('support-center-data') }}" class="sidebar-link">
                                 <i class="fas fa-circle-question"></i>
-                                <span>Support Center Data</span>
+                                <span>Support Center</span>
                             </a>
                         </li>
                     </ul>
