@@ -71,6 +71,7 @@ Route::get('/profile/address/create', [ProfileController::class, 'addAddress'])-
 Route::post('/profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
 Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
 Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
+Route::get('profile/workshop', [ProfileController::class, 'showWorkshop'])->name('profile.workshop');
 Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
 Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
 Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
@@ -85,6 +86,10 @@ Route::get('event/detail', [EventController::class, 'detail'])->name('event.deta
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
 Route::get('workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
-
+Route::get('/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
+Route::post('/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
+Route::get('/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
+Route::put('/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
+Route::delete('/delete/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
 // POS
 Route::get('pos', [PosHomeController::class, 'index'])->name('home.pos');
