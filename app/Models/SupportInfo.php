@@ -14,7 +14,8 @@ class SupportInfo extends Model
 
     public function category()
     {
-        return $this->belongsTo(SupportCategory::class);
+        return $this->belongsTo(SupportCategory::class, 'support_category_id');
     }
+
 }
 
