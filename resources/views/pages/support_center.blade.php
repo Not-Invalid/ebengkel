@@ -18,7 +18,7 @@
 
         @forelse ($categories as $category)
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                <a href="#" class="card justify-content-center align-items-center shadow text-decoration-none border-1 hover-lift-light py-4 category">
+                <a href="{{ route('support-center.detail', ['category' => $category->id]) }}" class="card justify-content-center align-items-center shadow text-decoration-none border-1 hover-lift-light py-4 category">
                     <span class="icon-circle icon-circle-lg bg-pastel-primary">
                         <i class="fas fa-{{ $category->icon }} fs-2"></i>
                     </span>
