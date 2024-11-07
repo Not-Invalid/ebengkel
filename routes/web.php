@@ -4,11 +4,11 @@ use App\Http\Controllers\AuthController as PelangganAuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
-use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
@@ -69,14 +69,20 @@ Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->nam
 Route::get('/profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
 Route::get('/profile/address/create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
 Route::post('/profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
-Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
-Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
-Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
-Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
-Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
 Route::get('/profile/address/edit/{id_alamat_pengiriman}', [ProfileController::class, 'editAddress'])->name('address.edit');
 Route::post('/profile/address/update/{id_alamat_pengiriman}', [ProfileController::class, 'updateAddress'])->name('address.update');
 Route::delete('/profile/address/delete/{id_alamat_pengiriman}', [ProfileController::class, 'delete'])->name('address.delete');
+Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
+Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
+Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
+Route::get('profile/workshop', [WorkshopController::class, 'showWorkshop'])->name('profile.workshop');
+Route::get('profile/workshop/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
+Route::post('profile/workshop/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
+Route::get('profile/workshop/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
+Route::put('profile/workshop/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
+Route::delete('profile/workshop/destroy/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
+Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
+Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
 
 // Event route
 Route::get('event', [EventController::class, 'show'])->name('event.show');
