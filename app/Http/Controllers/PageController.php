@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SupportCategory;
+use App\Models\SupportInfo;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
@@ -44,9 +45,12 @@ class PageController extends Controller
         return view('superadmin.index');
     }
 
-    public function detail()
+    public function detail($categoryId)
     {
-        return view('pages.detail');
+        $supportInfo = SupportCategory::with('questions')
+                                ->findOrFail($categoryId);
+
+        return view('pages.detail', compact('supportInfo'));
     }
     public function career(){
         return view('pages.career');
