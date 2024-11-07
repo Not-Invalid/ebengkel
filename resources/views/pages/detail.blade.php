@@ -24,63 +24,25 @@
   <div class="container py-2">
     <div class="row justify-content-center">
       <div class="col-md-7">
-        <h3 class="mb-4 text-center">Panduan dan Informasi tentang eBengkelku</h3>
+        <h3 class="mb-4 text-center">Panduan dan Informasi tentang {{ $supportInfo->nama_category }}</h3>
         <div class="accordion" id="Questions-accordion">
-          <div class="accordion-item  mb-1">
-            <h2 class="accordion-header" id="Questions-headingOne">
-              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseOne" data-bs-toggle="collapse" type="button">
-                <i class="bx bx-chevron-down me-2 fs-4"></i>
-                Apa itu eBengkelku?
-              </button>
-            </h2>
-            <div id="Questions-collapseOne" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingOne">
-              <div class="accordion-body">
-                eBengkelku adalah platform digital yang dirancang untuk membantu pemilik bengkel otomotif dalam mengelola operasional bisnis mereka. Dengan fitur-fitur canggih seperti manajemen data kendaraan pelanggan, marketplace untuk mobil bekas dan suku cadang, serta sistem POS, eBengkelku memudahkan pengelolaan bengkel dari mana saja.
+          @foreach($supportInfo->questions as $index => $question)
+            <div class="accordion-item  mb-1">
+              <h2 class="accordion-header" id="Questions-heading{{ $index }}">
+                <button class="accordion-button collapsed" data-bs-target="#Questions-collapse{{ $index }}" data-bs-toggle="collapse" type="button">
+                  <i class="bx bx-chevron-down me-2 fs-4"></i>
+                  {{ $question->question }}
+                </button>
+              </h2>
+              <div id="Questions-collapse{{ $index }}" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-heading{{ $index }}">
+                <div class="accordion-body">
+                  {{ $question->answer }}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="accordion-item  mb-1">
-            <h2 class="accordion-header" id="Questions-headingTwo">
-              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseTwo" data-bs-toggle="collapse" type="button">
-                <i class="bx bx-chevron-down me-2 fs-4"></i>
-                Fitur apa saja yang ditawarkan oleh eBengkelku?
-              </button>
-            </h2>
-            <div id="Questions-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingTwo">
-              <div class="accordion-body">
-                eBengkelku menawarkan berbagai fitur unggulan, termasuk manajemen data kendaraan dan riwayat servis, marketplace untuk mobil bekas dan suku cadang, direktori workshop untuk menemukan bengkel dengan berbagai keahlian, sistem Point of Sale (POS) untuk memudahkan transaksi, serta fitur Event untuk mempromosikan acara otomotif.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item mb-1">
-            <h2 class="accordion-header" id="Questions-headingThree">
-              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseThree" data-bs-toggle="collapse" type="button">
-                <i class="bx bx-chevron-down me-2 fs-4"></i>
-                Bagaimana cara eBengkelku membantu pengelolaan bengkel?
-              </button>
-            </h2>
-            <div id="Questions-collapseThree" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingThree">
-              <div class="accordion-body">
-                eBengkelku membantu pengelolaan bengkel dengan menyediakan alat untuk menyederhanakan administrasi, seperti mengelola data pelanggan dan jadwal servis kendaraan. Platform ini juga memperlancar proses penjualan dengan POS dan memudahkan pencarian suku cadang atau mobil bekas yang dibutuhkan oleh pelanggan.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item mb-1">
-            <h2 class="accordion-header" id="Questions-headingFour">
-              <button class="accordion-button collapsed" data-bs-target="#Questions-collapseFour" data-bs-toggle="collapse" type="button">
-                <i class="bx bx-chevron-down me-2 fs-4"></i>
-                Apakah eBengkelku dapat diakses melalui perangkat mobile?
-              </button>
-            </h2>
-            <div id="Questions-collapseFour" class="accordion-collapse collapse" data-bs-parent="#Questions-accordion" aria-labelledby="Questions-headingFour">
-              <div class="accordion-body">
-                Ya, eBengkelku tersedia di web dan perangkat mobile. Hal ini memungkinkan pemilik bengkel dan pengguna untuk mengakses platform dengan mudah dari mana saja, sehingga manajemen bengkel bisa dilakukan secara fleksibel.
-              </div>
-            </div>
-          </div>
+          @endforeach
         </div>
       </div>
-
     </div>
   </div>
 </section>
