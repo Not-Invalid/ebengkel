@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
+use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,7 @@ Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 Route::get('terms', [PageController::class, 'terms'])->name('terms');
 Route::get('support-center', [PageController::class, 'supportCenter'])->name('support-center');
-Route::get('detail', [PageController::class, 'detail'])->name('detail');
+Route::get('/support-center/{category}', [PageController::class, 'detail'])->name('support-center.detail');
 Route::get('career', [PageController::class, 'career'])->name('career');
 Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
@@ -62,7 +63,21 @@ Route::get('support-center-category/create', [SupportCenterController::class, 'c
 Route::post('support-center-category/store', [SupportCenterController::class, 'storeCategory'])->name('support-center-category-send');
 Route::get('support-center-category/edit/{id}', [SupportCenterController::class, 'editCategory'])->name('support-center-category-edit');
 Route::post('support-center-category/update{id}', [SupportCenterController::class, 'updateCategory'])->name('support-center-category-update');
-Route::get('support-center-data', [SupportCenterController::class, 'showInfoSuppCenter'])->name('support-center-data');
+Route::delete('/support-center/delete/{id}', [SupportCenterController::class, 'deleteCategory'])->name('support-center-category-delete');
+Route::get('support-center-info', [SupportCenterController::class, 'showInfo'])->name('support-center-info');
+Route::get('support-center-info/create', [SupportCenterController::class, 'createInfo'])->name('support-center-info-create');
+Route::post('support-center-info/store', [SupportCenterController::class, 'storeInfo'])->name('support-center-info-send');
+Route::get('support-center-info/edit/{id}', [SupportCenterController::class, 'editInfo'])->name('support-center-info-edit');
+Route::put('support-center-info/update/{id}', [SupportCenterController::class, 'updateInfo'])->name('support-center-info-update');
+Route::delete('support-center-info/delete/{id}', [SupportCenterController::class, 'deleteInfo'])->name('support-center-info-delete');
+
+
+Route::get('product-sparepart-category', [SuperAdminProductSparePartController::class, 'showCategory'])->name('product-sparepart-category');
+Route::get('product-sparepart-category/create', [SuperAdminProductSparePartController::class, 'createCategory'])->name('product-sparepart-create');
+Route::post('product-sparepart-category/store', [SuperAdminProductSparePartController::class, 'storeCategory'])->name('product-sparepart-send');
+Route::get('product-sparepart-category/edit/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'editCategory'])->name('product-sparepart-edit');
+Route::post('product-sparepart-category/update{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'updateCategory'])->name('product-sparepart-update');
+Route::delete('product-sparepart-category/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'deleteCategory'])->name('product-sparepart-delete');
 
 // Profile route
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
