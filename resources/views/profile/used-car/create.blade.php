@@ -14,14 +14,14 @@
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nama_mobil" name="nama_mobil" />
-                        <label class="did-floating-label car">Nama Mobil</label>
+                        <label class="did-floating-label custom">Nama Mobil</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="merk_mobil"
                             name="merk_mobil" />
-                        <label class="did-floating-label car">Merk Mobil</label>
+                        <label class="did-floating-label custom">Merk Mobil</label>
                     </div>
                 </div>
             </div>
@@ -31,14 +31,14 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="harga_mobil"
                             name="harga_mobil" />
-                        <label class="did-floating-label car">Harga Mobil</label>
+                        <label class="did-floating-label custom">Harga Mobil</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="plat_nomor"
                             name="plat_nomor_mobil" />
-                        <label class="did-floating-label car">Plat Nomor Mobil</label>
+                        <label class="did-floating-label custom">Plat Nomor Mobil</label>
                     </div>
                 </div>
             </div>
@@ -48,13 +48,13 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="tahun_mobil"
                             name="tahun_mobil" />
-                        <label class="did-floating-label car">Tahun Mobil</label>
+                        <label class="did-floating-label custom">Tahun Mobil</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="km_mobil" name="km_mobil" />
-                        <label class="did-floating-label car">KM Mobil</label>
+                        <label class="did-floating-label custom">KM Mobil</label>
                     </div>
                 </div>
             </div>
@@ -64,14 +64,14 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nomor_rangka_mobil"
                             name="nomor_rangka_mobil" />
-                        <label class="did-floating-label car">Nomor Rangka Mobil</label>
+                        <label class="did-floating-label custom">Nomor Rangka Mobil</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nomor_mesin"
                             name="nomor_mesin_mobil" />
-                        <label class="did-floating-label car">Nomor Mesin Mobil</label>
+                        <label class="did-floating-label custom">Nomor Mesin Mobil</label>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="kapasitas_mesin_mobil"
                             name="kapasitas_mesin_mobil" />
-                        <label class="did-floating-label car">Kapasitas Mesin Mobil</label>
+                        <label class="did-floating-label custom">Kapasitas Mesin Mobil</label>
                     </div>
                 </div>
                 <div class="col">
@@ -103,14 +103,14 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="jenis_transmisi_mobil"
                             name="jenis_transmisi_mobil" />
-                        <label class="did-floating-label car">Jenis Transmisi Mobil</label>
+                        <label class="did-floating-label custom">Jenis Transmisi Mobil</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="month" placeholder=" " id="bulan_pajak_mobil"
                             name="bulan_pajak_mobil" />
-                        <label class="did-floating-label car">Bulan Pajak Mobil</label>
+                        <label class="did-floating-label custom">Bulan Pajak Mobil</label>
                     </div>
                 </div>
             </div>
@@ -120,14 +120,14 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="tahun_pajak_mobil"
                             name="tahun_pajak_mobil" />
-                        <label class="did-floating-label car">Tahun Pajak Mobil</label>
+                        <label class="did-floating-label custom">Tahun Pajak Mobil</label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="date" placeholder=" " id="terakhir_pajak_mobil"
                             name="terakhir_pajak_mobil" />
-                        <label class="did-floating-label car">Terakhir Pajak Mobil</label>
+                        <label class="did-floating-label custom">Terakhir Pajak Mobil</label>
                     </div>
                 </div>
             </div>
@@ -137,14 +137,14 @@
                     <div class="did-floating-label-content">
                         <textarea class="did-floating-input" placeholder=" " id="keterangan_mobil" name="keterangan_mobil"
                             style="resize: none; height:100px;"></textarea>
-                        <label class="did-floating-label car">Keterangan Mobil</label>
+                        <label class="did-floating-label custom">Keterangan Mobil</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <textarea class="did-floating-input" placeholder=" " id="lokasi_mobil" name="lokasi_mobil"
                             style="resize: none; height:100px;"></textarea>
-                        <label class="did-floating-label car">Lokasi Mobil</label>
+                        <label class="did-floating-label custom">Lokasi Mobil</label>
                     </div>
                 </div>
             </div>
