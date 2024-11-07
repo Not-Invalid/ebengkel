@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
 
+     {{-- Toastr CSS --}}
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
 </head>
@@ -66,23 +69,37 @@
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item has-sub">
-                                    <a href="#" class="submenu-link">Category</a>
+                                    <a href="#" class="submenu-link">
+                                        <i class="fas fa-list"></i>
+                                        Category
+                                    </a>
                                     <ul class="submenu submenu-level-2">
                                         <li class="submenu-item">
                                             <a href="{{ route('support-center-category') }}" class="submenu-link">Support Center</a>
                                         </li>
                                         <li class="submenu-item">
-                                            <a href="#" class="submenu-link">Mobil</a>
+                                            <a href="{{ route('product-sparepart-category') }}" class="submenu-link">Product & Spare Parts</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="#" class="submenu-link">
+                                        <i class="fas fa-tags"></i>
+                                        Merk
+                                    </a>
+                                    <ul class="submenu submenu-level-2">
+                                        <li class="submenu-item">
+                                            <a href="{{ route('support-center-category') }}" class="submenu-link">Sparepart</a>
                                         </li>
                                         <li class="submenu-item">
-                                            <a href="#" class="submenu-link">Product & Spare Parts</a>
+                                            <a href="{{ route('product-sparepart-category') }}" class="submenu-link">Mobil</a>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-                        <li class="sidebar-item {{ request()->routeIs('support-center-data') ? 'active' : '' }}">
-                            <a href="{{ route('support-center-data') }}" class="sidebar-link">
+                        <li class="sidebar-item {{ request()->routeIs('support-center-info') ? 'active' : '' }}">
+                            <a href="{{ route('support-center-info') }}" class="sidebar-link">
                                 <i class="fas fa-circle-question"></i>
                                 <span>Support Center</span>
                             </a>
@@ -108,12 +125,12 @@
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">John Ducky</h6>
-                                            <p class="mb-0 text-sm text-gray-600">Administrator</p>
+                                            <h6 class="mb-0 text-gray-600">{{ Auth::user()->name }}</h6>
+                                            <p class="mb-0 text-sm text-gray-600">{{ Auth::user()->role ?? 'User' }}</p>
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}">
+                                                <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/images/components/avatar.png') }}" alt="User Avatar">
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +138,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
                                     style="min-width: 11rem;">
                                     <li>
-                                        <h6 class="dropdown-header">Hello, John!</h6>
+                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}!</h6>
                                     </li>
                                     <li>
                                         <form id="logout-form" action="{{ route('logout-admin') }}" method="POST" style="display: none;">
@@ -152,7 +169,7 @@
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="d-flex justify-content-center">
                         Copyright &copy; {{ now()->year }} eBengkelku - Service, Spare Part & Smart Tools
-                        Powered By <a href="https://cnplus.id/" target="_blank" class="text-success">CNPLUS</a>
+                        Powered By <a href="https://cnplus.id/" target="_blank" class="text-success mx-1">CNPLUS</a>
                     </div>
                 </div>
             </footer>
@@ -165,6 +182,32 @@
     <script src="{{ asset('template/assets/compiled/js/app.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+
+    {{-- Toastr JS --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
+    <script>
+        // Toastr configuration
+        toastr.options = {
+          "closeButton": true,
+          "progressBar": true,
+          "positionClass": "toast-top-right",
+          "timeOut": "3000"
+        };
+
+
+            // Display success message
+            @if (session('status'))
+                toastr.success("{{ session('status') }}");
+            @endif
+
+            // Display error message
+            @if (session('status_error'))
+                toastr.error("{{ session('status_error') }}");
+            @endif
+        </script>
 
     {{-- Loader script --}}
     <script>
