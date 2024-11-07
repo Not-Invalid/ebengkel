@@ -74,6 +74,26 @@
     transform: translateY(2px) !important;
 }
 
+.btn.btn-cancel {
+    padding: 0.4rem 0.9rem !important;
+    background-color: var(--main-red) !important;
+    color: var(--main-white) !important;
+}
+
+.btn.btn-cancel:active {
+    background-color: var(--main-red);
+    color: var(--main-white);
+    transform: translateY(2px);
+}
+
+.btn.btn-delete {
+    padding: 0.2rem 1rem !important;
+    border-radius: 4px !important;
+    font-size: 0.9rem !important;
+    background-color: var(--main-red) !important;
+    color: var(--main-white) !important;
+}
+
 .badge {
     background-color: var(--main-light-blue) !important;
     font-weight: 500 !important;
@@ -190,7 +210,7 @@ select.did-floating-select::-ms-expand {
 }
 
 @media (max-width: 1023px) {
-    .did-floating-label.car {
+    .did-floating-label.custom {
         font-size: 12px;
     }
 }
@@ -429,4 +449,8 @@ h2 {
 .icon-support-center{
     font-size: 40px;
     color: var(--main-blue-dark);
+}
+
+.page-num{
+    background-color: var(--main-light-blue)!important;
 }
