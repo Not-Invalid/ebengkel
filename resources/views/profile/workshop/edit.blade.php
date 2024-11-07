@@ -1,9 +1,29 @@
 @extends('layouts.partials.sidebar')
 
 @section('title')
-  eBengkelku | Edit Workshop
+  eBengkelku | Edit bengkel
 @stop
 
+<script>
+  function previewImage(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block'; // Show the image preview
+      };
+
+      reader.readAsDataURL(input.files[0]); // Read the image file as a data URL
+    } else {
+      preview.style.display = 'none'; // Hide the preview if no file is selected
+      preview.src = ''; // Clear the source
+    }
+  }
+</script>
 <script>
   function toggleCloseFields() {
     const openDay = document.getElementById('open_day').value;
@@ -17,49 +37,152 @@
     }
   }
 </script>
+<style>
+  .image-preview {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+  }
+
+  .upload-box {
+    border: 2px dashed var(--main-light-blue);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: background-color 0.2s;
+    cursor: pointer;
+  }
+
+  .upload-box:hover {
+    background-color: #f9f9f9;
+  }
+
+  .upload-label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .file-input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .upload-box::after {
+    content: 'Click to upload';
+    display: block;
+    font-size: 14px;
+    color: #999;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .options-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: 1px solid var(--main-light-blue);
+    border-radius: 6px;
+    background-color: var(--main-white);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .option-item input {
+    display: none;
+  }
+
+  .option-item span {
+    margin-left: 6px;
+    font-size: 14px;
+  }
+
+  .option-item:hover {
+    background-color: var(--main-white);
+  }
+
+  .option-item input:checked+span {
+    color: var(--main-blue);
+    font-weight: 500;
+  }
+
+  .option-item input:checked~.option-item {
+    color: var(--main-blue);
+    font-weight: 500;
+  }
+</style>
 
 @section('content')
   <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
-    <h4>Edit Workshop</h4>
+    <h4>Edit bengkel</h4>
     <form action="{{ route('profile.workshop.update', $bengkel->id_bengkel) }}" method="POST" enctype="multipart/form-data">
       @csrf
       @method('PUT')
-      <div class="form-group mb-3">
-        <label for="foto_cover_bengkel">Cover Workshop Photo</label>
-        @if ($bengkel->foto_cover_bengkel)
-          <img src="{{ $bengkel->foto_cover_bengkel }}" alt="Cover Workshop"
-            style="max-width: 200px; height: auto; margin-top: 10px; margin-bottom:10px; display: block; margin-left: auto; margin-right: auto; border-radius:10px;">
-        @endif
-        <input type="file" class="form-control" name="foto_cover_bengkel">
+      <div class="form-group mb-4">
+        <div class="upload-box">
+          <label for="foto_cover_bengkel" class="upload-label">Cover Workshop Photo</label>
+          <input type="file" class="file-input" name="foto_cover_bengkel" id="foto_cover_bengkel"
+            onchange="previewImage('foto_cover_bengkel', 'coverPreview')">
+          <div class="preview-container d-flex justify-content-center">
+            <img id="coverPreview" src="" alt="Cover Photo Preview" class="image-preview"
+              style="display: none; width: 200px; margin-top: 10px;">
+          </div>
+        </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="foto_bengkel">Workshop Photo</label>
-        @if ($bengkel->foto_bengkel)
-          <img src="{{ $bengkel->foto_bengkel }}" alt="Workshop Photo"
-            style="max-width: 200px; height: auto; margin-top: 10px; margin-bottom:10px; display: block; margin-left: auto; margin-right: auto; border-radius:10px;">
-        @endif
-        <input type="file" class="form-control" name="foto_bengkel">
+      <div class="form-group mb-4">
+        <div class="upload-box">
+          <label for="foto_bengkel" class="upload-label">Workshop Photo</label>
+          <input type="file" class="file-input" name="foto_bengkel" id="foto_bengkel"
+            onchange="previewImage('foto_bengkel', 'bengkelPreview')">
+          <div class="preview-container d-flex justify-content-center">
+            <img id="bengkelPreview" src="" alt="Workshop Photo Preview" class="image-preview"
+              style="display: none; width: 200px; margin-top: 10px;">
+          </div>
+        </div>
       </div>
 
-      <div class="form-group mb-3">
-        <label for="nama_bengkel">Nama Bengkel</label>
-        <input type="text" class="form-control" name="nama_bengkel" value="{{ $bengkel->nama_bengkel }}" required>
-      </div>
 
       <div class="form-group mb-3">
-        <label for="tagline_bengkel">Tagline</label>
-        <input type="text" class="form-control" name="tagline_bengkel" value="{{ $bengkel->tagline_bengkel }}">
+        <div class="did-floating-label-content">
+          <input class="did-floating-input" type="text" placeholder=" " id="nama_bengkel" name="nama_bengkel"
+            required />
+          <label class="did-floating-label">Nama Bengkel</label>
+        </div>
       </div>
-
       <div class="form-group mb-3">
-        <label for="alamat_bengkel">Alamat Bengkel</label>
-        <textarea class="form-control" name="alamat_bengkel" required>{{ $bengkel->alamat_bengkel }}</textarea>
+        <div class="did-floating-label-content">
+          <input class="did-floating-input" type="text" placeholder=" " id="tagline_bengkel" name="tagline_bengkel"
+            required />
+          <label class="did-floating-label">Tagline Bengkel</label>
+        </div>
       </div>
-
       <div class="form-group mb-3">
-        <label for="gmaps">Gmaps Link</label>
-        <input type="text" class="form-control" name="gmaps" value="{{ $bengkel->gmaps }}">
+        <div class="did-floating-label-content">
+          <textarea class="did-floating-input form-control" name="alamat_bengkel" placeholder=" " rows="4" required
+            style="height: 100px;resize: none"></textarea>
+          <label class="did-floating-label">Alamat Bengkel</label>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <div class="did-floating-label-content">
+          <input class="did-floating-input" type="text" placeholder="https://" id="gmaps" name="gmaps"
+            required />
+          <label class="did-floating-label">Link Google Maps</label>
+        </div>
       </div>
 
       <div class="form-group mb-3 text-center">
@@ -68,32 +191,36 @@
 
       <div class="row mb-3">
         <div class="col-md-6 py-2">
-          <label for="open_day" class="d-flex justify-content-center">Start</label>
-          <select class="form-control" name="open_day" id="open_day" required onchange="toggleCloseFields()">
-            <option value="{{ $bengkel->open_day }}" selected>{{ $bengkel->open_day }}</option>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-            <option value="Saturday">Saturday</option>
-            <option value="Sunday">Sunday</option>
-            <option value="Every Day">Every Day</option>
-          </select>
+          <div class="did-floating-label-content">
+            <select class="did-floating-select" name="open_day" id="open_day" required onchange="toggleCloseFields()">
+              <option value="" selected disabled hidden></option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+              <option value="Every Day">Every Day</option>
+            </select>
+            <label class="did-floating-label">Start</label>
+          </div>
         </div>
         <div class="col-md-6 py-2">
-          <label for="close_day" class="d-flex justify-content-center">End</label>
-          <select class="form-control" name="close_day" id="close_day" required
-            {{ $bengkel->open_day === 'Every Day' ? 'disabled' : '' }}>
-            <option value="{{ $bengkel->close_day }}" selected>{{ $bengkel->close_day }}</option>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-            <option value="Saturday">Saturday</option>
-            <option value="Sunday">Sunday</option>
-          </select>
+
+          <div class="did-floating-label-content">
+            <select class="did-floating-select" name="close_day" id="close_day" required disabled>
+              <option value="" selected disabled hidden></option>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+            <label class="did-floating-label">End</label>
+          </div>
         </div>
       </div>
       <div class="form-group mb-3 text-center">
@@ -102,72 +229,70 @@
       <div class="row mb-3">
         <div class="col-md-6 py-2">
           <div class="form-group">
-            <label for="open_time" class="d-flex justify-content-center">Start</label>
-            <input type="time" class="form-control" name="open_time"
-              value="{{ \Carbon\Carbon::parse($bengkel->open_time)->format('H:i') }}" required>
+            <div class="did-floating-label-content">
+              <input type="time" class="did-floating-input" name="open_time" required>
+            </div>
           </div>
         </div>
         <div class="col-md-6 py-2">
           <div class="form-group">
-            <label for="close_time" class="d-flex justify-content-center">End</label>
-            <input type="time" class="form-control" name="close_time"
-              value="{{ \Carbon\Carbon::parse($bengkel->close_time)->format('H:i') }}" required>
+            <div class="did-floating-label-content">
+              <input type="time" class="did-floating-input" name="close_time" required>
+            </div>
           </div>
         </div>
       </div>
-      <div class="form-group mb-3">
-        <label for="service_available">Service Available</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="service_available[]"
-            value="Service offline di bengkel" id="serviceOffline"
-            {{ in_array('Service offline di bengkel', $bengkel->service_available) ? 'checked' : '' }}>
-          <label class="form-check-label" for="serviceOffline">
-            Service at Workshop
+
+
+      <div class="form-group mb-4">
+        <label for="service_available" class="section-title">Service Available</label>
+        <div class="options-group">
+          <label class="option-item">
+            <input type="checkbox" name="service_available[]" value="Service offline di bengkel" id="serviceOffline">
+            <span>Service at Workshop</span>
           </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="service_available[]"
-            value="Service panggilan via telepon" id="servicePanggilan"
-            {{ in_array('Service panggilan via telepon', $bengkel->service_available) ? 'checked' : '' }}>
-          <label class="form-check-label" for="servicePanggilan">
-            Service by Call
+          <label class="option-item">
+            <input type="checkbox" name="service_available[]" value="Service panggilan via telepon"
+              id="servicePanggilan">
+            <span>Service by Call</span>
           </label>
         </div>
       </div>
-      <div class="form-group mb-3">
-        <label for="payment">Payment Methods</label>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="payment[]" value="Cash" id="paymentCash"
-            {{ in_array('Cash', $bengkel->payment ?? []) ? 'checked' : '' }}>
-          <label class="form-check-label" for="paymentCash">Cash</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="payment[]" value="Credit Card" id="paymentCreditCard"
-            {{ in_array('Credit Card', $bengkel->payment) ? 'checked' : '' }}>
-          <label class="form-check-label" for="paymentCreditCard">
-            Credit Card
+
+      <div class="form-group mb-4">
+        <label for="payment" class="section-title">Payment Methods</label>
+        <div class="options-group">
+          <label class="option-item">
+            <input type="checkbox" name="payment[]" value="Cash" id="paymentCash">
+            <span>Cash</span>
           </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="payment[]" value="Mobile Payment" id="paymentMobile"
-            {{ in_array('Mobile Payment', $bengkel->payment) ? 'checked' : '' }}>
-          <label class="form-check-label" for="paymentMobile">
-            Mobile Payment
+          <label class="option-item">
+            <input type="checkbox" name="payment[]" value="Credit Card" id="paymentCreditCard">
+            <span>Credit Card</span>
+          </label>
+          <label class="option-item">
+            <input type="checkbox" name="payment[]" value="Mobile Payment" id="paymentMobile">
+            <span>Mobile Payment</span>
           </label>
         </div>
       </div>
+
       <div class="form-group mb-3">
-        <label for="whatsapp">WhatsApp</label>
-        <input type="text" class="form-control" name="whatsapp" value="{{ $bengkel->whatsapp }}"
-          placeholder="62">
+        <div class="did-floating-label-content">
+          <input class="did-floating-input" type="text" name="whatsapp" placeholder="62" required pattern="[0-9]*"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+          <label class="did-floating-label">Whatsapp </label>
+        </div>
       </div>
+
       <div class="form-group mb-3">
-        <label for="instagram">Instagram</label>
-        <input type="text" class="form-control" name="instagram" value="{{ $bengkel->instagram }}"
-          placeholder="username">
+        <div class="did-floating-label-content">
+          <input class="did-floating-input" type="text" placeholder="username" id="instagram"
+            name="instagram"required />
+          <label class="did-floating-label">Instagram</label>
+        </div>
       </div>
       <button type="submit" class="btn btn-primary mt-3">Save</button>
     </form>
   </div>
-
-@endsection
+@stop

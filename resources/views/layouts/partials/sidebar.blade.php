@@ -55,13 +55,11 @@
                 <i class="bx bx-user"></i>
                 <span class="menu-text">Account</span>
             </a>
-            <a href="{{ route('profile.address') }}"
-                class="menu-item {{ request()->routeIs('profile.address') ? 'active' : '' }}">
+            <a href="{{ route('profile.address') }}" class="menu-item {{ request()->routeIs('profile.address') ? 'active' : '' }}">
                 <i class='bx bxs-map'></i>
                 <span class="menu-text">Address</span>
             </a>
-            <a href="{{ route('profile.workshop') }}"
-                class="menu-item {{ request()->routeIs('profile.workshop') ? 'active' : '' }}">
+            <a href="{{ route('profile.workshop') }}" class="menu-item {{ request()->routeIs('profile.workshop') ? 'active' : '' }}">
                 <i class='bx bx-building-house'></i>
                 <span class="menu-text">Workshop</span>
             </a>
@@ -69,8 +67,7 @@
                 <i class='bx bxs-car'></i>
                 <span class="menu-text">Used Car</span>
             </a>
-            <a href="{{ route('profile.setting') }}"
-                class="menu-item {{ request()->routeIs('profile.setting') ? 'active' : '' }}">
+            <a href="{{ route('profile.setting') }}" class="menu-item {{ request()->routeIs('profile.setting') ? 'active' : '' }}">
                 <i class="bx bx-cog"></i>
                 <span class="menu-text">Settings</span>
             </a>
@@ -89,13 +86,11 @@
                     <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"
                         alt="Profile Picture" class="profile-pic" onclick="toggleDropdown()" />
                     <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="#"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
                             <div class="d-flex align-items-center">
                                 <i class='bx bx-log-out mx-2'></i> Logout
                             </div>
-                            <form action="{{ route('logout') }}" method="POST" style="display: inline;"
-                                id="logout-form">
+                            <form action="{{ route('logout') }}" method="POST" style="display: inline;" id="logout-form">
                                 @csrf
                             </form>
                         </a>
