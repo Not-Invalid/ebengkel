@@ -14,12 +14,13 @@ class CreateTbKategoriSparePartTable extends Migration
     public function up()
     {
         Schema::create('tb_kategori_spare_part', function (Blueprint $table) {
-            $table->increments('id_kategori_spare_part')->autoIncrement();
+            $table->id('id_kategori_spare_part');
             $table->string('nama_kategori_spare_part')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->dateTime('updated_date')->nullable();
             $table->enum('deleted_kategori_spare_part', ['Y', 'N'])->default('N');
         });
+
     }
 
     /**
