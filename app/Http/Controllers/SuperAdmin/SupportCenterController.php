@@ -11,7 +11,7 @@ class SupportCenterController extends Controller
 {
     public function category()
     {
-        $categories = SupportCategory::with('details')->get();
+        $categories = SupportCategory::with('questions')->paginate(5);
         return view('superadmin.masterdata-category.support-center.index', compact('categories'));
     }
 
@@ -67,36 +67,92 @@ class SupportCenterController extends Controller
         ]);
 
         // Redirect back with a success message
-        return redirect()->route('support-center-category-edit', $id)->with('success', 'Category updated successfully!');
+        return redirect()->route('support-center-category', $id)->with('success', 'Category updated successfully!');
+    }
+
+    public function deleteCategory($id)
+    {
+        $category = SupportCategory::findOrFail($id);
+        $category->delete();
+
+        return redirect()->route('support-center-category')->with('success', 'Category deleted successfully!');
     }
 
 
     // Show form to create a new detail for a category
-    public function showInfoSuppCenter($categoryId)
+    public function showInfo()
     {
-        $supportInfo = SupportInfo::with('category')->orderBy('id', 'DESC')->get();
+        $supportInfo = SupportInfo::with('category')->orderBy('id', 'DESC')->paginate(10);
 
         return view('superadmin.support-center.index', compact('supportInfo'));
     }
 
 
     // Store a new support detail
-    public function storeDetail(Request $request, $categoryId)
+    public function createInfo()
     {
-        $validatedData = $request->validate([
-            'support_category_id' => 'required|exists:tb_support_categories,id', // Ensure the category exists
+        $categories = SupportCategory::all();
+
+        return view('superadmin.support-center.create', compact('categories'));
+    }
+
+    public function storeInfo(Request $request)
+    {
+        $request->validate([
+            'support_category_id' => 'required|exists:tb_support_categories,id',  // Pastikan category ada
             'question' => 'required|string|max:255',
             'answer' => 'required|string',
         ]);
 
-        // Store the validated data into the 'tb_support_info' table
-        $supportInfo = SupportInfo::create([
-            'support_category_id' => $validatedData['support_category_id'],
-            'question' => $validatedData['question'],
-            'answer' => $validatedData['answer'],
+        // Simpan data support info baru
+        SupportInfo::create([
+            'support_category_id' => $request->input('support_category_id'),
+            'question' => $request->input('question'),
+            'answer' => $request->input('answer'),
         ]);
 
-        // Optionally, redirect back or to another page with a success message
-        return redirect()->route('supp')->with('success', 'Support information saved successfully!');
+        // Redirect kembali dengan pesan sukses
+        return redirect()->route('support-center-info')->with('success', 'Support information added successfully.');
     }
+
+    public function editInfo($id)
+    {
+        // Retrieve the SupportInfo by id, including the category data
+        $supportInfo = SupportInfo::with('category')->findOrFail($id);
+
+        // Get all categories for the select dropdown
+        $categories = SupportCategory::all();
+
+        return view('superadmin.support-center.edit', compact('supportInfo', 'categories'));
+    }
+
+    public function updateInfo(Request $request, $id)
+    {
+        $request->validate([
+            'support_category_id' => 'required|exists:tb_support_categories,id',
+            'question' => 'required|string',
+            'answer' => 'required|string',
+        ]);
+
+        $supportInfo = SupportInfo::findOrFail($id);
+
+        $supportInfo->update([
+            'support_category_id' => $request->support_category_id,
+            'question' => $request->question,
+            'answer' => $request->answer,
+        ]);
+
+        return redirect()->route('support-center-info')->with('success', 'Support Info updated successfully.');
+    }
+
+    public function deleteInfo($id)
+    {
+        $supportInfo = SupportInfo::findOrFail($id);
+        $supportInfo->delete();
+
+        return redirect()->route('support-center-info')->with('success', 'Support Info deleted successfully.');
+    }
+
+
+
 }
