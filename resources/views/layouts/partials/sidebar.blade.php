@@ -51,7 +51,7 @@
           <i class="bx bx-menu"></i>
         </button>
       </div>
-      <a href="{{ route('profile.show') }}" class="menu-item {{ request()->routeIs('profile.show') ? 'active' : '' }}">
+      <a href="{{ route('profile') }}" class="menu-item {{ request()->routeIs('profile') ? 'active' : '' }}">
         <i class="bx bx-user"></i>
         <span class="menu-text">Account</span>
       </a>
