@@ -17,7 +17,7 @@ class CreateTbSparePartTable extends Migration
             $table->integer('id_spare_part')->primary()->autoIncrement();
             $table->integer('id_bengkel')->nullable();
             $table->integer('id_jenis_spare_part')->nullable();
-            $table->integer('id_kategori_spare_part')->nullable();
+            $table->unsignedBigInteger('id_kategori_spare_part')->nullable(); // Make it nullable
             $table->integer('id_kualitas_spare_part')->nullable();
             $table->integer('id_merk_spare_part')->nullable();
             $table->string('nama_spare_part')->nullable();
@@ -26,7 +26,9 @@ class CreateTbSparePartTable extends Migration
             $table->text('foto_spare_part')->nullable();
             $table->integer('stok_spare_part')->nullable();
             $table->string('delete_spare_part', 1)->default('N');
+            $table->foreign('id_kategori_spare_part')->references('id_kategori_spare_part')->on('tb_kategori_spare_part')->onDelete('set null');
         });
+
     }
 
     /**
