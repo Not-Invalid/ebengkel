@@ -33,7 +33,8 @@
               <div class="card-body text-start">
                 <div class="d-flex align-items-center location-map">
                   <i class='bx bx-map-pin me-2' style="font-size: 16px; line-height: 1;"></i>
-                  <p class="location m-0">{{ $bengkel->alamat_bengkel }}</p>
+                  <p class="location m-0">{{ \Illuminate\Support\Str::limit($bengkel->alamat_bengkel, 18) }}</p>
+
                 </div>
                 <h5 class="card-title">{{ $bengkel->nama_bengkel }}</h5>
                 <div class="mt-3">
