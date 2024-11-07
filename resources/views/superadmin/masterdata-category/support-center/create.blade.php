@@ -5,7 +5,6 @@
 @stop
 
 @push('css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     #icon-preview {
         display: inline-block;
@@ -49,9 +48,14 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-custom-icon mt-3">
-                <i class='fas fa-floppy-disk fs-6'></i> Simpan
-            </button>
+            <div class="mt-3 d-flex gap-2">
+                <a href="{{ route('support-center-category') }}" class="btn btn-cancel ms-2">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-custom-icon">
+                    <i class='fas fa-floppy-disk fs-6'></i> Save
+                </button>
+            </div>
         </form>
     </div>
 @endsection
