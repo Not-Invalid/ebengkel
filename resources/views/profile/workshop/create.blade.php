@@ -122,6 +122,14 @@
     color: var(--main-blue);
     font-weight: 500;
   }
+
+  .btn.btn-custom-2 {
+    padding: 0.3rem 0.8rem !important;
+    border-radius: 4px !important;
+    font-size: 0.8rem !important;
+    background-color: var(--main-blue) !important;
+    color: var(--main-white) !important;
+  }
 </style>
 
 @section('content')
@@ -290,7 +298,9 @@
           <label class="did-floating-label">Instagram</label>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary mt-3">Save</button>
+      <button type="submit" class="btn btn-custom-2 mt-3">Save</button>
+      <a href="{{ route('profile.workshop') }}" class="btn btn-custom-2 mt-3">Cancel</a>
+
     </form>
   </div>
 
