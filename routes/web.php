@@ -9,8 +9,10 @@ use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
+use App\Http\Controllers\SuperAdmin\MerkMobilController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
+use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
@@ -35,12 +37,27 @@ Route::middleware('auth:pelanggan')->group(function () {
 });
 
 Route::prefix('superadmin')->group(function () {
-    Route::get('login', [SuperAdminAuthController::class, 'showLogin'])->name('login-admin');
+    Route::get('/', [SuperAdminAuthController::class, 'showLogin'])->name('login-admin');
     Route::post('login', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
     Route::post('logout/admin', [SuperAdminAuthController::class, 'logout'])->name('logout-admin');
-    Route::get('event/admin', [SuperAdminEventController::class, 'index'])->name('event.admin');
-    Route::get('event-create/admin', [SuperAdminEventController::class, 'create'])->name('event-create.admin');
-    Route::post('event-store/admin', [SuperAdminEventController::class, 'store'])->name('event-store.admin');
+
+    Route::get('dashboard', [PageController::class, 'superAdmin'])->name('superadmin');
+
+    Route::get('event-data', [SuperAdminEventController::class, 'index'])->name('event-data');
+    Route::get('event-data/create', [SuperAdminEventController::class, 'create'])->name('event-create');
+    Route::post('event-data/store', [SuperAdminEventController::class, 'store'])->name('event-store');
+    Route::get('event-data/edit/{id_event}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
+    Route::post('event-data/update/{id_event}', [SuperAdminEventController::class, 'update'])->name('event-update');
+    Route::delete('event-data/delete/{id_event}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
+
+    Route::get('merk-mobil', [MerkMobilController::class, 'index'])->name('merk-mobil');
+    Route::get('merk-mobil/create', [MerkMobilController::class, 'create'])->name('merk-mobil-create');
+    Route::post('merk-mobil/store', [MerkMobilController::class, 'store'])->name('merk-mobil-send');
+    Route::get('merk-mobil/edit/{id}', [MerkMobilController::class, 'edit'])->name('merk-mobil-edit');
+    Route::post('merk-mobil/update/{id}', [MerkMobilController::class, 'update'])->name('merk-mobil-update');
+    Route::delete('merk-mobil/delete/{id}', [MerkMobilController::class, 'delete'])->name('merk-mobil-delete');
+
+    Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
 });
 
 // UsedCar
@@ -61,7 +78,6 @@ Route::get('terms', [PageController::class, 'terms'])->name('terms');
 Route::get('support-center', [PageController::class, 'supportCenter'])->name('support-center');
 Route::get('/support-center/{category}', [PageController::class, 'detail'])->name('support-center.detail');
 Route::get('career', [PageController::class, 'career'])->name('career');
-Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
 Route::get('support-center-category/create', [SupportCenterController::class, 'createCategory'])->name('support-center-category-create');
 Route::post('support-center-category/store', [SupportCenterController::class, 'storeCategory'])->name('support-center-category-send');
