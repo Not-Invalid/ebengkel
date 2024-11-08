@@ -25,16 +25,15 @@
     @else
       <div class="row">
         @foreach ($bengkels as $bengkel)
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
             <div class="card-product p-3">
               <img
                 src="{{ isset($bengkel) && $bengkel->foto_bengkel ? url($bengkel->foto_bengkel) : asset('assets/images/components/image.png') }}"
                 class="card-img-top" alt="Workshop Image">
               <div class="card-body text-start">
-                <div class="d-flex align-items-center location-map">
+                <div class="d-flex align-items-center location-map my-2">
                   <i class='bx bx-map-pin me-2' style="font-size: 16px; line-height: 1;"></i>
                   <p class="location m-0">{{ \Illuminate\Support\Str::limit($bengkel->alamat_bengkel, 18) }}</p>
-
                 </div>
                 <h5 class="card-title">{{ $bengkel->nama_bengkel }}</h5>
                 <div class="mt-3">
