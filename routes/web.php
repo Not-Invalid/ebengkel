@@ -75,6 +75,9 @@ Route::delete('/profile/address/delete/{id_alamat_pengiriman}', [ProfileControll
 Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
 Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
 Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
+Route::get('profile/used-car/edit/{id_mobil}', [UsedCarController::class, 'edit'])->name('used-car-edit');
+Route::put('profile/used-car/update/{id_mobil}', [UsedCarController::class, 'update'])->name('used-car-update');
+Route::delete('profile/used-car/delete/{id_mobil}', [UsedCarController::class, 'delete'])->name('used-car-delete');
 Route::get('profile/workshop', [WorkshopController::class, 'showWorkshop'])->name('profile.workshop');
 Route::get('profile/workshop/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
 Route::post('profile/workshop/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
