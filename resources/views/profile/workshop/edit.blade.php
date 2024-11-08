@@ -340,8 +340,9 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="form-group mb-3">
-          <button type="submit" class="btn btn-primary w-100">Update Workshop</button>
+        <div class="mt-3 d-flex gap-2">
+          <button type="submit" class="btn btn-custom-icon mt-3">Save</button>
+          <a href="{{ route('profile.workshop') }}" class="btn btn-cancel mt-3">Cancel</a>
         </div>
       </form>
     </div>
