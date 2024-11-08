@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('template/assets/extensions/flatpickr/flatpickr.min.css') }}">
 
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
      {{-- Toastr CSS --}}
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -92,12 +93,15 @@
                                     </a>
                                     <ul class="submenu submenu-level-2">
                                         <li class="submenu-item">
-                                            <a href="{{ route('support-center-category') }}" class="submenu-link">Sparepart</a>
-                                        </li>
-                                        <li class="submenu-item">
-                                            <a href="{{ route('product-sparepart-category') }}" class="submenu-link">Mobil</a>
+                                            <a href="{{ route('merk-mobil') }}" class="submenu-link">Mobil</a>
                                         </li>
                                     </ul>
+                                </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="{{ route('workshop-data') }}" class="sidebar-link">
+                                        <i class="fas fa-wrench" style="color: #25396f !important;"></i>
+                                        Workshop
+                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -107,9 +111,9 @@
                                 <span>Support Center</span>
                             </a>
                         </li>
-                        <li class="sidebar-item {{ request()->routeIs('event.admin') ? 'active' : '' }}">
-                            <a href="{{ route('event.admin') }}" class="sidebar-link">
-                                <i class="fas fa-circle-question"></i>
+                        <li class="sidebar-item {{ request()->routeIs('event-data') ? 'active' : '' }}">
+                            <a href="{{ route('event-data') }}" class="sidebar-link">
+                                <i class="fas fa-bullhorn"></i>
                                 <span>Event</span>
                             </a>
                         </li>
@@ -139,7 +143,7 @@
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/images/components/avatar.png') }}" alt="User Avatar">
+                                                <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/images/components/avatar-admin.png') }}" alt="User Avatar">
                                             </div>
                                         </div>
                                     </div>
@@ -199,7 +203,7 @@
     {{-- Toastr JS --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script>
         // Toastr configuration
