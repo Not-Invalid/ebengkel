@@ -4,13 +4,12 @@ use App\Http\Controllers\AuthController as PelangganAuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
-use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
+use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
@@ -75,7 +74,6 @@ Route::get('support-center-info/edit/{id}', [SupportCenterController::class, 'ed
 Route::put('support-center-info/update/{id}', [SupportCenterController::class, 'updateInfo'])->name('support-center-info-update');
 Route::delete('support-center-info/delete/{id}', [SupportCenterController::class, 'deleteInfo'])->name('support-center-info-delete');
 
-
 Route::get('product-sparepart-category', [SuperAdminProductSparePartController::class, 'showCategory'])->name('product-sparepart-category');
 Route::get('product-sparepart-category/create', [SuperAdminProductSparePartController::class, 'createCategory'])->name('product-sparepart-create');
 Route::post('product-sparepart-category/store', [SuperAdminProductSparePartController::class, 'storeCategory'])->name('product-sparepart-send');
@@ -106,6 +104,7 @@ Route::post('profile/workshop/store', [WorkshopController::class, 'storeWorkshop
 Route::get('profile/workshop/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
 Route::put('profile/workshop/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
 Route::delete('profile/workshop/destroy/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
+Route::get('profile/workshop/detail/{id_bengkel}', [WorkshopController::class, 'detailWorkshop'])->name('profile.workshop.detail');
 Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
 Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
 
