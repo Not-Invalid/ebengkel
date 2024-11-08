@@ -298,9 +298,10 @@
           <label class="did-floating-label">Instagram</label>
         </div>
       </div>
-      <button type="submit" class="btn btn-custom-2 mt-3">Save</button>
-      <a href="{{ route('profile.workshop') }}" class="btn btn-custom-2 mt-3">Cancel</a>
-
+      <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-custom-icon">Save</button>
+        <a href="{{ route('profile.workshop') }}" class="btn btn-cancel">Cancel</a>
+      </div>
     </form>
   </div>
 
