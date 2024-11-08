@@ -42,9 +42,9 @@ class Bengkel extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'service_available' => 'array', // Cast JSON to array when retrieving
-        'payment' => 'array',           // Cast JSON to array when retrieving
-        'open_time' => 'datetime:H:i',  // Cast time fields as datetime with hour and minute only
+        'service_available' => 'array', 
+        'payment' => 'array',           
+        'open_time' => 'datetime:H:i', 
         'close_time' => 'datetime:H:i',
     ];
 
