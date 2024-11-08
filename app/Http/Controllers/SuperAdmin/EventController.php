@@ -3,20 +3,128 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     public function index()
     {
-        return view('superadmin.event.index');
+        $events = Event::where('delete_event', 'N')->get();
+
+        return view('superadmin.event.index', compact('events'));
     }
+
     public function create()
     {
         return view('superadmin.event.create');
     }
+
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_event' => 'required|string|max:255',
+            'event_start_date' => 'required|date',
+            'event_end_date' => 'required|date|after_or_equal:event_start_date',
+            'deskripsi' => 'required|string',
+            'alamat_event' => 'required|string',
+            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'lokasi' => 'required|string',
+            'tipe_harga' => 'required|in:Gratis,Berbayar',
+            'harga' => 'nullable|numeric|min:0',
+            'agenda_acara' => 'nullable|array',
+            'agenda_acara.*.judul' => 'required|string|max:255',
+            'agenda_acara.*.waktu' => 'required|string|max:255',
+            'bintang_tamu' => 'nullable|array',
+            'bintang_tamu.*' => 'string|max:255',
+        ]);
 
+        if ($request->hasFile('image_cover')) {
+            $image = $request->file('image_cover');
+            $imageName = 'event_cover_' . now()->format('Ymd_His') . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/events'), $imageName);
+            $validatedData['image_cover'] = url('assets/images/events/' . $imageName);
+        } else {
+            $validatedData['image_cover'] = null;
+        }
+
+        Event::create([
+            'nama_event' => $request->nama_event,
+            'event_start_date' => $request->event_start_date,
+            'event_end_date' => $request->event_end_date,
+            'deskripsi' => $request->deskripsi,
+            'alamat_event' => $request->alamat_event,
+            'image_cover' => $validatedData['image_cover'],
+            'lokasi' => $request->lokasi,
+            'tipe_harga' => $request->tipe_harga,
+            'harga' => $request->tipe_harga === 'Berbayar' ? $request->harga : 0,
+            'agenda_acara' => $request->agenda_acara ? json_encode($request->agenda_acara) : null,
+            'bintang_tamu' => $request->bintang_tamu ? json_encode($request->bintang_tamu) : null,
+        ]);
+
+        return redirect()->route('event-data')->with('success', 'Event berhasil ditambahkan.');
+    }
+
+    public function edit($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('superadmin.event.edit', compact('event'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_event' => 'required|string|max:255',
+            'event_start_date' => 'required|date',
+            'event_end_date' => 'required|date|after_or_equal:event_start_date',
+            'deskripsi' => 'required|string',
+            'alamat_event' => 'required|string',
+            'lokasi' => 'required|string',
+            'tipe_harga' => 'required|string',
+            'harga' => 'nullable|integer',
+            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'agenda_acara' => 'nullable|array',
+            'agenda_acara.*.judul' => 'required|string|max:255',
+            'agenda_acara.*.waktu' => 'required|string|max:255',
+            'bintang_tamu' => 'nullable|array',
+            'bintang_tamu.*' => 'string|max:255',
+        ]);
+
+        $event = Event::findOrFail($id);
+
+        $event->nama_event = $request->nama_event;
+        $event->event_start_date = $request->event_start_date;
+        $event->event_end_date = $request->event_end_date;
+        $event->deskripsi = $request->deskripsi;
+        $event->alamat_event = $request->alamat_event;
+        $event->lokasi = $request->lokasi;
+        $event->tipe_harga = $request->tipe_harga;
+
+        $event->harga = ($request->tipe_harga === 'Berbayar') ? $request->harga : null;
+
+        if ($request->hasFile('image_cover')) {
+            $path = $request->file('image_cover')->store('event_images', 'public');
+            $event->image_cover = $path;
+        }
+
+        $event->agenda_acara = $request->agenda_acara ? json_encode($request->agenda_acara) : null;
+        $event->bintang_tamu = $request->bintang_tamu ? json_encode($request->bintang_tamu) : null;
+
+        $event->save();
+
+        return redirect()->route('event-data')->with('success', 'Event berhasil diperbarui.');
+    }
+
+    public function delete($id)
+    {
+        $event = Event::findOrFail($id);
+
+        if ($event->image_cover && file_exists(public_path('assets/images/events/' . basename($event->image_cover)))) {
+            unlink(public_path('assets/images/events/' . basename($event->image_cover)));
+        }
+
+        $event->delete();
+
+        return redirect()->route('event-data')->with('success', 'Event berhasil dihapus.');
     }
 }
