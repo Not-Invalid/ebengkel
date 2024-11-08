@@ -24,12 +24,12 @@ class CreateTbBengkelTable extends Migration
             $table->string('whatsapp', 15)->nullable();
             $table->string('tiktok')->nullable();
             $table->string('instagram')->nullable();
-            $table->json('service_available')->nullable(); // Changed to JSON type
-            $table->json('payment')->nullable();           // Changed to JSON type
-            $table->string('open_day')->nullable();        // Changed to string for days
-            $table->string('close_day')->nullable();       // Changed to string for days
+            $table->string('open_day')->nullable();    
+            $table->string('close_day')->nullable();   
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
+            $table->json('service_available')->nullable();
+            $table->json('payment')->nullable();
             $table->string('kodepos_bengkel')->nullable();
             $table->string('gmaps')->nullable();
             $table->string('lokasi_bengkel')->nullable();
@@ -46,7 +46,7 @@ class CreateTbBengkelTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down($table)
     {
         Schema::dropIfExists('tb_bengkel');
     }
