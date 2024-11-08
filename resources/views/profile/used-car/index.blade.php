@@ -15,7 +15,8 @@
             <div class="card border-1 rounded-2 mt-4">
                 <div class="card-body d-flex justify-content-center">
                     <div class="text-center">
-                        <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130" alt="">
+                        <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
+                            alt="">
                         <p>No data available.</p>
                     </div>
                 </div>
@@ -28,18 +29,33 @@
                             <div class="row">
                                 <div class="col-12 col-md-3 d-flex align-items-center justify-content-center mb-3">
                                     <div class="d-flex align-items-center">
-                                        <img src="{{ $mobil->foto_mobil ? asset('storage/' . $mobil->foto_mobil) : asset('path/to/default-image.jpg') }}"
-                                             alt="Car Image" width="180" height="180" style="border-radius: 4px;">
+                                        @if ($mobil->fotos && $mobil->fotos->file_foto_mobil_1)
+                                            <img src="{{ url($mobil->fotos->file_foto_mobil_1) }}" alt="Car Image"
+                                                width="180" height="180" style="border-radius: 4px; object-fit: cover">
+                                        @else
+                                            <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
+                                                width="180" height="180" style="border-radius: 4px">
+                                        @endif
                                     </div>
+
                                 </div>
                                 <div class="col-12 col-md-9">
                                     <span class="badge">{{ $mobil->status_mobil }}</span>
                                     <h5 class="card-title mt-3">{{ $mobil->nama_mobil ?? 'No name' }}</h5>
-                                    <h6 class="card-title mt-3">{{ $mobil->harga_mobil ?? 'No phone number' }}</h6>
+                                    <h6 class="card-title mt-3">{{ $mobil->harga_mobil ?? 'No price' }}</h6>
                                     <p class="card-text text-secondary" style="font-size: 14px">
                                         {{ $mobil->merk_mobil ?? 'No car name' }}
                                     </p>
-                                    <a href="{{-- route('mobil.edit', $mobil->id_mobil) --}}" class="btn btn-custom-3">Edit</a>
+                                    <a href="{{ route('used-car-edit', $mobil->id_mobil) }}"
+                                        class="btn btn-custom-3">Edit</a>
+
+                                    <!-- Form hapus mobil -->
+                                    <form action="{{ route('used-car-delete', $mobil->id_mobil) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE') <!-- Menyatakan bahwa ini adalah request DELETE -->
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

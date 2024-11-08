@@ -20,7 +20,6 @@ class CreateTbMobilTable extends Migration
             $table->unsignedBigInteger('merk_mobil_id')->nullable();
             $table->foreign('merk_mobil_id')->references('id')->on('tb_merk_mobil')->onDelete('set null');
             $table->integer('harga_mobil')->nullable();
-            $table->text('foto_mobil')->nullable();
             $table->string('tahun_mobil', 10)->nullable();
             $table->string('plat_nomor_mobil')->nullable();
             $table->string('nomor_rangka_mobil')->nullable();
