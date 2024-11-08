@@ -30,6 +30,8 @@ class CreateTbBengkelTable extends Migration
             $table->string('close_day')->nullable();
             $table->time('open_time')->nullable();
             $table->time('close_time')->nullable();
+            $table->json('service_available')->nullable();
+            $table->json('payment')->nullable();
             $table->string('kodepos_bengkel')->nullable();
             $table->string('gmaps')->nullable();
             $table->string('lokasi_bengkel')->nullable();
@@ -46,7 +48,7 @@ class CreateTbBengkelTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down($table)
     {
         Schema::dropIfExists('tb_bengkel');
     }
