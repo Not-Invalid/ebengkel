@@ -26,7 +26,7 @@
     <div class="d-flex justify-content-center flex-wrap gap-4 mt-4">
         <!-- Box 1 -->
         <div class="bg-white shadow rounded-3 p-4 d-flex align-items-center gap-3">
-            <div class="bg-emphasis shadow-lg rounded-circle d-flex justify-content-center align-items-center"
+            <div class="bg-emphasis shadow-sm rounded-circle d-flex justify-content-center align-items-center"
                 style="width: 64px; height: 64px;">
                 <i class="fas fa-wrench text-primary fs-2"></i>
             </div>
@@ -38,7 +38,7 @@
 
         <!-- Box 2 -->
         <div class="bg-white shadow rounded-3 p-4 d-flex align-items-center gap-3">
-            <div class="bg-emphasis shadow-lg rounded-circle d-flex justify-content-center align-items-center"
+            <div class="bg-emphasis shadow-sm rounded-circle d-flex justify-content-center align-items-center"
                 style="width: 64px; height: 64px;">
                 <i class="fas fa-user text-primary fs-2"></i>
             </div>
