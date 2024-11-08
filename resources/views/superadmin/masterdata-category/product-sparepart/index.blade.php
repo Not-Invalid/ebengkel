@@ -26,7 +26,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $category->nama_kategori_spare_part }}</td>
-                        <td>
+                        <td class="text-center">
                             <a href="{{ route('product-sparepart-edit', $category->id_kategori_spare_part) }}" class="btn btn-custom-3 my-2" title="Edit" category-bs-toggle="tooltip">
                                 <i class="fas fa-edit text-primary"></i>
                             </a>
@@ -44,5 +44,43 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="d-flex justify-content-end mt-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @if ($categories->onFirstPage())
+                    <li class="page-item disabled">
+                        <span class="page-link bg-light border-0 rounded-pill"><i class="fas fa-chevron-left"></i></span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a href="{{ $categories->previousPageUrl() }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                @endif
+
+                @foreach ($categories->getUrlRange(1, $categories->lastPage()) as $page => $url)
+                    @if ($page == $categories->currentPage())
+                        <li class="page-item active">
+                            <span class="page-num page-link text-white border-0 rounded-pill">{{ $page }}</span>
+                        </li>
+                    @else
+                        <li class="page-item">
+                            <a href="{{ $url }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark">{{ $page }}</a>
+                        </li>
+                    @endif
+                @endforeach
+
+                @if ($categories->hasMorePages())
+                    <li class="page-item">
+                        <a href="{{ $categories->nextPageUrl() }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                @else
+                    <li class="page-item disabled">
+                        <span class="page-link bg-light border-0 rounded-pill"><i class="fas fa-chevron-right"></i></span>
+                    </li>
+                @endif
+            </ul>
+        </nav>
     </div>
 @endsection
