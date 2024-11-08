@@ -19,7 +19,6 @@ class CreateTbMobilTable extends Migration
             $table->string('nama_mobil')->nullable();
             $table->string('merk_mobil')->nullable();
             $table->integer('harga_mobil')->nullable();
-            $table->text('foto_mobil')->nullable();
             $table->string('tahun_mobil', 10)->nullable();
             $table->string('plat_nomor_mobil')->nullable();
             $table->string('nomor_rangka_mobil')->nullable();
