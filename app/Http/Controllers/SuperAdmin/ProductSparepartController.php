@@ -10,7 +10,7 @@ class ProductSparepartController extends Controller
 {
     public function showCategory()
     {
-        $categories = KategoriSparePart::where('deleted_kategori_spare_part', 'N')->get();
+        $categories = KategoriSparePart::where('deleted_kategori_spare_part', 'N')->orderBy('id_kategori_spare_part', 'ASC')->paginate(10);
 
         return view('superadmin.masterdata-category.product-sparepart.index', compact('categories'));
     }
