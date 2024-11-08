@@ -14,10 +14,15 @@ class FotoMobil extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_mobil', 'id_pelanggan', 'file_foto_mobil',
-        'file_foto_mobil_2', 'file_foto_mobil_3',
-        'file_foto_mobil_4', 'file_foto_mobil_5',
-        'create_file_foto_mobil', 'delete_file_foto_mobil'
+        'id_mobil',
+        'id_pelanggan',
+        'file_foto_mobil_1',
+        'file_foto_mobil_2',
+        'file_foto_mobil_3',
+        'file_foto_mobil_4',
+        'file_foto_mobil_5',
+        'create_file_foto_mobil',
+        'delete_file_foto_mobil'
     ];
 
     public function mobil()
