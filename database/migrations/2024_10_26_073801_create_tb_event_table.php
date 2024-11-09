@@ -22,7 +22,7 @@ class CreateTbEventTable extends Migration
             $table->text('image_cover')->nullable();
             $table->string('lokasi')->nullable();
             $table->string('tipe_harga')->nullable();
-            $table->integer('harga');
+            $table->integer('harga')->default(0);
             $table->timestamps();
             $table->string('delete_event', 1)->default('N');
             $table->date('event_end_date')->nullable();
