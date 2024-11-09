@@ -50,7 +50,6 @@
         <div class="card-body">
             <form action="{{ route('event-update', $event->id_event) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT')
 
                 <div class="form-group mb-4">
                     <div class="upload-box">
@@ -58,7 +57,8 @@
                         <input type="file" class="file-input" name="image_cover" id="image_cover"
                             onchange="previewImage('image_cover', 'coverPreview')">
                         <div class="preview-container d-flex justify-content-center">
-                            <img id="coverPreview" src="{{ asset($event->image_cover) }}" alt="Cover Photo Preview" class="image-preview" style="display: {{ $event->image_cover ? 'block' : 'none' }}; width: 200px; margin-top: 10px;">
+                            <img id="coverPreview" src="{{ asset($event->image_cover) }}" alt="Cover Photo Preview" class="image-preview"
+                                style="display: {{ $event->image_cover ? 'block' : 'none' }}; width: 200px; margin-top: 10px;">
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     <!-- Event Start Date -->
                     <div class="col">
                         <div class="did-floating-label-content">
-                            <input class="did-floating-input" type="date" placeholder=" " id="event_start_date" name="event_start_date" value="{{ old('event_start_date', \Carbon\Carbon::parse($event->event_start_date)->format('Y-m-d')) }}" />
+                            <input class="did-floating-input" type="date" placeholder=" " id="event_start_date" name="event_start_date" value="{{ old('event_start_date', $event->event_start_date->format('Y-m-d')) }}" />
                             <label class="did-floating-label">Event Start Date</label>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <!-- Event End Date -->
                     <div class="col">
                         <div class="did-floating-label-content">
-                            <input class="did-floating-input" type="date" placeholder=" " id="event_end_date" name="event_end_date" value="{{ old('event_end_date', \Carbon\Carbon::parse($event->event_end_date)->format('Y-m-d')) }}" />
+                            <input class="did-floating-input" type="date" placeholder=" " id="event_end_date" name="event_end_date" value="{{ old('event_end_date', $event->event_end_date->format('Y-m-d')) }}" />
                             <label class="did-floating-label">Event End Date</label>
                         </div>
                     </div>
@@ -138,43 +138,46 @@
 
                 <!-- Agenda -->
                 <div id="agenda-container">
-                    @forelse ($event->agenda_acara as $index => $agenda)
-                        <div class="row">
-                            <div class="col">
-                                <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="text" placeholder=" " name="agenda_acara[{{ $index }}][judul]" value="{{ old('agenda_acara.' . $index . '.judul', $agenda['judul']) }}" />
-                                    <label class="did-floating-label">Judul Agenda</label>
+                    @if(is_array($event->agenda_acara) || is_object($event->agenda_acara))
+                        @foreach ($event->agenda_acara as $index => $agenda)
+                            <div class="row">
+                                <div class="col">
+                                    <div class="did-floating-label-content">
+                                        <input class="did-floating-input" type="text" placeholder=" " name="agenda_acara[{{ $index }}][judul]" value="{{ old('agenda_acara.' . $index . '.judul', $agenda['judul']) }}" />
+                                        <label class="did-floating-label">Judul Agenda</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="did-floating-label-content">
+                                        <input class="did-floating-input" type="time" placeholder=" " name="agenda_acara[{{ $index }}][waktu]" value="{{ old('agenda_acara.' . $index . '.waktu', $agenda['waktu']) }}" />
+                                        <label class="did-floating-label">Waktu</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="time" placeholder=" " name="agenda_acara[{{ $index }}][waktu]" value="{{ old('agenda_acara.' . $index . '.waktu', $agenda['waktu']) }}" />
-                                    <label class="did-floating-label">Waktu</label>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
+                        @endforeach
+                    @else
                         <p>No agenda available.</p>
-                    @endforelse
+                    @endif
                 </div>
-
 
                 <div id="additional-agenda-rows"></div>
 
                 <!-- Add Agenda Button -->
                 <div class="row my-1">
                     <div class="col text-left">
-                        <button type="button" class="btn btn-outline-secondary" id="add-agenda">Add Agenda</button>
+                        <button type="button" class="btn btn-custom-3" id="add-agenda">Add Agenda</button>
                     </div>
                 </div>
 
                 <!-- Bintang Tamu -->
-                <div id="bintang-tamu-container">
+                <div id="bintang-tamu-container" class="mt-4">
                     @forelse ($event->bintang_tamu as $bintangTamu)
-                        <div class="col">
-                            <div class="did-floating-label-content">
-                                <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" value="{{ old('bintang_tamu[]', $bintangTamu) }}" />
-                                <label class="did-floating-label">Nama Bintang Tamu</label>
+                        <div class="row">
+                            <div class="col">
+                                <div class="did-floating-label-content">
+                                    <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" value="{{ old('bintang_tamu[]', $bintangTamu) }}" />
+                                    <label class="did-floating-label">Nama Bintang Tamu</label>
+                                </div>
                             </div>
                         </div>
                     @empty
@@ -182,68 +185,118 @@
                     @endforelse
                 </div>
 
-                <div class="row mt-3">
+
+
+                <div class="row my-1">
                     <div class="col text-left">
-                        <button type="button" class="btn btn-outline-secondary" id="add-bintang-tamu">Add Bintang Tamu</button>
+                        <button type="button" class="btn btn-custom-3" id="add-bintang-tamu">Add Bintang Tamu</button>
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="row mt-4">
-                    <div class="col text-right">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
+                <div class="d-flex justify-content-start mt-3">
+                    <button type="submit" class="btn btn-custom-icon me-2">
+                        Simpan
+                    </button>
+
+                    <a href="{{ route('event-data') }}" class="btn btn-danger">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
-@stop
 
-@section('scripts')
     <script>
-        // Show or hide price input based on 'tipe_harga'
-        function toggleHargaInput() {
-            const hargaContainer = document.getElementById('hargaContainer');
-            const tipeHarga = document.getElementById('tipe_harga').value;
-            if (tipeHarga === 'Berbayar') {
-                hargaContainer.style.display = 'block';
+        function previewImage(inputId, previewId) {
+            const fileInput = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
             } else {
-                hargaContainer.style.display = 'none';
+                preview.style.display = 'none';
             }
         }
+    </script>
 
-        // Add Agenda Functionality
-        let agendaIndex = {{ count($event->agenda_acara) }};
-        document.getElementById('add-agenda').addEventListener('click', function() {
-            const row = document.createElement('div');
-            row.classList.add('row');
-            row.innerHTML = `
-                <div class="col">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="agenda_acara[${agendaIndex}][judul]" />
-                        <label class="did-floating-label">Judul Agenda</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="time" placeholder=" " name="agenda_acara[${agendaIndex}][waktu]" />
-                        <label class="did-floating-label">Waktu</label>
-                    </div>
-                </div>`;
-            document.getElementById('additional-agenda-rows').appendChild(row);
-            agendaIndex++;
-        });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show or hide price input based on 'tipe_harga'
+            function toggleHargaInput() {
+                const hargaContainer = document.getElementById('hargaContainer');
+                const tipeHarga = document.getElementById('tipe_harga').value;
+                if (tipeHarga === 'Berbayar') {
+                    hargaContainer.style.display = 'block';
+                } else {
+                    hargaContainer.style.display = 'none';
+                }
+            }
 
-        // Add Bintang Tamu Functionality
-        document.getElementById('add-bintang-tamu').addEventListener('click', function() {
-            const row = document.createElement('div');
-            row.classList.add('col');
-            row.innerHTML = `
-                <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
-                    <label class="did-floating-label">Nama Bintang Tamu</label>
-                </div>`;
-            document.getElementById('bintang-tamu-container').appendChild(row);
+            // Initialize agendaIndex based on existing agenda items
+            let agendaIndex = {{ count($event->agenda_acara) }};
+
+            // Add Agenda Functionality
+            const addAgendaButton = document.getElementById('add-agenda');
+            if (addAgendaButton) {
+                addAgendaButton.addEventListener('click', function() {
+                    console.log('Add Agenda button clicked'); // Debugging line
+
+                    const row = document.createElement('div');
+                    row.classList.add('row');
+                    row.innerHTML = `
+                        <div class="col">
+                            <div class="did-floating-label-content">
+                                <input class="did-floating-input" type="text" placeholder=" " name="agenda_acara[${agendaIndex}][judul]" />
+                                <label class="did-floating-label">Judul Agenda</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="did-floating-label-content">
+                                <input class="did-floating-input" type="time" placeholder=" " name="agenda_acara[${agendaIndex}][waktu]" />
+                                <label class="did-floating-label">Waktu</label>
+                            </div>
+                        </div>`;
+
+                    const additionalAgendaRows = document.getElementById('additional-agenda-rows');
+                    if (additionalAgendaRows) {
+                        additionalAgendaRows.appendChild(row);
+                        agendaIndex++;
+                    }
+                });
+            }
+
+            // Add Bintang Tamu Functionality
+            const addBintangTamuButton = document.getElementById('add-bintang-tamu');
+            if (addBintangTamuButton) {
+                addBintangTamuButton.addEventListener('click', function() {
+                    const row = document.createElement('div');
+                    row.classList.add('row');
+                    row.innerHTML = `
+                        <div class="col">
+                            <div class="did-floating-label-content">
+                                <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
+                                <label class="did-floating-label">Nama Bintang Tamu</label>
+                            </div>
+                        </div>
+                        `;
+
+                    const bintangTamuContainer = document.getElementById('bintang-tamu-container');
+                    if (bintangTamuContainer) {
+                        bintangTamuContainer.appendChild(row);
+                    }
+                });
+            }
+
+            // Attach event listener to tipe_harga select
+            const tipeHargaSelect = document.getElementById('tipe_harga');
+            if (tipeHargaSelect) {
+                tipeHargaSelect.addEventListener('change', toggleHargaInput);
+            }
         });
     </script>
 @endsection
