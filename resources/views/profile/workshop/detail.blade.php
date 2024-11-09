@@ -1,5 +1,8 @@
 @extends('layouts.partials.sidebar')
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/workshop.css') }}">
+@endpush
 @section('title')
     eBengkelku | Workshop Detail
 @stop
@@ -100,7 +103,7 @@
                     alt="main image" class="img-fluid main-image object-fit-cover h-50 w-75 rounded" />
             </div>
             <h2>{{ $bengkel->nama_bengkel }}</h2>
-            <p>Bersih Cepat Tepat</p>
+            <p>{{ $bengkel->tagline_bengkel }}</p>
         </div>
         <div class="row">
             <div class="col-md-8">
@@ -126,15 +129,18 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <span class="title-desc fw-semibold my-2">Service Available</span>
-                                <p class="m-0">Service At Workshop</p>
-                                <p class="m-0">Service By Call</p>
+                                @foreach ($serviceAvailable as $service)
+                                    <p class="m-0">{{ $service }}</p>
+                                @endforeach
                             </div>
+
                             <div>
                                 <span class="title-desc fw-semibold my-2">Payment Methods</span>
-                                <p class="m-0">Cash</p>
-                                <p class="m-0">Credit Card</p>
-                                <p class="m-0">Mobile Payment</p>
+                                @foreach ($paymentMethods as $method)
+                                    <p class="m-0">{{ $method }}</p>
+                                @endforeach
                             </div>
+
                         </div>
                         </p>
                     </div>
@@ -192,21 +198,151 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="all">
                     {{-- isi card --}}
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
+                            <div class="card-product p-3">
+                                <img src="{{ asset('assets/images/components/image.png') }}" class="card-img-top"
+                                    alt="Workshop Image">
+                                <div class="card-body text-start">
+                                    <h5 class="card-title">Busi</h5>
+                                    <div class="d-flex align-items-center">
+                                        <i class='bx bx-box me-1 workshop' style="font-size: 14px"></i>
+                                        <span class="workshop" style="font-size: 14px">Cimone Racing</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="tagline d-flex justify-content-start">
+                                            <p>Rp 300.000</p>
+                                        </div>
+                                    </div>
+                                    <div class="footer-card d-flex justify-content-start gap-3">
+                                        <a href="" class="btn btn-link" title="Edit">
+                                            <i class='bx bx-edit-alt' style="font-size: 1.3rem;"></i>
+                                        </a>
+                                        <form {{-- action="{{ route('profile.workshop.destroy', ['id_bengkel' => $bengkel->id_bengkel]) }}" --}} method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this workshop?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link" title="Delete">
+                                                <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="service">
                     {{-- isi card --}}
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
+                            <div class="card-product p-3">
+                                <img src="{{ asset('assets/images/components/image.png') }}" class="card-img-top"
+                                    alt="Workshop Image">
+                                <div class="card-body text-start">
+                                    <h5 class="card-title">Shockbreaker</h5>
+                                    <div class="d-flex align-items-center">
+                                        <i class='bx bx-box me-1 workshop' style="font-size: 14px"></i>
+                                        <span class="workshop" style="font-size: 14px">Cimone Racing</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="tagline d-flex justify-content-start">
+                                            <p>Rp 300.000</p>
+                                        </div>
+                                    </div>
+                                    <div class="footer-card d-flex justify-content-start gap-3">
+                                        <a href="" class="btn btn-link" title="Edit">
+                                            <i class='bx bx-edit-alt' style="font-size: 1.3rem;"></i>
+                                        </a>
+                                        <form {{-- action="{{ route('profile.workshop.destroy', ['id_bengkel' => $bengkel->id_bengkel]) }}" --}} method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this workshop?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link" title="Delete">
+                                                <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="product">
                     {{-- isi card --}}
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
+                            <div class="card-product p-3">
+                                <img src="{{ asset('assets/images/components/image.png') }}" class="card-img-top"
+                                    alt="Workshop Image">
+                                <div class="card-body text-start">
+                                    <h5 class="card-title">Oli</h5>
+                                    <div class="d-flex align-items-center">
+                                        <i class='bx bx-box me-1 workshop' style="font-size: 14px"></i>
+                                        <span class="workshop" style="font-size: 14px">Cimone Racing</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="tagline d-flex justify-content-start">
+                                            <p>Rp 300.000</p>
+                                        </div>
+                                    </div>
+                                    <div class="footer-card d-flex justify-content-start gap-3">
+                                        <a href="" class="btn btn-link" title="Edit">
+                                            <i class='bx bx-edit-alt' style="font-size: 1.3rem;"></i>
+                                        </a>
+                                        <form {{-- action="{{ route('profile.workshop.destroy', ['id_bengkel' => $bengkel->id_bengkel]) }}" --}} method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this workshop?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link" title="Delete">
+                                                <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
 
-
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane" id="spareparts">
                     {{-- isi card --}}
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
+                            <div class="card-product p-3">
+                                <img src="{{ asset('assets/images/components/image.png') }}" class="card-img-top"
+                                    alt="Workshop Image">
+                                <div class="card-body text-start">
+                                    <h5 class="card-title">Velg</h5>
+                                    <div class="d-flex align-items-center">
+                                        <i class='bx bx-box me-1 workshop' style="font-size: 14px"></i>
+                                        <span class="workshop" style="font-size: 14px">Cimone Racing</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="tagline d-flex justify-content-start">
+                                            <p>Rp 300.000</p>
+                                        </div>
+                                    </div>
+                                    <div class="footer-card d-flex justify-content-start gap-3">
+                                        <a href="" class="btn btn-link" title="Edit">
+                                            <i class='bx bx-edit-alt' style="font-size: 1.3rem;"></i>
+                                        </a>
+                                        <form {{-- action="{{ route('profile.workshop.destroy', ['id_bengkel' => $bengkel->id_bengkel]) }}" --}} method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this workshop?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-link" title="Delete">
+                                                <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
+                                            </button>
+                                        </form>
+                                    </div>
 
-
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Static Pagination -->
                 <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">

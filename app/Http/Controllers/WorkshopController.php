@@ -7,8 +7,6 @@ use App\Models\Bengkel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class WorkshopController extends Controller
 {
@@ -120,22 +118,22 @@ class WorkshopController extends Controller
         $bengkel = Bengkel::where('id_bengkel', $id)
             ->where('id_pelanggan', $customerId)
             ->first();
-    
+
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
         }
-    
+
         // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) : $bengkel->service_available;
-    
+
         // Assign variables for use in the view
         $serviceAvailable = $bengkel->service_available ?? [];
         $paymentMethods = $bengkel->payment ?? [];
-    
+
         return view('profile.workshop.edit', compact('bengkel', 'serviceAvailable', 'paymentMethods'));
     }
-        public function updateWorkshop(Request $request, $id)
+    public function updateWorkshop(Request $request, $id)
     {
         $bengkel = Bengkel::findOrFail($id);
 
@@ -202,5 +200,25 @@ class WorkshopController extends Controller
         } else {
             return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
         }
+    }
+
+    public function detailWorkshop($id)
+    {
+        $customerId = Session::get('id_pelanggan');
+        $bengkel = Bengkel::where('id_bengkel', $id)
+            ->where('id_pelanggan', $customerId)
+            ->where('delete_bengkel', 'N')
+            ->first();
+        if (!$bengkel) {
+            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
+        }
+        // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
+        $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
+        $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) : $bengkel->service_available;
+
+        // Assign variables for use in the view
+        $serviceAvailable = $bengkel->service_available ?? [];
+        $paymentMethods = $bengkel->payment ?? [];
+        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods'));
     }
 }
