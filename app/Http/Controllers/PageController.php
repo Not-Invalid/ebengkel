@@ -6,12 +6,14 @@ use App\Models\SupportCategory;
 use App\Models\SupportInfo;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use App\Models\Bengkel;
 
 class PageController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
+        return view('index', compact('bengkels'));
     }
 
     public function contact()
