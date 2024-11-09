@@ -109,19 +109,28 @@ class EventController extends Controller
 
         $event = Event::findOrFail($id);
 
-        $event->nama_event = $request->nama_event;
-        $event->event_start_date = $request->event_start_date;
-        $event->event_end_date = $request->event_end_date;
-        $event->deskripsi = $request->deskripsi;
-        $event->alamat_event = $request->alamat_event;
-        $event->lokasi = $request->lokasi;
-        $event->tipe_harga = $request->tipe_harga;
+        $event->nama_event = $request->input('nama_event');
+        $event->event_start_date = $request->input('event_start_date');
+        $event->event_end_date = $request->input('event_end_date');
+        $event->deskripsi = $request->input('deskripsi');
+        $event->alamat_event = $request->input('alamat_event');
+        $event->lokasi = $request->input('lokasi');
+        $event->tipe_harga = $request->input('tipe_harga');
 
-        $event->harga = ($request->tipe_harga === 'Berbayar') ? $request->harga : null;
+        $event->harga = $request->input('tipe_harga') === 'Gratis' ? 0 : $request->input('harga');
 
         if ($request->hasFile('image_cover')) {
-            $path = $request->file('image_cover')->store('event_images', 'public');
-            $event->image_cover = $path;
+            if ($event->image_cover && file_exists(public_path($event->image_cover))) {
+                unlink(public_path($event->image_cover));
+            }
+
+            $image = $request->file('image_cover');
+            $imageName = 'event_cover_' . now()->format('Ymd_His') . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('assets/images/events'), $imageName);
+
+            $event->image_cover = 'assets/images/events/' . $imageName;
+        } else {
+            $event->image_cover = $event->image_cover ?? null;
         }
 
         $event->agenda_acara = $request->agenda_acara ? json_encode($request->agenda_acara) : null;
@@ -131,6 +140,8 @@ class EventController extends Controller
 
         return redirect()->route('event-data')->with('success', 'Event berhasil diperbarui.');
     }
+
+
 
     public function delete($id)
     {
