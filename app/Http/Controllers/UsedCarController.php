@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\FotoMobil;
 use App\Models\UsedCar;
+use App\Models\MerkMobil;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -61,17 +62,17 @@ class UsedCarController extends Controller
         if (!Session::has('id_pelanggan')) {
             return redirect()->route('home')->with('error_status', 'You must be logged in to add an usedcar.');
         }
-        return view('profile.used-car.create');
+
+        $carMerks = MerkMobil::all();
+        return view('profile.used-car.create', compact('carMerks'));
     }
 
     public function store(Request $request)
     {
-        // Mendapatkan ID pelanggan dari sesi
         $pelanggan = Session::get('id_pelanggan');
 
-        // Mengambil data input dari form
         $nama_mobil = $request->nama_mobil;
-        $merk_mobil = $request->merk_mobil;
+        $merk_mobil_id = $request->merk_mobil_id;
         $harga_mobil = str_replace('.', '', $request->harga_mobil);
         $harga_mobil = is_numeric($harga_mobil) ? (float) $harga_mobil : 0;
         $tahun_mobil = $request->tahun_mobil;
@@ -90,7 +91,6 @@ class UsedCarController extends Controller
         $lokasi_mobil = $request->lokasi_mobil;
         $kodepos_mobil = $request->kodepos_mobil;
 
-        // Set foto default jika tidak ada file yang diunggah
         $defaultFoto = url('public/assets/images/components/image.png');
         $fileUrls = [
             'file_foto_mobil_1' => $defaultFoto,
@@ -123,7 +123,7 @@ class UsedCarController extends Controller
         $mobil = UsedCar::create([
             'id_pelanggan' => $pelanggan,
             'nama_mobil' => $nama_mobil,
-            'merk_mobil' => $merk_mobil,
+            'merk_mobil_id' => $merk_mobil_id,
             'harga_mobil' => $harga_mobil,
             'tahun_mobil' => $tahun_mobil,
             'plat_nomor_mobil' => $plat_nomor_mobil,
@@ -188,7 +188,7 @@ class UsedCarController extends Controller
 
         // Mengambil data dari form request
         $nama_mobil = $request->nama_mobil;
-        $merk_mobil = $request->merk_mobil;
+        $merk_mobil_id = $request->merk_mobil_id;
         $harga_mobil = str_replace('.', '', $request->harga_mobil); // Menghilangkan titik pada harga
         $harga_mobil = is_numeric($harga_mobil) ? (float) $harga_mobil : 0;
         $tahun_mobil = $request->tahun_mobil;
@@ -208,7 +208,7 @@ class UsedCarController extends Controller
         // Memperbarui data mobil
         $mobil->update([
             'nama_mobil' => $nama_mobil,
-            'merk_mobil' => $merk_mobil,
+            'merk_mobil_id' => $merk_mobil_id,
             'harga_mobil' => $harga_mobil,
             'tahun_mobil' => $tahun_mobil,
             'plat_nomor_mobil' => $plat_nomor_mobil,
@@ -268,7 +268,6 @@ class UsedCarController extends Controller
             ]);
         }
 
-        // Redirect ke halaman profile dengan pesan sukses
         return redirect()->route('profile-used-car')->with('status', 'Mobil berhasil diperbarui!');
     }
 
@@ -305,9 +304,7 @@ class UsedCarController extends Controller
     private function deleteFolderIfEmpty($folderPath)
     {
         if (is_dir($folderPath)) {
-            $files = array_diff(scandir($folderPath), array('.', '..'));
-
-            if (empty($files)) {
+            if (count(scandir($folderPath)) == 2) { // Hanya '.' dan '..' yang ada
                 rmdir($folderPath);
             }
         }
