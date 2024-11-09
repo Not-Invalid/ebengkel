@@ -19,12 +19,16 @@ class Event extends Model
         'lokasi',
         'tipe_harga',
         'harga',
+        'agenda_acara',
+        'bintang_tamu',
         'delete_event',
     ];
 
     protected $casts = [
         'agenda_acara' => 'array',
         'bintang_tamu' => 'array',
+        'event_start_date' => 'date',
+        'event_end_date' => 'date',
     ];
 
 }
