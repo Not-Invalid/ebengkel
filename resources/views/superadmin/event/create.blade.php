@@ -159,13 +159,13 @@
                 <!-- Add Agenda Button -->
                 <div class="row my-1">
                     <div class="col text-left">
-                        <button type="button" class="btn btn-outline-secondary" id="add-agenda">Add Agenda</button>
+                        <button type="button" class="btn btn-custom-3" id="add-agenda">Add Agenda</button>
                     </div>
                 </div>
 
 
                 <!-- Bintang Tamu -->
-                <div class="row"  id="bintang-tamu-container" >
+                <div class="row mt-3"  id="bintang-tamu-container" >
                     <div class="col">
                         <div class="did-floating-label-content">
                             <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
@@ -174,17 +174,18 @@
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row my-1">
                     <div class="col text-left">
-                        <button type="button" class="btn btn-outline-secondary" id="add-bintang-tamu">Add Bintang Tamu</button>
+                        <button type="button" class="btn btn-custom-3" id="add-bintang-tamu">Add Bintang Tamu</button>
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="row mt-4">
-                    <div class="col text-right">
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
+                <div class="d-flex justify-content-start mt-3">
+                    <button type="submit" class="btn btn-custom-icon me-2">
+                        Simpan
+                    </button>
+
+                    <a href="{{ route('event-data') }}" class="btn btn-danger">Cancel</a>
                 </div>
             </form>
         </div>
@@ -231,12 +232,12 @@
             newRow.innerHTML = `
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
+                        <input class="did-floating-input" type="text" placeholder="" name="bintang_tamu[]" />
                         <label class="did-floating-label">Nama Bintang Tamu</label>
                     </div>
                 </div>
                 <div class="col-auto">
-                    <span class="remove-button" onclick="removeBintangTamu(this)"><i class="fas fa-trash"></i></span>
+                    <span class="remove-button" onclick="removeBintangTamu(this)"><i class="fas fa-trash mt-2"></i></span>
                 </div>
             `;
             container.appendChild(newRow);
@@ -253,13 +254,13 @@ if (addAgendaButton) {
         newRow.innerHTML = `
             <div class="col">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder="" name="agenda[]" />
+                    <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[0][judul]" />
                     <label class="did-floating-label">Judul Agenda</label>
                 </div>
             </div>
             <div class="col">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="time" placeholder="" name="waktu[]" />
+                    <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[0][waktu]"/>
                     <label class="did-floating-label">Waktu</label>
                 </div>
             </div>
