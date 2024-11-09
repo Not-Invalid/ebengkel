@@ -16,7 +16,7 @@ class UsedCar extends Model
     protected $fillable = [
         'id_pelanggan',
         'nama_mobil',
-        'merk_mobil',
+        'merk_mobil_id',
         'harga_mobil',
         'tahun_mobil',
         'plat_nomor_mobil',
