@@ -133,7 +133,7 @@ Route::get('event/detail', [EventController::class, 'detail'])->name('event.deta
 
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
-Route::get('workshop/detail', [WorkshopController::class, 'detail'])->name('workshop.detail');
+Route::get('workshop/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
 Route::get('/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
 Route::post('/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
 Route::get('/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
