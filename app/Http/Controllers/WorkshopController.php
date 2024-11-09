@@ -93,8 +93,26 @@ class WorkshopController extends Controller
 
         Bengkel::create($validatedData);
 
-        return redirect()->route('profile.workshop')->with('success', 'Workshop created successfully.');
+        return redirect()->route('profile.workshop')->with('status', 'Workshop created successfully.');
     }
+
+    // public function editWorkshop($id)
+    // {
+    //     $customerId = Session::get('id_pelanggan');
+    //     $bengkel = Bengkel::where('id_bengkel', $id)
+    //         ->where('id_pelanggan', $customerId)
+    //         ->first();
+
+    //     if (!$bengkel) {
+    //         return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
+    //     }
+
+    //     // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
+    //     $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment) : $bengkel->payment;
+    //     $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available) : $bengkel->service_available;
+
+    //     return view('profile.workshop.edit', compact('bengkel'));
+    // }
 
     public function editWorkshop($id)
     {
@@ -102,19 +120,22 @@ class WorkshopController extends Controller
         $bengkel = Bengkel::where('id_bengkel', $id)
             ->where('id_pelanggan', $customerId)
             ->first();
-
+    
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
         }
-
+    
         // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
-        $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment) : $bengkel->payment;
-        $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available) : $bengkel->service_available;
-
-        return view('profile.workshop.edit', compact('bengkel'));
+        $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
+        $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) : $bengkel->service_available;
+    
+        // Assign variables for use in the view
+        $serviceAvailable = $bengkel->service_available ?? [];
+        $paymentMethods = $bengkel->payment ?? [];
+    
+        return view('profile.workshop.edit', compact('bengkel', 'serviceAvailable', 'paymentMethods'));
     }
-
-    public function updateWorkshop(Request $request, $id)
+        public function updateWorkshop(Request $request, $id)
     {
         $bengkel = Bengkel::findOrFail($id);
 
@@ -166,7 +187,7 @@ class WorkshopController extends Controller
         // Update the bengkel record with validated data
         $bengkel->update($validatedData);
 
-        return redirect()->route('profile.workshop')->with('success', 'Workshop updated successfully.');
+        return redirect()->route('profile.workshop')->with('status', 'Workshop updated successfully.');
     }
 
     public function destroyWorkshop($id)
