@@ -18,10 +18,26 @@ class WorkshopController extends Controller
         return view('workshop.index', compact('bengkels'));
     }
 
-    public function detail()
+    public function detail($id)
     {
-        return view('workshop.detail');
+        $bengkel = Bengkel::where('id_bengkel', $id)
+            ->where('delete_bengkel', 'N')
+            ->first();
+    
+        if (!$bengkel) {
+            return redirect()->route('workshop.index')->with('error_status', 'Workshop not found.');
+        }
+        $schedule = [
+            $bengkel->open_day .' - '. $bengkel->close_day .', '. $bengkel->open_time->format('H:i') . ' - ' . $bengkel->close_time->format('H:i')
+        ];
+        // Decode the JSON fields into arrays
+        $serviceAvailable = json_decode($bengkel->service_available, true);
+        $paymentMethods = json_decode($bengkel->payment, true);
+    
+        return view('workshop.detail', compact('bengkel','schedule', 'serviceAvailable', 'paymentMethods'));
     }
+    
+    
 
     public function showWorkshop()
     {
