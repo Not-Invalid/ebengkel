@@ -280,6 +280,45 @@
           </div>
         </div>
 
+        {{-- <!-- Service Available -->
+        <div class="form-group mb-4">
+          <label for="service_available" class="section-title">Service Available</label>
+          <div class="options-group">
+            <label class="option-item">
+              <input type="checkbox" name="service_available[]" value="Service offline di bengkel" id="serviceOffline"
+                {{ in_array('Service offline di bengkel', old('service_available', $serviceAvailable)) ? 'checked' : '' }}>
+              <span>Service at Workshop</span>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" name="service_available[]" value="Service panggilan via telepon"
+                id="servicePanggilan"
+                {{ in_array('Service panggilan via telepon', old('service_available', $serviceAvailable)) ? 'checked' : '' }}>
+              <span>Service by Call</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="form-group mb-4">
+          <label for="payment" class="section-title">Payment Methods</label>
+          <div class="options-group">
+            <label class="option-item">
+              <input type="checkbox" name="payment[]" value="Cash" id="paymentCash"
+                {{ in_array('Cash', old('payment', $paymentMethods)) ? 'checked' : '' }}>
+              <span>Cash</span>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" name="payment[]" value="Credit Card" id="paymentCreditCard"
+                {{ in_array('Credit Card', old('payment', $paymentMethods)) ? 'checked' : '' }}>
+              <span>Credit Card</span>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" name="payment[]" value="Mobile Payment" id="paymentMobile"
+                {{ in_array('Mobile Payment', old('payment', $paymentMethods)) ? 'checked' : '' }}>
+              <span>Mobile Payment</span>
+            </label>
+          </div>
+        </div> --}}
         <!-- Service Available -->
         <div class="form-group mb-4">
           <label for="service_available" class="section-title">Service Available</label>
