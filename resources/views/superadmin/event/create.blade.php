@@ -141,13 +141,13 @@
                     <div class="row">
                         <div class="col">
                             <div class="did-floating-label-content">
-                                <input class="did-floating-input" type="text" placeholder="" name="agenda[]" />
+                                <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[0][judul]" />
                                 <label class="did-floating-label">Judul Agenda</label>
                             </div>
                         </div>
                         <div class="col">
                             <div class="did-floating-label-content">
-                                <input class="did-floating-input" type="time" placeholder="" name="waktu[]" />
+                                <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[0][waktu]" />
                                 <label class="did-floating-label">Waktu</label>
                             </div>
                         </div>
@@ -191,24 +191,26 @@
     </div>
 
     <script>
-       document.addEventListener('DOMContentLoaded', function() {
-    function previewImage(inputId, previewId) {
-        const input = document.getElementById(inputId);
-        const preview = document.getElementById(previewId);
+        function previewImage(inputId, previewId) {
+          const input = document.getElementById(inputId);
+          const preview = document.getElementById(previewId);
 
-        if (input.files && input.files[0]) {
+          if (input.files && input.files[0]) {
             const reader = new FileReader();
+
             reader.onload = function(e) {
-                preview.src = e.target.result;
-                preview.style.display = 'block';
+              preview.src = e.target.result;
+              preview.style.display = 'block';
             };
+
             reader.readAsDataURL(input.files[0]);
-        } else {
+          } else {
             preview.style.display = 'none';
             preview.src = '';
+          }
         }
-    }
-
+    </script>
+    <script>
     function toggleHargaInput() {
         const tipeHarga = document.getElementById('tipe_harga').value;
         const hargaContainer = document.getElementById('hargaContainer');
@@ -244,7 +246,7 @@
     const addAgendaButton = document.getElementById('add-agenda');
 if (addAgendaButton) {
     addAgendaButton.addEventListener('click', function () {
-        const container = document.getElementById('additional-agenda-rows'); // Target the new container for added rows
+        const container = document.getElementById('additional-agenda-rows');
         const newRow = document.createElement('div');
         newRow.classList.add('row');
 
@@ -263,12 +265,9 @@ if (addAgendaButton) {
             </div>
         `;
 
-        // Append the new row to the additional-agenda-rows div
         container.appendChild(newRow);
     });
 }
-
-});
 
     </script>
 @endsection
