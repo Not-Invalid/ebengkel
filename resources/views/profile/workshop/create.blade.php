@@ -254,12 +254,11 @@
         <label for="service_available" class="section-title">Service Available</label>
         <div class="options-group">
           <label class="option-item">
-            <input type="checkbox" name="service_available[]" value="Service offline di bengkel" id="serviceOffline">
+            <input type="checkbox" name="service_available[]" value="Service at Workshop" id="serviceOffline">
             <span>Service at Workshop</span>
           </label>
           <label class="option-item">
-            <input type="checkbox" name="service_available[]" value="Service panggilan via telepon"
-              id="servicePanggilan">
+            <input type="checkbox" name="service_available[]" value="Service by Call" id="servicePanggilan">
             <span>Service by Call</span>
           </label>
         </div>
