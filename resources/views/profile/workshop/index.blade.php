@@ -35,10 +35,10 @@
                   <i class='bx bx-map-pin me-2' style="font-size: 16px; line-height: 1;"></i>
                   <p class="location m-0">{{ \Illuminate\Support\Str::limit($bengkel->alamat_bengkel, 18) }}</p>
                 </div>
-                <h5 class="card-title">{{ $bengkel->nama_bengkel }}</h5>
+                <h5 class="card-title">{{ \Illuminate\Support\Str::limit($bengkel->nama_bengkel, 16) }}</h5>
                 <div class="mt-3">
                   <div class="tagline d-flex justify-content-start">
-                    <span class="tagline">{{ $bengkel->tagline_bengkel }}</span>
+                    <span class="tagline">{{ \Illuminate\Support\Str::limit($bengkel->tagline_bengkel, 16) }}</span>
                   </div>
                 </div>
                 <div class="footer-card d-flex justify-content-start gap-3 mt-3">
