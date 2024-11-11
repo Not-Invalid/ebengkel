@@ -18,8 +18,8 @@ class CreateTbSparePartTable extends Migration
             $table->integer('id_bengkel')->nullable();
             $table->integer('id_jenis_spare_part')->nullable();
             $table->unsignedBigInteger('id_kategori_spare_part')->nullable(); // Make it nullable
-            $table->integer('id_kualitas_spare_part')->nullable();
-            $table->integer('id_merk_spare_part')->nullable();
+            $table->string('kualitas_spare_part')->nullable();
+            $table->string('merk_spare_part')->nullable();
             $table->string('nama_spare_part')->nullable();
             $table->integer('harga_spare_part')->nullable();
             $table->text('keterangan_spare_part')->nullable();
