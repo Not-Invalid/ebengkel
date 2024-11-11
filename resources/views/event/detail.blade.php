@@ -1,10 +1,13 @@
 @extends('layouts.app')
+
 @push('css')
   <link rel="stylesheet" href="{{ asset('assets/css/event.css') }}">
 @endpush
+
 @section('title')
   eBengkelku | Event Detail
 @stop
+
 @section('content')
   <section class="section section-white"
     style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom: 20px;">
@@ -21,39 +24,22 @@
       </div>
     </div>
   </section>
+
+  <!-- Event Gallery Section (only main image) -->
   <div class="container gallery">
     <section class="pt-5 image">
       <div class="row">
-        <div class="col-md-6 gallery-item">
-          <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg" alt="main image"
+        <div class="col-md-12 gallery-item">
+          <img src="{{ asset($event->image_cover) }}" alt="{{ $event->nama_event }}"
             class="img-fluid main-image object-fit-cover" />
-        </div>
-        <div class="col-md-6">
-          <div class="row">
-            <div class="col-md-6 col-6 picture">
-              <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg" alt="small 1"
-                class="img-fluid small-image-1 object-fit-cover" />
-            </div>
-            <div class="col-md-6 col-6 picture">
-              <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg" alt="small 2"
-                class="img-fluid small-image-2 object-fit-cover" />
-            </div>
-            <div class="col-md-6 col-6 picture">
-              <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg" alt="small 3"
-                class="img-fluid small-image-3 object-fit-cover" />
-            </div>
-            <div class="col-md-6 col-6 picture position-relative">
-              <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg" alt="small 4"
-                class="img-fluid small-image-4 object-fit-cover" />
-            </div>
-          </div>
         </div>
       </div>
     </section>
+
     <!-- Event Title and Image -->
-    <div class="row py-5">
+    <div class="row py-4">
       <div class="col-md-12 text-center">
-        <h2 class="title-event">Mercy Fest 2024</h2>
+        <h2 class="title-event">{{ $event->nama_event }}</h2>
       </div>
     </div>
 
@@ -66,43 +52,34 @@
             <!-- Date and Time -->
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-calendar text-primary me-2'></i>
-              <span><span class="title-desc">Tanggal:</span> 1 November 2024</span>
+              <span><span class="title-desc">Tanggal:</span> {{ \Carbon\Carbon::parse($event->event_start_date)->format('d F Y') }}</span>
             </div>
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-time text-primary me-2'></i>
-              <span><span class="title-desc">Waktu:</span> 10:00 - 17:00</span>
+              <span><span class="title-desc">Waktu:</span> {{ \Carbon\Carbon::parse($event->event_start_date)->format('H:i') }} - {{ \Carbon\Carbon::parse($event->event_end_date)->format('H:i') }}</span>
             </div>
 
             <!-- Location -->
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-map text-primary me-2'></i>
-              <span><span class="title-desc">Lokasi:</span> Jalanin Aja Dulu No.1, Kab. Tangerang</span>
+              <span><span class="title-desc">Lokasi:</span> {{ $event->alamat_event }}</span>
             </div>
             <hr>
             <!-- Description -->
             <p class="mb-4">
               <span class="title-desc my-2">Deskripsi Acara:</span> <br>
-              Mercy Fest 2024 adalah acara tahunan yang menyatukan
-              para pecinta otomotif dari seluruh negeri. Acara ini akan menampilkan produk-produk terbaru, layanan bengkel
-              modern, serta kesempatan untuk belajar dari para ahli di bidang otomotif. Jangan lewatkan kesempatan untuk
-              melihat berbagai kendaraan dan teknologi terkini, serta berinteraksi dengan para profesional industri.
+              {{ $event->deskripsi }}
             </p>
             <hr>
             <!-- Agenda -->
             <h5 class="title-desc">Agenda Acara</h5>
             <ul class="agenda-event">
-              <li class="list-text my-2">
-                <i class='bx bx-check-circle text-success align-icon me-2'></i>
-                Sesi Pembukaan - 10:00
-              </li>
-              <li class="list-text my-2">
-                <i class='bx bx-check-circle text-success align-icon me-2'></i>
-                Workshop Teknologi - 12:00
-              </li>
-              <li class="list-text my-2">
-                <i class='bx bx-check-circle text-success align-icon me-2'></i>
-                Penutupan - 17:00
-              </li>
+                @foreach ($event->agenda_acara as $agenda)
+                    <li class="list-text my-2">
+                        <i class='bx bx-check-circle text-success align-icon me-2'></i>
+                        <strong>{{ $agenda['judul'] }}</strong> - {{ $agenda['waktu'] }}
+                    </li>
+                @endforeach
             </ul>
           </div>
         </div>
@@ -117,23 +94,15 @@
             Pembicara Acara
           </div>
           <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-              <img src="{{ asset('assets/images/components/avatar.png') }}" class="rounded-circle me-3" alt="Speaker"
-                width="50">
-              <div>
-                <span class="title-desc">Fawas Alexandre Steven</span><br>
-                Ahli Teknologi
-              </div>
-            </div>
-            <div class="d-flex align-items-center">
-              <img src="{{ asset('assets/images/components/avatar.png') }}" class="rounded-circle me-3" alt="Speaker"
-                width="50">
-              <div>
-                <span class="title-desc">Revan Smith</span><br>
-                Pengembang Perangkat Agak Lunak
-              </div>
-            </div>
-          </div>
+            @foreach ($event->bintang_tamu as $speaker)
+                <div class="d-flex align-items-center mb-3">
+                    <img src="{{ asset('assets/images/components/avatar.png') }}" class="rounded-circle me-3" alt="Speaker" width="50">
+                    <div>
+                        <span class="title-desc">{{ $speaker }}</span><br>
+                    </div>
+                </div>
+            @endforeach
+        </div>
         </div>
 
         <!-- Ticket Section -->
@@ -143,7 +112,7 @@
             Tiket Acara
           </div>
           <div class="card-body text-center">
-            <h5 class="fw-bold">Rp 100,000</h5>
+            <h5 class="fw-bold">Rp {{ number_format($event->harga, 0, ',', '.') }}</h5>
             <a href="#" class="btn btn-daftar w-100 mt-2">
               <i class='bx bx-cart align-icon'></i> Daftar Sekarang
             </a>
