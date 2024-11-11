@@ -42,9 +42,11 @@
                                 <div class="col-12 col-md-9">
                                     <span class="badge">{{ $mobil->status_mobil }}</span>
                                     <h5 class="card-title mt-3">{{ $mobil->nama_mobil ?? 'No name' }}</h5>
-                                    <h6 class="card-title mt-3">{{ $mobil->harga_mobil ?? 'No price' }}</h6>
+                                    <h6 class="card-title mt-3">Rp
+                                        {{ number_format($mobil->harga_mobil, 0, ',', '.') }}
+                                    </h6>
                                     <p class="card-text text-secondary" style="font-size: 14px">
-                                        {{ $mobil->merk_mobil ?? 'No car name' }}
+                                        {{ $mobil->merkMobil->nama_merk ?? 'No car name' }}
                                     </p>
                                     <a href="{{ route('used-car-edit', $mobil->id_mobil) }}"
                                         class="btn btn-custom-3">Edit</a>
@@ -53,7 +55,7 @@
                                     <form action="{{ route('used-car-delete', $mobil->id_mobil) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
-                                        @method('DELETE') <!-- Menyatakan bahwa ini adalah request DELETE -->
+                                        @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Hapus</button>
                                     </form>
                                 </div>
