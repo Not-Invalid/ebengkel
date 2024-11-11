@@ -4,7 +4,7 @@
 @endpush
 
 @section('title')
-    eBengkelku - Profile
+    eBengkelku - used Car
 @stop
 
 @section('content')
@@ -53,39 +53,74 @@
         </button>
 
         <div class="container">
-            <div class="row">
-                @foreach ($cars as $car)
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
-                        <a href="{{ route('usedcar.detail', $car->id) }}" class="card-event p-3">
-                            <img src="{{ asset('storage/' . $car->image) }}" class="card-img-top" alt="{{ $car->name }}">
-                            <div class="card-body text-start">
-                                <div class="d-flex align-items-center location-map mt-3">
-                                    <i class='bx bx-map-pin'></i>
-                                    <p class="location ms-2">{{ $car->location }}</p>
-                                </div>
-                                <p class="card-title">{{ $car->brand }}</p>
-                                <div class="d-flex align-items-center event-date">
-                                    <span class="jenis">{{ $car->model }}</span>
-                                </div>
-                                <div class="footer-card">
-                                    <div class="price d-flex justify-content-start">
-                                        <span class="price">Rp{{ number_format($car->price, 0, ',', '.') }}</span>
-                                    </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        @if ($mobilList->isEmpty())
+                            <div class="d-flex justify-content-center pb-5">
+                                <div class="text-center">
+                                    <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
+                                        width="200" alt="No workshops">
+                                    <p>No data available for usedCar.</p>
                                 </div>
                             </div>
-                        </a>
+                        @else
+                            <div class="row">
+                                @foreach ($mobilList as $car)
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
+                                        <a href="{{ route('usedcar.detail', $car->id_mobil) }}" class="card-event p-3">
+                                            @if ($car->fotos && $car->fotos->file_foto_mobil_1)
+                                                <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
+                                                    class="card-img-top">
+                                            @else
+                                                <img src="{{ asset('assets/images/components/image.png') }}"
+                                                    alt="Car Image"class="card-img-top">
+                                            @endif
+                                            <div class="card-body text-start">
+                                                <div class="d-flex align-items-center location-map mt-3">
+                                                    <i class='bx bx-map-pin'></i>
+                                                    <p class="location ms-2">
+                                                        {{ \Illuminate\Support\Str::limit($car->lokasi_mobil, 15) }}
+                                                    </p>
+                                                </div>
+                                                <p class="card-title">
+                                                    {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}
+                                                </p>
+                                                <div class="d-flex align-items-center event-date">
+                                                    <span class="jenis">{{ $car->merkMobil->nama_merk }}</span>
+                                                </div>
+                                                <div class="footer-card">
+                                                    <div class="price d-flex justify-content-start">
+                                                        <span
+                                                            class="price">Rp{{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                        <!-- Static Pagination -->
+                        <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
-                @endforeach
+                </div>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center mt-4">
-            {{ $cars->links() }}
-        </div>
-
-
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-            aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-body">
                 <div class="offcanvas-header">
                     <h5 class="brand-title" onclick="toggleSection('brand')">
@@ -199,7 +234,5 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 @endsection
