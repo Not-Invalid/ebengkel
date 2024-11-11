@@ -23,12 +23,13 @@ class CreateTbEventTable extends Migration
             $table->string('lokasi')->nullable();
             $table->string('tipe_harga')->nullable();
             $table->integer('harga')->default(0);
+            $table->json('agenda_acara')->nullable(); // Store agenda as JSON
+            $table->json('bintang_tamu')->nullable(); // Store guest speakers as JSON
             $table->timestamps();
             $table->string('delete_event', 1)->default('N');
             $table->date('event_end_date')->nullable();
-            $table->json('agenda_acara')->nullable();
-            $table->json('bintang_tamu')->nullable();
         });
+
     }
 
     /**
