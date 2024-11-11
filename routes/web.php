@@ -45,9 +45,9 @@ Route::prefix('superadmin')->group(function () {
     Route::get('event-data', [SuperAdminEventController::class, 'index'])->name('event-data');
     Route::get('event-data/create', [SuperAdminEventController::class, 'create'])->name('event-create');
     Route::post('event-data/store', [SuperAdminEventController::class, 'store'])->name('event-store');
-    Route::get('event-data/edit/{id_event}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
-    Route::post('event-data/update/{id_event}', [SuperAdminEventController::class, 'update'])->name('event-update');
-    Route::delete('event-data/delete/{id_event}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
+    Route::get('event-data/edit/{id}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
+    Route::post('event-data/update/{id}', [SuperAdminEventController::class, 'update'])->name('event-update');
+    Route::delete('event-data/delete/{id}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
 
     Route::get('merk-mobil', [MerkMobilController::class, 'index'])->name('merk-mobil');
     Route::get('merk-mobil/create', [MerkMobilController::class, 'create'])->name('merk-mobil-create');
@@ -129,7 +129,7 @@ Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword
 
 // Event route
 Route::get('event', [EventController::class, 'show'])->name('event.show');
-Route::get('event/detail', [EventController::class, 'detail'])->name('event.detail');
+Route::get('event/{id}', [EventController::class, 'detail'])->name('event.detail');
 
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
