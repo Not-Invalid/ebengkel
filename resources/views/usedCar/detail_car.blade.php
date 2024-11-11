@@ -23,26 +23,51 @@
         <section class="pt-5 image">
             <div class="row">
                 <div class="col-md-6 gallery-item">
-                    <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                        alt="main image" class="img-fluid main-image object-fit-cover" />
+                    @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_1)
+                        <img src="{{ url($mobilList->fotos->file_foto_mobil_1) }}" alt="Car Image"
+                            class="img-fluid main-image object-fit-cover">
+                    @else
+                        <img src="{{ asset('assets/images/components/image.png') }}"
+                            alt="Car Image"class="img-fluid main-image object-fit-cover">
+                    @endif
                 </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6 col-6 picture">
-                            <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                alt="small 1" class="img-fluid small-image-1 object-fit-cover" />
+                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_2)
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_2) }}" alt="Car Image"
+                                    class="img-fluid small-image-1 object-fit-cover">
+                            @else
+                                <img src="{{ asset('assets/images/components/image.png') }}"
+                                    alt="Car Image"class="img-fluid small-image-1 object-fit-cover">
+                            @endif
                         </div>
                         <div class="col-md-6 col-6 picture">
-                            <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                alt="small 2" class="img-fluid small-image-2 object-fit-cover" />
+                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_3)
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_3) }}" alt="Car Image"
+                                    class="img-fluid img-fluid small-image-2 object-fit-cover">
+                            @else
+                                <img src="{{ asset('assets/images/components/image.png') }}"
+                                    alt="Car Image"class="img-fluid img-fluid small-image-2 object-fit-cover">
+                            @endif
                         </div>
                         <div class="col-md-6 col-6 picture">
-                            <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                alt="small 3" class="img-fluid small-image-3 object-fit-cover" />
+                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_4)
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_4) }}" alt="Car Image"
+                                    class="img-fluid img-fluid small-image-3 object-fit-cover">
+                            @else
+                                <img src="{{ asset('assets/images/components/image.png') }}"
+                                    alt="Car Image"class="img-fluid img-fluid small-image-3 object-fit-cover">
+                            @endif
                         </div>
                         <div class="col-md-6 col-6 picture position-relative">
-                            <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                                alt="small 4" class="img-fluid small-image-4 object-fit-cover" />
+                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_5)
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_5) }}" alt="Car Image"
+                                    class="img-fluid img-fluid small-image-4 object-fit-cover">
+                            @else
+                                <img src="{{ asset('assets/images/components/image.png') }}"
+                                    alt="Car Image"class="img-fluid img-fluid small-image-4 object-fit-cover">
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -51,7 +76,8 @@
         <!-- Event Title and Image -->
         <div class="row py-5">
             <div class="col-md-12 text-center">
-                <h2 class="title-event">Mercedes-Benz E200</h2>
+                <h2 class="title-event"> {{ $mobilList->merkMobil->nama_merk }}
+                </h2>
             </div>
         </div>
 
@@ -64,7 +90,7 @@
                         <!-- Date and Time -->
                         <div class="d-flex align-items-center mb-3">
                             <div>
-                                <h3 class="title-car">Mercedes-Benz Mercedes Benz A200 2018 (2018)</h3>
+                                <h3 class="title-car">{{ $mobilList->nama_mobil }}</h3>
 
                             </div>
                             {{-- <i class='bx bx-calendar text-primary me-2'></i>
@@ -72,9 +98,9 @@
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <i class='bx bx-gas-pump me-2'></i>
-                            <span class="title-desc me-2">Bensin | </span>
+                            <span class="title-desc me-2">{{ $mobilList->bahan_bakar_mobil }} | </span>
                             <i class='bx bx-tachometer me-2'></i>
-                            <span class="title-desc me-2">26,000 Km | </span>
+                            <span class="title-desc me-2">{{ $mobilList->km_mobil }} Km| </span>
                             <i class='bx bx-sitemap me-2'></i>
                             <span class="title-desc">Authomatic </span>
                         </div>
@@ -89,7 +115,7 @@
                         <!-- Description -->
                         <p class="mb-4">
                             <span class="title-desc my-2">Deskripsi Mobil:</span> <br>
-                            A200 tahun 2018 km 26.xxx
+                            {{ $mobilList->keterangan_mobil }}
                         </p>
                         <hr>
                         {{-- <!-- Agenda -->
@@ -124,7 +150,7 @@
                             <img src="{{ asset('assets/images/components/avatar.png') }}" class="rounded-circle me-3"
                                 alt="Speaker" width="50">
                             <div>
-                                <span class="title-desc">Dr. Tjahjanto</span><br>
+                                <span class="title-desc">{{ $mobilList->pelanggan->nama_pelanggan }}</span><br>
                                 {{-- Ahli Teknologi --}}
                             </div>
                         </div>
@@ -146,7 +172,8 @@
                     </div>
                     <div class="card-body text-center">
                         <h5 class="fw-bold">Rp 160,000,000</h5>
-                        <a href="#" class="btn btn-daftar w-100 mt-2">
+                        <a href="https://wa.me/{{ $mobilList->pelanggan->telp_pelanggan }}"
+                            class="btn btn-daftar w-100 mt-2">
                             <i class='bx bxl-whatsapp align-icon'></i> Hubungi Penjual
                         </a>
                     </div>
