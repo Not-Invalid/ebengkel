@@ -11,7 +11,6 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::where('delete_event', 'N')->get();
-
         return view('superadmin.event.index', compact('events'));
     }
 
@@ -22,71 +21,66 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'nama_event' => 'required|string|max:255',
             'event_start_date' => 'required|date',
             'event_end_date' => 'required|date|after_or_equal:event_start_date',
             'deskripsi' => 'required|string',
             'alamat_event' => 'required|string',
-            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'lokasi' => 'required|string',
-            'tipe_harga' => 'required|in:Gratis,Berbayar',
-            'harga' => 'nullable|numeric|min:0',
-            'agenda_acara' => 'nullable|array',
-            'agenda_acara.*.judul' => 'required|string|max:255',
-            'agenda_acara.*.waktu' => 'required|string|max:255',
-            'bintang_tamu' => 'nullable|array',
-            'bintang_tamu.*' => 'string|max:255',
+            'tipe_harga' => 'required|string|in:Gratis,Berbayar',
+            'harga' => 'nullable|numeric|gt:0',
+            'image_cover' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'agenda_acara.*.judul' => 'nullable|string|max:255',
+            'agenda_acara.*.waktu' => 'nullable|date_format:H:i',
+            'bintang_tamu.*' => 'nullable|string|max:255',
         ]);
 
-        // Assign data from the request
-        $validatedData['nama_event'] = $request->input('nama_event');
-        $validatedData['event_start_date'] = $request->input('event_start_date');
-        $validatedData['event_end_date'] = $request->input('event_end_date');
-        $validatedData['deskripsi'] = $request->input('deskripsi');
-        $validatedData['alamat_event'] = $request->input('alamat_event');
-        $validatedData['lokasi'] = $request->input('lokasi');
-        $validatedData['tipe_harga'] = $request->input('tipe_harga');
-
-        // Set 'harga' to 0 if 'tipe_harga' is 'Gratis'
-        $validatedData['harga'] = $request->input('tipe_harga') === 'Gratis' ? 0 : $request->input('harga');
-
+        $coverPath = null;
         if ($request->hasFile('image_cover')) {
             $image = $request->file('image_cover');
-            $imageName = 'event_cover_' . now()->format('Ymd_His') . '.' . $image->getClientOriginalExtension();
+
+            $imageName = time() . '_' . $image->getClientOriginalName();
+
             $image->move(public_path('assets/images/events'), $imageName);
 
-            $validatedData['image_cover'] = 'assets/images/events/' . $imageName;
-        } else {
-            $validatedData['image_cover'] = null;
+            $coverPath = 'assets/images/events/' . $imageName;
         }
 
+        $data = [
+            'nama_event' => $request->input('nama_event'),
+            'event_start_date' => $request->input('event_start_date'),
+            'event_end_date' => $request->input('event_end_date'),
+            'deskripsi' => $request->input('deskripsi'),
+            'alamat_event' => $request->input('alamat_event'),
+            'lokasi' => $request->input('lokasi'),
+            'tipe_harga' => $request->input('tipe_harga'),
+            'harga' => $request->input('tipe_harga') === 'Gratis' ? 0 : $request->input('harga'),
+            'image_cover' => $coverPath,
+            'agenda_acara' => $request->input('agenda_acara', []),
+            'bintang_tamu' => $request->input('bintang_tamu', []),
+            'delete_event' => 'N'
+        ];
 
-        $validatedData['agenda_acara'] = $request->agenda_acara ? json_encode($request->agenda_acara) : null;
-        $validatedData['bintang_tamu'] = $request->bintang_tamu ? json_encode($request->bintang_tamu) : null;
+        Event::create($data);
 
-        // Insert the data
-        Event::create($validatedData);
-
-        return redirect()->route('event-data')->with('success', 'Event berhasil ditambahkan.');
+        return redirect()->route('event-data')->with('success', 'Event has been successfully created.');
     }
-
-
     public function edit($id)
     {
         $event = Event::findOrFail($id);
 
-        if ($event->agenda_acara) {
+        if (is_string($event->agenda_acara) && !empty($event->agenda_acara)) {
             $event->agenda_acara = json_decode($event->agenda_acara, true);
         }
 
-        if ($event->bintang_tamu) {
+        if (is_string($event->bintang_tamu) && !empty($event->bintang_tamu)) {
             $event->bintang_tamu = json_decode($event->bintang_tamu, true);
         }
 
-
         return view('superadmin.event.edit', compact('event'));
     }
+
 
     public function update(Request $request, $id)
     {
@@ -140,8 +134,6 @@ class EventController extends Controller
 
         return redirect()->route('event-data')->with('success', 'Event berhasil diperbarui.');
     }
-
-
 
     public function delete($id)
     {
