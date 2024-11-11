@@ -47,7 +47,7 @@ Route::prefix('superadmin')->group(function () {
     Route::post('event-data/store', [SuperAdminEventController::class, 'store'])->name('event-store');
     Route::get('event-data/edit/{id_event}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
     Route::post('event-data/update/{id_event}', [SuperAdminEventController::class, 'update'])->name('event-update');
-    Route::delete('event-data/delete/{id_event}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
+    Route::delete('event-data/delete/{id_event}', [SuperAdminEventController::class, 'delete'])->name('event-delete');
 
     Route::get('merk-mobil', [MerkMobilController::class, 'index'])->name('merk-mobil');
     Route::get('merk-mobil/create', [MerkMobilController::class, 'create'])->name('merk-mobil-create');
@@ -61,7 +61,7 @@ Route::prefix('superadmin')->group(function () {
 
 // UsedCar
 Route::get('used-car', [UsedCarController::class, 'index'])->name('used-car');
-Route::get('used car', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+Route::get('used-car/{id_mobil}', [UsedCarController::class, 'detail'])->name('usedcar.detail');
 
 // Product & SparePart
 Route::get('ProductSparePart', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
