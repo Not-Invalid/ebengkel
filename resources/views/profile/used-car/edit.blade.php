@@ -62,9 +62,15 @@
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="merk_mobil" name="merk_mobil"
-                            value="{{ old('merk_mobil', $mobil->merk_mobil) }}" />
-                        <label class="did-floating-label car">Merk Mobil</label>
+                        <select class="did-floating-input" id="merk_mobil_id" name="merk_mobil_id" required>
+                            <option value="{{ old('merk_mobil', $car->merk_mobil) }}" disabled selected hidden>Pilih Merk
+                                Mobil</option>
+                            @foreach ($carMerks as $merk)
+                                <option value="{{ old('merk_mobil', $car->merk_mobil) }}{{ $merk->id }}">
+                                    {{ $merk->nama_merk }}</option>
+                            @endforeach
+                        </select>
+                        <label class="did-floating-label">Merk Mobil</label>
                     </div>
                 </div>
             </div>
@@ -107,7 +113,8 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nomor_rangka_mobil"
-                            name="nomor_rangka_mobil" value="{{ old('nomor_rangka_mobil', $mobil->nomor_rangka_mobil) }}" />
+                            name="nomor_rangka_mobil"
+                            value="{{ old('nomor_rangka_mobil', $mobil->nomor_rangka_mobil) }}" />
                         <label class="did-floating-label car">Nomor Rangka Mobil</label>
                     </div>
                 </div>
