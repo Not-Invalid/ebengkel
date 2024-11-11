@@ -66,7 +66,7 @@ input[type=number]:focus,
     text-decoration: none;
     color: inherit;
     width: 100%;
-    
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card-event:hover {
@@ -116,32 +116,17 @@ input[type=number]:focus,
     padding: 3px;
  }
 
- .small-image-1,
- .small-image-2,
- .small-image-3,
- .small-image-4 {
-    object-fit: cover;
-    width: 100%;
-    height: 200px;
- }
-
  .main-image {
-    height: auto;
-    min-height: 400px;
+    height: auto !important;
+    max-height: 450px !important;
     object-fit: cover;
     border-radius: 12px 0px 0px 12px;
  }
 
- .small-image-2 {
-    border-radius: 0px 12px 0px 0px;
- }
- .small-image-4 {
-    border-radius: 0px 0px 12px 0px;
- }
  .picture {
     padding: 3px;
  }
- .col-md-6 .badge-custom {
+ .col-md-12 .badge-custom {
     background-color: var(--primaryblue);
     color: #fff;
     border-radius: 4px;
