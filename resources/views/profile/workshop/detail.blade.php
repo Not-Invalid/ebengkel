@@ -243,7 +243,7 @@
                       @csrf
                       @method('DELETE')
                       <button type="submit" class="btn btn-link" title="Delete">
-                        <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
+                        <i class='bx bx-trash' style="font-size: 1.3rem; color: var(--main-red)"></i>
                       </button>
                     </form>
                   </div>
