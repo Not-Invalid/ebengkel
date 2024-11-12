@@ -17,6 +17,7 @@ class CreateTbServicesTable extends Migration
             $table->integer('id_services')->primary()->autoIncrement();
             $table->integer('id_bengkel')->nullable();
             $table->string('nama_services')->nullable();
+            $table->integer('harga_services')->nullable();
             $table->text('keterangan_services')->nullable();
             $table->text('foto_services')->nullable();
             $table->string('delete_services', 1)->default('N');
