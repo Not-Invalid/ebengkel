@@ -137,10 +137,13 @@
                 <i class='bx bx-time fs-4 text-primary'></i>
                 <div class="ms-3">
                   <span class="d-block fw-bold">Operational Hours</span>
-                  <small>{{ $bengkel->open_day }} - {{ $bengkel->close_day }} , {{ $bengkel->open_time->format('H:i') }}
-                    -
-                    {{ $bengkel->close_time->format('H:i') }} WIB</small>
+                  <small>
+                    {{ $bengkel->open_day }} - {{ $bengkel->close_day }},
+                    {{ \Carbon\Carbon::parse($bengkel->open_time)->format('H:i') }} -
+                    {{ \Carbon\Carbon::parse($bengkel->close_time)->format('H:i') }} WIB
+                  </small>
                 </div>
+
               </div>
               <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                 <i class='bx bx-wrench fs-4 text-primary'></i>
