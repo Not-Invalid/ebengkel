@@ -120,7 +120,6 @@
     }
   }
 </script>
-
 @section('content')
   <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
     <h4>Edit Service</h4>
