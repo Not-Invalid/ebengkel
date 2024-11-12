@@ -101,38 +101,42 @@ class EventController extends Controller
             'bintang_tamu.*' => 'string|max:255',
         ]);
 
-        $event = Event::findOrFail($id);
+        try {
+            $event = Event::findOrFail($id);
 
-        $event->nama_event = $request->input('nama_event');
-        $event->event_start_date = $request->input('event_start_date');
-        $event->event_end_date = $request->input('event_end_date');
-        $event->deskripsi = $request->input('deskripsi');
-        $event->alamat_event = $request->input('alamat_event');
-        $event->lokasi = $request->input('lokasi');
-        $event->tipe_harga = $request->input('tipe_harga');
+            $event->nama_event = $request->input('nama_event');
+            $event->event_start_date = $request->input('event_start_date');
+            $event->event_end_date = $request->input('event_end_date');
+            $event->deskripsi = $request->input('deskripsi');
+            $event->alamat_event = $request->input('alamat_event');
+            $event->lokasi = $request->input('lokasi');
+            $event->tipe_harga = $request->input('tipe_harga');
 
-        $event->harga = $request->input('tipe_harga') === 'Gratis' ? 0 : $request->input('harga');
+            $event->harga = $request->input('tipe_harga') === 'Gratis' ? 0 : $request->input('harga');
 
-        if ($request->hasFile('image_cover')) {
-            if ($event->image_cover && file_exists(public_path($event->image_cover))) {
-                unlink(public_path($event->image_cover));
+            if ($request->hasFile('image_cover')) {
+                if ($event->image_cover && file_exists(public_path($event->image_cover))) {
+                    unlink(public_path($event->image_cover));
+                }
+
+                $image = $request->file('image_cover');
+                $imageName = 'event_cover_' . now()->format('Ymd_His') . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('assets/images/events'), $imageName);
+
+                $event->image_cover = 'assets/images/events/' . $imageName;
+            } else {
+                $event->image_cover = $event->image_cover ?? null;
             }
 
-            $image = $request->file('image_cover');
-            $imageName = 'event_cover_' . now()->format('Ymd_His') . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('assets/images/events'), $imageName);
+            $event->agenda_acara = $request->agenda_acara ? json_encode($request->agenda_acara) : null;
+            $event->bintang_tamu = $request->bintang_tamu ? json_encode($request->bintang_tamu) : null;
 
-            $event->image_cover = 'assets/images/events/' . $imageName;
-        } else {
-            $event->image_cover = $event->image_cover ?? null;
+            $event->save();
+
+        return redirect()->route('event-data')->with('status', 'Event berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->route('event-data')->with('status_error', 'Terjadi kesalahan dalam memperbarui event.');
         }
-
-        $event->agenda_acara = $request->agenda_acara ? json_encode($request->agenda_acara) : null;
-        $event->bintang_tamu = $request->bintang_tamu ? json_encode($request->bintang_tamu) : null;
-
-        $event->save();
-
-        return redirect()->route('event-data')->with('success', 'Event berhasil diperbarui.');
     }
 
     public function delete($id)
