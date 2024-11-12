@@ -27,6 +27,7 @@ class WorkshopController extends Controller
         if (!$bengkel) {
             return redirect()->route('workshop.index')->with('error_status', 'Workshop not found.');
         }
+        $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
         $bengkel->open_time = Carbon::parse($bengkel->open_time)->format('H:i');
         $bengkel->close_time = Carbon::parse($bengkel->close_time)->format('H:i');
         
@@ -34,7 +35,7 @@ class WorkshopController extends Controller
         $serviceAvailable = json_decode($bengkel->service_available, true);
         $paymentMethods = json_decode($bengkel->payment, true);
     
-        return view('workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods'));
+        return view('workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods','services'));
     }
     
     
@@ -253,6 +254,25 @@ class WorkshopController extends Controller
         $paymentMethods = $bengkel->payment ?? [];
     
         return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'services'));
+    }
+    public function detailService($id_bengkel, $id_services)
+    {
+        // Retrieve the service details from the database
+        $service = Service::with('bengkel') // Mengambil relasi bengkel
+        ->where('id_services', $id_services)
+        ->where('id_bengkel', $id_bengkel)
+        ->where('delete_services', '!=', 'Y')
+        ->first();
+    
+        // Check if the service exists
+        if (!$service) {
+            return redirect()->back()->with('error_status', 'Service not found.');
+        }
+    // Controller
+            $services = Service::with('bengkel')->find($id_bengkel);
+
+        // Pass the service data to the view
+        return view('service.detail', compact('service'));
     }
     
 }
