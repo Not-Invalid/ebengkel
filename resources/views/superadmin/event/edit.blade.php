@@ -40,6 +40,10 @@
     .remove-button i {
         font-size: 18px;
     }
+    .bintang-tamu-row {
+        margin-left: 0;
+        margin-right: 0;
+    }
 </style>
 
 @section('content')
@@ -93,13 +97,13 @@
 
                 <!-- Deskripsi -->
                 <div class="did-floating-label-content">
-                    <textarea class="did-floating-input" placeholder=" " rows="4" id="deskripsi" name="deskripsi" style="height: 100px">{{ old('deskripsi', $event->deskripsi) }}</textarea>
+                    <textarea class="did-floating-input" placeholder=" " rows="4" id="deskripsi" name="deskripsi" style="height: 100px; resize:none;">{{ old('deskripsi', $event->deskripsi) }}</textarea>
                     <label class="did-floating-label">Deskripsi</label>
                 </div>
 
                 <!-- Alamat Event -->
                 <div class="did-floating-label-content">
-                    <textarea class="did-floating-input" placeholder=" " rows="4" id="alamat_event" name="alamat_event" style="height: 100px">{{ old('alamat_event', $event->alamat_event) }}</textarea>
+                    <textarea class="did-floating-input" placeholder=" " rows="4" id="alamat_event" name="alamat_event" style="height: 100px; resize:none;">{{ old('alamat_event', $event->alamat_event) }}</textarea>
                     <label class="did-floating-label">Alamat Event</label>
                 </div>
 
@@ -140,18 +144,21 @@
                 <div id="agenda-container">
                     @if(is_array($event->agenda_acara) || is_object($event->agenda_acara))
                         @foreach ($event->agenda_acara as $index => $agenda)
-                            <div class="row">
+                            <div class="row align-items-center">
                                 <div class="col">
-                                    <div class="did-floating-label-content">
+                                    <div class="did-floating-label-content flex-grow-1">
                                         <input class="did-floating-input" type="text" placeholder=" " name="agenda_acara[{{ $index }}][judul]" value="{{ old('agenda_acara.' . $index . '.judul', $agenda['judul']) }}" />
                                         <label class="did-floating-label">Judul Agenda</label>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="did-floating-label-content">
+                                <div class="col d-flex">
+                                    <div class="did-floating-label-content flex-grow-1">
                                         <input class="did-floating-input" type="time" placeholder=" " name="agenda_acara[{{ $index }}][waktu]" value="{{ old('agenda_acara.' . $index . '.waktu', $agenda['waktu']) }}" />
                                         <label class="did-floating-label">Waktu</label>
                                     </div>
+                                    <button type="button" class="btn btn btn-danger ms-2 remove-agenda" style="height: 35px">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                         @endforeach
@@ -172,12 +179,15 @@
                 <!-- Bintang Tamu -->
                 <div id="bintang-tamu-container" class="mt-4">
                     @forelse ($event->bintang_tamu as $bintangTamu)
-                        <div class="row">
-                            <div class="col">
-                                <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" value="{{ old('bintang_tamu[]', $bintangTamu) }}" />
+                        <div class="row align-items-center">
+                            <div class="col d-flex">
+                                <div class="did-floating-label-content flex-grow-1">
+                                    <input class="did-floating-input" type="text" name="bintang_tamu[]" value="{{ old('bintang_tamu[]', $bintangTamu) }}" />
                                     <label class="did-floating-label">Nama Bintang Tamu</label>
                                 </div>
+                                <button type="button" class="btn btn-danger ms-2 remove-bintang-tamu" style="height: 35px" onclick="removeBintangTamu(this)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     @empty
@@ -251,15 +261,18 @@
                     row.innerHTML = `
                         <div class="col">
                             <div class="did-floating-label-content">
-                                <input class="did-floating-input" type="text" placeholder=" " name="agenda_acara[${agendaIndex}][judul]" />
+                                <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[${agendaIndex}][judul]" />
                                 <label class="did-floating-label">Judul Agenda</label>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="did-floating-label-content">
-                                <input class="did-floating-input" type="time" placeholder=" " name="agenda_acara[${agendaIndex}][waktu]" />
+                        <div class="col d-flex">
+                            <div class="did-floating-label-content flex-grow-1">
+                                <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[${agendaIndex}][waktu]" />
                                 <label class="did-floating-label">Waktu</label>
                             </div>
+                            <button type="button" class="btn btn-danger ms-2 remove-agenda" style="height: 35px" onclick="removeAgenda(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>`;
 
                     const additionalAgendaRows = document.getElementById('additional-agenda-rows');
@@ -277,11 +290,14 @@
                     const row = document.createElement('div');
                     row.classList.add('row');
                     row.innerHTML = `
-                        <div class="col">
-                            <div class="did-floating-label-content">
-                                <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
+                        <div class="col d-flex">
+                            <div class="did-floating-label-content flex-grow-1">
+                                <input class="did-floating-input" type="text" name="bintang_tamu[]" />
                                 <label class="did-floating-label">Nama Bintang Tamu</label>
                             </div>
+                            <button type="button" class="btn btn-danger ms-2 remove-bintang-tamu" style="height:35px;" onclick="removeBintangTamu(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                         `;
 
@@ -291,6 +307,37 @@
                     }
                 });
             }
+
+            function removeAgenda(button) {
+                const row = button.closest('.row');
+                if (row) {
+                    row.remove();
+                }
+            }
+
+            // Remove Bintang Tamu Function
+            function removeBintangTamu(button) {
+                const row = button.closest('.row');
+                if (row) {
+                    row.remove();
+                }
+            }
+
+            // Attach event listeners to existing remove buttons for agendas
+            document.querySelectorAll('.remove-agenda').forEach(button => {
+                button.addEventListener('click', function() {
+                    removeAgenda(this);
+                });
+            });
+
+            // Attach event listeners to existing remove buttons for bintang tamu
+            document.querySelectorAll('.remove-bintang-tamu').forEach(button => {
+                button.addEventListener('click', function() {
+                    removeBintangTamu(this);
+                });
+            });
+        });
+
 
             // Attach event listener to tipe_harga select
             const tipeHargaSelect = document.getElementById('tipe_harga');
