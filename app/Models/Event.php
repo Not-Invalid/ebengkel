@@ -27,10 +27,7 @@ class Event extends Model
     protected $casts = [
         'agenda_acara' => 'array',
         'bintang_tamu' => 'array',
-        'event_start_date' => 'date',
-        'event_end_date' => 'date',
+        'event_start_date' => 'datetime',
+        'event_end_date' => 'datetime',
     ];
-
 }
-
-

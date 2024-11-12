@@ -243,8 +243,12 @@
             container.appendChild(newRow);
         });
     }
+    </script>
+    <script>
+        let agendaIndex = 1; // Start index from 1 since [0] is already present in HTML
 
-    const addAgendaButton = document.getElementById('add-agenda');
+// Add event listener to the "Add Agenda" button
+const addAgendaButton = document.getElementById('add-agenda'); // Define the button here
 if (addAgendaButton) {
     addAgendaButton.addEventListener('click', function () {
         const container = document.getElementById('additional-agenda-rows');
@@ -254,21 +258,23 @@ if (addAgendaButton) {
         newRow.innerHTML = `
             <div class="col">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[0][judul]" />
+                    <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[${agendaIndex}][judul]" />
                     <label class="did-floating-label">Judul Agenda</label>
                 </div>
             </div>
             <div class="col">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[0][waktu]"/>
+                    <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[${agendaIndex}][waktu]" />
                     <label class="did-floating-label">Waktu</label>
                 </div>
             </div>
         `;
-
         container.appendChild(newRow);
+        agendaIndex++; // Increment index for next agenda item
     });
 }
 
+
     </script>
 @endsection
+

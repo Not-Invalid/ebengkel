@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\SpareParts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -21,21 +22,19 @@ class WorkshopController extends Controller
         $bengkel = Bengkel::where('id_bengkel', $id)
             ->where('delete_bengkel', 'N')
             ->first();
-    
+
         if (!$bengkel) {
             return redirect()->route('workshop.index')->with('error_status', 'Workshop not found.');
         }
         $schedule = [
-            $bengkel->open_day .' - '. $bengkel->close_day .', '. $bengkel->open_time->format('H:i') . ' - ' . $bengkel->close_time->format('H:i')
+            $bengkel->open_day . ' - ' . $bengkel->close_day . ', ' . $bengkel->open_time->format('H:i') . ' - ' . $bengkel->close_time->format('H:i'),
         ];
         // Decode the JSON fields into arrays
         $serviceAvailable = json_decode($bengkel->service_available, true);
         $paymentMethods = json_decode($bengkel->payment, true);
-    
-        return view('workshop.detail', compact('bengkel','schedule', 'serviceAvailable', 'paymentMethods'));
+
+        return view('workshop.detail', compact('bengkel', 'schedule', 'serviceAvailable', 'paymentMethods'));
     }
-    
-    
 
     public function showWorkshop()
     {
@@ -225,16 +224,22 @@ class WorkshopController extends Controller
             ->where('id_pelanggan', $customerId)
             ->where('delete_bengkel', 'N')
             ->first();
+
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
         }
-        // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
+
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) : $bengkel->service_available;
 
-        // Assign variables for use in the view
         $serviceAvailable = $bengkel->service_available ?? [];
         $paymentMethods = $bengkel->payment ?? [];
-        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods'));
+
+        $sparepart = SpareParts::where('id_bengkel', $id)
+            ->where('delete_spare_part', 'N')
+            ->get();
+
+        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'id', 'sparepart'));
     }
+
 }
