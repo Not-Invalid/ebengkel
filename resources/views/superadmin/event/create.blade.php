@@ -39,6 +39,9 @@
     }
     .remove-button i {
         font-size: 18px;
+    }.bintang-tamu-row {
+        margin-left: 0;
+        margin-right: 0;
     }
 </style>
 
@@ -93,13 +96,13 @@
 
                 <!-- Deskripsi -->
                 <div class="did-floating-label-content">
-                    <textarea class="did-floating-input" placeholder=" " rows="4" id="deskripsi" name="deskripsi" style="height: 100px"></textarea>
+                    <textarea class="did-floating-input" placeholder=" " rows="4" id="deskripsi" name="deskripsi" style="height: 100px; resize:none;"></textarea>
                     <label class="did-floating-label">Deskripsi</label>
                 </div>
 
                 <!-- Alamat Event -->
                 <div class="did-floating-label-content">
-                    <textarea class="did-floating-input" placeholder=" " rows="4" id="alamat_event" name="alamat_event" style="height: 100px"></textarea>
+                    <textarea class="did-floating-input" placeholder=" " rows="4" id="alamat_event" name="alamat_event" style="height: 100px; resize:none;"></textarea>
                     <label class="did-floating-label">Alamat Event</label>
                 </div>
 
@@ -138,18 +141,21 @@
 
                 <!-- Agenda -->
                 <div id="agenda-container">
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col">
                             <div class="did-floating-label-content">
                                 <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[0][judul]" />
                                 <label class="did-floating-label">Judul Agenda</label>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="did-floating-label-content">
+                        <div class="col d-flex">
+                            <div class="did-floating-label-content flex-grow-1">
                                 <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[0][waktu]" />
                                 <label class="did-floating-label">Waktu</label>
                             </div>
+                            <button type="button" class="btn btn btn-danger ms-2 remove-agenda" style="height: 35px">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -165,14 +171,18 @@
 
 
                 <!-- Bintang Tamu -->
-                <div class="row mt-3"  id="bintang-tamu-container" >
-                    <div class="col">
-                        <div class="did-floating-label-content">
+                <div class="row mt-3" id="bintang-tamu-container">
+                    <div class="col d-flex">
+                        <div class="did-floating-label-content flex-grow-1">
                             <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
                             <label class="did-floating-label">Nama Bintang Tamu</label>
                         </div>
+                        <button type="button" class="btn btn-danger ms-2 remove-bintang-tamu" style="height: 35px" onclick="removeBintangTamu(this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 </div>
+
 
                 <div class="row my-1">
                     <div class="col text-left">
@@ -223,21 +233,34 @@
         }
     }
 
+    function removeBintangTamu(element) {
+        const bintangTamuContainer = document.getElementById('bintang-tamu-container');
+        const totalBintangTamuRows = bintangTamuContainer.querySelectorAll('.row').length;
+
+        if (totalBintangTamuRows > 1) {
+            element.closest('.row').remove();
+        } else {
+            alert('At least one "Bintang Tamu" must remain.');
+        }
+    }
+
+
+    // Menambahkan event listener ke tombol "Add Bintang Tamu" jika ada
     const addBintangTamuButton = document.getElementById('add-bintang-tamu');
     if (addBintangTamuButton) {
         addBintangTamuButton.addEventListener('click', function () {
             const container = document.getElementById('bintang-tamu-container');
             const newRow = document.createElement('div');
-            newRow.classList.add('row');
+            newRow.classList.add('bintang-tamu-row');
             newRow.innerHTML = `
-                <div class="col">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder="" name="bintang_tamu[]" />
+                <div class="col d-flex">
+                    <div class="did-floating-label-content flex-grow-1">
+                        <input class="did-floating-input" type="text" placeholder="Nama Bintang Tamu" name="bintang_tamu[]" />
                         <label class="did-floating-label">Nama Bintang Tamu</label>
                     </div>
-                </div>
-                <div class="col-auto">
-                    <span class="remove-button" onclick="removeBintangTamu(this)"><i class="fas fa-trash mt-2"></i></span>
+                    <button type="button" class="btn btn-danger ms-2 remove-bintang-tamu" style="height:35px;" onclick="removeBintangTamu(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             `;
             container.appendChild(newRow);
@@ -245,34 +268,49 @@
     }
     </script>
     <script>
-        let agendaIndex = 1; // Start index from 1 since [0] is already present in HTML
+        let agendaIndex = 1;
 
-// Add event listener to the "Add Agenda" button
-const addAgendaButton = document.getElementById('add-agenda'); // Define the button here
-if (addAgendaButton) {
-    addAgendaButton.addEventListener('click', function () {
-        const container = document.getElementById('additional-agenda-rows');
-        const newRow = document.createElement('div');
-        newRow.classList.add('row');
+    const addAgendaButton = document.getElementById('add-agenda');
+    if (addAgendaButton) {
+        addAgendaButton.addEventListener('click', function () {
+            const container = document.getElementById('additional-agenda-rows');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row');
 
-        newRow.innerHTML = `
-            <div class="col">
-                <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[${agendaIndex}][judul]" />
-                    <label class="did-floating-label">Judul Agenda</label>
+            newRow.innerHTML = `
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder="" name="agenda_acara[${agendaIndex}][judul]" />
+                        <label class="did-floating-label">Judul Agenda</label>
+                    </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[${agendaIndex}][waktu]" />
-                    <label class="did-floating-label">Waktu</label>
+                <div class="col d-flex">
+                    <div class="did-floating-label-content flex-grow-1">
+                        <input class="did-floating-input" type="time" placeholder="" name="agenda_acara[${agendaIndex}][waktu]" />
+                        <label class="did-floating-label">Waktu</label>
+                    </div>
+                    <button type="button" class="btn btn-danger ms-2 remove-agenda" style="height: 35px" onclick="removeAgenda(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
-            </div>
-        `;
-        container.appendChild(newRow);
-        agendaIndex++; // Increment index for next agenda item
-    });
-}
+            `;
+            container.appendChild(newRow);
+            agendaIndex++;
+        });
+    }
+    function removeAgenda(element) {
+        const additionalAgendaContainer = document.getElementById('additional-agenda-rows');
+        const totalAgendaRows = additionalAgendaContainer.querySelectorAll('.row').length;
+
+        const initialAgendaRow = document.getElementById('agenda-container');
+        const totalRows = totalAgendaRows + initialAgendaRow.querySelectorAll('.row').length;
+
+        if (totalRows > 1) {
+            element.closest('.row').remove();
+        } else {
+            alert('At least one "Agenda Acara" must remain.');
+        }
+    }
 
 
     </script>
