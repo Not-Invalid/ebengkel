@@ -139,3 +139,6 @@ Route::get('event/detail', [EventController::class, 'detail'])->name('event.deta
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
 Route::get('workshop/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
+
+// Service Route
+Route::get('/workshop/{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
