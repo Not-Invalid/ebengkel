@@ -61,7 +61,7 @@ Route::prefix('superadmin')->group(function () {
 
 // UsedCar
 Route::get('used-car', [UsedCarController::class, 'index'])->name('used-car');
-Route::get('used car', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+Route::get('used-car/{id_mobil}', [UsedCarController::class, 'detail'])->name('usedcar.detail');
 
 // Product & SparePart
 Route::get('ProductSparePart', [ProductSparePartController::class, 'index'])->name('ProductSparePart');

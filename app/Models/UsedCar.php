@@ -49,6 +49,10 @@ class UsedCar extends Model
 
     public function pelanggan()
     {
-        return $this->belongsTo(User::class, 'id_pelanggan');
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+    }
+    public function merkMobil()
+    {
+        return $this->belongsTo(MerkMobil::class, 'merk_mobil_id', 'id');
     }
 }

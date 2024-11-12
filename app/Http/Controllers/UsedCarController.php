@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FotoMobil;
 use App\Models\UsedCar;
 use App\Models\MerkMobil;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -13,36 +14,34 @@ class UsedCarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = UsedCar::query();
-
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('location', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->has('brand') && is_array($request->brand)) {
-            $query->whereIn('brand', $request->brand);
-        }
-
-        if ($request->has('price_range')) {
-            switch ($request->price_range) {
-                case '<100':
-                    $query->where('price', '<', 100000000);
-                    break;
-                case '100-250':
-                    $query->whereBetween('price', [100000000, 250000000]);
-                    break;
-            }
-        }
-
-        $cars = $query->paginate(10);
-
-        return view('usedCar.index', compact('cars'));
+        $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->get();
+        return view('usedcar.index', compact('mobilList'));
     }
 
-    public function detail()
+    public function formatPhoneNumber($phone)
     {
-        return view('usedCar.detail_car');
+        if (strpos($phone, '08') === 0) {
+            $phone = '62' . substr($phone, 1);
+        }
+        return $phone;
+    }
+
+    public function detail($id)
+    {
+        $mobilList = UsedCar::where('id_mobil', $id)
+            ->where('delete_mobil', 'N')
+            ->with('pelanggan')
+            ->first();
+
+        if (!$mobilList) {
+            return redirect()->route('used-car')->with('error_status', 'Workshop not found.');
+        }
+        // Format nomor telepon pelanggan
+        if ($mobilList->pelanggan) {
+            $mobilList->pelanggan->telp_pelanggan = $this->formatPhoneNumber($mobilList->pelanggan->telp_pelanggan);
+        }
+
+        return view('usedCar.detail_car', compact('mobilList'));
     }
 
     public function showUsedCar()
@@ -53,6 +52,7 @@ class UsedCarController extends Controller
         $mobilList = UsedCar::with('pelanggan')
             ->where('id_pelanggan', Session::get('id_pelanggan'))
             ->where('delete_mobil', 'N')
+            ->with('merkMobil')
             ->get();
         return view('profile.used-car.index', compact('mobilList'));
     }
@@ -119,7 +119,6 @@ class UsedCarController extends Controller
             }
         }
 
-        // Simpan data mobil ke dalam tabel tb_mobil
         $mobil = UsedCar::create([
             'id_pelanggan' => $pelanggan,
             'nama_mobil' => $nama_mobil,
@@ -147,7 +146,6 @@ class UsedCarController extends Controller
             'delete_mobil' => 'N',
         ]);
 
-        // Simpan data foto mobil ke dalam tabel tb_foto_mobil
         $fotoMobil = new FotoMobil([
             'id_pelanggan' => $pelanggan,
             'id_mobil' => $mobil->id_mobil,
@@ -161,7 +159,6 @@ class UsedCarController extends Controller
         ]);
         $fotoMobil->save();
 
-        // Redirect dengan pesan sukses
         return redirect()->route('profile-used-car')->with('status', 'Used car successfully added!');
     }
 
@@ -178,18 +175,18 @@ class UsedCarController extends Controller
             return redirect()->route('profile-used-car')->with('error_status', 'Used car not found.');
         }
 
-        return view('profile.used-car.edit', compact('mobil'));
+        $carMerks = MerkMobil::all();
+
+        return view('profile.used-car.edit', compact('mobil', 'carMerks'));
     }
 
     public function update(Request $request, $id)
     {
-        // Mengambil data mobil berdasarkan ID yang diterima dari parameter
         $mobil = UsedCar::findOrFail($id);
 
-        // Mengambil data dari form request
         $nama_mobil = $request->nama_mobil;
         $merk_mobil_id = $request->merk_mobil_id;
-        $harga_mobil = str_replace('.', '', $request->harga_mobil); // Menghilangkan titik pada harga
+        $harga_mobil = str_replace('.', '', $request->harga_mobil);
         $harga_mobil = is_numeric($harga_mobil) ? (float) $harga_mobil : 0;
         $tahun_mobil = $request->tahun_mobil;
         $plat_nomor_mobil = $request->plat_nomor_mobil;
@@ -205,7 +202,6 @@ class UsedCarController extends Controller
         $keterangan_mobil = $request->keterangan_mobil;
         $lokasi_mobil = $request->lokasi_mobil;
 
-        // Memperbarui data mobil
         $mobil->update([
             'nama_mobil' => $nama_mobil,
             'merk_mobil_id' => $merk_mobil_id,
@@ -225,7 +221,6 @@ class UsedCarController extends Controller
             'lokasi_mobil' => $lokasi_mobil,
         ]);
 
-        // Menangani file upload foto mobil
         $fileUrls = [
             'file_foto_mobil_1' => null,
             'file_foto_mobil_2' => null,
@@ -247,9 +242,7 @@ class UsedCarController extends Controller
             }
         }
 
-        // Cek apakah mobil sudah memiliki entri fotos
         if ($mobil->fotos) {
-            // Jika sudah ada, update foto mobil di tabel foto_mobil
             $mobil->fotos->update([
                 'file_foto_mobil_1' => $fileUrls['file_foto_mobil_1'] ?? $mobil->fotos->file_foto_mobil_1,
                 'file_foto_mobil_2' => $fileUrls['file_foto_mobil_2'] ?? $mobil->fotos->file_foto_mobil_2,
@@ -258,7 +251,6 @@ class UsedCarController extends Controller
                 'file_foto_mobil_5' => $fileUrls['file_foto_mobil_5'] ?? $mobil->fotos->file_foto_mobil_5,
             ]);
         } else {
-            // Jika foto mobil belum ada, buat entri foto baru
             $mobil->fotos()->create([
                 'file_foto_mobil_1' => $fileUrls['file_foto_mobil_1'],
                 'file_foto_mobil_2' => $fileUrls['file_foto_mobil_2'],
