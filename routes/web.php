@@ -135,6 +135,9 @@ Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword
 // Event route
 Route::get('event', [EventController::class, 'show'])->name('event.show');
 Route::get('event/{id}', [EventController::class, 'detail'])->name('event.detail');
+Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
+Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+
 
 // Workshop route
 Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
