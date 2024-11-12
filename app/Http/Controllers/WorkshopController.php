@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\Product;
 use App\Models\SpareParts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -238,8 +239,10 @@ class WorkshopController extends Controller
         $sparepart = SpareParts::where('id_bengkel', $id)
             ->where('delete_spare_part', 'N')
             ->get();
+        $produk = Product::where('id_bengkel', $id)
+            ->where('delete_produk', 'N')
+            ->get();
 
-        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'id', 'sparepart'));
+        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'id', 'sparepart', 'produk'));
     }
-
 }
