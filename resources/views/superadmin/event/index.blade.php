@@ -29,10 +29,16 @@
                                 <img src="{{ asset($event->image_cover) }}" class="img-fluid" alt="{{ $event->nama_event }}" style="max-height: 150px;">
                             </div>
                             <div class="col-12 col-md-6">
-                                <h5 class="card-title mt-3">{{ $event->nama_event }}</h5>
-                                <p class="text-muted mt-1">Start Date: {{ $event->event_start_date }}</p>
-                                <p class="text-muted mt-1">End Date: {{ $event->event_end_date }}</p>
-                                <p>{{ $event->deskripsi }}</p>
+                                <h5 class="card-title mt-2">{{ $event->nama_event }}</h5>
+                                <p class="text-muted mt-1">
+                                    <i class="fas fa-calendar fs-6"></i>
+                                    {{ \Carbon\Carbon::parse($event->event_start_date)->format('M d, Y') }} -
+                                    {{ \Carbon\Carbon::parse($event->event_end_date)->format('M d, Y') }}
+                                </p>
+                                <p class="text-muted">
+                                    <i class="fas fa-map-marker-alt fs-6"></i>
+                                    {{ $event->lokasi }}
+                                </p>
                             </div>
                             <div class="col-12 col-md-3 d-flex align-items-center justify-content-center">
                                 <a href="{{ route('event-edit', $event->id_event) }}" class="btn btn-custom-3 mx-2" data-bs-toggle="tooltip" title="Edit">
