@@ -66,7 +66,7 @@
                         </span>
                       </div>
                       <div class="d-flex align-items-center mt-1 event-date">
-                        <i class='bx bx-calendar'></i>
+                        <i class='bx bx-map-pin'></i>
                         <span class="date ms-2">
                           {{ $event->lokasi }}
                         </span>

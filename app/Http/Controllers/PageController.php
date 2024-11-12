@@ -7,13 +7,15 @@ use App\Models\SupportInfo;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bengkel;
+use App\Models\Event;
 
 class PageController extends Controller
 {
     public function index()
     {
         $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
-        return view('index', compact('bengkels'));
+        $events = Event::all();
+        return view('index', compact('bengkels', 'events'));
     }
 
     public function contact()

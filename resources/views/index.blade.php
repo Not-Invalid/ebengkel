@@ -54,106 +54,60 @@
     </div>
   </div>
   {{-- Latest Event Section --}}
-  <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h4 class="text-primary py-2"><i class='bx bx-calendar'></i> Latest Event</h4>
-          <div class="row">
-            {{-- Replace the condition below with your logic to check for actual events --}}
-            {{-- @if (false) --}}
-            <!-- Change this to your actual data check -->
+    <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="text-primary py-2"><i class='bx bx-calendar'></i> Latest Event</h4>
+                        <div class="row">
+                            {{-- Check if there are events --}}
+                            @if ($events->isNotEmpty())
+                                @foreach ($events as $event)
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                        <a href="{{ route('event.detail', $event->id_event) }}" class="card-event p-3">
+                                            <img src="{{ asset($event->image_cover) }}" class="card-img-top" alt="{{ $event->nama_event }}"
+                                                class="card-img-top" alt="{{ $event->nama_event }}">
+                                            <div class="card-body text-start">
+                                                <p class="card-title mt-4">{{ $event->nama_event }}</p>
+                                                <div class="d-flex align-items-center event-date">
+                                                    <i class='bx bx-calendar'></i>
+                                                    <span class="date ms-2">
+                                                        {{ \Carbon\Carbon::parse($event->event_start_date)->format('M d, Y') }} -
+                                                        {{ \Carbon\Carbon::parse($event->event_end_date)->format('M d, Y') }}
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex align-items-center mt-1 event-date">
+                                                    <i class='bx bx-map-pin'></i>
+                                                    <span class="date ms-2">
+                                                      {{ $event->lokasi }}
+                                                    </span>
+                                                  </div>
+                                                <div class="footer-card">
+                                                    <div class="price d-flex justify-content-start">
+                                                        <span class="price">{{ $event->tipe_harga === 'Gratis' ? 'Free' : 'Rp' . number_format($event->harga, 0, ',', '.') }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="text-center">
+                                    <img src="{{ asset('assets/images/components/empty.png') }}" width="150" alt="No Data">
+                                    <p>Data saat ini tidak ditemukan.</p>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="text-center mt-4">
+                            <a href="{{ route('event.show') }}" class="btn btn-more">
+                                More Event <i class="bx bx-chevron-right align-icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
 
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="{{ route('event.detail') }}" class="card-event p-3">
-                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                  class="card-img-top" alt="Event Image">
-                <div class="card-body text-start">
-                  <p class="card-title mt-4">Mercy Fest 2024</p>
-                  <div class="d-flex align-items-center event-date">
-                    <i class='bx bx-calendar'></i>
-                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                  </div>
-                  <div class="footer-card">
-                    <div class="price d-flex justify-content-start">
-                      <span class="price">Rp50.000</span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="card-event p-3">
-                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                  class="card-img-top" alt="Event Image">
-                <div class="card-body text-start">
-                  <p class="card-title mt-4">Mercy Fest 2024</p>
-                  <div class="d-flex align-items-center event-date">
-                    <i class='bx bx-calendar'></i>
-                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                  </div>
-                  <div class="footer-card">
-                    <div class="price d-flex justify-content-start">
-                      <span class="price">Rp50.000</span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="card-event p-3">
-                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                  class="card-img-top" alt="Event Image">
-                <div class="card-body text-start">
-                  <p class="card-title mt-4">Mercy Fest 2024</p>
-                  <div class="d-flex align-items-center event-date">
-                    <i class='bx bx-calendar'></i>
-                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                  </div>
-                  <div class="footer-card">
-                    <div class="price d-flex justify-content-start">
-                      <span class="price">Rp50.000</span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-              <a href="#" class="card-event p-3">
-                <img src="https://ebengkelku.com/dashboard/images/event/foto_cover_event_20231107_135644.jpg"
-                  class="card-img-top" alt="Event Image">
-                <div class="card-body text-start">
-                  <p class="card-title mt-4">Mercy Fest 2024</p>
-                  <div class="d-flex align-items-center event-date">
-                    <i class='bx bx-calendar'></i>
-                    <span class="date ms-2">Jan 10, 2024 - Jan 12, 2024</span>
-                  </div>
-                  <div class="footer-card">
-                    <div class="price d-flex justify-content-start">
-                      <span class="price">Rp50.000</span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Repeat cards as needed -->
-            {{-- @else
-              <div class="text-center">
-                <img src="{{ asset('assets/images/components/empty.png') }}" width="150" alt="No Data">
-                <p>Data saat ini tidak ditemukan.</p>
-              </div>
-            @endif --}}
-          </div>
-          <div class="text-center mt-4">
-            <a href="#" class="btn btn-more">
-              More Event <i class="bx bx-chevron-right align-icon"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   {{-- Latest Workshop Section --}}
   <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
