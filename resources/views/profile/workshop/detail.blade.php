@@ -272,42 +272,55 @@
                 <div class="tab-pane" id="product">
                     {{-- isi card --}}
                     <div class="d-flex justify-content-end">
-                        <a href="" class="btn btn-custom-2 mt-3">+ Add
+                        <a href="{{ route('profile.workshop.createProduct') }}" class="btn btn-custom-2 mt-3">+ Add
                             product</a>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
-                            <div class="card-product p-3">
-                                <img src="{{ asset('assets/images/components/image.png') }}" class="card-img-top"
-                                    alt="Workshop Image">
-                                <div class="card-body text-start">
-                                    <h5 class="card-title">Oli</h5>
-                                    <div class="d-flex align-items-center">
-                                        <i class='bx bx-box me-1 workshop' style="font-size: 14px"></i>
-                                        <span class="workshop" style="font-size: 14px">Cimone Racing</span>
-                                    </div>
-                                    <div class="mt-3">
-                                        <div class="tagline d-flex justify-content-start">
-                                            <p>Rp 300.000</p>
+                        @if ($produk->isEmpty())
+                            <div class="text-center">
+                                <img src="{{ asset('assets/images/components/empty.png') }}" height="150"
+                                    width="150" alt="No Sparepart">
+                                <p>No data product.</p>
+                            </div>
+                        @else
+                            @foreach ($produk as $item)
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3 py-4">
+                                    <div class="card-product p-3">
+                                        @if ($item->foto_produk)
+                                            <img src="{{ url($item->foto_produk) }}" class="card-img-top"
+                                                alt="Sparepart Image">
+                                        @else
+                                            <img src="{{ asset('assets/images/components/image.png') }}"
+                                                class="card-img-top" alt="Default Image">
+                                        @endif
+                                        <div class="card-body text-start">
+                                            <h5 class="card-title">{{ $item->nama_produk }}</h5>
+                                            <div class="mt-3">
+                                                <div class="tagline d-flex justify-content-start">
+                                                    <p>Rp {{ number_format($item->harga_produk, 0, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="footer-card d-flex justify-content-start gap-3">
+                                                <a href="{{ route('profile.workshop.product.edit', $item->id_produk) }}"
+                                                    class="btn btn-link" title="Edit">
+                                                    <i class='bx bx-edit-alt' style="font-size: 1.3rem;"></i>
+                                                </a>
+                                                <form
+                                                    action="{{ route('profile.workshop.product.delete', $item->id_produk) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus product ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-link" title="Delete">
+                                                        <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="footer-card d-flex justify-content-start gap-3">
-                                        <a href="" class="btn btn-link" title="Edit">
-                                            <i class='bx bx-edit-alt' style="font-size: 1.3rem;"></i>
-                                        </a>
-                                        <form {{-- action="{{ route('profile.workshop.destroy', ['id_bengkel' => $bengkel->id_bengkel]) }}" --}} method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this workshop?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-link" title="Delete">
-                                                <i class='bx bx-trash' style="font-size: 1.3rem;"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-
                                 </div>
-                            </div>
-                        </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
                 <div class="tab-pane" id="spareparts">

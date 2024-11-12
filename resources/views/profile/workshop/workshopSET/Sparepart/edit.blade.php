@@ -132,6 +132,10 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{{ route('profile.workshop.detail', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-danger"
+                title="detail">
+                Back
+            </a>
         </form>
     </div>
     <script>
