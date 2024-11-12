@@ -113,7 +113,7 @@
           </div>
           <div class="card-body text-center">
             <h5 class="fw-bold">Rp {{ number_format($event->harga, 0, ',', '.') }}</h5>
-            <a href="#" class="btn btn-daftar w-100 mt-2">
+            <a href="{{ route('event.daftar', ['id_event' => $event->id_event]) }}" class="btn btn-daftar w-100 mt-2">
               <i class='bx bx-cart align-icon'></i> Daftar Sekarang
             </a>
           </div>
