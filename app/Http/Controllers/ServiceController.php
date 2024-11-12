@@ -92,20 +92,25 @@ class ServiceController extends Controller
     return redirect()->route('profile.workshop.detail', ['id_bengkel' => $request->id_bengkel])->with('status', 'Service updated successfully.');
 }
 
-    public function destroyService($id_services)
-    {
-        // Find the service by its ID
-        $service = Service::find($id_services);
+public function destroyService(Request $request, $id_services)
+{
+    // Fetch the service record from the database
+    $service = DB::table('tb_services')->where('id_services', $id_services)->first();
 
-        if (!$service) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Service not found.');
-        }
+    if ($service) {
+        // Update the service record to mark it as deleted
+        DB::table('tb_services')->where('id_services', $id_services)->update([
+            'delete_services' => 'Y',
+        ]);
 
-        // Delete the service
-        $service->delete();
-
-        // Redirect back with a success message
-        return redirect()->route('profile.workshop')->with('status', 'Service deleted successfully.');
+        // Redirect to the workshop detail page with the correct id_bengkel
+        return redirect()->route('profile.workshop.detail', ['id_bengkel' => $service->id_bengkel])
+                         ->with('status', 'Service deleted successfully.');
+    } else {
+        // Redirect with an error if the service was not found
+        return redirect()->route('profile.workshop.detail', ['id_bengkel' => $request->id_bengkel])
+                         ->with('error_status', 'Service not found.');
     }
+}
 
 }
