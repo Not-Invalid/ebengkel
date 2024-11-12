@@ -129,6 +129,11 @@ Route::post('profile/workshop/sparepart/store', [ProductSparePartController::cla
 Route::get('profile/workshop/sparepart/{id_spare_part}/edit', [ProductSparePartController::class, 'editSparepart'])->name('profile.workshop.sparepart.edit');
 Route::post('profile/workshop/sparepart/{id_spare_part}/update', [ProductSparePartController::class, 'updateSparepart'])->name('profile.workshop.sparepart.update');
 Route::delete('profile/workshop/sparepart/{id_spare_part}/delete', [ProductSparePartController::class, 'delete'])->name('profile.workshop.sparepart.delete');
+Route::get('profile/workshop/product/create', [ProductSparePartController::class, 'createProduct'])->name('profile.workshop.createProduct');
+Route::post('profile/workshop/product/store', [ProductSparePartController::class, 'saveProduct'])->name('profile.workshop.createProduct.store');
+Route::get('profile/workshop/product/{id_product}/edit', [ProductSparePartController::class, 'editProduct'])->name('profile.workshop.product.edit');
+Route::post('profile/workshop/product/{id_product}/update', [ProductSparePartController::class, 'updateProduct'])->name('profile.workshop.product.update');
+Route::delete('profile/workshop/product/{id_product}/delete', [ProductSparePartController::class, 'deleteProduct'])->name('profile.workshop.product.delete');
 Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
 Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
 
