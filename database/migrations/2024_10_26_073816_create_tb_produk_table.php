@@ -16,7 +16,7 @@ class CreateTbProdukTable extends Migration
         Schema::create('tb_produk', function (Blueprint $table) {
             $table->increments('id_produk')->autoIncrement();
             $table->integer('id_bengkel')->nullable();
-            $table->unsignedBigInteger('id_kategori_produk')->nullable();
+            $table->unsignedBigInteger('id_kategori_spare_part')->nullable();
             $table->string('kualitas_produk')->nullable();
             $table->string('merk_produk')->nullable();
             $table->string('nama_produk')->nullable();
@@ -26,7 +26,7 @@ class CreateTbProdukTable extends Migration
             $table->integer('stok_produk')->nullable();
             $table->dateTime('create_produk')->nullable();
             $table->string('delete_produk', 1)->default('N');
-            $table->foreign('id_kategori_produk')->references('id_kategori_spare_part')->on('tb_kategori_spare_part')->onDelete('set null');
+            $table->foreign('id_kategori_spare_part')->references('id_kategori_spare_part')->on('tb_kategori_spare_part')->onDelete('set null');
         });
     }
 
