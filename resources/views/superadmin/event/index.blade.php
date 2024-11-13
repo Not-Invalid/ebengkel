@@ -45,6 +45,10 @@
                                     <i class="fas fa-edit text-primary"></i>
                                 </a>
 
+                                <a href="{{ route('event-peserta', $event->id_event) }}" class="btn btn-custom-3 mx-2" data-bs-toggle="tooltip" title="Daftar Peserta">
+                                    <i class="fas fa-users text-warning"></i>
+                                </a>
+
                                 <form action="{{ route('event-delete', $event->id_event) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?');" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
