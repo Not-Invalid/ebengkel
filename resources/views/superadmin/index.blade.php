@@ -32,7 +32,7 @@
             </div>
             <div>
                 <div class="text-secondary">Bengkel Terdaftar</div>
-                <div class="fs-4 fw-semibold text-dark">1000</div>
+                <div class="fs-4 fw-semibold text-dark">{{ $ttl_bengkel }}</div>
             </div>
         </div>
 
@@ -44,10 +44,11 @@
             </div>
             <div>
                 <div class="text-secondary">User Terdaftar</div>
-                <div class="fs-4 fw-semibold text-dark">30000</div>
+                <div class="fs-4 fw-semibold text-dark">{{ $ttl_user }}</div>
             </div>
         </div>
     </div>
+
 
 
     {{-- Chart --}}
