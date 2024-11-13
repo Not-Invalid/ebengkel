@@ -103,6 +103,12 @@
                                         Workshop
                                     </a>
                                 </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="{{ route('inbox') }}" class="sidebar-link">
+                                        <i class="fas fa-inbox" style="color: #25396f !important;"></i>
+                                        Inbox
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('support-center-info') ? 'active' : '' }}">
@@ -116,6 +122,39 @@
                                 <i class="fas fa-bullhorn"></i>
                                 <span>Event</span>
                             </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('profile') ? 'active' : '' }}">
+                            <a href="{{ route('profile') }}" class="sidebar-link">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="fas fa-user-gear"></i>
+                                <span>Management Users</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item has-sub">
+                                    <a href="" class="sidebar-link">
+                                        <i class="fas fa-key" style="color: #25396f !important;"></i>
+                                        Staff Access
+                                    </a>
+                                </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="" class="sidebar-link">
+                                        <i class="fas fa-users" style="color: #25396f !important;"></i>
+                                        Data Pelanggan
+                                    </a>
+                                </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="" class="sidebar-link">
+                                        <i class="fas fa-user-tie" style="color: #25396f !important;"></i>
+                                        Data Staff Super Admin
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -152,6 +191,11 @@
                                     style="min-width: 11rem;">
                                     <li>
                                         <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}!</h6>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                            <i class="fas fa-user me-2"></i> Profile
+                                        </a>
                                     </li>
                                     <li>
                                         <form id="logout-form" action="{{ route('logout-admin') }}" method="POST"
