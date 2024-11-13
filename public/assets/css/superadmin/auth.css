@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap');
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
 :root {
     --main-dark: #121212;
@@ -15,116 +23,142 @@
     --main-black: #000000;
     --main-green: #28a745;
     --bg-transparent: rgba(0, 0, 0, 0);
+
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-light-blue);
+  column-gap: 30px;
 }
 
-body {
-    width: 100%;
-    min-height: 100vh;
-    padding: 0 10px;
-    display: flex;
-    background: var(--main-light-blue);
-    justify-content: center;
-    align-items: center;
+.form {
+  position: absolute;
+  max-width: 430px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 6px;
+  background: var(--main-light-grey);
 }
 
-/* Login form styling */
-.login_form {
-    width: 100%;
-    max-width: 435px;
-    background: var(--main-white);
-    border-radius: 6px;
-    padding: 41px 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+.form.signup {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.login_form h3 {
-    font-size: 20px;
-    text-align: center;
-    color: var(--main-dark-blue);
+.forms.show-signup .form.signup {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.login_form p {
-    text-align: center;
-    font-weight: 500;
-    color: var(--main-grey);
+.forms.show-signup .form.login {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.login_form .separator {
-    position: relative;
-    margin-bottom: 24px;
+header {
+  font-size: 28px;
+  font-weight: 600;
+  color: #232836;
+  text-align: center;
 }
 
-form .input_box label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: var(--main-dark-blue);
+form {
+  margin-top: 30px;
 }
 
-/* Input field styling */
-form .input_box input {
-    width: 100%;
-    height: 57px;
-    border: 1px solid var(--main-grey-light);
-    border-radius: 5px;
-    outline: none;
-    background: var(--main-light-grey);
-    font-size: 17px;
-    padding: 0px 20px;
-    margin-bottom: 25px;
-    transition: 0.2s ease;
+.form .field {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 6px;
 }
 
-form .input_box input:focus {
-    border-color: var(--main-light-blue);
+.field input,
+.field button {
+  height: 100%;
+  width: 100%;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: 6px;
 }
 
-form .input_box .password_title {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    color: var(--main-dark);
+.field input {
+  outline: none;
+  padding: 0 15px;
+  border: 1px solid var(--main-grey-light);
 }
 
-form .input_box {
-    position: relative;
+.field input:focus {
+  border-bottom-width: 2px;
 }
 
-a {
-    text-decoration: none;
-    color: var(--main-light-blue);
-    font-weight: 500;
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--main-dark-blue);
+  cursor: pointer;
+  padding: 5px;
 }
 
-a:hover {
-    text-decoration: underline;
+.field button {
+  color: var(--main-white);
+  background-color: var(--main-blue-dark);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-/* Login button styling */
-form button {
-    width: 100%;
-    height: 56px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    background: var(--main-light-blue);
-    color: var(--main-white);
-    font-size: 18px;
-    font-weight: 500;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-bottom: 28px;
-    transition: 0.3s ease;
-}
-
-form button:active {
+.field button:active {
     transform: translateY(2px);
-    background: var(--main-blue-dark);
+}
+
+.form-link {
+  text-align: start;
+  margin-top: 10px;
+}
+
+.form a {
+  color: var(--main-light-blue);
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.form-content a:hover {
+  text-decoration: underline;
+}
+
+.line {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  margin: 36px 0;
+  background-color: #d4d4d4;
+}
+
+.line::before {
+  content: 'Or';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #FFF;
+  color: #8b8b8b;
+  padding: 0 15px;
+}
+
+@media screen and (max-width: 400px) {
+  .form {
+    padding: 20px 10px;
+  }
+
 }
