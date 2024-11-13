@@ -44,11 +44,6 @@ class PageController extends Controller
         return view('pages.support_center',  compact('categories'));
     }
 
-    public function superAdmin()
-    {
-        return view('superadmin.index');
-    }
-
     public function detail($categoryId)
     {
         $supportInfo = SupportCategory::with('questions')
