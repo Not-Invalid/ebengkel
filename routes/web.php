@@ -134,6 +134,11 @@ Route::post('profile/workshop/service/store', [ServiceController::class, 'storeS
 Route::get('profile/workshop/service/edit/{id_services}', [ServiceController::class, 'editService'])->name('profile.workshop.workshopSET.service.edit');
 Route::put('profile/workshop/service/update/{id_services}', [ServiceController::class, 'updateService'])->name('profile.workshop.workshopSET.service.update');
 Route::delete('profile/workshop/service/delete/{id_services}', [ServiceController::class, 'destroyService'])->name('profile.workshop.workshopSET.service.delete');
+Route::get('profile/workshop/product/create', [ProductSparePartController::class, 'createProduct'])->name('profile.workshop.createProduct');
+Route::post('profile/workshop/product/store', [ProductSparePartController::class, 'saveProduct'])->name('profile.workshop.createProduct.store');
+Route::get('profile/workshop/product/{id_product}/edit', [ProductSparePartController::class, 'editProduct'])->name('profile.workshop.product.edit');
+Route::post('profile/workshop/product/{id_product}/update', [ProductSparePartController::class, 'updateProduct'])->name('profile.workshop.product.update');
+Route::delete('profile/workshop/product/{id_product}/delete', [ProductSparePartController::class, 'deleteProduct'])->name('profile.workshop.product.delete');
 Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
 Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
 
@@ -150,3 +155,8 @@ Route::get('workshop/{id_bengkel}', [WorkshopController::class, 'detail'])->name
 
 // Service Route
 Route::get('/workshop/{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
+// Route::get('/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
+// Route::post('/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
+// Route::get('/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
+// Route::put('/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
+// Route::delete('/delete/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');

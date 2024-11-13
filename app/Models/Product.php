@@ -12,9 +12,10 @@ class Product extends Model
     protected $table = 'tb_produk';
     protected $primaryKey = 'id_produk';
     public $incrementing = true;
+    public $timestamps = false;
     protected $fillable = [
         'id_bengkel',
-        'id_kategori_produk',
+        'id_kategori_spare_part',
         'kualitas_produk',
         'merk_produk',
         'nama_produk',

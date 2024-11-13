@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\Product;
 use App\Models\SpareParts;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -237,7 +238,6 @@ class WorkshopController extends Controller
             ->where('id_pelanggan', $customerId)
             ->where('delete_bengkel', 'N')
             ->first();
-<<<<<<< HEAD
 
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
@@ -252,49 +252,16 @@ class WorkshopController extends Controller
         $sparepart = SpareParts::where('id_bengkel', $id)
             ->where('delete_spare_part', 'N')
             ->get();
+        $produk = Product::where('id_bengkel', $id)
+            ->where('delete_produk', 'N')
+            ->get();
 
-        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'id', 'sparepart'));
+            $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
+
+
+
+
+        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'id', 'sparepart', 'produk', 'services'));
     }
 
 }
-=======
-
-        if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
-        }
-
-        // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
-        $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
-        $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) : $bengkel->service_available;
-
-        // Ambil data service yang terkait dengan bengkel
-        $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
-
-        // Assign variables for use in the view
-        $serviceAvailable = $bengkel->service_available ?? [];
-        $paymentMethods = $bengkel->payment ?? [];
-
-        return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'services'));
-    }
-    public function detailService($id_bengkel, $id_services)
-    {
-        // Retrieve the service details from the database
-        $service = Service::with('bengkel') // Mengambil relasi bengkel
-        ->where('id_services', $id_services)
-        ->where('id_bengkel', $id_bengkel)
-        ->where('delete_services', '!=', 'Y')
-        ->first();
-
-        // Check if the service exists
-        if (!$service) {
-            return redirect()->back()->with('error_status', 'Service not found.');
-        }
-    // Controller
-            $services = Service::with('bengkel')->find($id_bengkel);
-
-        // Pass the service data to the view
-        return view('service.detail', compact('service'));
-    }
-
-}
->>>>>>> daw
