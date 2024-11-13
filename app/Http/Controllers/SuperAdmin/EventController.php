@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\PesertaEvent;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -150,5 +151,14 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('event-data')->with('success', 'Event berhasil dihapus.');
+    }
+
+    public function showPesertaEvent($eventId)
+    {
+        $event = Event::find($eventId);
+
+        $daftar_peserta = PesertaEvent::where('event_id', $eventId)->paginate(20);
+
+        return view('superadmin.event.daftar_peserta', compact('daftar_peserta', 'event'));
     }
 }
