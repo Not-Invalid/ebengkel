@@ -44,8 +44,6 @@ class Bengkel extends Model
     protected $casts = [
         'service_available' => 'array', 
         'payment' => 'array',           
-        'open_time' => 'datetime:H:i', 
-        'close_time' => 'datetime:H:i',
     ];
 
     public function pelanggan()

@@ -270,15 +270,5 @@ class ProfileController extends Controller
 
         return redirect()->route('login')->with('status', 'Password successfully reset!');
     }
-    public function showWorkshop()
-    {
-        if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add an workshop.');
-        }
-        $bengkels = Bengkel::with('pelanggan')
-            ->where('id_pelanggan', Session::get('id_pelanggan'))
-            ->where('delete_bengkel', 'N')
-            ->get();
-        return view('profile.workshop.index', compact('bengkels'));
-    }
+
 }

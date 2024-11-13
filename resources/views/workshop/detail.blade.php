@@ -137,10 +137,13 @@
                 <i class='bx bx-time fs-4 text-primary'></i>
                 <div class="ms-3">
                   <span class="d-block fw-bold">Operational Hours</span>
-                  <small>{{ $bengkel->open_day }} - {{ $bengkel->close_day }} , {{ $bengkel->open_time->format('H:i') }}
-                    -
-                    {{ $bengkel->close_time->format('H:i') }} WIB</small>
+                  <small>
+                    {{ $bengkel->open_day }} - {{ $bengkel->close_day }},
+                    {{ \Carbon\Carbon::parse($bengkel->open_time)->format('H:i') }} -
+                    {{ \Carbon\Carbon::parse($bengkel->close_time)->format('H:i') }} WIB
+                  </small>
                 </div>
+
               </div>
               <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                 <i class='bx bx-wrench fs-4 text-primary'></i>
@@ -295,70 +298,37 @@
             </div>
           </div>
           <div class="tab-pane" id="service">
-            {{-- isi card --}}
+            {{-- Display service cards --}}
             <div class="row py-5">
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQIRnM3n_kvflDS6rZMfI0riK_yW9rWH_F4g&s"
-                    class="card-img-top" alt="Service Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Service Radiator</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp550.550</span>
+              @forelse ($services as $service)
+                @if ($service->id_bengkel === $bengkel->id_bengkel)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <a href="{{ route('service.detail', ['id_bengkel' => $bengkel->id_bengkel, 'id_services' => $service->id_services]) }}"
+                      class="card-product p-3">
+                      <img
+                        src="{{ $service->foto_services ? url($service->foto_services) : asset('assets/images/components/image.png') }}"
+                        class="card-img-top" alt="Service Image">
+                      <div class="card-body text-start mt-4">
+
+                        <h5 class="card-title">{{ $service->nama_services }}</h5>
+                        <div class="footer-card">
+                          <div class="price d-flex justify-content-start">
+                            <span
+                              class="price">{{ 'Rp' . number_format($service->harga_services ?? 0, 0, ',', '.') }}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQIRnM3n_kvflDS6rZMfI0riK_yW9rWH_F4g&s"
-                    class="card-img-top" alt="Service Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Service Radiator</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp550.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQIRnM3n_kvflDS6rZMfI0riK_yW9rWH_F4g&s"
-                    class="card-img-top" alt="Service Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Service Radiator</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp550.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQIRnM3n_kvflDS6rZMfI0riK_yW9rWH_F4g&s"
-                    class="card-img-top" alt="Service Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Service Radiator</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp550.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
+                @endif
+              @empty
+                <div class="col-12 text-center">
+                  <p>No services available for this workshop.</p>
+                </div>
+              @endforelse
             </div>
           </div>
+
           <div class="tab-pane" id="product">
             {{-- isi card --}}
             <div class="row py-5">
