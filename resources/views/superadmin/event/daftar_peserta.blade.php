@@ -7,7 +7,7 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Daftar Peserta Event{{ $event->nama_event }}</h2>
+            <h2>Daftar Peserta Event {{ $event->nama_event }}</h2>
         </div>
 
         <table class="table table-bordered">
