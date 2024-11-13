@@ -1,33 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>eBengkelku | Super Admin</title>
-  <link rel="stylesheet" href="{{ asset('assets/css/superadmin/auth.css') }}" />
-  <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> eBengkelku | Super Admin </title>
+
+  <link rel="stylesheet" href="{{ asset('assets/css/superadmin/auth.css') }}">
+
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
+
 <body>
-  <div class="login_form">
-    <form action="{{ route('login-admin-send') }}" method="POST">
+  <section class="container forms">
+    <div class="form login">
+      <div class="form-content">
+        <header>Login</header>
+        <form action="{{ route('login-admin-send') }}" method="POST">
         @csrf
-        <h3>Log in</h3>
-        <div class="input_box">
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Enter email address" required />
-        </div>
+          <div class="field input-field">
+            <input type="email" name="email" placeholder="Email" class="input">
+          </div>
 
-        <div class="input_box">
-            <div class="password_title">
-                <label for="password">Password</label>
-                <a href="#">Forgot Password?</a>
-            </div>
-            <input type="password" name="password" id="password" placeholder="Enter your password" required />
-        </div>
+          <div class="field input-field">
+            <input type="password" name="password" placeholder="Password" class="password">
+            <i class='bx bx-hide eye-icon'></i>
+          </div>
 
-        <button type="submit">Log In</button>
-    </form>
+          {{-- <div class="form-link">
+            <a href="#" class="forgot-pass">Forgot password?</a>
+          </div> --}}
 
-  </div>
+          <div class="field button-field">
+            <button>Login</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+
+  <script>
+    const forms = document.querySelector(".forms"),
+        pwShowHide = document.querySelectorAll(".eye-icon"),
+        links = document.querySelectorAll(".link");
+
+        pwShowHide.forEach(eyeIcon => {
+            eyeIcon.addEventListener("click", () => {
+                let pwFields = eyeIcon.parentElement.parentElement.querySelectorAll(".password");
+
+                pwFields.forEach(password => {
+                if (password.type === "password") {
+                    password.type = "text";
+                    eyeIcon.classList.replace("bx-hide", "bx-show");
+                    return;
+                }
+                password.type = "password";
+                eyeIcon.classList.replace("bx-show", "bx-hide");
+                });
+
+            });
+        });
+  </script>
 </body>
+
 </html>
