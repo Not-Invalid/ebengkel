@@ -124,19 +124,16 @@ Route::get('profile/workshop/edit/{id_bengkel}', [WorkshopController::class, 'ed
 Route::put('profile/workshop/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
 Route::delete('profile/workshop/destroy/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
 Route::get('profile/workshop/detail/{id_bengkel}', [WorkshopController::class, 'detailWorkshop'])->name('profile.workshop.detail');
-<<<<<<< HEAD
 Route::get('profile/workshop/sparepart/create', [ProductSparePartController::class, 'createSparepart'])->name('profile.workshop.createSparepart');
 Route::post('profile/workshop/sparepart/store', [ProductSparePartController::class, 'saveSparepart'])->name('profile.workshop.createSparepart.store');
 Route::get('profile/workshop/sparepart/{id_spare_part}/edit', [ProductSparePartController::class, 'editSparepart'])->name('profile.workshop.sparepart.edit');
 Route::post('profile/workshop/sparepart/{id_spare_part}/update', [ProductSparePartController::class, 'updateSparepart'])->name('profile.workshop.sparepart.update');
 Route::delete('profile/workshop/sparepart/{id_spare_part}/delete', [ProductSparePartController::class, 'delete'])->name('profile.workshop.sparepart.delete');
-=======
 Route::get('profile/workshop/service/create', [ServiceController::class, 'createService'])->name('profile.workshop.workshopSET.service.create');
 Route::post('profile/workshop/service/store', [ServiceController::class, 'storeService'])->name('profile.workshop.workshopSET.service.store');
 Route::get('profile/workshop/service/edit/{id_services}', [ServiceController::class, 'editService'])->name('profile.workshop.workshopSET.service.edit');
 Route::put('profile/workshop/service/update/{id_services}', [ServiceController::class, 'updateService'])->name('profile.workshop.workshopSET.service.update');
 Route::delete('profile/workshop/service/delete/{id_services}', [ServiceController::class, 'destroyService'])->name('profile.workshop.workshopSET.service.delete');
->>>>>>> daw
 Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
 Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
 
