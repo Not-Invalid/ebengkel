@@ -4,10 +4,13 @@ use App\Http\Controllers\AuthController as PelangganAuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
+use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
 use App\Http\Controllers\SuperAdmin\MerkMobilController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
@@ -41,7 +44,7 @@ Route::prefix('superadmin')->group(function () {
     Route::post('login', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
     Route::post('logout/admin', [SuperAdminAuthController::class, 'logout'])->name('logout-admin');
 
-    Route::get('dashboard', [PageController::class, 'superAdmin'])->name('superadmin');
+    Route::get('dashboard', [DashboardController::class, 'superAdmin'])->name('superadmin');
 
     Route::get('event-data', [SuperAdminEventController::class, 'index'])->name('event-data');
     Route::get('event-data/create', [SuperAdminEventController::class, 'create'])->name('event-create');
@@ -49,6 +52,7 @@ Route::prefix('superadmin')->group(function () {
     Route::get('event-data/edit/{id}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
     Route::post('event-data/update/{id}', [SuperAdminEventController::class, 'update'])->name('event-update');
     Route::delete('event-data/delete/{id}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
+    Route::get('/event/{eventId}/daftar-peserta', [SuperAdminEventController::class, 'showPesertaEvent'])->name('event-peserta');
 
     Route::get('merk-mobil', [MerkMobilController::class, 'index'])->name('merk-mobil');
     Route::get('merk-mobil/create', [MerkMobilController::class, 'create'])->name('merk-mobil-create');
@@ -57,7 +61,11 @@ Route::prefix('superadmin')->group(function () {
     Route::post('merk-mobil/update/{id}', [MerkMobilController::class, 'update'])->name('merk-mobil-update');
     Route::delete('merk-mobil/delete/{id}', [MerkMobilController::class, 'delete'])->name('merk-mobil-delete');
 
+    Route::get('inbox', [SuperAdminMessagesController::class,'index'])->name('inbox');
+
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
+
+    Route::get('profile', [SuperAdminProfileController::class, 'index'])->name('profile');
 });
 
 // UsedCar
