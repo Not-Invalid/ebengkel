@@ -178,18 +178,6 @@
                         </a>
                     </div>
                 </div>
-
-                {{-- <!-- Contact Info -->
-                <div class="card">
-                    <div class="card-header title-desc">
-                        Hubungi Penjual
-                    </div>
-                    <div class="card-body">
-                        <p><i class='bx bx-phone align-icon me-2'></i>+62 878-6697-4026</p>
-                        <p><i class='bx bxl-whatsapp align-icon me-2'></i>+62 878-6697-4026</p>
-                        <p><i class='bx bx-envelope align-icon me-2'></i>fathanrevandhikasuherman.com</p>
-                    </div>
-                </div> --}}
             </div>
         </div>
 
@@ -197,13 +185,21 @@
         <div class="row py-5">
             <div class="col-md-12 text-center">
                 <h5 class="fw-bold py-3">Bagikan</h5>
-                <a href="#" class="btn btn-outline-primary my-3">
+
+                <!-- Tombol Facebook -->
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://new2.ebengkelku.com" target="_blank"
+                    class="btn btn-outline-primary my-3">
                     <i class='bx bxl-facebook-circle'></i> Facebook
                 </a>
-                <a href="#" class="btn btn-outline-info my-3">
+
+                <!-- Tombol Twitter -->
+                <a href="https://twitter.com/intent/tweet?url=https://new2.ebengkelku.com&text=Kunjungi%20situs%20web%20ebengkelku!"
+                    target="_blank" class="btn btn-outline-info my-3">
                     <i class='bx bxl-twitter'></i> Twitter
                 </a>
-                <a href="#" class="btn btn-outline-danger my-3">
+
+                <!-- Tombol Instagram -->
+                <a href="https://www.instagram.com" target="_blank" class="btn btn-outline-danger my-3">
                     <i class='bx bxl-instagram'></i> Instagram
                 </a>
             </div>
