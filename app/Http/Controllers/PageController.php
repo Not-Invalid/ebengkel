@@ -15,8 +15,8 @@ class PageController extends Controller
     {
         $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
         $events = Event::all();
-        $products = Product::where('delete_bengkel', 'N')->get();
-        $sparepart = SpareParts::where('delete_bengkel', 'N')->get();
+        $products = Product::where('delete_produk', 'N')->get();
+        $sparepart = SpareParts::where('delete_spare_part', 'N')->get();
         return view('index', compact('bengkels', 'events', 'products', 'sparepart'));
     }
 

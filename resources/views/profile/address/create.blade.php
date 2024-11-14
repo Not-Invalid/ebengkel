@@ -3,15 +3,9 @@
 @section('title')
     eBengkelku | Create Address
 @stop
-
-<style>
-    #map {
-        height: 400px;
-        width: 100%;
-        border-radius: 4px;
-    }
-</style>
-
+@push('css')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+@endpush
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <h4>Add Address</h4>
@@ -29,7 +23,8 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="telp_penerima"
                         required pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Nama Telp Penerima</label>
+                    <label class="did-floating-label">Nama
+                        Telp Penerima</label>
                 </div>
             </div>
 
@@ -53,7 +48,7 @@
             <div class="form-group mb-3">
                 <label style="color: #3a6fb0">Pinpoint Alamat</label>
                 <div class="map-container">
-                    <div id="map"></div>
+                    <div id="map" style="height: 400px; border-radius: 4px"></div>
                 </div>
                 <input type="hidden" name="lat_alamat_pengiriman" id="lat_alamat_pengiriman">
                 <input type="hidden" name="long_alamat_pengiriman" id="long_alamat_pengiriman">
@@ -102,84 +97,54 @@
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJIE0oP4IiU2KtyIdanWdhy0XDE5Qq3FM&callback=initMap&v=weekly"
-        async defer></script>
-    <script>
-        var map;
-        var marker;
 
-        function initMap() {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
-
-                    // Inisialisasi peta Google Maps
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: {
-                            lat: lat,
-                            lng: lng
-                        },
-                        zoom: 13
-                    });
-
-                    // Menambahkan marker
-                    marker = new google.maps.Marker({
-                        position: {
-                            lat: lat,
-                            lng: lng
-                        },
-                        map: map,
-                        draggable: true
-                    });
-
-                    // Menangani event drag marker
-                    google.maps.event.addListener(marker, 'dragend', function(e) {
-                        var lat = e.latLng.lat();
-                        var lng = e.latLng.lng();
+                    var map = L.map('map').setView([lat, lng], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                    var marker = L.marker([lat, lng]).addTo(map);
+                    marker.on('dragend', function(e) {
+                        var lat = e.target.getLatLng().lat;
+                        var lng = e.target.getLatLng().lng;
                         document.getElementById('lat_alamat_pengiriman').value = lat;
                         document.getElementById('long_alamat_pengiriman').value = lng;
                     });
-
-                    // Menangani event click untuk mengubah posisi marker
-                    google.maps.event.addListener(map, 'click', function(e) {
-                        var lat = e.latLng.lat();
-                        var lng = e.latLng.lng();
-                        marker.setPosition(e.latLng);
+                    marker.dragging.enable();
+                    map.on('click', function(e) {
+                        var lat = e.latlng.lat;
+                        var lng = e.latlng.lng;
+                        marker.setLatLng([lat, lng]);
                         document.getElementById('lat_alamat_pengiriman').value = lat;
                         document.getElementById('long_alamat_pengiriman').value = lng;
                     });
                 }, function(error) {
                     console.error("Error in geolocation: " + error.message);
-                    // Fallback jika geolocation gagal
-                    var fallbackLatLng = {
-                        lat: -6.283622, // Koordinat Curug (misalnya)
-                        lng: 106.667215
-                    };
-                    map = new google.maps.Map(document.getElementById('map'), {
-                        center: fallbackLatLng,
-                        zoom: 13
-                    });
-                    marker = new google.maps.Marker({
-                        position: fallbackLatLng,
-                        map: map,
-                        draggable: true
-                    });
-                    google.maps.event.addListener(marker, 'dragend', function(e) {
-                        var lat = e.latLng.lat();
-                        var lng = e.latLng.lng();
+                    var map = L.map('map').setView([-5.7771974, 106.01848], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                    var marker = L.marker([-5.7771974, 106.01848]).addTo(map);
+                    marker.on('dragend', function(e) {
+                        var lat = e.target.getLatLng().lat;
+                        var lng = e.target.getLatLng().lng;
                         document.getElementById('lat_alamat_pengiriman').value = lat;
                         document.getElementById('long_alamat_pengiriman').value = lng;
                     });
+                    marker.dragging.enable();
                 });
             } else {
                 alert("Geolocation is not supported by this browser.");
             }
-        }
+        });
     </script>
-
     <script>
         $(document).ready(function() {
             // Mengambil data provinsi
@@ -252,7 +217,6 @@
                         '<option value="" selected disabled hidden>Pilih Kecamatan</option>');
                 }
             });
-
             $('form').submit(function(event) {
                 var provinsiNama = $('#provinsi option:selected').text();
                 var kotaNama = $('#kota option:selected').text();
@@ -275,6 +239,7 @@
                     name: 'kecamatan',
                     value: kecamatanNama
                 }).appendTo(this);
+
             });
         });
     </script>
