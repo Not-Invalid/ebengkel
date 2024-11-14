@@ -47,7 +47,7 @@ Route::prefix('superadmin')->group(function () {
     Route::post('event-data/store', [SuperAdminEventController::class, 'store'])->name('event-store');
     Route::get('event-data/edit/{id}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
     Route::post('event-data/update/{id}', [SuperAdminEventController::class, 'update'])->name('event-update');
-    Route::delete('event-data/delete/{id}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
+    Route::delete('event-data/delete/{id}', [SuperAdminEventController::class, 'delete'])->name('event-delete');
 
     Route::get('merk-mobil', [MerkMobilController::class, 'index'])->name('merk-mobil');
     Route::get('merk-mobil/create', [MerkMobilController::class, 'create'])->name('merk-mobil-create');
@@ -57,6 +57,7 @@ Route::prefix('superadmin')->group(function () {
     Route::delete('merk-mobil/delete/{id}', [MerkMobilController::class, 'delete'])->name('merk-mobil-delete');
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
+    Route::get('workshop/detail', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
 });
 
 // UsedCar
