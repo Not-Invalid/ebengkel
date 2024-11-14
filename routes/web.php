@@ -14,6 +14,7 @@ use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController
 use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
 use App\Http\Controllers\SuperAdmin\MerkMobilController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
+use App\Http\Controllers\SuperAdmin\StaffController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
@@ -74,6 +75,16 @@ Route::prefix('superadmin')->group(function () {
     Route::get('product-sparepart-category/edit/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'editCategory'])->name('product-sparepart-edit');
     Route::post('product-sparepart-category/update{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'updateCategory'])->name('product-sparepart-update');
     Route::delete('product-sparepart-category/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'deleteCategory'])->name('product-sparepart-delete');
+
+    Route::get('staff-admin', [StaffController::class, 'index'])->name('data-staff-admin');
+    Route::get('staff-admin/create', [StaffController::class, 'create'])->name('data-staff-create');
+    Route::post('staff-admin/store', [StaffController::class, 'store'])->name('data-staff-send');
+    Route::get('staff-admin/edit/{id}', [StaffController::class, 'edit'])->name('data-staff-edit');
+    Route::post('staff-admin/update/{id}', [StaffController::class, 'update'])->name('data-staff-update');
+    Route::delete('staff-admin/delete/{id}', [StaffController::class, 'delete'])->name('data-staff-delete');
+
+
+
 });
 
 // UsedCar
