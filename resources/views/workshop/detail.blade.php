@@ -71,6 +71,7 @@
     });
   });
 </script>
+
 @section('content')
   <section class="section section-white"
     style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom: 20px;">
@@ -248,23 +249,6 @@
           <div class="tab-pane active" id="all">
             {{-- isi card --}}
             <div class="row py-5">
-
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQIRnM3n_kvflDS6rZMfI0riK_yW9rWH_F4g&s"
-                    class="card-img-top" alt="Service Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Service Radiator</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp550.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-
               <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <a href="#" class="card-product p-3">
                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmgDTyalHBoNMXH-vCdIJTlNK7U7FvU0Ilog&s"
@@ -322,13 +306,13 @@
                   </div>
                 @endif
               @empty
-                <div class="col-12 text-center">
-                  <p>No services available for this workshop.</p>
+                <div class="text-center">
+                  <img src="{{ asset('assets/images/components/empty.png') }}" width="200" alt="No Data">
+                  <p>Data saat ini tidak ditemukan.</p>
                 </div>
               @endforelse
             </div>
           </div>
-
           <div class="tab-pane" id="product">
             {{-- isi card --}}
             <div class="row py-5">
@@ -462,57 +446,65 @@
 
           </div>
           <div class="tab-pane" id="ulasan">
-            {{-- isi card --}}
-            <div class="reviews">
-              <div class="reviews-header d-flex justify-content-between align-items-center">
-                <h3 class="reviews-title">Reviews</h3>
-                <button type="button" class="btn btn-review" data-bs-toggle="modal"
-                  data-bs-target="#reviewModal">Berikan Ulasan</button>
+            @if (session()->has('id_pelanggan'))
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">Berikan
+                Ulasan</button>
+            @endif
+            @foreach ($ulasan as $review)
+              <div class="review-card">
+                <h6>{{ $review->pelanggan->nama_pelanggan }} ({{ $review->rating }}/5)</h6>
+                <p>{{ $review->komentar }}</p>
+                <small>{{ \Carbon\Carbon::parse($review->created_at)->format('d M Y') }}</small>
               </div>
-              <div class="overall-rating">
-                <div class="rating-value">4.5</div>
-                <span>
-                  <div class="rating-category">Very good</div>
+            @endforeach
 
 
-                  <div class="rating-text">200 verified reviews</div>
-                </span>
-              </div>
-              <hr>
-              <div class="review-list py-2">
-                <div class="review-item">
-                  <img src="{{ asset('assets/images/components/avatar.png') }}" alt="User Avatar">
-                  <div class="review-content">
-                    <div class="rating">
-                      <span class="angka-rate">5.0/5</span> | Rusdy Buitenzorg
-                    </div>
-                    <p>Mekaniknya asik 🔥</p>
+            <!-- Modal -->
+            <!-- Modal -->
+            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">Berikan Ulasan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="POST" action="{{ route('ulasan.store') }}">
+                      @csrf
+                      <!-- Hidden field for customer ID -->
+                      <input type="hidden" name="id_pelanggan" value="{{ session('id_pelanggan') }}">
+                      <!-- Hidden field for workshop ID -->
+                      <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
+
+                      <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <select name="rating" class="form-control" id="rating" required>
+                          <option value="" disabled selected>Pilih rating</option>
+                          <!-- Option tambahan untuk placeholder -->
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="komentar">Komentar</label>
+                        <textarea name="komentar" class="form-control" id="komentar" rows="3"></textarea>
+                      </div>
+
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
                   </div>
                 </div>
-                <hr>
-                <div class="review-item">
-                  <img src="{{ asset('assets/images/components/avatar.png') }}" alt="User Avatar">
-                  <div class="review-content">
-                    <div class="rating">
-                      <span class="angka-rate">5.0/5</span> | Rusdy Paku Banten
-                    </div>
-                    <p>Bakal pesen sparepart disini lagi nih 😁😁😁</p>
-                  </div>
-                </div>
-                <hr>
-                <div class="review-item">
-                  <img src="{{ asset('assets/images/components/avatar.png') }}" alt="User Avatar">
-                  <div class="review-content">
-                    <div class="rating">
-                      <span class="angka-rate">5.0/5</span> | Rusdy Mangunkubuwono IX
-                    </div>
-                    <p>Service disini emang paling best sih 😙😙</p>
-                  </div>
-                </div>
-                <hr>
               </div>
             </div>
+
           </div>
+
           <!-- Static Pagination -->
           <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
             <ul class="pagination">
@@ -532,53 +524,4 @@
     </div>
 
   </section>
-  <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <div class="modal-body">
-          <form id="reviewForm">
-            <div class="container py-3">
-              <h3 class="title-rating">Berikan Ulasan Untuk Workshop Ini</h3>
-              <div class="rating-form">
-                {{-- 1 --}}
-                <input type="radio" name="rating" id="star1" value="1" />
-                <label for="star1" class="star py-2">
-                  <i class='bx bxs-star' style="font-size: 25px;"></i>
-                </label>
-                {{-- 2 --}}
-                <input type="radio" name="rating" id="star2" value="2" />
-                <label for="star2" class="star py-2">
-                  <i class='bx bxs-star' style="font-size: 25px;"></i>
-                </label>
-                {{-- 3 --}}
-                <input type="radio" name="rating" id="star3" value="3" />
-                <label for="star3" class="star py-2">
-                  <i class='bx bxs-star' style="font-size: 25px;"></i>
-                </label>
-                {{-- 4 --}}
-                <input type="radio" name="rating" id="star4" value="4" />
-                <label for="star4" class="star py-2">
-                  <i class='bx bxs-star' style="font-size: 25px;"></i>
-                </label>
-                {{-- 5 --}}
-                <input type="radio" name="rating" id="star5" value="5" />
-                <label for="star5" class="star py-2">
-                  <i class='bx bxs-star' style="font-size: 25px;"></i>
-                </label>
-              </div>
-            </div>
-
-
-            <div class="mb-3">
-              <textarea class="form-control" id="comments" rows="3" placeholder="Tulis Ulasan Anda Disini..."></textarea>
-            </div>
-            <button type="submit" class="btn btn-send-rate"> <span class="iconify" data-icon="mynaui:send-solid"
-                data-width="16" data-height="16"></span>Kirim
-              Ulasan</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 @endsection
