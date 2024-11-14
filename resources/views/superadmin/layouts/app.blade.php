@@ -123,8 +123,8 @@
                                 <span>Event</span>
                             </a>
                         </li>
-                        <li class="sidebar-item {{ request()->routeIs('profile') ? 'active' : '' }}">
-                            <a href="{{ route('profile') }}" class="sidebar-link">
+                        <li class="sidebar-item {{ request()->routeIs('profile-admin') ? 'active' : '' }}">
+                            <a href="{{ route('profile-admin') }}" class="sidebar-link">
                                 <i class="fas fa-user"></i>
                                 <span>Profile</span>
                             </a>
@@ -182,7 +182,7 @@
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/images/components/avatar-admin.png') }}" alt="User Avatar">
+                                                <img src="{{ Auth::user()->foto_profile ?? asset('assets/images/components/avatar-admin.png') }}" alt="User Avatar">
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@
                                         <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}!</h6>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                        <a class="dropdown-item" href="{{ route('profile-admin') }}">
                                             <i class="fas fa-user me-2"></i> Profile
                                         </a>
                                     </li>
