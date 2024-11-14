@@ -95,7 +95,7 @@
                                 <div class="d-flex justify-content-center pb-5">
                                     <div class="text-center">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                                        alt="No workshops">
+                                        alt="Empty">
                                     <p>No data available for Events.</p>
                                     </div>
                                 </div>
