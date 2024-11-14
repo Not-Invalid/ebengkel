@@ -142,8 +142,8 @@
                             for="honda" class="mx-2">Honda</label></div>
                     <div class="mt-2"><input type="checkbox" id="suzuki" name="brand" value="Suzuki"><label
                             for="suzuki" class="mx-2">Suzuki</label></div>
-                    <div class="mt-2"><input type="checkbox" id="mercy" name="brand" value="Mercy"><label
-                            for="mercy" class="mx-2">Mercy</label></div>
+                    <div class="mt-2"><input type="checkbox" id="Mercedes-Benz" name="brand"
+                            value="Mercedes-Benz"><label for="Mercedes-Benz" class="mx-2">Mercedes-Benz</label></div>
                     <div class="mt-2"><input type="checkbox" id="bmw" name="brand" value="BMW"><label
                             for="bmw" class="mx-2">BMW</label></div>
                     <div class="mt-2"><input type="checkbox" id="audi" name="brand" value="Audi"><label
@@ -182,26 +182,19 @@
                             < 100 Juta</label>
                     </div>
                     <div class="mt-2"><input type="checkbox" name="harga" value="100 - 250 Juta"><label
-                            class="mx-2">100 - 250
-                            Juta</label></div>
+                            class="mx-2">100 - 250 Juta</label></div>
                     <div class="mt-2"><input type="checkbox" name="harga" value="250 - 400 Juta"><label
-                            class="mx-2">250 - 400
-                            Juta</label></div>
+                            class="mx-2">250 - 400 Juta</label></div>
                     <div class="mt-2"><input type="checkbox" name="harga" value="400 - 550 Juta"><label
-                            class="mx-2">400 - 550
-                            Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="400 - 550 Juta"><label
-                            class="mx-2">550 - 700
-                            Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="400 - 550 Juta"><label
-                            class="mx-2">700 - 850
-                            Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="400 - 550 Juta"><label
-                            class="mx-2">850 - 1 Miliar
-                            Juta</label></div>
+                            class="mx-2">400 - 550 Juta</label></div>
+                    <div class="mt-2"><input type="checkbox" name="harga" value="550 - 700 Juta"><label
+                            class="mx-2">550 - 700 Juta</label></div>
+                    <div class="mt-2"><input type="checkbox" name="harga" value="700 - 850 Juta"><label
+                            class="mx-2">700 - 850 Juta</label></div>
+                    <div class="mt-2"><input type="checkbox" name="harga" value="850 - 1 Miliar"><label
+                            class="mx-2">850 - 1 Miliar</label></div>
                     <div class="mt-2"><input type="checkbox" name="harga" value="> 1 Miliar"><label
-                            class="mx-2">> 1
-                            Miliar</label></div>
+                            class="mx-2">> 1 Miliar</label></div>
                 </div>
 
                 <div class="offcanvas-header">
@@ -235,4 +228,86 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const carCards = document.querySelectorAll('.col-12'); // Mengambil semua kartu mobil
+
+            // Fungsi untuk memperbarui tampilan mobil sesuai checkbox yang dipilih
+            function filterCars() {
+                carCards.forEach(function(card) {
+                    const carBrand = card.querySelector('.jenis').textContent.trim(); // Ambil brand mobil
+                    const carPriceText = card.querySelector('.price').textContent
+                .trim(); // Ambil harga mobil
+                    const carUsage = card.querySelector('.location').textContent
+                .trim(); // Ambil lokasi (pemakaian)
+
+                    // Menghilangkan 'Rp', titik, dan karakter lainnya dari harga sebelum diubah menjadi integer
+                    const carPrice = parseInt(carPriceText.replace(/[^0-9]/g, ''));
+
+                    let showCard = true; // Asumsikan kartu mobil akan ditampilkan
+
+                    // Periksa filter brand
+                    const selectedBrand = document.querySelector('input[name="brand"]:checked');
+                    if (selectedBrand && selectedBrand.value !== carBrand) {
+                        showCard = false; // Jika brand tidak sesuai, sembunyikan kartu
+                    }
+
+                    // Periksa filter harga
+                    const selectedPrice = document.querySelector('input[name="harga"]:checked');
+                    if (selectedPrice) {
+                        const priceFilter = selectedPrice.value;
+
+                        // Mengatur logika filter harga
+                        if (priceFilter === '< 100 Juta' && carPrice >= 100000000) {
+                            showCard = false;
+                        } else if (priceFilter === '100 - 250 Juta' && (carPrice < 100000000 || carPrice >
+                                250000000)) {
+                            showCard = false;
+                        } else if (priceFilter === '250 - 400 Juta' && (carPrice < 250000000 || carPrice >
+                                400000000)) {
+                            showCard = false;
+                        } else if (priceFilter === '400 - 550 Juta' && (carPrice < 400000000 || carPrice >
+                                550000000)) {
+                            showCard = false;
+                        } else if (priceFilter === '550 - 700 Juta' && (carPrice < 550000000 || carPrice >
+                                700000000)) {
+                            showCard = false;
+                        } else if (priceFilter === '700 - 850 Juta' && (carPrice < 700000000 || carPrice >
+                                850000000)) {
+                            showCard = false;
+                        } else if (priceFilter === '850 - 1 Miliar' && (carPrice < 850000000 || carPrice >
+                                1000000000)) {
+                            showCard = false;
+                        } else if (priceFilter === '> 1 Miliar' && carPrice <= 1000000000) {
+                            showCard = false;
+                        }
+                    }
+
+                    // Periksa filter pemakaian
+                    const selectedUsages = Array.from(document.querySelectorAll(
+                            'input[name="pemakaian"]:checked'))
+                        .map(checkbox => checkbox.value);
+
+                    if (selectedUsages.length > 0 && !selectedUsages.some(usage => carUsage.includes(
+                        usage))) {
+                        showCard = false; // Jika tidak ada yang cocok, sembunyikan kartu
+                    }
+
+                    // Menampilkan atau menyembunyikan kartu mobil
+                    card.style.display = showCard ? 'block' : 'none';
+                });
+            }
+
+            // Menambahkan event listener pada setiap checkbox
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', filterCars);
+            });
+
+            // Menjalankan filterCars saat pertama kali halaman dimuat
+            filterCars();
+        });
+    </script>
+
 @endsection
