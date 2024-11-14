@@ -15,11 +15,21 @@ class ProductSparePartController extends Controller
 {
     public function index()
     {
-        return view('ProductSparepart.index');
+        $sparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel')->get();
+        $product = Product::where('delete_produk', 'N')->with('bengkel')->get();
+        return view('ProductSparepart.index', compact('sparepart', 'product'));
     }
-    public function detail()
+    public function detail($type, $id)
     {
-        return view('ProductSparepart.detail-ProductSparePart');
+        if ($type == 'product') {
+            $data = Product::where('id_produk', $id)->first();
+        } elseif ($type == 'sparepart') {
+            $data = SpareParts::where('id_spare_part', $id)->first();
+        } else {
+            abort(404);
+        }
+
+        return view('ProductSparepart.detail-ProductSparePart', compact('data'));
     }
     public function createSparepart()
     {
@@ -111,7 +121,7 @@ class ProductSparePartController extends Controller
         $sparePart->stok_spare_part = $request->stok_spare_part;
 
         if ($request->hasFile('foto_spare_part')) {
-            $imageName =  'foto_spare_part_' . now()->format('Ymd_His') . '.' . $request->foto_spare_part->extension();
+            $imageName = 'foto_spare_part_' . now()->format('Ymd_His') . '.' . $request->foto_spare_part->extension();
             $request->foto_spare_part->move(public_path('assets/images/spareparts'), $imageName);
             $sparePart->foto_spare_part = 'assets/images/spareparts/' . $imageName;
         }
@@ -226,7 +236,7 @@ class ProductSparePartController extends Controller
         $product->stok_produk = $request->stok_produk;
 
         if ($request->hasFile('foto_produk')) {
-            $imageName =  'foto_produk_' . now()->format('Ymd_His') . '.' . $request->foto_produk->extension();
+            $imageName = 'foto_produk_' . now()->format('Ymd_His') . '.' . $request->foto_produk->extension();
             $request->foto_produk->move(public_path('assets/images/spareparts'), $imageName);
             $product->foto_produk = 'assets/images/spareparts/' . $imageName;
         }
