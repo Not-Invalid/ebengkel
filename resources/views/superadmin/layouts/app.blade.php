@@ -20,8 +20,8 @@
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-     {{-- Toastr CSS --}}
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    {{-- Toastr CSS --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
@@ -82,7 +82,8 @@
                                                 class="submenu-link">Support Center</a>
                                         </li>
                                         <li class="submenu-item">
-                                            <a href="{{ route('product-sparepart-category') }}" class="submenu-link">Product & Spare Parts</a>
+                                            <a href="{{ route('product-sparepart-category') }}"
+                                                class="submenu-link">Product & Spare Parts</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -142,8 +143,9 @@
                                         Staff Access
                                     </a>
                                 </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="" class="sidebar-link">
+                                <li
+                                    class="submenu-item has-sub {{ request()->routeIs('data-pelanggan') ? 'active' : '' }}">
+                                    <a href="{{ route('data-pelanggan') }}" class="sidebar-link">
                                         <i class="fas fa-users" style="color: #25396f !important;"></i>
                                         Data Pelanggan
                                     </a>
@@ -177,12 +179,14 @@
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">{{ Auth::user()->name }}</h6>
-                                            <p class="mb-0 text-sm text-gray-600">{{ Auth::user()->role ?? 'User' }}</p>
+                                            <h6 class="mb-0 text-gray-600">{{ Auth::user()->name ?? 'User' }}</h6>
+                                            <p class="mb-0 text-sm text-gray-600">{{ Auth::user()->role ?? 'User' }}
+                                            </p>
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="{{ Auth::user()->foto_profile ?? asset('assets/images/components/avatar-admin.png') }}" alt="User Avatar">
+                                                <img src="{{ Auth::user()->foto_profile ?? asset('assets/images/components/avatar-admin.png') }}"
+                                                    alt="User Avatar">
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +194,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton"
                                     style="min-width: 11rem;">
                                     <li>
-                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}!</h6>
+                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name ?? 'User' }}!</h6>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ route('profile-admin') }}">
@@ -252,23 +256,23 @@
     <script>
         // Toastr configuration
         toastr.options = {
-          "closeButton": true,
-          "progressBar": true,
-          "positionClass": "toast-top-right",
-          "timeOut": "3000"
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
         };
 
 
-            // Display success message
-            @if (session('status'))
-                toastr.success("{{ session('status') }}");
-            @endif
+        // Display success message
+        @if (session('status'))
+            toastr.success("{{ session('status') }}");
+        @endif
 
-            // Display error message
-            @if (session('status_error'))
-                toastr.error("{{ session('status_error') }}");
-            @endif
-        </script>
+        // Display error message
+        @if (session('status_error'))
+            toastr.error("{{ session('status_error') }}");
+        @endif
+    </script>
 
     {{-- Loader script --}}
     <script>
