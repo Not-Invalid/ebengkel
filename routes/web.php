@@ -65,7 +65,8 @@ Route::prefix('superadmin')->group(function () {
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
 
-    Route::get('profile', [SuperAdminProfileController::class, 'index'])->name('profile');
+    Route::get('profile', [SuperAdminProfileController::class, 'index'])->name('profile-admin');
+    Route::post('profile/{id}', [SuperAdminProfileController::class, 'update'])->name('profile-update');
 
     Route::get('product-sparepart-category', [SuperAdminProductSparePartController::class, 'showCategory'])->name('product-sparepart-category');
     Route::get('product-sparepart-category/create', [SuperAdminProductSparePartController::class, 'createCategory'])->name('product-sparepart-create');
