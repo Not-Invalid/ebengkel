@@ -129,7 +129,7 @@
                                 <span>Profile</span>
                             </a>
                         </li>
-
+                        @if (Auth::user()->role === 'Administrator')
                         <li class="sidebar-item has-sub">
                             <a href="#" class="sidebar-link">
                                 <i class="fas fa-user-gear"></i>
@@ -138,24 +138,19 @@
                             <ul class="submenu">
                                 <li class="submenu-item has-sub">
                                     <a href="" class="sidebar-link">
-                                        <i class="fas fa-key" style="color: #25396f !important;"></i>
-                                        Staff Access
-                                    </a>
-                                </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="" class="sidebar-link">
                                         <i class="fas fa-users" style="color: #25396f !important;"></i>
                                         Data Pelanggan
                                     </a>
                                 </li>
                                 <li class="submenu-item has-sub">
-                                    <a href="" class="sidebar-link">
+                                    <a href="{{ route('data-staff-admin') }}" class="sidebar-link">
                                         <i class="fas fa-user-tie" style="color: #25396f !important;"></i>
-                                        Data Staff Super Admin
+                                        Data Staff Admin
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -268,7 +263,7 @@
             @if (session('status_error'))
                 toastr.error("{{ session('status_error') }}");
             @endif
-        </script>
+    </script>
 
     {{-- Loader script --}}
     <script>
