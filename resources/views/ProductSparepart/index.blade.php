@@ -55,85 +55,57 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="row ">
-                        <!-- Item 1 - Product -->
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="product">
-                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
-                                <img src="https://images.tokopedia.net/img/cache/700/VqbcmM/2023/5/18/5c98527e-2296-4cbb-9595-065cf85f3d98.jpg"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title">LAMP LED ERTIGA</p>
-                                    <div class="d-flex align-items-center">
-                                        <i class='bx bx-box me-1 workshop'></i>
-                                        <span class="workshop">Cimone Racing</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp. 160,000,000</span>
+                    <div class="row">
+                        @foreach ($product as $prod)
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="product">
+                                <a href="{{ route('Detail-ProductSparePart', ['type' => 'product', 'id' => $prod->id_produk]) }}"
+                                    class="card-event p-3">
+                                    <img src="{{ isset($prod) && $prod->foto_produk ? url($prod->foto_produk) : asset('assets/images/components/image.png') }}"
+                                        class="card-img-top" alt="Product Image">
+                                    <div class="card-body text-start">
+                                        <p class="card-title">{{ $prod->nama_produk }}</p>
+                                        <div class="d-flex align-items-center">
+                                            <i class='bx bx-box me-1 workshop'></i>
+                                            <span class="workshop">{{ $prod->bengkel->nama_bengkel }}</span>
+                                        </div>
+                                        <div class="footer-card">
+                                            <div class="price d-flex justify-content-start">
+                                                <span class="price">Rp.
+                                                    {{ number_format($prod->harga_produk, 0, ',', '.') }}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="product">
-                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM7_mrU1UgeKqkdz_if2Zz4doIBEgY8kRmcA&s"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title">OLI GARDAN</p>
-                                    <div class="d-flex align-items-center">
-                                        <i class='bx bx-box me-1 workshop'></i>
-                                        <span class="workshop">Cimone Bengkel</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp. 160,000,000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
+                        @endforeach
 
-                        <!-- Item 2 - Sparepart -->
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="sparepart">
-                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
-                                <img src="https://thumbs.dreamstime.com/b/windshield-wiper-blade-spare-part-windshield-wiper-blade-spare-part-isolated-white-background-car-detail-repair-engine-gear-163373523.jpg?w=1600"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title">WIPER BOSCH BLADE</p>
-                                    <div class="d-flex align-items-center">
-                                        <i class='bx bx-box me-1 workshop'></i>
-                                        <span class="workshop">Auto Car</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp. 160,000,000</span>
+
+                        @foreach ($sparepart as $spare)
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="sparepart">
+                                <a href="{{ route('Detail-ProductSparePart', ['type' => 'sparepart', 'id' => $spare->id_spare_part]) }}"
+                                    class="card-event p-3">
+                                    <img src="{{ isset($spare) && $spare->foto_spare_part ? $spare->foto_spare_part : asset('assets/images/components/image.png') }}"
+                                        class="card-img-top" alt="Sparepart Image">
+                                    <div class="card-body text-start">
+                                        <p class="card-title">{{ $spare->nama_spare_part }}</p>
+                                        <div class="d-flex align-items-center">
+                                            <i class='bx bx-box me-1 workshop'></i>
+                                            <span class="workshop">{{ $spare->bengkel->nama_bengkel }}</span>
+                                        </div>
+                                        <div class="footer-card">
+                                            <div class="price d-flex justify-content-start">
+                                                <span class="price">Rp.
+                                                    {{ number_format($spare->harga_spare_part, 0, ',', '.') }}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3" data-category="sparepart">
-                            <a href="{{ route('Detail-ProductSparePart') }}" class="card-event p-3">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg8MuQLbZ6gme1vFtLnc-7LgPGOYSRgLT71w&s"
-                                    class="card-img-top" alt="Event Image">
-                                <div class="card-body text-start">
-                                    <p class="card-title">VELG</p>
-                                    <div class="d-flex align-items-center">
-                                        <i class='bx bx-box me-1 workshop'></i>
-                                        <span class="workshop">Arya Mobile</span>
-                                    </div>
-                                    <div class="footer-card">
-                                        <div class="price d-flex justify-content-start">
-                                            <span class="price">Rp. 160,000,000</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 @endsection

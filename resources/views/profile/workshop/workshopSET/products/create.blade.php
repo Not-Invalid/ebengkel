@@ -87,8 +87,8 @@
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
-                    <input class="did-flo\\\\\\\\\\\\\\\\\\\\\\\\\\ating-input" type="text" placeholder=" "
-                        id="nama_produk" name="nama_produk" required />
+                    <input class="did-floating-input" type="text" placeholder=" " id="nama_produk" name="nama_produk"
+                        required />
                     <label class="did-floating-label">Nama Product</label>
                 </div>
             </div>

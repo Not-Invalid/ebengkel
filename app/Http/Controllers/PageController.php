@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SupportCategory;
-use App\Models\SupportInfo;
-use Illuminate\Routing\Controller;
-use Illuminate\Http\Request;
 use App\Models\Bengkel;
 use App\Models\Event;
+use App\Models\Product;
+use App\Models\SpareParts;
+use App\Models\SupportCategory;
+use Illuminate\Routing\Controller;
 
 class PageController extends Controller
 {
@@ -15,7 +15,9 @@ class PageController extends Controller
     {
         $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
         $events = Event::all();
-        return view('index', compact('bengkels', 'events'));
+        $products = Product::where('delete_bengkel', 'N')->get();
+        $sparepart = SpareParts::where('delete_bengkel', 'N')->get();
+        return view('index', compact('bengkels', 'events', 'products', 'sparepart'));
     }
 
     public function contact()
@@ -41,17 +43,18 @@ class PageController extends Controller
     public function supportCenter()
     {
         $categories = SupportCategory::all();
-        return view('pages.support_center',  compact('categories'));
+        return view('pages.support_center', compact('categories'));
     }
 
     public function detail($categoryId)
     {
         $supportInfo = SupportCategory::with('questions')
-                                ->findOrFail($categoryId);
+            ->findOrFail($categoryId);
 
         return view('pages.detail', compact('supportInfo'));
     }
-    public function career(){
+    public function career()
+    {
         return view('pages.career');
     }
 }

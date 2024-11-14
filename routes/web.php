@@ -8,6 +8,7 @@ use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
 use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
@@ -17,7 +18,6 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
-use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -66,20 +66,45 @@ Route::prefix('superadmin')->group(function () {
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
 
     Route::get('profile', [SuperAdminProfileController::class, 'index'])->name('profile');
+
+    Route::get('product-sparepart-category', [SuperAdminProductSparePartController::class, 'showCategory'])->name('product-sparepart-category');
+    Route::get('product-sparepart-category/create', [SuperAdminProductSparePartController::class, 'createCategory'])->name('product-sparepart-create');
+    Route::post('product-sparepart-category/store', [SuperAdminProductSparePartController::class, 'storeCategory'])->name('product-sparepart-send');
+    Route::get('product-sparepart-category/edit/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'editCategory'])->name('product-sparepart-edit');
+    Route::post('product-sparepart-category/update{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'updateCategory'])->name('product-sparepart-update');
+    Route::delete('product-sparepart-category/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'deleteCategory'])->name('product-sparepart-delete');
 });
 
 // UsedCar
-Route::get('used-car', [UsedCarController::class, 'index'])->name('used-car');
-Route::get('used-car/{id_mobil}', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+Route::prefix('used-car')->group(function () {
+    Route::get('/', [UsedCarController::class, 'index'])->name('used-car');
+    Route::get('detail/{id_mobil}', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+});
 
 // Product & SparePart
-Route::get('ProductSparePart', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
-Route::get('/detail-ProductSparePart', [ProductSparePartController::class, 'detail'])->name('Detail-ProductSparePart');
+Route::prefix('ProductsSparePart')->group(function () {
+    Route::get('/', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
+    Route::get('/detail/{type}/{id}', [ProductSparePartController::class, 'detail'])->name('Detail-ProductSparePart');
+});
 
-// Contact Routes
+// Event route
+Route::prefix('event')->group(function () {
+    Route::get('/', [EventController::class, 'show'])->name('event.show');
+    Route::get('event-detail/{id}', [EventController::class, 'detail'])->name('event.detail');
+    Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
+    Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+});
+
+// Workshop route
+Route::prefix('workshop')->group(function () {
+    Route::get('/', [WorkshopController::class, 'show'])->name('workshop.show');
+    Route::get('workshop-detail/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
+    Route::get('workshop/{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
+});
+
+// Pages Routes
 Route::get('contact', [PageController::class, 'contact'])->name('contact');
 Route::post('contact', [MessageController::class, 'sendContactMessage'])->name('message-send');
-
 Route::get('about', [PageController::class, 'about'])->name('about');
 Route::get('faqs', [PageController::class, 'faqs'])->name('faqs');
 Route::get('terms', [PageController::class, 'terms'])->name('terms');
@@ -99,72 +124,60 @@ Route::get('support-center-info/edit/{id}', [SupportCenterController::class, 'ed
 Route::put('support-center-info/update/{id}', [SupportCenterController::class, 'updateInfo'])->name('support-center-info-update');
 Route::delete('support-center-info/delete/{id}', [SupportCenterController::class, 'deleteInfo'])->name('support-center-info-delete');
 
-Route::get('product-sparepart-category', [SuperAdminProductSparePartController::class, 'showCategory'])->name('product-sparepart-category');
-Route::get('product-sparepart-category/create', [SuperAdminProductSparePartController::class, 'createCategory'])->name('product-sparepart-create');
-Route::post('product-sparepart-category/store', [SuperAdminProductSparePartController::class, 'storeCategory'])->name('product-sparepart-send');
-Route::get('product-sparepart-category/edit/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'editCategory'])->name('product-sparepart-edit');
-Route::post('product-sparepart-category/update{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'updateCategory'])->name('product-sparepart-update');
-Route::delete('product-sparepart-category/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'deleteCategory'])->name('product-sparepart-delete');
-
 // Profile route
-Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-Route::get('/profile/address', [ProfileController::class, 'showAddress'])->name('profile.address');
-Route::get('/profile/address/create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
-Route::post('/profile/address/store', [ProfileController::class, 'storeAddress'])->name('address.store');
-Route::get('/profile/address/edit/{id_alamat_pengiriman}', [ProfileController::class, 'editAddress'])->name('address.edit');
-Route::post('/profile/address/update/{id_alamat_pengiriman}', [ProfileController::class, 'updateAddress'])->name('address.update');
-Route::delete('/profile/address/delete/{id_alamat_pengiriman}', [ProfileController::class, 'delete'])->name('address.delete');
-Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
-Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
-Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
-Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
-Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
-Route::get('profile/used-car', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
-Route::get('profile/used-car/create', [UsedCarController::class, 'create'])->name('used-car-create');
-Route::post('profile/used-car/store', [UsedCarController::class, 'store'])->name('used-car-store');
-Route::get('profile/used-car/edit/{id_mobil}', [UsedCarController::class, 'edit'])->name('used-car-edit');
-Route::put('profile/used-car/update/{id_mobil}', [UsedCarController::class, 'update'])->name('used-car-update');
-Route::delete('profile/used-car/delete/{id_mobil}', [UsedCarController::class, 'delete'])->name('used-car-delete');
-Route::get('profile/workshop', [WorkshopController::class, 'showWorkshop'])->name('profile.workshop');
-Route::get('profile/workshop/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
-Route::post('profile/workshop/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
-Route::get('profile/workshop/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
-Route::put('profile/workshop/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
-Route::delete('profile/workshop/destroy/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
-Route::get('profile/workshop/detail/{id_bengkel}', [WorkshopController::class, 'detailWorkshop'])->name('profile.workshop.detail');
-Route::get('profile/workshop/sparepart/create', [ProductSparePartController::class, 'createSparepart'])->name('profile.workshop.createSparepart');
-Route::post('profile/workshop/sparepart/store', [ProductSparePartController::class, 'saveSparepart'])->name('profile.workshop.createSparepart.store');
-Route::get('profile/workshop/sparepart/{id_spare_part}/edit', [ProductSparePartController::class, 'editSparepart'])->name('profile.workshop.sparepart.edit');
-Route::post('profile/workshop/sparepart/{id_spare_part}/update', [ProductSparePartController::class, 'updateSparepart'])->name('profile.workshop.sparepart.update');
-Route::delete('profile/workshop/sparepart/{id_spare_part}/delete', [ProductSparePartController::class, 'delete'])->name('profile.workshop.sparepart.delete');
-Route::get('profile/workshop/service/create', [ServiceController::class, 'createService'])->name('profile.workshop.workshopSET.service.create');
-Route::post('profile/workshop/service/store', [ServiceController::class, 'storeService'])->name('profile.workshop.workshopSET.service.store');
-Route::get('profile/workshop/service/edit/{id_services}', [ServiceController::class, 'editService'])->name('profile.workshop.workshopSET.service.edit');
-Route::put('profile/workshop/service/update/{id_services}', [ServiceController::class, 'updateService'])->name('profile.workshop.workshopSET.service.update');
-Route::delete('profile/workshop/service/delete/{id_services}', [ServiceController::class, 'destroyService'])->name('profile.workshop.workshopSET.service.delete');
-Route::get('profile/workshop/product/create', [ProductSparePartController::class, 'createProduct'])->name('profile.workshop.createProduct');
-Route::post('profile/workshop/product/store', [ProductSparePartController::class, 'saveProduct'])->name('profile.workshop.createProduct.store');
-Route::get('profile/workshop/product/{id_product}/edit', [ProductSparePartController::class, 'editProduct'])->name('profile.workshop.product.edit');
-Route::post('profile/workshop/product/{id_product}/update', [ProductSparePartController::class, 'updateProduct'])->name('profile.workshop.product.update');
-Route::delete('profile/workshop/product/{id_product}/delete', [ProductSparePartController::class, 'deleteProduct'])->name('profile.workshop.product.delete');
-Route::get('profile/setting', [ProfileController::class, 'showSetting'])->name('profile.setting');
-Route::post('/profile/reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
+Route::prefix('profile')->group(function () {
+    Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
-// Event route
-Route::get('event', [EventController::class, 'show'])->name('event.show');
-Route::get('event/{id}', [EventController::class, 'detail'])->name('event.detail');
-Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
-Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+    // address
+    Route::prefix('address')->group(function () {
+        Route::get('/', [ProfileController::class, 'showAddress'])->name('profile.address');
+        Route::get('create', [ProfileController::class, 'addAddress'])->name('profile.address.create');
+        Route::post('store', [ProfileController::class, 'storeAddress'])->name('address.store');
+        Route::get('edit/{id_alamat_pengiriman}', [ProfileController::class, 'editAddress'])->name('address.edit');
+        Route::post('update/{id_alamat_pengiriman}', [ProfileController::class, 'updateAddress'])->name('address.update');
+        Route::delete('delete/{id_alamat_pengiriman}', [ProfileController::class, 'delete'])->name('address.delete');
+    });
 
+    // workshop
+    Route::prefix('workshop')->group(function () {
+        Route::get('/', [WorkshopController::class, 'showWorkshop'])->name('profile.workshop');
+        Route::get('create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
+        Route::post('store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
+        Route::get('edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
+        Route::put('update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
+        Route::delete('destroy/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
+        Route::get('detail/{id_bengkel}', [WorkshopController::class, 'detailWorkshop'])->name('profile.workshop.detail');
+        Route::get('sparepart/create', [ProductSparePartController::class, 'createSparepart'])->name('profile.workshop.createSparepart');
+        Route::post('sparepart/store', [ProductSparePartController::class, 'saveSparepart'])->name('profile.workshop.createSparepart.store');
+        Route::get('sparepart/{id_spare_part}/edit', [ProductSparePartController::class, 'editSparepart'])->name('profile.workshop.sparepart.edit');
+        Route::post('sparepart/{id_spare_part}/update', [ProductSparePartController::class, 'updateSparepart'])->name('profile.workshop.sparepart.update');
+        Route::delete('sparepart/{id_spare_part}/delete', [ProductSparePartController::class, 'delete'])->name('profile.workshop.sparepart.delete');
+        Route::get('service/create', [ServiceController::class, 'createService'])->name('profile.workshop.workshopSET.service.create');
+        Route::post('service/store', [ServiceController::class, 'storeService'])->name('profile.workshop.workshopSET.service.store');
+        Route::get('service/edit/{id_services}', [ServiceController::class, 'editService'])->name('profile.workshop.workshopSET.service.edit');
+        Route::put('service/update/{id_services}', [ServiceController::class, 'updateService'])->name('profile.workshop.workshopSET.service.update');
+        Route::delete('service/delete/{id_services}', [ServiceController::class, 'destroyService'])->name('profile.workshop.workshopSET.service.delete');
+        Route::get('product/create', [ProductSparePartController::class, 'createProduct'])->name('profile.workshop.createProduct');
+        Route::post('product/store', [ProductSparePartController::class, 'saveProduct'])->name('profile.workshop.createProduct.store');
+        Route::get('product/{id_product}/edit', [ProductSparePartController::class, 'editProduct'])->name('profile.workshop.product.edit');
+        Route::post('product/{id_product}/update', [ProductSparePartController::class, 'updateProduct'])->name('profile.workshop.product.update');
+        Route::delete('product/{id_product}/delete', [ProductSparePartController::class, 'deleteProduct'])->name('profile.workshop.product.delete');
+    });
 
-// Workshop route
-Route::get('workshop', [WorkshopController::class, 'show'])->name('workshop.show');
-Route::get('workshop/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
+    // used car
+    Route::prefix('used-car')->group(function () {
+        Route::get('/', [UsedCarController::class, 'showUsedCar'])->name('profile-used-car');
+        Route::get('create', [UsedCarController::class, 'create'])->name('used-car-create');
+        Route::post('store', [UsedCarController::class, 'store'])->name('used-car-store');
+        Route::get('edit/{id_mobil}', [UsedCarController::class, 'edit'])->name('used-car-edit');
+        Route::put('update/{id_mobil}', [UsedCarController::class, 'update'])->name('used-car-update');
+        Route::delete('delete/{id_mobil}', [UsedCarController::class, 'delete'])->name('used-car-delete');
+    });
 
-// Service Route
-Route::get('/workshop/{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
-// Route::get('/create', [WorkshopController::class, 'createWorkshop'])->name('profile.workshop.create');
-// Route::post('/store', [WorkshopController::class, 'storeWorkshop'])->name('profile.workshop.store');
-// Route::get('/edit/{id_bengkel}', [WorkshopController::class, 'editWorkshop'])->name('profile.workshop.edit');
-// Route::put('/update/{id_bengkel}', [WorkshopController::class, 'updateWorkshop'])->name('profile.workshop.update');
-// Route::delete('/delete/{id_bengkel}', [WorkshopController::class, 'destroyWorkshop'])->name('profile.workshop.destroy');
+    // settings
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [ProfileController::class, 'showSetting'])->name('profile.setting');
+        Route::post('reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
+
+    });
+});
