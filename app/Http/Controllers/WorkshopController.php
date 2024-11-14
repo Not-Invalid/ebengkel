@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\Pelanggan;
 use App\Models\Product;
 use App\Models\SpareParts;
 use App\Models\Service;
+
+use App\Models\ReviewWorkshop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -27,7 +30,7 @@ class WorkshopController extends Controller
             ->first();
 
         if (!$bengkel) {
-            return redirect()->route('workshop.index')->with('error_status', 'Workshop not found.');
+            return redirect()->route('workshop.show')->with('error_status', 'Workshop not found.');
         }
 
         $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
@@ -38,7 +41,9 @@ class WorkshopController extends Controller
         $serviceAvailable = json_decode($bengkel->service_available, true);
         $paymentMethods = json_decode($bengkel->payment, true);
 
-        return view('workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods','services'));
+        $ulasan = ReviewWorkshop::with('pelanggan')->get();
+
+        return view('workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods','services','ulasan'));
     }
 
     public function showWorkshop()
@@ -118,23 +123,6 @@ class WorkshopController extends Controller
     return redirect()->route('profile.workshop')->with('status', 'Workshop created successfully.');
 }
 
-    // public function editWorkshop($id)
-    // {
-    //     $customerId = Session::get('id_pelanggan');
-    //     $bengkel = Bengkel::where('id_bengkel', $id)
-    //         ->where('id_pelanggan', $customerId)
-    //         ->first();
-
-    //     if (!$bengkel) {
-    //         return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
-    //     }
-
-    //     // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
-    //     $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment) : $bengkel->payment;
-    //     $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available) : $bengkel->service_available;
-
-    //     return view('profile.workshop.edit', compact('bengkel'));
-    // }
 
     public function editWorkshop($id)
     {
@@ -255,13 +243,50 @@ class WorkshopController extends Controller
         $produk = Product::where('id_bengkel', $id)
             ->where('delete_produk', 'N')
             ->get();
-
-            $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
-
-
-
-
+        $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
         return view('profile.workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'id', 'sparepart', 'produk', 'services'));
     }
+    public function detailService($id_bengkel, $id_services)
+    {
+        // Retrieve the service details from the database
+        $service = Service::with('bengkel') // Mengambil relasi bengkel
+        ->where('id_services', $id_services)
+        ->where('id_bengkel', $id_bengkel)
+        ->where('delete_services', '!=', 'Y')
+        ->first();
+    
+        // Check if the service exists
+        if (!$service) {
+            return redirect()->back()->with('error_status', 'Service not found.');
+        }
+    // Controller
+            $services = Service::with('bengkel')->find($id_bengkel);
+
+        // Pass the service data to the view
+        return view('service.detail', compact('service'));
+    }
+
+    public function storeReview(Request $request)
+{
+    $customerId = Session::get('id_pelanggan');
+
+    $request->validate([
+        'id_pelanggan' => 'required|integer',
+        'id_bengkel' => 'required|integer',
+        'rating' => 'required|integer|min:1|max:5',
+        'komentar' => 'nullable|string|max:1000', // Ubah validasi untuk komentar menjadi nullable
+    ]);
+
+    // Simpan data ke database
+    ReviewWorkshop::create([
+        'id_pelanggan' => $customerId,
+        'id_bengkel' => $request->id_bengkel,
+        'rating' => $request->rating,
+        'komentar' => $request->komentar,
+    ]);
+
+    return redirect()->back()->with('success', 'Review berhasil ditambahkan.');
+}
+
 
 }
