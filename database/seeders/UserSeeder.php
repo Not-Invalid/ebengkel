@@ -5,15 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
 
 class UserSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create();
 
-        // Seed a few users
+        $profileImageUrl = 'https://www.pngmart.com/files/21/Admin-Profile-PNG-Clipart.png';
+
         DB::table('users')->insert([
             [
                 'name' => 'Administrator',
@@ -22,7 +21,7 @@ class UserSeeder extends Seeder
                 'phone_number' => '081234567890',
                 'role' => 'Administrator',
                 'password' => Hash::make('password'),
-                'foto_profile' => $faker->imageUrl(640, 480),
+                'foto_profile' => $profileImageUrl,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -33,7 +32,7 @@ class UserSeeder extends Seeder
                 'phone_number' => '081234567890',
                 'role' => 'User',
                 'password' => Hash::make('password123'),
-                'foto_profile' => $faker->imageUrl(640, 480),
+                'foto_profile' => $profileImageUrl,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -44,7 +43,7 @@ class UserSeeder extends Seeder
                 'phone_number' => '081234567890',
                 'role' => 'User',
                 'password' => Hash::make('password123'),
-                'foto_profile' => $faker->imageUrl(640, 480),
+                'foto_profile' => $profileImageUrl,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
