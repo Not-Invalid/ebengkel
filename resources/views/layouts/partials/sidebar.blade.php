@@ -67,7 +67,7 @@
             </a>
             <a href="{{ route('profile-used-car') }}"
                 class="menu-item {{ request()->is('profile/used-car*') ? 'active' : '' }}">
-                <i class='bx bx-building-house'></i>
+                <i class='bx bx-car'></i>
                 <span class="menu-text">Used Car</span>
             </a>
             <a href="{{ route('profile.setting') }}"
