@@ -10,6 +10,7 @@ use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -46,6 +47,7 @@ Route::get('login-admin', [SuperAdminAuthController::class, 'showLogin'])->name(
 Route::post('login-admin', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
 Route::get('superadmin', [PageController::class, 'superAdmin'])->name('superadmin');
 Route::get('support-center-category', [SupportCenterController::class, 'category'])->name('support-center-category');
+Route::get('cart', [PaymentController::class, 'index'])->name('cart');
 
 
 // Profile route
