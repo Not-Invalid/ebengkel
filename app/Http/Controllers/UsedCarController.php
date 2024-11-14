@@ -85,6 +85,7 @@ class UsedCarController extends Controller
         $km_mobil = $request->km_mobil;
         $bulan_pajak_mobil = $request->bulan_pajak_mobil;
         $tahun_pajak_mobil = $request->tahun_pajak_mobil;
+        $pemakaian = $request->pemakaian;
         $terakhir_service_mobil = $request->terakhir_service_mobil;
         $terakhir_pajak_mobil = $request->terakhir_pajak_mobil;
         $keterangan_mobil = $request->keterangan_mobil;
@@ -134,6 +135,7 @@ class UsedCarController extends Controller
             'km_mobil' => $km_mobil,
             'bulan_pajak_mobil' => $bulan_pajak_mobil,
             'tahun_pajak_mobil' => $tahun_pajak_mobil,
+            'pemakaian' => $pemakaian,
             'terakhir_service_mobil' => $terakhir_service_mobil,
             'terakhir_pajak_mobil' => $terakhir_pajak_mobil,
             'keterangan_mobil' => $keterangan_mobil,
@@ -189,6 +191,7 @@ class UsedCarController extends Controller
         $harga_mobil = str_replace('.', '', $request->harga_mobil);
         $harga_mobil = is_numeric($harga_mobil) ? (float) $harga_mobil : 0;
         $tahun_mobil = $request->tahun_mobil;
+        $pemakaian = $request->pemakaian;
         $plat_nomor_mobil = $request->plat_nomor_mobil;
         $nomor_rangka_mobil = $request->nomor_rangka_mobil;
         $nomor_mesin_mobil = $request->nomor_mesin_mobil;
@@ -207,6 +210,7 @@ class UsedCarController extends Controller
             'merk_mobil_id' => $merk_mobil_id,
             'harga_mobil' => $harga_mobil,
             'tahun_mobil' => $tahun_mobil,
+            'pemakaian' => $pemakaian,
             'plat_nomor_mobil' => $plat_nomor_mobil,
             'nomor_rangka_mobil' => $nomor_rangka_mobil,
             'nomor_mesin_mobil' => $nomor_mesin_mobil,
