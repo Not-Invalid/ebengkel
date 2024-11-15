@@ -28,22 +28,50 @@ class WorkshopController extends Controller
         $bengkel = Bengkel::where('id_bengkel', $id)
             ->where('delete_bengkel', 'N')
             ->first();
-
+    
         if (!$bengkel) {
             return redirect()->route('workshop.show')->with('error_status', 'Workshop not found.');
         }
-
+    
         $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
         $bengkel->open_time = Carbon::parse($bengkel->open_time)->format('H:i');
         $bengkel->close_time = Carbon::parse($bengkel->close_time)->format('H:i');
-
+    
         // Decode the JSON fields into arrays
         $serviceAvailable = json_decode($bengkel->service_available, true);
         $paymentMethods = json_decode($bengkel->payment, true);
+    
+        // Ambil semua ulasan untuk bengkel tertentu
+        $ulasan = ReviewWorkshop::with('pelanggan')->where('id_bengkel', $id)->get();
+    
+        // Hitung rata-rata rating dan jumlah ulasan
+        $averageRating = $ulasan->avg('rating');
+        $totalReviews = $ulasan->count();
+    
+        $averageRating = $ulasan->avg('rating');  // Menghitung rata-rata rating
 
-        $ulasan = ReviewWorkshop::with('pelanggan')->get();
-
-        return view('workshop.detail', compact('bengkel', 'serviceAvailable', 'paymentMethods','services','ulasan'));
+        // Tentukan kategori berdasarkan rata-rata rating
+        if ($averageRating < 2) {
+            $ratingCategory = 'Bad';
+        } elseif ($averageRating >= 2 && $averageRating < 3) {
+            $ratingCategory = 'Good';
+        } elseif ($averageRating >= 3 && $averageRating < 4) {
+            $ratingCategory = 'Very Good';
+        } elseif ($averageRating >= 4 && $averageRating < 4.5) {
+            $ratingCategory = 'Excellent';
+        } elseif ($averageRating >= 4.5) {
+            $ratingCategory = 'Outstanding';
+        }
+        return view('workshop.detail', compact(
+            'bengkel', 
+            'serviceAvailable', 
+            'paymentMethods', 
+            'services', 
+            'ulasan', 
+            'averageRating', 
+            'totalReviews', 
+            'ratingCategory'
+        ));
     }
 
     public function showWorkshop()
@@ -267,26 +295,27 @@ class WorkshopController extends Controller
     }
 
     public function storeReview(Request $request)
-{
-    $customerId = Session::get('id_pelanggan');
-
-    $request->validate([
-        'id_pelanggan' => 'required|integer',
-        'id_bengkel' => 'required|integer',
-        'rating' => 'required|integer|min:1|max:5',
-        'komentar' => 'nullable|string|max:1000', // Ubah validasi untuk komentar menjadi nullable
-    ]);
-
-    // Simpan data ke database
-    ReviewWorkshop::create([
-        'id_pelanggan' => $customerId,
-        'id_bengkel' => $request->id_bengkel,
-        'rating' => $request->rating,
-        'komentar' => $request->komentar,
-    ]);
-
-    return redirect()->back()->with('success', 'Review berhasil ditambahkan.');
-}
-
+    {
+        $customerId = Session::get('id_pelanggan');
+    
+        // Validasi input
+        $request->validate([
+            'id_pelanggan' => 'required|integer',
+            'id_bengkel' => 'required|integer',
+            'rating' => 'required|integer|min:1|max:5',
+            'komentar' => 'nullable|string|max:1000',
+        ]);
+    
+        // Simpan data ke database
+        ReviewWorkshop::create([
+            'id_pelanggan' => $customerId,
+            'id_bengkel' => $request->id_bengkel,
+            'rating' => $request->rating,
+            'komentar' => $request->komentar,  // Pastikan komentar ini diterima
+        ]);
+    
+        return redirect()->back()->with('status', 'Sending Review');
+    }
+    
 
 }
