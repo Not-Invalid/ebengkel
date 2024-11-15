@@ -33,11 +33,19 @@ class ProfileController extends Controller
         if ($request->hasFile('foto_profile')) {
             $image = $request->file('foto_profile');
 
-            $imageName = 'foto_admin_' . date('Ymd_His') . '.' . $image->getClientOriginalExtension();
+            $imageName = 'foto_admin_' . date('Ymd_His') . '.webp';
+            $tempPath = $image->getPathName();
 
-            $image->move(public_path('assets/images/profile_picture'), $imageName);
+            $img = imagecreatefromstring(file_get_contents($tempPath));
 
-            $user->foto_profile = url('assets/images/profile_picture/' . $imageName);
+            if ($img) {
+                $webpPath = public_path('assets/images/profile_picture/' . $imageName);
+                imagewebp($img, $webpPath, 90);
+
+                imagedestroy($img);
+
+                $user->foto_profile = url('assets/images/profile_picture/' . $imageName);
+            }
         }
 
         $user->save();
@@ -45,5 +53,4 @@ class ProfileController extends Controller
         return redirect()->route('profile-admin', $id)
                         ->with('success', 'Profile updated successfully.');
     }
-
 }
