@@ -36,5 +36,10 @@ class Pelanggan extends Authenticatable
         return $this->hasMany(FotoMobil::class, 'id_pelanggan', 'id_pelanggan');
     }
 
+    public function ulasan()
+    {
+        return $this->hasMany(ReviewWorkshop::class, 'id_pelanggan', 'id_pelanggan');
+    }
+
 
 }

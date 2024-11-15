@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ReviewWorkshopController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
 use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
@@ -20,7 +21,10 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
+use App\Models\ReviewWorkshop;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
@@ -112,6 +116,7 @@ Route::prefix('workshop')->group(function () {
     Route::get('/', [WorkshopController::class, 'show'])->name('workshop.show');
     Route::get('workshop-detail/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
     Route::get('workshop/{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
+    Route::post('workshop/review/store', [WorkshopController::class, 'storeReview'])->name('ulasan.store');
 });
 
 // Pages Routes
