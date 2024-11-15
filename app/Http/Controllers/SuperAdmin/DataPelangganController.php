@@ -10,6 +10,6 @@ class DataPelangganController extends Controller
     public function index()
     {
         $pelanggan = Pelanggan::orderBy('id_pelanggan', 'ASC')->paginate(10);
-        return view('superadmin.management-user.data-pelanggan.index', compact('pelanggan'));
+        return view('superadmin.management-users.data-pelanggan.index', compact('pelanggan'));
     }
 }
