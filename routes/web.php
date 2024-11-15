@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthController as PelangganAuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PaymentController;
@@ -12,9 +11,11 @@ use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileContro
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ReviewWorkshopController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
+use App\Http\Controllers\SuperAdmin\DashboardController;
+use App\Http\Controllers\SuperAdmin\DataPelangganController as SuperAdminPelangganController;
 use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController;
-use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
 use App\Http\Controllers\SuperAdmin\MerkMobilController;
+use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
 use App\Http\Controllers\SuperAdmin\StaffController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
@@ -57,7 +58,7 @@ Route::prefix('superadmin')->group(function () {
     Route::post('event-data/store', [SuperAdminEventController::class, 'store'])->name('event-store');
     Route::get('event-data/edit/{id}', [SuperAdminEventController::class, 'edit'])->name('event-edit');
     Route::post('event-data/update/{id}', [SuperAdminEventController::class, 'update'])->name('event-update');
-    Route::delete('event-data/delete/{id}',[SuperAdminEventController::class, 'delete'])->name('event-delete');
+    Route::delete('event-data/delete/{id}', [SuperAdminEventController::class, 'delete'])->name('event-delete');
     Route::get('/event/{eventId}/daftar-peserta', [SuperAdminEventController::class, 'showPesertaEvent'])->name('event-peserta');
 
     Route::get('merk-mobil', [MerkMobilController::class, 'index'])->name('merk-mobil');
@@ -67,10 +68,12 @@ Route::prefix('superadmin')->group(function () {
     Route::post('merk-mobil/update/{id}', [MerkMobilController::class, 'update'])->name('merk-mobil-update');
     Route::delete('merk-mobil/delete/{id}', [MerkMobilController::class, 'delete'])->name('merk-mobil-delete');
 
-    Route::get('inbox', [SuperAdminMessagesController::class,'index'])->name('inbox');
+    Route::get('inbox', [SuperAdminMessagesController::class, 'index'])->name('inbox');
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
     Route::get('workshop/detail', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
+
+    Route::get('data-pelanggan', [SuperAdminPelangganController::class, 'index'])->name('data-pelanggan');
 
     Route::get('profile', [SuperAdminProfileController::class, 'index'])->name('profile-admin');
     Route::post('profile/{id}', [SuperAdminProfileController::class, 'update'])->name('profile-update');
