@@ -33,7 +33,7 @@ class ProductSparepartController extends Controller
             'deleted_kategori_spare_part' => 'N',
         ]);
 
-        return redirect()->route('product-sparepart-category')->with('success', 'Kategori Spare Part berhasil ditambahkan.');
+        return redirect()->route('product-sparepart-category')->with('status', 'Kategori Spare Part berhasil ditambahkan.');
     }
 
     public function editCategory($id)
@@ -43,7 +43,8 @@ class ProductSparepartController extends Controller
         return view('superadmin.masterdata-category.product-sparepart.edit', compact('category'));
     }
 
-    public function updateCategory(Request $request, $id){
+    public function updateCategory(Request $request, $id)
+    {
         $request->validate([
             'nama_kategori_spare_part' => 'required|string|max:255',
         ]);
@@ -54,7 +55,7 @@ class ProductSparepartController extends Controller
         $category->updated_date = now();
         $category->save();
 
-        return redirect()->route('product-sparepart-category')->with('success', 'Kategori Spare Part berhasil diupdate.');
+        return redirect()->route('product-sparepart-category')->with('status', 'Kategori Spare Part berhasil diupdate.');
     }
 
     public function deleteCategory($id)
@@ -62,6 +63,6 @@ class ProductSparepartController extends Controller
         $category = KategoriSparePart::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('product-sparepart-category')->with('success', 'Kategori Spare Part berhasil dihapus.');
+        return redirect()->route('product-sparepart-category')->with('status', 'Kategori Spare Part berhasil dihapus.');
     }
 }

@@ -65,7 +65,7 @@ class EventController extends Controller
 
         Event::create($data);
 
-        return redirect()->route('event-data')->with('success', 'Event has been successfully created.');
+        return redirect()->route('event-data')->with('status', 'Event has been successfully created.');
     }
     public function edit($id)
     {
@@ -81,7 +81,6 @@ class EventController extends Controller
 
         return view('superadmin.event.edit', compact('event'));
     }
-
 
     public function update(Request $request, $id)
     {
@@ -134,7 +133,7 @@ class EventController extends Controller
 
             $event->save();
 
-        return redirect()->route('event-data')->with('status', 'Event berhasil diperbarui.');
+            return redirect()->route('event-data')->with('status', 'Event berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()->route('event-data')->with('status_error', 'Terjadi kesalahan dalam memperbarui event.');
         }
@@ -150,7 +149,7 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('event-data')->with('success', 'Event berhasil dihapus.');
+        return redirect()->route('event-data')->with('status', 'Event berhasil dihapus.');
     }
 
     public function showPesertaEvent($eventId)

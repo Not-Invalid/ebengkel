@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class StaffController extends Controller
 {
@@ -40,7 +40,7 @@ class StaffController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('data-staff-admin')->with('success', 'Staff berhasil ditambahkan.');
+        return redirect()->route('data-staff-admin')->with('status', 'Staff berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -68,7 +68,7 @@ class StaffController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('data-staff-admin')->with('success', 'Staff berhasil diupdate.');
+        return redirect()->route('data-staff-admin')->with('status', 'Staff berhasil diupdate.');
     }
 
     public function delete($id)
@@ -77,7 +77,7 @@ class StaffController extends Controller
 
         $staff->delete();
 
-        return redirect()->route('data-staff-admin')->with('success', 'Staff berhasil dihapus.');
+        return redirect()->route('data-staff-admin')->with('status', 'Staff berhasil dihapus.');
     }
 
 }
