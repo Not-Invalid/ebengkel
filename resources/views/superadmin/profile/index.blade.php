@@ -62,9 +62,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Your Phone" value="{{ $superadmin->phone_number ?? 'Not Provided' }}" disabled>
+                                <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Your Phone" value="{{ $superadmin->phone_number ?? 'Not Provided' }}" disabled oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
-
                             <div class="form-group foto" id="fotoGroup" style="display: none;">
                                 <label for="upload-photo" class="form-label">Profile Photo</label>
                                 <input type="file" id="upload-photo" name="foto_profile" class="form-control" accept="image/*" onchange="previewImage(event)" disabled>
