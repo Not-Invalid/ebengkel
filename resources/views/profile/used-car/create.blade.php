@@ -158,7 +158,7 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="month" placeholder=" " id="bulan_pajak_mobil"
-                            name="bulan_pajak_mobil" />
+                            name="bulan_pajak_mobil" onchange="showMonthName(this)" />
                         <label class="did-floating-label">Bulan Pajak Mobil</label>
                     </div>
                 </div>
@@ -351,6 +351,24 @@
                 reader.readAsDataURL(fileInput.files[0]);
             }
         }
+
+        // Bulan
+        function showMonthName(input) {
+            if (input.value) {
+                const [year, month] = input.value.split('-');
+                const monthNames = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const monthName = monthNames[parseInt(month, 10) - 1];
+                input.type = 'text';
+                input.value = monthName;
+            }
+        }
+
+        document.getElementById('bulan_pajak_mobil').addEventListener('focus', function() {
+            this.type = 'month';
+        });
     </script>
 
 @endsection

@@ -115,28 +115,51 @@
                             </span>
                         </div>
                         <hr>
+                        <div class="container">
+                            <!-- Agenda -->
+                            <h5 class="title-desc">Spesifikasi dari Mobil {{ $mobilList->nama_mobil }}</h5>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Tahun Mobil</div>
+                                        <div>{{ $mobilList->tahun_mobil }}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Km Mobil </div>
+                                        <div>{{ $mobilList->km_mobil }}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Kapasitas Mesin Mobil </div>
+                                        <div>{{ $mobilList->kapasitas_mesin_mobil }}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Bulan Pajak Mobil</div>
+                                        <div>{{ $mobilList->bulan_pajak_mobil }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Tahun Pajak Mobil</div>
+                                        <div>{{ $mobilList->tahun_pajak_mobil }}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Terakhir Pajak Mobil</div>
+                                        <div>{{ $mobilList->terakhir_pajak_mobil }}</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="text-muted small">Tahun Pemakain</div>
+                                        <div>{{ $mobilList->pemakaian }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <!-- Description -->
                         <p class="mb-4">
-                            <span class="title-desc my-2">Deskripsi Mobil:</span> <br>
+                            <span class="title-desc my-2">Deskripsi Mobil</span> <br>
                             {{ $mobilList->keterangan_mobil }}
                         </p>
                         <hr>
-                        {{-- <!-- Agenda -->
-                        <h5 class="title-desc">Agenda Acara</h5>
-                        <ul class="agenda-event">
-                            <li class="list-text my-2">
-                                <i class='bx bx-check-circle text-success align-icon me-2'></i>
-                                Sesi Pembukaan - 10:00
-                            </li>
-                            <li class="list-text my-2">
-                                <i class='bx bx-check-circle text-success align-icon me-2'></i>
-                                Workshop Teknologi - 12:00
-                            </li>
-                            <li class="list-text my-2">
-                                <i class='bx bx-check-circle text-success align-icon me-2'></i>
-                                Penutupan - 17:00
-                            </li>
-                        </ul> --}}
                     </div>
                 </div>
             </div>
@@ -156,14 +179,6 @@
                                 <span class="title-desc">{{ $mobilList->pelanggan->nama_pelanggan }}</span><br>
                             </div>
                         </div>
-                        {{-- <div class="d-flex align-items-center">
-                            <img src="{{ asset('assets/images/components/avatar.png') }}" class="rounded-circle me-3"
-                                alt="Speaker" width="50">
-                            <div>
-                                <span class="title-desc">Revan Smith</span><br>
-                                Pengembang Perangkat Agak Lunak
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
 
