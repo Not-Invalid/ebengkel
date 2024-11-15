@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="phone_number" name="phone_number" value="{{ $staff->phone_number }}" />
+                        <input class="did-floating-input" type="text" placeholder=" " id="phone_number" name="phone_number" value="{{ $staff->phone_number }}" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
                         <label class="did-floating-label">No Telepon</label>
                     </div>
                 </div>
