@@ -75,15 +75,24 @@ class ProfileController extends Controller
 
         if ($request->hasFile('foto')) {
             $image = $request->file('foto');
-            $imageName = 'foto_pelanggan_' . date('Ymd_His') . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('assets/images/profile_picture'), $imageName);
+
+            $imageName = 'foto_pelanggan_' . date('Ymd_His') . '.webp';
+
+            $img = imagecreatefromstring(file_get_contents($image));
+            if ($img) {
+
+                imagewebp($img, public_path('assets/images/profile_picture/' . $imageName), 90);
+                imagedestroy($img);
+            }
+
             $pelanggan->foto_pelanggan = url('assets/images/profile_picture/' . $imageName);
         }
 
         $pelanggan->save();
 
-        return back()->with('status', 'Update profile is suceessfull!');
+        return back()->with('status', 'Update profile is successful!');
     }
+
     public function showAddress()
     {
         if (!Session::has('id_pelanggan')) {
