@@ -29,6 +29,8 @@ class ProductSparePartController extends Controller
             abort(404);
         }
 
+        $data->load('bengkel');
+
         return view('ProductSparepart.detail-ProductSparePart', compact('data'));
     }
     public function createSparepart()
