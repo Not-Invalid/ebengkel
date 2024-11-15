@@ -7,7 +7,7 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <h4>Edit Merk</h4>
-        <form class="py-4" action="" method="POST" enctype="multipart/form-data">
+        <form class="py-4" action="{{ route('merk-mobil-update', $merk->id ) }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="row">
