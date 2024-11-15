@@ -13,4 +13,8 @@ class WorkshopController extends Controller
         $workshop = Bengkel::orderBy('id_bengkel', 'ASC')->paginate(10);
         return view('superadmin.masterdata-workshop.index', compact('workshop'));
     }
+    public function detail()
+    {
+        return view('superadmin.masterdata-workshop.detail');
+    }
 }

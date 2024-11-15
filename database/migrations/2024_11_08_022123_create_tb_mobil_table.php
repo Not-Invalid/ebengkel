@@ -30,6 +30,7 @@ class CreateTbMobilTable extends Migration
             $table->string('km_mobil')->nullable();
             $table->string('bulan_pajak_mobil', 20)->nullable();
             $table->string('tahun_pajak_mobil', 20)->nullable();
+            $table->text('pemakaian')->nullable();
             $table->date('terakhir_service_mobil')->nullable();
             $table->date('terakhir_pajak_mobil')->nullable();
             $table->text('keterangan_mobil')->nullable();

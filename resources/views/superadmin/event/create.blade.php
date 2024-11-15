@@ -268,7 +268,7 @@
     }
     </script>
     <script>
-        let agendaIndex = 1;
+      let agendaIndex = 1;
 
     const addAgendaButton = document.getElementById('add-agenda');
     if (addAgendaButton) {
@@ -311,8 +311,6 @@
             alert('At least one "Agenda Acara" must remain.');
         }
     }
-
-
     </script>
 @endsection
 

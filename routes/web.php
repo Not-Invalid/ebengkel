@@ -66,6 +66,7 @@ Route::prefix('superadmin')->group(function () {
     Route::get('inbox', [SuperAdminMessagesController::class,'index'])->name('inbox');
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
+    Route::get('workshop/detail', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
 
     Route::get('profile', [SuperAdminProfileController::class, 'index'])->name('profile-admin');
     Route::post('profile/{id}', [SuperAdminProfileController::class, 'update'])->name('profile-update');
@@ -83,8 +84,6 @@ Route::prefix('superadmin')->group(function () {
     Route::get('staff-admin/edit/{id}', [StaffController::class, 'edit'])->name('data-staff-edit');
     Route::post('staff-admin/update/{id}', [StaffController::class, 'update'])->name('data-staff-update');
     Route::delete('staff-admin/delete/{id}', [StaffController::class, 'delete'])->name('data-staff-delete');
-
-
 
 });
 

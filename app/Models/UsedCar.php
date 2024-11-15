@@ -30,6 +30,7 @@ class UsedCar extends Model
         'tahun_pajak_mobil',
         'terakhir_service_mobil',
         'terakhir_pajak_mobil',
+        'pemakaian',
         'keterangan_mobil',
         'lokasi_mobil',
         'kodepos_mobil',

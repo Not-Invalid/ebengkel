@@ -195,6 +195,20 @@
                         <label class="did-floating-label car">Terakhir Pajak Mobil</label>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="did-floating-label-content">
+                        <select class="did-floating-input" id="pemakaian" name="pemakaian" required>
+                            <option value="{{ old('pemakaian', $mobil->pemakaian) }}" disabled selected hidden>
+                                {{ $mobil->pemakaian }}</option>
+                            <option value="Dibawah 1  Tahun">Di Bawah 1 Tahun</option>
+                            <option value="Dibawah 3  Tahun">Di Bawah 3 Tahun</option>
+                            <option value="Dibawah 5  Tahun">Di Bawah 5 Tahun</option>
+                            <option value="Dibawah 7  Tahun">Di Bawah 7 Tahun</option>
+                            <option value="Dibawah 10 Tahun">Di Bawah 10 Tahun</option>
+                        </select>
+                        <label class="did-floating-label">Tahun Pemakaian</label>
+                    </div>
+                </div>
             </div>
 
             <div class="row mb-3">

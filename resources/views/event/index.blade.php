@@ -81,6 +81,7 @@
                 </div>
               @endforeach
             @else
+<<<<<<< HEAD
                 <div class="d-flex justify-content-center pb-5">
                     <div class="text-center">
                     <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
@@ -88,6 +89,12 @@
                     <p>No data available for events.</p>
                     </div>
                 </div>
+=======
+              <div class="text-center">
+                <img src="{{ asset('assets/images/components/empty.png') }}" width="150" alt="No Data">
+                <p>Data saat ini tidak ditemukan.</p>
+              </div>
+>>>>>>> fawas
             @endif
           </div>
 

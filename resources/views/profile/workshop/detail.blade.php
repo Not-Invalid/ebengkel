@@ -180,7 +180,8 @@
                             +{{ $bengkel->whatsapp }}
                         </p>
                         <p><i class='bx bxl-instagram align-icon me-2' style="color: #833ab4"></i>
-                            {{ $bengkel->instagram }}</p>
+                            {{ $bengkel->instagram }}
+                        </p>
                     </div>
                 </div>
             </div>
