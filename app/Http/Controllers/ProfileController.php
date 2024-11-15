@@ -9,6 +9,7 @@ use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class ProfileController extends Controller
@@ -245,30 +246,31 @@ class ProfileController extends Controller
     }
     public function resetPassword(Request $request)
     {
-        // Validate the incoming request data
         $request->validate([
             'currentPassword' => 'required|string',
             'newPassword' => 'required|string|min:8|confirmed',
         ]);
 
-        // Fetch the currently authenticated user
         $pelanggan = Pelanggan::where('id_pelanggan', Session::get('id_pelanggan'))->first();
 
         if (!$pelanggan) {
             return back()->withErrors('User not found.');
         }
 
-        // Check if the current password matches
         if (!password_verify($request->input('currentPassword'), $pelanggan->password_pelanggan)) {
             return back()->withErrors('Current password is incorrect.');
         }
 
-        // Update the password
         $pelanggan->update([
             'password_pelanggan' => Hash::make($request->input('newPassword')),
         ]);
 
-        return redirect()->route('login')->with('status', 'Password successfully reset!');
+        Auth::guard('pelanggan')->logout();
+
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('login')->with('status', 'Password successfully reset! Please login again.');
     }
 
 }
