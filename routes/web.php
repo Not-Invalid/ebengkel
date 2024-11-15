@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
@@ -135,6 +136,8 @@ Route::post('support-center-info/store', [SupportCenterController::class, 'store
 Route::get('support-center-info/edit/{id}', [SupportCenterController::class, 'editInfo'])->name('support-center-info-edit');
 Route::put('support-center-info/update/{id}', [SupportCenterController::class, 'updateInfo'])->name('support-center-info-update');
 Route::delete('support-center-info/delete/{id}', [SupportCenterController::class, 'deleteInfo'])->name('support-center-info-delete');
+
+Route::get('cart', [PaymentController::class, 'index'])->name('cart');
 
 // Profile route
 Route::prefix('profile')->group(function () {

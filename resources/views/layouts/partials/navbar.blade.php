@@ -55,8 +55,8 @@
                                         </a>
                                     </li>
                                 @endif
-                                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                                    <a href="{{ route('home') }}">
+                                <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
+                                    <a href="{{ route('cart') }}">
                                         <i class='bx bx-cart'></i>
                                         <span class="badge badge-pill badge-danger" id="countCart">
                                             0
