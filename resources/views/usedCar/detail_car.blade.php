@@ -100,16 +100,19 @@
                             <i class='bx bx-gas-pump me-2'></i>
                             <span class="title-desc me-2">{{ $mobilList->bahan_bakar_mobil }} | </span>
                             <i class='bx bx-tachometer me-2'></i>
-                            <span class="title-desc me-2">{{ $mobilList->km_mobil }} Km| </span>
+                            <span class="title-desc me-2">{{ $mobilList->km_mobil }} Km | </span>
                             <i class='bx bx-sitemap me-2'></i>
-                            <span class="title-desc">Authomatic </span>
+                            <span class="title-desc">{{ $mobilList->jenis_transmisi_mobil }}</span>
                         </div>
 
                         <!-- Location -->
                         <div class="d-flex align-items-center mb-3">
                             <i class='bx bx-map'></i>
-                            <span><span class="title-desc"></span> CNPLUS Computer Center, BSD City, South Tangerang
-                                City, Banten, Indonesia</span>
+                            <span>
+                                <span class="title-desc">
+                                    {{ $mobilList->lokasi_mobil }}
+                                </span>
+                            </span>
                         </div>
                         <hr>
                         <!-- Description -->
@@ -151,7 +154,6 @@
                                 alt="Speaker" width="50">
                             <div>
                                 <span class="title-desc">{{ $mobilList->pelanggan->nama_pelanggan }}</span><br>
-                                {{-- Ahli Teknologi --}}
                             </div>
                         </div>
                         {{-- <div class="d-flex align-items-center">
@@ -171,7 +173,9 @@
                         Harga Mobil
                     </div>
                     <div class="card-body text-center">
-                        <h5 class="fw-bold">Rp 160,000,000</h5>
+                        <h5 class="fw-bold">
+                            {{ 'Rp ' . number_format($mobilList->harga_mobil, 0, ',', '.') }}
+                        </h5>
                         <a href="https://wa.me/{{ $mobilList->pelanggan->telp_pelanggan }}"
                             class="btn btn-daftar w-100 mt-2">
                             <i class='bx bxl-whatsapp align-icon'></i> Hubungi Penjual
