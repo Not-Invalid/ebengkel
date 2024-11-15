@@ -103,7 +103,22 @@
 </style>
 
 @section('content')
-    <div class="w-100 shadow bg-white rounded my-5" style="padding: 1rem">
+    <section class="mt-5">
+        <div class="py-3">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <nav class="pt-3" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a class="nav-link d-inline-flex align-items-center" href="{{ route('home') }}">Home</a></li>
+                            <li class="breadcrumb-item active d-inline-flex align-items-center" aria-current="page">{{ $bengkel->nama_bengkel }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="w-100 shadow-lg bg-light rounded " style="padding: 1rem">
         <div class="d-flex flex-column justify-content-center align-items-center">
             <div class="position-relative" style="max-width: 600px; margin: auto;">
                 <!-- Main Cover Image -->
@@ -149,7 +164,7 @@
                                 <div>
                                     <span class="title-desc fw-semibold my-2">Service Available</span>
                                     @foreach ($serviceAvailable as $service)
-                                        <p><i class='bx bx-check-circle align-icon m-0'
+                                        <p><i class='bx bx-check-circle align-icon fs-5 m-0'
                                                 style="color: var(--main-green)"></i>{{ $service }}</p>
                                     @endforeach
                                 </div>
@@ -158,7 +173,7 @@
                                 <div>
                                     <span class="title-desc fw-semibold my-2">Payment Methods</span>
                                     @foreach ($paymentMethods as $method)
-                                        <p><i class='bx bx-check-circle align-icon m-0'
+                                        <p><i class='bx bx-check-circle align-icon fs-5 m-0'
                                                 style="color: var(--main-green)"></i>
                                             {{ $method }}
                                         </p>
