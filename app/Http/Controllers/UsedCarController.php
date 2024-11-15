@@ -15,7 +15,8 @@ class UsedCarController extends Controller
     public function index(Request $request)
     {
         $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->get();
-        return view('usedcar.index', compact('mobilList'));
+        $merks = MerkMobil::all();
+        return view('usedcar.index', compact('mobilList', 'merks'));
     }
 
     public function formatPhoneNumber($phone)
