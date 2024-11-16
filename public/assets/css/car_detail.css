@@ -198,7 +198,7 @@ a.btn.btn-outline-info.my-3:hover {
 }
 
 .title-desc {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
 }
 
@@ -237,6 +237,7 @@ a.btn.btn-outline-info.my-3:hover {
 }
 
 @media (max-width: 768px) {
+
     .small-image-1,
     .small-image-2,
     .small-image-3,
@@ -250,11 +251,11 @@ a.btn.btn-outline-info.my-3:hover {
 }
 
 @media (min-width: 1400px) {
-    /* .gallery-item img {
+    .gallery-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-    } */
+    }
 
     .main-image {
         min-height: 500px;
