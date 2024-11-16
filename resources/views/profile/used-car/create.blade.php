@@ -157,8 +157,21 @@
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="month" placeholder=" " id="bulan_pajak_mobil"
-                            name="bulan_pajak_mobil" onchange="showMonthName(this)" />
+                        <select class="did-floating-input" id="bulan_pajak_mobil" name="bulan_pajak_mobil">
+                            <option value="" disabled selected>Pilih Bulan Pajak</option>
+                            <option value="Januari">Januari</option>
+                            <option value="Februari">Februari</option>
+                            <option value="Maret">Maret</option>
+                            <option value="April">April</option>
+                            <option value="Mei">Mei</option>
+                            <option value="Juni">Juni</option>
+                            <option value="Juli">Juli</option>
+                            <option value="Agustus">Agustus</option>
+                            <option value="September">September</option>
+                            <option value="Oktober">Oktober</option>
+                            <option value="November">November</option>
+                            <option value="Desember">Desember</option>
+                        </select>
                         <label class="did-floating-label">Bulan Pajak Mobil</label>
                     </div>
                 </div>
@@ -183,11 +196,11 @@
                     <div class="did-floating-label-content">
                         <select class="did-floating-input" id="pemakaian" name="pemakaian" required>
                             <option value="" disabled selected hidden>Pilih Tahun Pemakaian</option>
-                            <option value="Dibawah 1  Tahun">Di Bawah 1 Tahun</option>
-                            <option value="Dibawah 3  Tahun">Di Bawah 3 Tahun</option>
-                            <option value="Dibawah 5  Tahun">Di Bawah 5 Tahun</option>
-                            <option value="Dibawah 7  Tahun">Di Bawah 7 Tahun</option>
-                            <option value="Dibawah 10 Tahun">Di Bawah 10 Tahun</option>
+                            <option value="Di Bawah 1  Tahun">Di Bawah 1 Tahun</option>
+                            <option value="Di Bawah 3  Tahun">Di Bawah 3 Tahun</option>
+                            <option value="Di Bawah 5  Tahun">Di Bawah 5 Tahun</option>
+                            <option value="Di Bawah 7  Tahun">Di Bawah 7 Tahun</option>
+                            <option value="Di Bawah 10 Tahun">Di Bawah 10 Tahun</option>
                         </select>
                         <label class="did-floating-label">Tahun Pemakaian</label>
                     </div>
@@ -353,6 +366,7 @@
         }
 
         // Bulan
+        // Fungsi untuk menampilkan nama bulan
         function showMonthName(input) {
             if (input.value) {
                 const [year, month] = input.value.split('-');
@@ -368,6 +382,18 @@
 
         document.getElementById('bulan_pajak_mobil').addEventListener('focus', function() {
             this.type = 'month';
+        });
+
+        document.getElementById('bulan_pajak_mobil').addEventListener('keydown', function(event) {
+            if (this.type === 'text') {
+                event.preventDefault();
+            }
+        });
+
+        document.getElementById('bulan_pajak_mobil').addEventListener('input', function(event) {
+            if (this.type === 'text' && event.inputType !== 'insertFromPaste') {
+                event.preventDefault();
+            }
         });
     </script>
 
