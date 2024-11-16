@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\SupportCategory;
 use App\Models\SupportInfo;
+use Illuminate\Http\Request;
 
 class SupportCenterController extends Controller
 {
@@ -36,7 +36,7 @@ class SupportCenterController extends Controller
         $category->save();
 
         // Redirect with success message
-        return redirect()->route('support-center-category')->with('success', 'Category added successfully!');
+        return redirect()->route('support-center-category')->with('status', 'Category added successfully!');
     }
 
     public function editCategory($id)
@@ -47,7 +47,6 @@ class SupportCenterController extends Controller
         // Return the edit view with the category data
         return view('superadmin.masterdata-category.support-center.edit', compact('category'));
     }
-
 
     public function updateCategory(Request $request, $id)
     {
@@ -67,7 +66,7 @@ class SupportCenterController extends Controller
         ]);
 
         // Redirect back with a success message
-        return redirect()->route('support-center-category', $id)->with('success', 'Category updated successfully!');
+        return redirect()->route('support-center-category', $id)->with('status', 'Category updated successfully!');
     }
 
     public function deleteCategory($id)
@@ -75,9 +74,8 @@ class SupportCenterController extends Controller
         $category = SupportCategory::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('support-center-category')->with('success', 'Category deleted successfully!');
+        return redirect()->route('support-center-category')->with('status', 'Category deleted successfully!');
     }
-
 
     // Show form to create a new detail for a category
     public function showInfo()
@@ -86,7 +84,6 @@ class SupportCenterController extends Controller
 
         return view('superadmin.support-center.index', compact('supportInfo'));
     }
-
 
     // Store a new support detail
     public function createInfo()
@@ -99,7 +96,7 @@ class SupportCenterController extends Controller
     public function storeInfo(Request $request)
     {
         $request->validate([
-            'support_category_id' => 'required|exists:tb_support_categories,id',  // Pastikan category ada
+            'support_category_id' => 'required|exists:tb_support_categories,id', // Pastikan category ada
             'question' => 'required|string|max:255',
             'answer' => 'required|string',
         ]);
@@ -112,7 +109,7 @@ class SupportCenterController extends Controller
         ]);
 
         // Redirect kembali dengan pesan sukses
-        return redirect()->route('support-center-info')->with('success', 'Support information added successfully.');
+        return redirect()->route('support-center-info')->with('status', 'Support information added successfully.');
     }
 
     public function editInfo($id)
@@ -142,7 +139,7 @@ class SupportCenterController extends Controller
             'answer' => $request->answer,
         ]);
 
-        return redirect()->route('support-center-info')->with('success', 'Support Info updated successfully.');
+        return redirect()->route('support-center-info')->with('status', 'Support Info updated successfully.');
     }
 
     public function deleteInfo($id)
@@ -150,9 +147,7 @@ class SupportCenterController extends Controller
         $supportInfo = SupportInfo::findOrFail($id);
         $supportInfo->delete();
 
-        return redirect()->route('support-center-info')->with('success', 'Support Info deleted successfully.');
+        return redirect()->route('support-center-info')->with('status', 'Support Info deleted successfully.');
     }
-
-
 
 }

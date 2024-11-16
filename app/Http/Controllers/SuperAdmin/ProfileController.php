@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -21,7 +21,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone_number' => 'nullable|string|max:15',
-            'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'foto_profile' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $user = User::findOrFail($id);
@@ -50,7 +50,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('profile-admin', $id)
-                        ->with('success', 'Profile updated successfully.');
+        return redirect()->route('profile', $id)
+            ->with('status', 'Profile updated successfully.');
     }
 }
