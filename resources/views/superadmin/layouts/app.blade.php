@@ -157,39 +157,17 @@
                         <li class="sidebar-title">General</li>
                         <li class="sidebar-item has-sub">
                             <a href="#" class="sidebar-link">
-                                <i class="fas fa-database"></i>
+                                <i class="fas fa-gear"></i>
                                 <span>Settings</span>
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item has-sub">
-                                    <a href="#" class="submenu-link">
-                                        <i class="fas fa-list"></i>
-                                        Category
-                                    </a>
-                                    <ul class="submenu submenu-level-2">
-                                        <li class="submenu-item">
-                                            <a href="{{ route('support-center-category') }}"
-                                                class="submenu-link">Support Center</a>
-                                        </li>
-                                        <li class="submenu-item">
-                                            <a href="{{ route('product-sparepart-category') }}"
-                                                class="submenu-link">Product & Spare Parts</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="{{ route('workshop-data') }}" class="sidebar-link">
-                                        <i class="fas fa-wrench" style="color: #25396f !important;"></i>
-                                        Workshop
+                                    <a href="{{ route('change-password') }}" class="sidebar-link">
+                                        <i class="fas fa-user-lock" style="color: #25396f !important;"></i>
+                                        Change Password
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="sidebar-item {{ request()->routeIs('support-center-info') ? 'active' : '' }}">
-                            <a href="{{ route('support-center-info') }}" class="sidebar-link">
-                                <i class="fas fa-circle-question"></i>
-                                <span>Support Center</span>
-                            </a>
                         </li>
                     </ul>
                 </div>
