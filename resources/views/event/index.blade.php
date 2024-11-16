@@ -91,10 +91,47 @@
             @endif
           </div>
 
-          {{-- Pagination --}}
-          <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-            {{ $events->links() }}
-          </nav>
+            <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {{-- Previous Page Link --}}
+                        @if ($events->onFirstPage())
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a href="{{ $events->previousPageUrl() }}" class="page-link">Previous</a>
+                            </li>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($events->getUrlRange(1, $events->lastPage()) as $page => $url)
+                            @if ($page == $events->currentPage())
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }} <span class="visually-hidden">(current)</span></a>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        {{-- Next Page Link --}}
+                        @if ($events->hasMorePages())
+                            <li class="page-item">
+                                <a href="{{ $events->nextPageUrl() }}" class="page-link">Next</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
+
         </div>
       </div>
     </div>
