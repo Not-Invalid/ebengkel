@@ -173,8 +173,9 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="month" placeholder=" " id="bulan_pajak_mobil"
-                            name="bulan_pajak_mobil" value="{{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) }}" />
-                        <label class="did-floating-label car">Bulan Pajak Mobil</label>
+                            name="bulan_pajak_mobil" onchange="showMonthName(this)"
+                            value="{{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) }}" />
+                        <label class="did-floating-label">Bulan Pajak Mobil</label>
                     </div>
                 </div>
             </div>
@@ -200,10 +201,10 @@
                         <select class="did-floating-input" id="pemakaian" name="pemakaian" required>
                             <option value="{{ old('pemakaian', $mobil->pemakaian) }}" disabled selected hidden>
                                 {{ $mobil->pemakaian }}</option>
-                            <option value="Dibawah 1  Tahun">Di Bawah 1 Tahun</option>
-                            <option value="Dibawah 3  Tahun">Di Bawah 3 Tahun</option>
-                            <option value="Dibawah 5  Tahun">Di Bawah 5 Tahun</option>
-                            <option value="Dibawah 7  Tahun">Di Bawah 7 Tahun</option>
+                            <option value="Dibawah 1 Tahun">Di Bawah 1 Tahun</option>
+                            <option value="Dibawah 3 Tahun">Di Bawah 3 Tahun</option>
+                            <option value="Dibawah 5 Tahun">Di Bawah 5 Tahun</option>
+                            <option value="Dibawah 7 Tahun">Di Bawah 7 Tahun</option>
                             <option value="Dibawah 10 Tahun">Di Bawah 10 Tahun</option>
                         </select>
                         <label class="did-floating-label">Tahun Pemakaian</label>
@@ -394,5 +395,23 @@
                 reader.readAsDataURL(file);
             }
         }
+
+        // Bulan
+        function showMonthName(input) {
+            if (input.value) {
+                const [year, month] = input.value.split('-');
+                const monthNames = [
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"
+                ];
+                const monthName = monthNames[parseInt(month, 10) - 1];
+                input.type = 'text';
+                input.value = monthName;
+            }
+        }
+
+        document.getElementById('bulan_pajak_mobil').addEventListener('focus', function() {
+            this.type = 'month';
+        });
     </script>
 @endsection
