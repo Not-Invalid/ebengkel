@@ -22,6 +22,7 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\SuperAdmin\SettingsController as SuperAdminSettingsController;
 use App\Models\ReviewWorkshop;
 use Illuminate\Support\Facades\Route;
 
@@ -91,6 +92,10 @@ Route::prefix('superadmin')->group(function () {
     Route::get('staff-admin/edit/{id}', [StaffController::class, 'edit'])->name('data-staff-edit');
     Route::post('staff-admin/update/{id}', [StaffController::class, 'update'])->name('data-staff-update');
     Route::delete('staff-admin/delete/{id}', [StaffController::class, 'delete'])->name('data-staff-delete');
+
+    Route::get('settings/change-password', [SuperAdminSettingsController::class, 'index'])->name('change-password');
+    Route::post('/reset-password', [SuperAdminSettingsController::class, 'resetPassword'])->name('reset-password');
+
 
 });
 
