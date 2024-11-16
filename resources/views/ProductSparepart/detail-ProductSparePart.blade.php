@@ -93,7 +93,7 @@
 
                     <!-- Action Buttons -->
                     <div class="d-flex gap-3 mb-4">
-                        <button class="btn btn-outline-dark flex-grow-1 py-2">
+                        <button class="btn btn-outline-dark flex-grow-1 py-2" id="add-to-cart-btn">
                             <i class="bx bx-cart me-1"></i>
                             Add to Cart
                         </button>
@@ -134,6 +134,21 @@
                             quantityInput.value = 1;
                         }
                     });
+                });
+
+                document.addEventListener("DOMContentLoaded", function() {
+                    const addToCartBtn = document.getElementById('add-to-cart-btn');
+
+                    @if (!Auth::guard('pelanggan')->check())
+                        addToCartBtn.addEventListener('click', function() {
+                            window.location.href = '{{ route('login') }}'; // Arahkan ke halaman login
+                        });
+                    @else
+                        addToCartBtn.addEventListener('click', function() {
+                            // Fungsi untuk menambahkan ke keranjang bisa ditambahkan di sini
+                            alert("Item added to cart!");
+                        });
+                    @endif
                 });
             </script>
 
