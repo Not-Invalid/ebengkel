@@ -82,11 +82,11 @@
 
                     <!-- Quantity -->
                     <div class="d-flex align-items-center mb-4">
-                        <label class="fw-semibold me-3">Quantity:</label>
+                        <label class="fw-semibold me-3">Jumlah:</label>
                         <div class="input-group" style="width: 150px;">
-                            <button class="btn btn-outline-secondary" type="button">-</button>
+                            <button class="btn btn-outline-secondary btn-decrement" type="button">-</button>
                             <input type="text" class="form-control text-center" value="1">
-                            <button class="btn btn-outline-secondary" type="button">+</button>
+                            <button class="btn btn-outline-secondary btn-increment" type="button">+</button>
                         </div>
                     </div>
 
@@ -104,4 +104,37 @@
                 </div>
             </div>
         </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const decrementButton = document.querySelector('.btn-decrement');
+                    const incrementButton = document.querySelector('.btn-increment');
+                    const quantityInput = document.querySelector('.form-control');
+                    const maxStock = {{ $data->stok_produk ?? $data->stok_spare_part }}; // Maksimal stok
+
+                    decrementButton.addEventListener('click', () => {
+                        let currentValue = parseInt(quantityInput.value) || 0;
+                        if (currentValue > 1) {
+                            quantityInput.value = currentValue - 1;
+                        }
+                    });
+
+                    incrementButton.addEventListener('click', () => {
+                        let currentValue = parseInt(quantityInput.value) || 0;
+                        if (currentValue < maxStock) {
+                            quantityInput.value = currentValue + 1;
+                        }
+                    });
+
+                    quantityInput.addEventListener('input', () => {
+                        let currentValue = parseInt(quantityInput.value) || 0;
+                        if (currentValue > maxStock) {
+                            quantityInput.value = maxStock;
+                        } else if (currentValue < 1) {
+                            quantityInput.value = 1;
+                        }
+                    });
+                });
+            </script>
+
     @endsection
