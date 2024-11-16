@@ -141,11 +141,10 @@
 
                     @if (!Auth::guard('pelanggan')->check())
                         addToCartBtn.addEventListener('click', function() {
-                            window.location.href = '{{ route('login') }}'; // Arahkan ke halaman login
+                            window.location.href = '{{ route('login') }}';
                         });
                     @else
                         addToCartBtn.addEventListener('click', function() {
-                            // Fungsi untuk menambahkan ke keranjang bisa ditambahkan di sini
                             alert("Item added to cart!");
                         });
                     @endif
