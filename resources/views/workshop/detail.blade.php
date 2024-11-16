@@ -5,6 +5,28 @@
 @section('title')
   eBengkelku | Workshop Detail
 @stop
+<!-- Tambahkan CSS -->
+<style>
+  .rating-form i {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    direction: rtl;
+  }
+
+  .rating-form i.selected {
+    color: #f39c12;
+    /* Warna bintang terpilih */
+  }
+
+  #komentar {
+    border: none;
+    background-color: #f6f6f6;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
+    height: 100px;
+    resize: none;
+  }
+</style>
 <script>
   function copyLink() {
     const link = 'https://ebengkelku.com/workshop/{{ $bengkel->id_bengkel }}'; // Replace with the actual workshop link
@@ -49,23 +71,21 @@
   });
 </script>
 <script>
-  const ratingInputs = document.querySelectorAll('.rating-form input');
+  document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.rating-form i');
+    const ratingInput = document.getElementById('ratingInput');
 
-  ratingInputs.forEach(input => {
-    input.addEventListener('change', () => {
-      const ratingValue = input.value;
+    stars.forEach((star, index) => {
+      star.addEventListener('click', function() {
+        const selectedValue = parseInt(this.getAttribute('data-value'));
+        ratingInput.value = selectedValue;
 
-      ratingInputs.forEach((item, index) => {
-        const starIcon = item.nextElementSibling.querySelector('i');
-        // Change star icon based on rating
-        if (index < ratingValue) {
-          starIcon.classList.remove('bx-star');
-          starIcon.classList.add('bxs-star');
-          starIcon.style.color = 'gold'; // Active stars
-        } else {
-          starIcon.classList.remove('bxs-star');
-          starIcon.classList.add('bx-star');
-          starIcon.style.color = 'gray'; // Inactive stars
+        // Ubah semua bintang menjadi tidak aktif terlebih dahulu
+        stars.forEach(s => s.classList.remove('selected'));
+
+        // Aktifkan bintang dari kiri hingga indeks yang diklik
+        for (let i = 0; i < selectedValue; i++) {
+          stars[i].classList.add('selected');
         }
       });
     });
@@ -177,10 +197,12 @@
               <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                 <i class='bx bx-star fs-4 text-primary'></i>
                 <div class="ms-3">
-                  <span class="d-block fw-bold">4.5 Rating</span>
-                  <small>200 verified reviews</small>
+                  <span class="d-block fw-bold">{{ number_format($averageRating, 1) }} Rating</span>
+                  <small>{{ $totalReviews }} verified reviews</small>
                 </div>
               </div>
+
+
             </div>
 
             <div class="row">
@@ -237,7 +259,7 @@
             </li>
           </ul>
           <select class="custom-dropdown shadow">
-            <option value="all" selected>All</option>
+            <option value="all"selected>All</option>
             <option value="service">Service</option>
             <option value="product">Product</option>
             <option value="spareparts">Spareparts</option>
@@ -446,17 +468,56 @@
 
           </div>
           <div class="tab-pane" id="ulasan">
-            @if (session()->has('id_pelanggan'))
-              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">Berikan
-                Ulasan</button>
-            @endif
+
+            <div class="reviews-header d-flex justify-content-between align-items-center py-5">
+              <h3 class="review-title">Reviews</h3>
+              @if (session()->has('id_pelanggan'))
+                <button type="button" class="btn btn-review" data-bs-toggle="modal"
+                  data-bs-target="#reviewModal">Berikan Ulasan</button>
+              @endif
+            </div>
+            <div class="overall-rating">
+              <div class="rating-value">{{ number_format($averageRating, 1) }}</div>
+              <span>
+                <div class="rating-category">{{ $ratingCategory ?? 'No ratings yet' }}</div>
+                <div class="rating-text">{{ $totalReviews }} verified reviews</div>
+              </span>
+            </div>
+
+
+            <hr>
             @foreach ($ulasan as $review)
-              <div class="review-card">
-                <h6>{{ $review->pelanggan->nama_pelanggan }} ({{ $review->rating }}/5)</h6>
-                <p>{{ $review->komentar }}</p>
-                <small>{{ \Carbon\Carbon::parse($review->created_at)->format('d M Y') }}</small>
+              <div class="review-card d-flex align-items-start mb-4">
+                <!-- Foto Pelanggan -->
+                <div class="review-photo me-3">
+                  <img
+                    src="{{ $review->foto_pelanggan ? url($review->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"
+                    alt="Foto {{ $review->pelanggan->nama_pelanggan }}" class="rounded-circle" width="50"
+                    height="50">
+                </div>
+
+                <!-- Konten Ulasan -->
+                <div class="review-content w-100">
+                  <div class="row mb-2">
+                    <div class="col text-start">
+                      <!-- Nama Pelanggan dan Rating -->
+                      <h6 class="fw-bold">{{ $review->pelanggan->nama_pelanggan }}
+                        <span class="text-muted" style="font-size:14px;">({{ $review->rating }}/5)</span>
+                      </h6>
+                    </div>
+                    <div class="col text-end">
+                      <!-- Tanggal Ulasan -->
+                      <small
+                        class="text-muted">{{ \Carbon\Carbon::parse($review->created_at)->format('d M Y') }}</small>
+                    </div>
+                  </div>
+
+                  <!-- Komentar -->
+                  <p>{{ $review->komentar }}</p>
+                </div>
               </div>
             @endforeach
+
 
 
             <!-- Modal -->
@@ -465,10 +526,6 @@
               aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="reviewModalLabel">Berikan Ulasan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
                   <div class="modal-body">
                     <form method="POST" action="{{ route('ulasan.store') }}">
                       @csrf
@@ -476,28 +533,29 @@
                       <input type="hidden" name="id_pelanggan" value="{{ session('id_pelanggan') }}">
                       <!-- Hidden field for workshop ID -->
                       <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
+                      <h3 class="title-rating">Berikan Ulasan Untuk Paket
+                        Ini</h3>
+                      <div class="form-group py-3">
+                        <div class="rating-form">
+                          <i class="bx bx-star" data-value="1"></i>
+                          <i class="bx bx-star" data-value="2"></i>
+                          <i class="bx bx-star" data-value="3"></i>
+                          <i class="bx bx-star" data-value="4"></i>
+                          <i class="bx bx-star" data-value="5"></i>
+                        </div>
 
-                      <div class="form-group">
-                        <label for="rating">Rating</label>
-                        <select name="rating" class="form-control" id="rating" required>
-                          <option value="" disabled selected>Pilih rating</option>
-                          <!-- Option tambahan untuk placeholder -->
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                        </select>
+
+                        <input type="hidden" name="rating" id="ratingInput" required>
                       </div>
 
-                      <div class="form-group">
-                        <label for="komentar">Komentar</label>
-                        <textarea name="komentar" class="form-control" id="komentar" rows="3"></textarea>
+                      <div class="mb-3">
+                        <textarea name="komentar" class="form-control" id="komentar" rows="3"
+                          placeholder="Tulis Ulasan Anda Disini..."></textarea>
                       </div>
 
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="submit" class="btn btn-review">Kirim Ulasan</button>
+
                     </form>
-
                   </div>
                 </div>
               </div>
