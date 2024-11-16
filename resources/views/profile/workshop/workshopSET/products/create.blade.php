@@ -52,14 +52,14 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="id_kategori_spare_part" id="id_kategori_spare_part" class="did-floating-select">
-                        <option value="" selected disabled hidden>Pilih Jenis</option>
+                        <option value="" selected disabled hidden>Pilih Kategori</option>
                         @foreach ($kategoriSparePart as $kategori)
                             <option value="{{ $kategori->id_kategori_spare_part }}">
                                 {{ $kategori->nama_kategori_spare_part }}
                             </option>
                         @endforeach
                     </select>
-                    <label class="did-floating-label">Pilih Jenis Product</label>
+                    <label class="did-floating-label">Kategori Product</label>
                 </div>
             </div>
 
