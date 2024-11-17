@@ -23,56 +23,76 @@
         <section class="pt-5 image">
             <div class="row">
                 <div class="col-md-6 gallery-item">
-                    @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_1)
-                        <img src="{{ url($mobilList->fotos->file_foto_mobil_1) }}" alt="Car Image"
-                            class="img-fluid main-image object-fit-cover">
-                    @else
-                        <img src="{{ asset('assets/images/components/image.png') }}"
-                            alt="Car Image"class="img-fluid main-image object-fit-cover">
-                    @endif
+                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                        data-bs-img="{{ $mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png' }}">
+                        <img src="{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}"
+                            alt="Car Image" class="img-fluid main-image object-fit-cover">
+                    </a>
                 </div>
                 <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-6 col-6 picture">
-                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_2)
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_2) }}" alt="Car Image"
-                                    class="img-fluid small-image-1 object-fit-cover">
-                            @else
-                                <img src="{{ asset('assets/images/components/image.png') }}"
-                                    alt="Car Image"class="img-fluid small-image-1 object-fit-cover">
-                            @endif
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png' }}">
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}"
+                                    alt="Car Image" class="img-fluid small-image-1 object-fit-cover">
+                            </a>
                         </div>
                         <div class="col-md-6 col-6 picture">
-                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_3)
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_3) }}" alt="Car Image"
-                                    class="img-fluid img-fluid small-image-2 object-fit-cover">
-                            @else
-                                <img src="{{ asset('assets/images/components/image.png') }}"
-                                    alt="Car Image"class="img-fluid img-fluid small-image-2 object-fit-cover">
-                            @endif
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png' }}">
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}"
+                                    alt="Car Image" class="img-fluid img-fluid small-image-2 object-fit-cover">
+                            </a>
                         </div>
                         <div class="col-md-6 col-6 picture">
-                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_4)
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_4) }}" alt="Car Image"
-                                    class="img-fluid img-fluid small-image-3 object-fit-cover">
-                            @else
-                                <img src="{{ asset('assets/images/components/image.png') }}"
-                                    alt="Car Image"class="img-fluid img-fluid small-image-3 object-fit-cover">
-                            @endif
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png' }}">
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}"
+                                    alt="Car Image" class="img-fluid small-image-3 object-fit-cover">
+                            </a>
                         </div>
                         <div class="col-md-6 col-6 picture position-relative">
-                            @if ($mobilList->fotos && $mobilList->fotos->file_foto_mobil_5)
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_5) }}" alt="Car Image"
-                                    class="img-fluid img-fluid small-image-4 object-fit-cover">
-                            @else
-                                <img src="{{ asset('assets/images/components/image.png') }}"
-                                    alt="Car Image"class="img-fluid img-fluid small-image-4 object-fit-cover">
-                            @endif
+                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png' }}">
+                                <img src="{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
+                                    alt="Car Image" class="img-fluid img-fluid small-image-4 object-fit-cover">
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <div class="modal fade" id="carImageModal" tabindex="-1" aria-labelledby="carImageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="carImageModalLabel">Car Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <!-- Carousel Start -->
+                        <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner" id="carouselImages">
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        <!-- Carousel End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Event Title and Image -->
         <div class="row py-5">
             <div class="col-md-12 text-center">
@@ -159,7 +179,6 @@
                             <span class="title-desc my-2">Deskripsi Mobil</span> <br>
                             {{ $mobilList->keterangan_mobil }}
                         </p>
-                        <hr>
                     </div>
                 </div>
             </div>
@@ -224,4 +243,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+        var carImageLinks = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#carImageModal"]');
+        carImageLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                var images = [
+                    "{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}",
+                    "{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}",
+                    "{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}",
+                    "{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}",
+                    "{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
+                ];
+
+                var carouselInner = document.getElementById('carouselImages');
+                carouselInner.innerHTML = '';
+
+                images.forEach(function(imageUrl, index) {
+                    var activeClass = (index === 0) ? 'active' : '';
+                    var carouselItem = `
+                        <div class="carousel-item ${activeClass}">
+                            <img src="${imageUrl}" class="d-block w-100" alt="Car Image">
+                        </div>
+                    `;
+                    carouselInner.innerHTML += carouselItem;
+                });
+            });
+        });
+    </script>
 @endsection

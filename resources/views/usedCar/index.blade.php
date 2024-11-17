@@ -123,42 +123,43 @@
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-body">
                 <div class="offcanvas-header">
-                    <h5 class="brand-title" onclick="toggleSection('brand')">
+                    <h5 class="brand-title">
                         <div class="">
                             <i class='bx bx-car icon-size'></i>
                             Brand
                         </div>
-                        <i id="chevron-icon-brand" class='bx bx-chevron-up chevron'></i>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <!-- Brand Section -->
-                <div id="brand" class="filter-section">
+                <div id="brand" class="filter-section show">
                     @foreach ($merks as $merk)
                         <div class="mt-2">
-                            <input type="checkbox" id="{{ strtolower($merk->nama_merk) }}" name="nama_merk" value="{{ $merk->nama_merk }}">
-                            <label for="{{ strtolower($merk->nama_merk) }}" class="mx-2">{{ $merk->nama_merk }}</label>
+                            <input type="checkbox" id="{{ strtolower($merk->nama_merk) }}" name="nama_merk"
+                                value="{{ $merk->nama_merk }}">
+                            <label for="{{ strtolower($merk->nama_merk) }}"
+                                class="mx-2">{{ $merk->nama_merk }}</label>
                         </div>
                     @endforeach
                     <div class="mt-2">
-                        <span id="toggle-other-brands" onclick="toggleOtherBrands()" style="color: #007bff; cursor: pointer;">
+                        <span id="toggle-other-brands" onclick="toggleOtherBrands()"
+                            style="color: #007bff; cursor: pointer;">
                             Lihat Semuanya
                         </span>
                     </div>
                 </div>
 
                 <div class="offcanvas-header">
-                    <h5 class="brand-title" onclick="toggleSection('harga')">
+                    <h5 class="brand-title">
                         <div class="">
                             <i class='bx bx-money icon-size'></i>
                             Harga
                         </div>
-                        <i id="chevron-icon-harga" class='bx bx-chevron-up chevron'></i>
                     </h5>
                 </div>
 
                 <!-- Harga Section -->
-                <div id="harga" class="filter-section">
+                <div id="harga" class="filter-section show">
                     <div class="mt-2"><input type="checkbox" name="harga" value="< 100 Juta"><label class="mx-2">
                             < 100 Juta</label>
                     </div>
@@ -179,17 +180,16 @@
                 </div>
 
                 <div class="offcanvas-header">
-                    <h5 class="brand-title" onclick="toggleSection('pemakaian')">
+                    <h5 class="brand-title">
                         <div class="">
                             <i class='bx bx-time-five icon-size'></i>
                             Pemakaian
                         </div>
-                        <i id="chevron-icon-pemakaian" class='bx bx-chevron-up chevron'></i>
                     </h5>
                 </div>
 
                 <!-- Pemakaian Section -->
-                <div id="pemakaian" class="filter-section">
+                <div id="pemakaian" class="filter-section show">
                     <div class="mt-2"><input type="checkbox" name="pemakaian" value="Dibawah 1 Tahun"><label
                             class="mx-2">Dibawah 1
                             Tahun</label></div>
@@ -226,13 +226,15 @@
                     let showCard = true;
 
                     // Filter by brand
-                    const selectedBrands = Array.from(document.querySelectorAll('input[name="nama_merk"]:checked')).map(input => input.value);
+                    const selectedBrands = Array.from(document.querySelectorAll(
+                        'input[name="nama_merk"]:checked')).map(input => input.value);
                     if (selectedBrands.length > 0 && !selectedBrands.includes(carBrand)) {
                         showCard = false;
                     }
 
                     // Filter by price
-                    const selectedPrices = Array.from(document.querySelectorAll('input[name="harga"]:checked')).map(input => input.value);
+                    const selectedPrices = Array.from(document.querySelectorAll(
+                        'input[name="harga"]:checked')).map(input => input.value);
                     if (selectedPrices.length > 0) {
                         const priceInRange = selectedPrices.some(priceFilter => {
                             switch (priceFilter) {
@@ -262,7 +264,8 @@
                     }
 
                     // Filter by usage
-                    const selectedUsages = Array.from(document.querySelectorAll('input[name="pemakaian"]:checked')).map(input => input.value);
+                    const selectedUsages = Array.from(document.querySelectorAll(
+                        'input[name="pemakaian"]:checked')).map(input => input.value);
                     if (selectedUsages.length > 0) {
                         const usageInRange = selectedUsages.some(usageFilter => {
                             switch (usageFilter) {
@@ -293,7 +296,6 @@
             checkboxes.forEach(checkbox => checkbox.addEventListener('change', filterCars));
             filterCars(); // Initial call to apply any pre-selected filters
         });
-
     </script>
 
 @endsection

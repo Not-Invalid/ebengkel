@@ -172,9 +172,45 @@
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="month" placeholder=" " id="bulan_pajak_mobil"
-                            name="bulan_pajak_mobil" onchange="showMonthName(this)"
-                            value="{{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) }}" />
+                        <select class="did-floating-input" id="bulan_pajak_mobil" name="bulan_pajak_mobil">
+                            <option value="" disabled selected>Pilih Bulan Pajak</option>
+                            <option value="Januari"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Januari' ? 'selected' : '' }}>
+                                Januari</option>
+                            <option value="Februari"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Februari' ? 'selected' : '' }}>
+                                Februari</option>
+                            <option value="Maret"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Maret' ? 'selected' : '' }}>
+                                Maret</option>
+                            <option value="April"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'April' ? 'selected' : '' }}>
+                                April</option>
+                            <option value="Mei"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Mei' ? 'selected' : '' }}>Mei
+                            </option>
+                            <option value="Juni"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Juni' ? 'selected' : '' }}>Juni
+                            </option>
+                            <option value="Juli"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Juli' ? 'selected' : '' }}>Juli
+                            </option>
+                            <option value="Agustus"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Agustus' ? 'selected' : '' }}>
+                                Agustus</option>
+                            <option value="September"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'September' ? 'selected' : '' }}>
+                                September</option>
+                            <option value="Oktober"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Oktober' ? 'selected' : '' }}>
+                                Oktober</option>
+                            <option value="November"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'November' ? 'selected' : '' }}>
+                                November</option>
+                            <option value="Desember"
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Desember' ? 'selected' : '' }}>
+                                Desember</option>
+                        </select>
                         <label class="did-floating-label">Bulan Pajak Mobil</label>
                     </div>
                 </div>
@@ -395,23 +431,5 @@
                 reader.readAsDataURL(file);
             }
         }
-
-        // Bulan
-        function showMonthName(input) {
-            if (input.value) {
-                const [year, month] = input.value.split('-');
-                const monthNames = [
-                    "January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"
-                ];
-                const monthName = monthNames[parseInt(month, 10) - 1];
-                input.type = 'text';
-                input.value = monthName;
-            }
-        }
-
-        document.getElementById('bulan_pajak_mobil').addEventListener('focus', function() {
-            this.type = 'month';
-        });
     </script>
 @endsection
