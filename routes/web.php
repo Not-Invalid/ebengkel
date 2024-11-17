@@ -24,6 +24,7 @@ use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\SuperAdmin\SettingsController as SuperAdminSettingsController;
 use App\Models\ReviewWorkshop;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -45,6 +46,10 @@ Route::prefix('pelanggan')->group(function () {
 
 Route::middleware('auth:pelanggan')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+
+    Route::get('cart', [CartController::class, 'showCart'])->name('cart');
+    Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
 
 Route::prefix('superadmin')->group(function () {
@@ -148,8 +153,6 @@ Route::post('support-center-info/store', [SupportCenterController::class, 'store
 Route::get('support-center-info/edit/{id}', [SupportCenterController::class, 'editInfo'])->name('support-center-info-edit');
 Route::put('support-center-info/update/{id}', [SupportCenterController::class, 'updateInfo'])->name('support-center-info-update');
 Route::delete('support-center-info/delete/{id}', [SupportCenterController::class, 'deleteInfo'])->name('support-center-info-delete');
-
-Route::get('cart', [PaymentController::class, 'index'])->name('cart');
 
 // Profile route
 Route::prefix('profile')->group(function () {
