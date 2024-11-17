@@ -34,7 +34,7 @@
                         <span id="item-count">0 item di keranjang Anda.</span>
                     </div>
                 </div>
-                
+
                 <!-- Bagian Produk dan Kode Kupon -->
                 <div class="col-12 col-lg-8">
                     <div class="card p-4 border-0 shadow">
@@ -44,60 +44,39 @@
                             <div class="col-2 text-center"><b>Quantity</b></div>
                             <div class="col-2 text-end"><b>Total Price</b></div>
                         </div>
-                        
+
                         <!-- Produk Item 1 -->
-                        <div class="border-bottom py-3 product-item">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-5 col-lg-5 d-flex align-items-center mb-3 mb-md-0">
-                                    <img src="https://ebengkelku.com/images/gambar_20240801_111029.jpg" class="img-fluid me-3" alt="gambar produk" style="width: 80px; height: 120px;">
-                                    <div>
-                                        <p class="mb-0"><b>Oli Gardan</b></p>
-                                        <small class="text-muted">Cimone Bengkel</small>
-                                        <p class="mb-0 d-md-none">Rp 44.000</p> <!-- Harga di layar kecil -->
+                        @foreach($cartItems as $cartItem)
+                            <div class="border-bottom py-3 product-item">
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-5 col-lg-5 d-flex align-items-center mb-3 mb-md-0">
+                                        <img src="{{ asset('assets/images/product/'.$cartItem->produk->foto_produk) }}" class="img-fluid me-3" alt="gambar produk" style="width: 80px; height: 120px;">
+                                        <div>
+                                            <p class="mb-0"><b>{{ $cartItem->produk->nama_produk }}</b></p>
+                                            <small class="text-muted">{{ $cartItem->produk->merk_produk }}</small>
+                                            <p class="mb-0 d-md-none">Rp {{ number_format($cartItem->produk->harga_produk, 0, ',', '.') }}</p> <!-- Harga di layar kecil -->
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-md-3 text-center d-none d-md-block">
+                                        <p class="mb-0" style="white-space: nowrap;">Rp {{ number_format($cartItem->produk->harga_produk, 0, ',', '.') }}</p>
+                                    </div>
+                                    <div class="col-6 col-md-2 d-flex align-items-center justify-content-center mb-2 mb-md-0">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="kurangiKuantitas(this, {{ $cartItem->produk->harga_produk }})">-</button>
+                                        <span class="border px-2 quantity" data-quantity="{{ $cartItem->quantity }}" data-price="{{ $cartItem->produk->harga_produk }}">{{ $cartItem->quantity }}</span>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="tambahKuantitas(this, {{ $cartItem->produk->harga_produk }})">+</button>
+                                    </div>
+                                    <div class="col-6 col-md-2 text-end mt-3 mt-md-0 total-price-wrapper">
+                                        <p class="mb-0 total-item-price" style="white-space: nowrap;">
+                                            <b>Rp {{ number_format($cartItem->total_price, 0, ',', '.') }}</b>
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="col-4 col-md-3 text-center d-none d-md-block">
-                                    <p class="mb-0" style="white-space: nowrap;">Rp 44.000</p>
-                                </div>
-                                <div class="col-6 col-md-2 d-flex align-items-center justify-content-center mb-2 mb-md-0">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="kurangiKuantitas(this, 44000)">-</button>
-                                    <span class="border px-2 quantity" data-quantity="1" data-price="44000">1</span>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="tambahKuantitas(this, 44000)">+</button>
-                                </div>
-                                <div class="col-6 col-md-2 text-end mt-3 mt-md-0 total-price-wrapper">
-                                    <p class="mb-0 total-item-price" style="white-space: nowrap;"><b>Rp 44.000</b></p>
-                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Produk Item 2 -->
-                        <div class="border-bottom py-3 product-item">
-                            <div class="row align-items-center">
-                                <div class="col-12 col-md-5 col-lg-5 d-flex align-items-center mb-3 mb-md-0">
-                                    <img src="https://ebengkelku.com/images/gambar_20240801_111029.jpg" class="img-fluid me-3" alt="gambar produk" style="width: 80px; height: 120px;">
-                                    <div>
-                                        <p class="mb-0"><b>Oli Mesin</b></p>
-                                        <small class="text-muted">Cimone Bengkel</small>
-                                        <p class="mb-0 d-md-none">Rp 1.500.000</p> <!-- Harga di layar kecil -->
-                                    </div>
-                                </div>
-                                <div class="col-4 col-md-3 text-center d-none d-md-block">
-                                    <p class="mb-0" style="white-space: nowrap;">Rp 1.500.000</p>
-                                </div>
-                                <div class="col-6 col-md-2 d-flex align-items-center justify-content-center mb-2 mb-md-0">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="kurangiKuantitas(this, 1500000)">-</button>
-                                    <span class="border px-2 quantity" data-quantity="1" data-price="1500000">1</span>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="tambahKuantitas(this, 1500000)">+</button>
-                                </div>
-                                <div class="col-6 col-md-2 text-end mt-3 mt-md-0 total-price-wrapper">
-                                    <p class="mb-0 total-item-price" style="white-space: nowrap;"><b>Rp 1.500.000</b></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+
                 </div>
-                
-                
+
+
                 <!-- Kode Kupon dan Summary - Posisi di Samping untuk Tablet dan Ke Atas -->
                 <div class="col-12 col-lg-4 mt-3 mt-md-0">
                     <div class="card p-4 border-0 shadow">
@@ -106,7 +85,7 @@
                             <input type="text" class="form-control" id="coupon-code" placeholder="Kode Kupon">
                             <button class="btn btn-primary w-100 mt-2 mb-3" onclick="applyDiscount()">Terapkan</button>
                         </div>
-                        
+
                         <div class="card p-3 border-0 custom-total">
                             <h5><b>Total Keranjang</b></h5>
                             <div class="d-flex justify-content-between my-3">
@@ -132,8 +111,8 @@
             </div>
         </div>
     </section>
-    
-    
+
+
     <script>
         // Fungsi untuk menambah kuantitas produk
         function tambahKuantitas(button, pricePerItem) {
@@ -147,7 +126,7 @@
             totalItemPriceElement.textContent = "Rp " + newItemTotal.toLocaleString('id-ID');
             updateTotalPrice();
         }
-    
+
         // Fungsi untuk mengurangi kuantitas produk
         function kurangiKuantitas(button, pricePerItem) {
             const quantitySpan = button.nextElementSibling;
@@ -168,7 +147,7 @@
             updateTotalPrice();
         }
 
-    
+
         // Fungsi untuk menghitung subtotal dan grand total
         function updateTotalPrice() {
             let subtotal = 0;
@@ -178,13 +157,13 @@
                 subtotal += quantity * pricePerItem;
             });
             document.getElementById("subtotal").textContent = subtotal.toLocaleString('id-ID');
-            
+
             const discountValue = parseInt(document.getElementById("discount").textContent.replace(/\D/g, '')) || 0;
             document.getElementById("grand-total").textContent = "Rp " + (subtotal - discountValue).toLocaleString('id-ID');
-            
+
             updateItemCount();
         }
-    
+
         // Fungsi untuk menerapkan diskon berdasarkan kode kupon
         function applyDiscount() {
             const couponCode = document.getElementById("coupon-code").value.trim();
@@ -197,7 +176,7 @@
             }
             updateTotalPrice();
         }
-    
+
         // Fungsi untuk mengupdate jumlah item di keranjang
         function updateItemCount() {
             let itemCount = 0;
@@ -205,16 +184,16 @@
                 const quantity = parseInt(item.querySelector(".quantity").getAttribute("data-quantity"));
                 itemCount += quantity;
             });
-            
-            const itemCountText = itemCount === 1 ? `${itemCount} item` : `${itemCount} items`; 
+
+            const itemCountText = itemCount === 1 ? `${itemCount} item` : `${itemCount} items`;
             document.getElementById("item-count").textContent = `${itemCountText} di keranjang Anda.`;
         }
-    
+
         // Event listener untuk memastikan total harga dan jumlah item terupdate setelah halaman dimuat
         document.addEventListener("DOMContentLoaded", function() {
             updateItemCount();
             updateTotalPrice();
         });
     </script>
-    
+
 @endsection
