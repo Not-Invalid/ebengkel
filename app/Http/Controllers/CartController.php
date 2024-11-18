@@ -4,13 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\KategoriSparePart;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function showCart()
+    {
+        $pelanggan = auth('pelanggan')->user();
+
+        if (!$pelanggan) {
+            return redirect()->route('login')->with('status_error', 'You need to be logged in to view your cart.');
+        }
+
+        $kategoriSparePart = KategoriSparePart::all();
+
+        $cartItems = Cart::with('produk.kategoriProduct')
+                        ->where('id_pelanggan', $pelanggan->id_pelanggan)
+                        ->get();
+        $totalPrice = $cartItems->sum('total_price');
+
+        return view('payment.cart', compact('cartItems', 'totalPrice', 'kategoriSparePart'));
+    }
     public function addToCart(Request $request)
     {
+
         $validated = $request->validate([
             'id_produk' => 'required|exists:tb_produk,id_produk',
             'quantity' => 'required|integer|min:1',
@@ -30,10 +49,12 @@ class CartController extends Controller
                         ->first();
 
         if ($cartItem) {
+
             $cartItem->quantity += $validated['quantity'];
             $cartItem->total_price += $totalPrice;
             $cartItem->save();
         } else {
+
             Cart::create([
                 'id_pelanggan' => $pelanggan->id_pelanggan,
                 'id_produk' => $produk->id_produk,
@@ -42,34 +63,49 @@ class CartController extends Controller
             ]);
         }
 
-        // Return updated cart count
-        $cartCount = Cart::where('id_pelanggan', $pelanggan->id_pelanggan)->count();
+        $cartItems = Cart::with('produk')
+                        ->where('id_pelanggan', $pelanggan->id_pelanggan)
+                        ->get();
+        $cartCount = $cartItems->count();
+        $totalPrice = $cartItems->sum('total_price');
 
-        return response()->json(['success' => true, 'cartCount' => $cartCount]);
+        return response()->json([
+            'success' => true,
+            'cartCount' => $cartCount,
+            'totalPrice' => number_format($totalPrice, 2, ',', '.'),
+            'cartItems' => $cartItems,
+        ]);
     }
 
-
-    public function showCart()
+    public function updateCartItem(Request $request, $id)
     {
+        $cartItem = Cart::findOrFail($id);
+        $product = $cartItem->produk;
+        $quantity = $request->quantity;
 
-        $pelanggan = auth('pelanggan')->user();
-
-        if (!$pelanggan) {
-            return redirect()->route('login')->with('error', 'You need to be logged in to view your cart.');
+        if ($quantity > $product->stok_produk) {
+            return response()->json(['success' => false, 'message' => 'Kuantitas yang diminta melebihi stok yang tersedia.']);
         }
 
-        $cartItems = Cart::with('produk')
-                         ->where('id_pelanggan', $pelanggan->id_pelanggan)
-                         ->get();
+        $cartItem->quantity = $quantity;
+        $cartItem->save();
 
-        return view('payment.cart', compact('cartItems'));
+        return response()->json(['success' => true, 'message' => 'Keranjang berhasil diperbarui.']);
     }
 
     public function removeFromCart($id)
     {
 
-        Cart::destroy($id);
+        $cartItem = Cart::find($id);
 
-        return redirect()->route('cart')->with('success', 'Item removed from cart!');
+        if ($cartItem) {
+
+            $cartItem->delete();
+
+            return redirect()->route('cart')->with('status', 'Item removed successfully');
+        }
+
+        return redirect()->route('cart')->with('status_error', 'Item not found');
     }
+
 }
