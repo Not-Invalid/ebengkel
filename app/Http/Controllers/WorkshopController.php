@@ -17,9 +17,14 @@ use Illuminate\Support\Carbon;
 
 class WorkshopController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
+        $query = Bengkel::where('delete_bengkel', 'N');
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama_bengkel', 'LIKE', '%' . $search . '%');
+        }
+        $bengkels = $query->get();
         return view('workshop.index', compact('bengkels'));
     }
 
