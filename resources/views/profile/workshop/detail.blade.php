@@ -207,7 +207,7 @@
       </div>
     </div>
   </div>
-  <section>
+  <section class="mt-5">
     <div class="custom-tabs-container">
       <ul class="custom-tabs shadow text-center">
         <li class="custom-tab-item">
