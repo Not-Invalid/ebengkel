@@ -20,8 +20,8 @@ class CreateTbPegawaiTable extends Migration
             $table->string('email_pegawai')->nullable();
             $table->text('foto_pegawai')->nullable();
             $table->string('password_pegawai')->nullable();
-            $table->string('level_pegawai')->nullable();
-            $table->dateTime('tgl_daftar_pegawai')->nullable();
+            $table->enum('role', ['Administrator', 'Kasir', 'Outlet']);
+            $table->timestamps();
             $table->string('delete_pegawai', 1)->default('N');
         });
     }
