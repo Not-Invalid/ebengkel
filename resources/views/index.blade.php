@@ -168,8 +168,6 @@
         </div>
     </section>
 
-
-
     {{-- New Product Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
         <div class="container">
@@ -267,6 +265,179 @@
         </div>
     </section>
 
-
     {{-- used car --}}
+    <!-- Featured Cars Section -->
+    <section class="featured-cars">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-title text-start">
+                <h4 class="text-primary py-2"><i class='bx bx-box'></i> Spare Parts</h4>
+            </div>
+
+            <!-- Cars Grid -->
+            <div class="row g-4">
+                <!-- Toyota RAV4 Card -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card h-100 border-0 shadow">
+                        <img src="{{ asset('assets/images/bg/ai_car_service.png') }}" alt="Toyota RAV4" class="car-img">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="h5 mb-0">Toyota RAV4</h3>
+                                <span class="badge">2021</span>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-tag specs-icon me-2"></i>
+                                        Toyota
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-gauge specs-icon me-2"></i>
+                                        28.000 KM
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-gas-pump specs-icon me-2"></i>
+                                        Bensin
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-sitemap specs-icon me-2"></i>
+                                        Autopilot
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="h5 mb-0">Rp 150.000.000</span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary px-4">Detail Car</button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- BMW 3 Series Card -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card h-100 border-0 shadow">
+                        <img src="{{ asset('assets/images/bg/car.png') }}" alt="BMW 3 Series" class="car-img">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="h5 mb-0">BMW 3 Series</h3>
+                                <span class="badge ">2019</span>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-tag specs-icon me-2"></i>
+                                        Toyota
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-gauge specs-icon me-2"></i>
+                                        28.000 KM
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-gas-pump specs-icon me-2"></i>
+                                        Bensin
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-sitemap specs-icon me-2"></i>
+                                        Autopilot
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="h5 mb-0">Rp 150.000.000</span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary px-4">Detail Car</button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Volkswagen T-Cross Card -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <article class="card h-100 border-0 shadow">
+                        <img src="{{ asset('assets/images/bg/sparepart.png') }}" alt="Volkswagen T-Cross"
+                            class="car-img">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h3 class="h5 mb-0">Volkswagen T-Cross</h3>
+                                <span class="badge ">2020</span>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-tag specs-icon me-2"></i>
+                                        Toyota
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-gauge specs-icon me-2"></i>
+                                        28.000 KM
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-gas-pump specs-icon me-2"></i>
+                                        Bensin
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center text-muted">
+                                        <i class="fas fa-sitemap specs-icon me-2"></i>
+                                        Autopilot
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="h5 mb-0">Rp 150.000.000</span>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary px-4">Detail Car</button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- View More Link -->
+            <div class="text-center mt-5">
+                <a href=" {{ route('used-car') }}" class="btn btn-more">
+                    More Used Car <i class="bx bx-chevron-right align-icon"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
 @endsection
