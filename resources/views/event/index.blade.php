@@ -55,7 +55,11 @@
                 <div class="d-flex justify-content-center pb-5">
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200" alt="Empty">
-                        <p>No events found for "{{ request('search') }}".</p>
+                        @if (request('search'))
+                            <p>No events found for "{{ request('search') }}".</p>
+                        @else
+                            <p>No data available for events.</p>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -90,14 +94,6 @@
                   </a>
                 </div>
               @endforeach
-            @else
-                <div class="d-flex justify-content-center pb-5">
-                    <div class="text-center">
-                    <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                        alt="Empty">
-                    <p>No data available for events.</p>
-                    </div>
-                </div>
             @endif
           </div>
 
