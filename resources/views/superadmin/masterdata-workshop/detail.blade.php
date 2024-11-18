@@ -128,12 +128,12 @@
 
              <div class="d-flex align-items-center">
                  <div class="me-5">
-                     <img src="{{ asset('assets/images/bg/car.png') }}" alt=""
-                         style="border-radius: 100%; height: 150px; width: 150px; object-fit: cover">
+                     <img src="{{ isset($bengkel) && $bengkel->foto_bengkel ? url($bengkel->foto_bengkel) : asset('assets/images/components/image.png') }}" alt=""
+                         class="border" style="border-radius: 100%; height: 150px; width: 150px; object-fit: cover">
                  </div>
                  <div>
-                     <h2 class="">Pinang Team</h2>
-                     <h2 class="tagline">Pinang Jaya</h2>
+                     <h2 class="">{{ $bengkel->nama_bengkel  }}</h2>
+                     <h2 class="tagline">{{ $bengkel->tagline_bengkel }}</h2>
                  </div>
              </div>
              <div class="row">
@@ -141,42 +141,48 @@
                      <div class="d-flex align-items-center mt-5 ms-3">
                          <i class="fa-regular fa-calendar-days me-2"></i>
                          <span class="fw-bold">Open Workshop : </span>
-                         <span class="ms-1">Monday - Sunday | 08.00 - 19.00</span>
+                         <span class="ms-1">
+                            {{ $bengkel->open_day }} - {{ $bengkel->close_day }},
+                            {{ \Carbon\Carbon::parse($bengkel->open_time)->format('H:i') }} -
+                            {{ \Carbon\Carbon::parse($bengkel->close_time)->format('H:i') }} WIB
+                         </span>
                      </div>
                      <div class="d-flex align-items-center mt-3 ms-3">
                          <i class="fa-regular fa-calendar-days me-2"></i>
                          <span class="fw-bold">Location : </span>
-                         <span class="ms-1">JL. Gang Samiri</span>
+                         <span class="ms-1 fs-6">{{ \Illuminate\Support\Str::limit($bengkel->alamat_bengkel, 100) }}</span>
                      </div>
                  </div>
              </div>
              <div class="container-fluid bg-white text-black my-5 py-5">
-                 <div class="container">
-                     <div class="row g-4 justify-content-center">
-                         <div class="col-12 col-md-3 text-center total">
-                             <h2 class="text-black mb-2 counter" data-target="1000">10</h2>
-                             <div class="d-flex align-items-center justify-content-center">
-                                 <i class="fas fa-box-open fa-2x text-black me-2"></i>
-                                 <p class="text-black mb-0">Total Product</p>
-                             </div>
-                         </div>
-                         <div class="col-12 col-md-3 text-center total">
-                             <h2 class="text-black mb-2 counter" data-target="1000">10</h2>
-                             <div class="d-flex align-items-center justify-content-center">
-                                 <i class="fas fa-cog fa-2x text-black me-2"></i>
-                                 <p class="text-black mb-0">Total Services</p>
-                             </div>
-                         </div>
-                         <div class="col-12 col-md-3 text-center total">
-                             <h2 class="text-black mb-2 counter" data-target="1000">10</h2>
-                             <div class="d-flex align-items-center justify-content-center">
-                                 <i class="fas fa-star fa-2x text-black me-2"></i>
-                                 <p class="text-black mb-0">Rating </p>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+                <div class="container">
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-12 col-md-3 text-center total">
+                            <h2 class="text-black mb-2 counter" data-target="{{ $totalProducts }}">{{ $totalProducts }}</h2>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-box-open fa-2x fs-5 text-black me-2"></i>
+                                <p class="text-black mb-0">Total Product</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 text-center total">
+                            <h2 class="text-black mb-2 counter" data-target="{{ $totalServices }}">{{ $totalServices }}</h2>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-cog fa-2x fs-5 text-black me-2"></i>
+                                <p class="text-black mb-0">Total Services</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 text-center total">
+                            <h2 class="text-black mb-2 counter" data-target="{{ number_format($averageRating, 1) }}">
+                                {{ number_format($averageRating, 1) }}
+                            </h2>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-star fa-2x fs-5 text-black me-2"></i>
+                                <p class="text-black mb-0">Rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
          </div>
      </div>
 
@@ -318,98 +324,90 @@
          });
      </script>
 
-     <script>
-         var line = document.getElementById("line").getContext("2d")
-         var gradient = line.createLinearGradient(0, 0, 0, 400)
-         gradient.addColorStop(0, "rgba(50, 69, 209,1)")
-         gradient.addColorStop(1, "rgba(265, 177, 249,0)")
+<script>
+    var line = document.getElementById("line").getContext("2d");
+    var gradient = line.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(50, 69, 209,1)");
+    gradient.addColorStop(1, "rgba(265, 177, 249,0)");
 
-         var gradient2 = line.createLinearGradient(0, 0, 0, 400)
-         gradient2.addColorStop(0, "rgba(255, 91, 92,1)")
-         gradient2.addColorStop(1, "rgba(265, 177, 249,0)")
+    var gradient2 = line.createLinearGradient(0, 0, 0, 400);
+    gradient2.addColorStop(0, "rgba(255, 91, 92,1)");
+    gradient2.addColorStop(1, "rgba(265, 177, 249,0)");
 
-         var myline = new Chart(line, {
-             type: "line",
-             data: {
-                 labels: [
-                     "16-07-2018",
-                     "17-07-2018",
-                     "18-07-2018",
-                     "19-07-2018",
-                     "20-07-2018",
-                     "21-07-2018",
-                     "22-07-2018",
-                     "23-07-2018",
-                     "24-07-2018",
-                     "25-07-2018",
-                 ],
-                 datasets: [{
-                         label: "Balance",
-                         data: [50, 25, 61, 50, 72, 52, 60, 41, 30, 45],
-                         backgroundColor: "rgba(50, 69, 209,.6)",
-                         borderWidth: 3,
-                         borderColor: "rgba(63,82,227,1)",
-                         pointBorderWidth: 0,
-                         pointBorderColor: "transparent",
-                         pointRadius: 3,
-                         pointBackgroundColor: "transparent",
-                         pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                     },
-                     {
-                         label: "Balance",
-                         data: [20, 35, 45, 75, 37, 86, 45, 65, 25, 53],
-                         backgroundColor: "rgba(253, 183, 90,.6)",
-                         borderWidth: 3,
-                         borderColor: "rgba(253, 183, 90,.6)",
-                         pointBorderWidth: 0,
-                         pointBorderColor: "transparent",
-                         pointRadius: 3,
-                         pointBackgroundColor: "transparent",
-                         pointHoverBackgroundColor: "rgba(63,82,227,1)",
-                     },
-                 ],
-             },
-             options: {
-                 responsive: true,
-                 layout: {
-                     padding: {
-                         top: 10,
-                     },
-                 },
-                 tooltips: {
-                     intersect: false,
-                     titleFontFamily: "Helvetica",
-                     titleMarginBottom: 10,
-                     xPadding: 10,
-                     yPadding: 10,
-                     cornerRadius: 3,
-                 },
-                 legend: {
-                     display: true,
-                 },
-                 scales: {
-                     yAxes: [{
-                         gridLines: {
-                             display: true,
-                             drawBorder: true,
-                         },
-                         ticks: {
-                             display: true,
-                         },
-                     }, ],
-                     xAxes: [{
-                         gridLines: {
-                             drawBorder: false,
-                             display: false,
-                         },
-                         ticks: {
-                             display: false,
-                         },
-                     }, ],
-                 },
-             },
-         })
-     </script>
+    var myline = new Chart(line, {
+        type: "line",
+        data: {
+            labels: [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ],
+            datasets: [{
+                    label: "Products Sold",
+                    data: [120, 150, 170, 130, 200, 180, 210, 190, 230, 250, 220, 240], // Replace with actual product data
+                    backgroundColor: "rgba(50, 69, 209,.6)",
+                    borderWidth: 3,
+                    borderColor: "rgba(63,82,227,1)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(63,82,227,1)",
+                },
+                {
+                    label: "Services Sold",
+                    data: [100, 130, 150, 120, 170, 160, 200, 180, 210, 220, 190, 230], // Replace with actual service data
+                    backgroundColor: "rgba(253, 183, 90,.6)",
+                    borderWidth: 3,
+                    borderColor: "rgba(253, 183, 90,.6)",
+                    pointBorderWidth: 0,
+                    pointBorderColor: "transparent",
+                    pointRadius: 3,
+                    pointBackgroundColor: "transparent",
+                    pointHoverBackgroundColor: "rgba(253, 183, 90,1)",
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            layout: {
+                padding: {
+                    top: 10,
+                },
+            },
+            tooltips: {
+                intersect: false,
+                titleFontFamily: "Helvetica",
+                titleMarginBottom: 10,
+                xPadding: 10,
+                yPadding: 10,
+                cornerRadius: 3,
+            },
+            legend: {
+                display: true,
+            },
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        display: true,
+                        drawBorder: true,
+                    },
+                    ticks: {
+                        display: true,
+                    },
+                }],
+                xAxes: [{
+                    gridLines: {
+                        drawBorder: false,
+                        display: false,
+                    },
+                    ticks: {
+                        display: true, // Show month labels
+                    },
+                }],
+            },
+        },
+    });
+</script>
 
      <script>
          const counters = document.querySelectorAll('.counter');
