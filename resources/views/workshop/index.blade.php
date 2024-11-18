@@ -29,8 +29,8 @@
           <div class="d-flex justify-content-center align-items-center" style="min-height: 50px;">
             <form method="GET" action="" style="width: 60%;">
               <div class="input-group">
-                <input type="text" name="search" required maxlength="255" placeholder="Ketik kata kunci..."
-                  class="form-control" style="border-radius: 20px 0 0 20px;">
+                <input type="text" name="search" value="{{ request('search') }}" required maxlength="255"
+                  placeholder="Ketik kata kunci..." class="form-control" style="border-radius: 20px 0 0 20px;">
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-search" style="border-radius: 0 20px 20px 0;">
                     <i class='bx bx-search-alt align-icon'></i>
@@ -43,7 +43,7 @@
       </div>
     </div>
   </section>
-  {{-- Latest Workshop Section --}}
+
   <section class="section bg-white" style="padding-bottom: 50px;">
     <div class="container">
       <div class="row">
