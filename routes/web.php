@@ -49,6 +49,7 @@ Route::middleware('auth:pelanggan')->group(function () {
 
     Route::get('cart', [CartController::class, 'showCart'])->name('cart');
     Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update/{itemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
 
@@ -77,7 +78,7 @@ Route::prefix('superadmin')->group(function () {
     Route::get('inbox', [SuperAdminMessagesController::class, 'index'])->name('inbox');
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
-    Route::get('workshop/detail', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
+    Route::get('workshop/detail/{id}', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
 
     Route::get('data-pelanggan', [SuperAdminPelangganController::class, 'index'])->name('data-pelanggan');
 
