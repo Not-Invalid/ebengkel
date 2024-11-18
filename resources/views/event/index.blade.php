@@ -28,15 +28,15 @@
       <div class="row">
         <div class="col">
           <div class="d-flex justify-content-center align-items-center" style="min-height: 50px;">
-            <form method="GET" action="" style="width: 60%;">
-              <div class="input-group">
-                <input type="text" name="search" required maxlength="255" placeholder="Ketik kata kunci..." class="form-control" style="border-radius: 20px 0 0 20px;">
-                <div class="input-group-append">
-                  <button type="submit" class="btn btn-search" style="border-radius: 0 20px 20px 0;">
-                    <i class='bx bx-search-alt align-icon'></i>
-                  </button>
+            <form method="GET" action="{{ route('event.show') }}" style="width: 60%;">
+                <div class="input-group">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Ketik kata kunci..." class="form-control" style="border-radius: 20px 0 0 20px;">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-search" style="border-radius: 0 20px 20px 0;">
+                            <i class='bx bx-search-alt align-icon'></i>
+                        </button>
+                    </div>
                 </div>
-              </div>
             </form>
           </div>
         </div>
@@ -50,6 +50,16 @@
       <div class="row">
         <div class="col-md-12">
           <div class="row">
+
+            @if ($events->isEmpty())
+                <div class="d-flex justify-content-center pb-5">
+                    <div class="text-center">
+                        <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200" alt="Empty">
+                        <p>No events found for "{{ request('search') }}".</p>
+                    </div>
+                </div>
+            @endif
+
             {{-- Loop untuk menampilkan event --}}
             @if ($events->isNotEmpty())
               @foreach ($events as $event)
