@@ -85,6 +85,10 @@
                                             <a href="{{ route('product-sparepart-category') }}"
                                                 class="submenu-link">Product & Spare Parts</a>
                                         </li>
+                                        <li class="submenu-item">
+                                            <a href="{{ route('blog-category') }}"
+                                                class="submenu-link">Blog</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="submenu-item has-sub">
@@ -111,6 +115,12 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('blog-admin') ? 'active' : '' }}">
+                            <a href="{{ route('blog-admin') }}" class="sidebar-link">
+                                <i class="fas fa-blog"></i>
+                                <span>Blog</span>
+                            </a>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('support-center-info') ? 'active' : '' }}">
                             <a href="{{ route('support-center-info') }}" class="sidebar-link">
