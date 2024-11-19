@@ -27,28 +27,38 @@
         </div>
 
         <div class="right-side">
-            <form class="login-form" id="loginForm">
+            <form method="POST" action="{{ route('pos.register') }}" class="login-form" id="loginForm">
+                @csrf
+                <input type="hidden" name="id_bengkel" value="{{ request('id_bengkel') }}">
                 <h3>Sign Up</h3>
                 <div class="input-group">
                     <i class="bx bx-user icon"></i>
-                    <input type="text" id="text" placeholder="Username" required>
+                    <input type="text" id="text" name="nama_pegawai" placeholder="Username" required>
                 </div>
                 <div class="input-group">
                     <i class="bx bx-phone icon"></i>
-                    <input type="text" id="text" placeholder="No. Telp" required pattern="[0-9]*"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    <input type="text" id="text" name="telp_pegawai" placeholder="No. Telp" required
+                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                 </div>
                 <div class="input-group">
                     <i class="bx bx-envelope icon"></i>
-                    <input type="email" id="email" placeholder="Email address" required>
+                    <input type="email" id="email" name="email_pegawai" placeholder="Email address" required>
                 </div>
                 <div class="input-group">
                     <i class="bx bx-lock icon"></i>
-                    <input type="password" id="password" class="password-field" placeholder="Password" required>
+                    <input type="password" id="password" name="password_pegawai" class="password-field"
+                        placeholder="Password" required>
+                    <i class='bx bx-hide eye-icon'></i>
+                </div>
+                <div class="input-group">
+                    <i class="bx bx-lock icon"></i>
+                    <input type="password" id="password" name="password_pegawai_confirmation" class="password-field"
+                        placeholder="Confirm Password" required>
                     <i class='bx bx-hide eye-icon'></i>
                 </div>
                 <button type="submit" class="submit-btn">Sign Up</button>
             </form>
+
         </div>
     </div>
 
