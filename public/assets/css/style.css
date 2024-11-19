@@ -15,28 +15,31 @@
   --bg-transparent: rgba(0, 0, 0, 0);
 }
 
-
 .btn.btn-more {
   background-color: var(--main-blue);
   color: var(--main-white);
   width: 190px;
   font-weight: 500;
 }
+
 .btn.btn-more:hover {
   background-color: var(--main-blue-dark);
   color: var(--main-white);
   width: 190px;
   font-weight: 500;
 }
+
 .btn.btn-more:active {
-transform: translateY(2px);
+  transform: translateY(2px);
 }
-.card-product, .card-event {
+
+.card-product,
+.card-event {
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-bottom: 20px;
   height: 350px;
-  position: relative; 
+  position: relative;
   overflow: hidden;
   text-decoration: none;
   color: inherit;
@@ -44,23 +47,25 @@ transform: translateY(2px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card-product:hover, .card-event:hover {
+.card-product:hover,
+.card-event:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .card-img-top {
-  width: 100%; 
-  height: 180px; 
+  width: 100%;
+  height: 180px;
   border-radius: 5px;
-  object-fit: fill; 
+  object-fit: fill;
   /* object-position: center; */
-  
 }
+
 .workshop-name {
   font-size: 14px;
   color: var(--main-grey);
 }
+
 .card-title {
   font-size: 18px;
   font-weight: 600;
@@ -70,6 +75,7 @@ transform: translateY(2px);
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .tagline {
   font-size: 16px;
   font-weight: 500;
@@ -79,6 +85,7 @@ transform: translateY(2px);
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .date {
   font-size: 14px;
   font-weight: 500;
@@ -87,18 +94,54 @@ transform: translateY(2px);
 .footer-card {
   position: absolute;
   bottom: 10px;
-  background-color: rgba(255, 255, 255, 0.9);       
+  background-color: rgba(255, 255, 255, 0.9);
 }
+
 .price {
   font-weight: 600;
   font-size: 18px;
 }
-.location-map {
 
+.location-map {
   color: var(--main-grey);
 }
+
 .location {
   font-size: 14px;
   font-weight: 500;
   color: var(--main-grey);
+}
+
+/* used Car */
+.featured-cars {
+  background-color: var(--main-white);
+  padding: 80px 0;
+}
+
+.car-img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.card {
+  border-radius: 16px;
+  transition: transform 0.2s;
+  background: var(--main-white);
+  padding: 10px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.specs-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.section-title h2 {
+  font-size: 2rem;
+  font-weight: 600;
 }
