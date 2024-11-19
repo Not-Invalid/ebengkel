@@ -271,172 +271,111 @@
         <div class="container">
             <!-- Section Header -->
             <div class="section-title text-start">
-                <h4 class="text-primary py-2"><i class='bx bx-box'></i> Spare Parts</h4>
+                <h4 class="text-primary py-2"><i class='bx bx-box'></i> Used Car</h4>
             </div>
 
-            <!-- Cars Grid -->
-            <div class="row g-4">
-                <!-- Toyota RAV4 Card -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <article class="card h-100 border-0 shadow">
-                        <img src="{{ asset('assets/images/bg/ai_car_service.png') }}" alt="Toyota RAV4" class="car-img">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h3 class="h5 mb-0">Toyota RAV4</h3>
-                                <span class="badge">2021</span>
-                            </div>
-
-                            <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-tag specs-icon me-2"></i>
-                                        Toyota
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-gauge specs-icon me-2"></i>
-                                        28.000 KM
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-gas-pump specs-icon me-2"></i>
-                                        Bensin
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-sitemap specs-icon me-2"></i>
-                                        Autopilot
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h5 mb-0">Rp 150.000.000</span>
-                                </div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary px-4">Detail Car</button>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+            @if ($mobilList->isEmpty())
+                <div class="d-flex justify-content-center pb-5">
+                    <div class="text-center">
+                        <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
+                            alt="No UsedCar">
+                        <p>No data available for UsedCar.</p>
+                    </div>
                 </div>
+            @else
+                <div id="carCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                    <!-- Carousel Inner -->
+                    <div class="carousel-inner">
+                        @foreach ($mobilList->chunk(3) as $index => $chunk)
+                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                <div class="row justify-content-center">
+                                    @foreach ($chunk as $car)
+                                        <div class="col-12 col-md-4">
+                                            <article class="card h-100 border-0 shadow">
+                                                @if ($car->fotos && $car->fotos->file_foto_mobil_1)
+                                                    <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
+                                                        class="car-img">
+                                                @else
+                                                    <img src="{{ asset('assets/images/components/image.png') }}"
+                                                        alt="Car Image" class="car-img">
+                                                @endif
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <h3 class="h5 mb-0">
+                                                            {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}</h3>
+                                                        <span class="badge">{{ $car->tahun_mobil }}</span>
+                                                    </div>
 
-                <!-- BMW 3 Series Card -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <article class="card h-100 border-0 shadow">
-                        <img src="{{ asset('assets/images/bg/car.png') }}" alt="BMW 3 Series" class="car-img">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h3 class="h5 mb-0">BMW 3 Series</h3>
-                                <span class="badge ">2019</span>
+                                                    <div class="row g-3 mb-3 mt-2">
+                                                        <div class="col-6">
+                                                            <div class="d-flex align-items-center text-muted">
+                                                                <i class="fas fa-tag specs-icon me-2"></i>
+                                                                <div class="nama">{{ $car->merkMobil->nama_merk }}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="d-flex align-items-center text-muted">
+                                                                <i class="fas fa-gauge specs-icon me-2"></i>
+                                                                <div class="nama">{{ $car->km_mobil }} KM</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="d-flex align-items-center text-muted">
+                                                                <i class="fas fa-gas-pump specs-icon me-2"></i>
+                                                                <div class="nama">{{ $car->bahan_bakar_mobil }}</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <div class="d-flex align-items-center text-muted">
+                                                                <i class="fas fa-sitemap specs-icon me-2"></i>
+                                                                <div class="nama">{{ $car->jenis_transmisi_mobil }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr>
+
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <span class="h5 mb-0">Rp
+                                                                {{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
+                                                        </div>
+                                                        <div class="d-flex gap-2">
+                                                            <button class="btn btn-primary px-4">Detail Car</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
+                        @endforeach
+                    </div>
 
-                            <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-tag specs-icon me-2"></i>
-                                        Toyota
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-gauge specs-icon me-2"></i>
-                                        28.000 KM
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-gas-pump specs-icon me-2"></i>
-                                        Bensin
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-sitemap specs-icon me-2"></i>
-                                        Autopilot
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h5 mb-0">Rp 150.000.000</span>
-                                </div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary px-4">Detail Car</button>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+                    <!-- Kontrol Carousel -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sebelumnya</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Selanjutnya</span>
+                    </button>
                 </div>
+            @endif
+        </div>
 
-                <!-- Volkswagen T-Cross Card -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <article class="card h-100 border-0 shadow">
-                        <img src="{{ asset('assets/images/bg/sparepart.png') }}" alt="Volkswagen T-Cross"
-                            class="car-img">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h3 class="h5 mb-0">Volkswagen T-Cross</h3>
-                                <span class="badge ">2020</span>
-                            </div>
 
-                            <div class="row g-3 mb-3">
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-tag specs-icon me-2"></i>
-                                        Toyota
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-gauge specs-icon me-2"></i>
-                                        28.000 KM
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-gas-pump specs-icon me-2"></i>
-                                        Bensin
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="d-flex align-items-center text-muted">
-                                        <i class="fas fa-sitemap specs-icon me-2"></i>
-                                        Autopilot
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="h5 mb-0">Rp 150.000.000</span>
-                                </div>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary px-4">Detail Car</button>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <!-- View More Link -->
-            <div class="text-center mt-5">
-                <a href=" {{ route('used-car') }}" class="btn btn-more">
-                    More Used Car <i class="bx bx-chevron-right align-icon"></i>
-                </a>
-            </div>
+        <!-- View More Link -->
+        <div class="text-center mt-5">
+            <a href=" {{ route('used-car') }}" class="btn btn-more">
+                More Used Car <i class="bx bx-chevron-right align-icon"></i>
+            </a>
+        </div>
         </div>
     </section>
 

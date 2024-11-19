@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Bengkel;
 use App\Models\Event;
 use App\Models\Product;
+use App\Models\UsedCar;
+use App\Models\MerkMobil;
 use App\Models\SpareParts;
 use App\Models\SupportCategory;
 use Illuminate\Routing\Controller;
@@ -17,7 +19,9 @@ class PageController extends Controller
         $events = Event::all();
         $products = Product::where('delete_produk', 'N')->get();
         $sparepart = SpareParts::where('delete_spare_part', 'N')->get();
-        return view('index', compact('bengkels', 'events', 'products', 'sparepart'));
+        $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->get();
+        $merks = MerkMobil::all();
+        return view('index', compact('bengkels', 'events', 'products', 'sparepart', 'mobilList', 'merks'));
     }
 
     public function contact()

@@ -118,11 +118,18 @@
   padding: 80px 0;
 }
 
+.nama {
+  font-size: 15px;
+}
+
 .car-img {
-  height: 200px;
-  object-fit: cover;
   width: 100%;
+  height: 200px;
+  /* Atur tinggi gambar secara konsisten */
+  object-fit: cover;
+  /* Agar gambar tidak terdistorsi dan tetap proporsional */
   border-radius: 8px;
+  /* Radius sudut gambar */
 }
 
 .card {
@@ -137,11 +144,66 @@
 }
 
 .specs-icon {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
 }
 
 .section-title h2 {
   font-size: 2rem;
   font-weight: 600;
+}
+
+/* Optional: Card Image Position */
+.card-body {
+  padding-top: 15px;
+}
+
+/* Custom styles for carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black background */
+  border-radius: 50%;
+  /* Membuat tombol melingkar */
+  color: white;
+  /* Warna ikon tombol */
+  padding: 15px;
+  /* Memberikan padding agar tombol lebih besar */
+  transition: background-color 0.3s ease;
+  /* Efek transisi saat hover */
+  width: 50px;
+  /* Lebar tombol */
+  height: 50px;
+  /* Tinggi tombol */
+  font-size: 25px;
+  /* Ukuran ikon tombol lebih besar */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+  /* Membuat ikon tombol berwarna putih */
+}
+
+/* Hover effect */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Warna latar belakang tombol lebih gelap saat hover */
+}
+
+/* Posisi tombol kontrol di tengah */
+.carousel-control-prev,
+.carousel-control-next {
+  top: 50%;
+  transform: translateY(-50%);
+  /* Posisi vertikal di tengah */
+}
+
+/* Memastikan carousel berfungsi dengan baik */
+.carousel-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* Mengatur carousel items di tengah */
 }
