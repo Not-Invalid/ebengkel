@@ -25,6 +25,7 @@ class CreateTbSparePartTable extends Migration
             $table->text('keterangan_spare_part')->nullable();
             $table->text('foto_spare_part')->nullable();
             $table->integer('stok_spare_part')->nullable();
+            $table->dateTime('create_spare_part')->nullable();
             $table->string('delete_spare_part', 1)->default('N');
             $table->foreign('id_kategori_spare_part')->references('id_kategori_spare_part')->on('tb_kategori_spare_part')->onDelete('set null');
         });
