@@ -147,7 +147,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <div class="card info-event mb-4">
+        <div class="card info-event">
           <div class="card-body">
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-calendar text-primary me-2'></i>
@@ -383,7 +383,7 @@
               <div class="text-center">
                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
                   alt="No spareparts">
-                <p>No data available for services.</p>
+                <p>No data available for spareparts.</p>
               </div>
             </div>
           @endforelse
