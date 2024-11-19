@@ -112,7 +112,7 @@
   <section>
     <div class="container my-5">
       <section>
-        <div class="card workshop-header mb-5">
+        <div class="card workshop-header">
           <div class="position-relative">
             <img
               src="{{ isset($bengkel) && $bengkel->foto_cover_bengkel ? url($bengkel->foto_cover_bengkel) : asset('assets/images/components/image.png') }}"
@@ -201,10 +201,7 @@
                   <small>{{ $totalReviews }} verified reviews</small>
                 </div>
               </div>
-
-
             </div>
-
             <div class="row">
               <div class="col-12 col-md-12 d-flex align-items-center justify-content-between text-start py-2">
                 <div class="d-flex align-items-center">
@@ -220,40 +217,33 @@
               </div>
             </div>
           </div>
-
         </div>
       </section>
-      <section>
-
+      <sectione>
         <div class="custom-tabs-container">
           <ul class="custom-tabs shadow text-center">
             <li class="custom-tab-item">
               <a class="custom-tab-link active" data-tab="all">
-
                 All
               </a>
             </li>
             <li class="custom-tab-item">
               <a class="custom-tab-link" data-tab="service">
                 Service
-
               </a>
             </li>
             <li class="custom-tab-item">
               <a class="custom-tab-link" data-tab="product">
-
                 Product
               </a>
             </li>
             <li class="custom-tab-item">
               <a class="custom-tab-link" data-tab="spareparts">
-
                 Spareparts
               </a>
             </li>
             <li class="custom-tab-item">
               <a class="custom-tab-link" data-tab="ulasan">
-
                 Ulasan
               </a>
             </li>
@@ -266,43 +256,102 @@
             <option value="ulasan">Ulasan</option>
           </select>
         </div>
-
         <div class="tab-content">
           <div class="tab-pane active" id="all">
             {{-- isi card --}}
             <div class="row py-5">
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmgDTyalHBoNMXH-vCdIJTlNK7U7FvU0Ilog&s"
-                    class="card-img-top" alt="Sparepart Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Disc Brake Mercy</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp2500.550</span>
+              {{-- Cek apakah ada data untuk services --}}
+              @forelse ($services as $service)
+                @if ($service->id_bengkel === $bengkel->id_bengkel)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <a href="{{ route('service.detail', ['id_bengkel' => $bengkel->id_bengkel, 'id_services' => $service->id_services]) }}"
+                      class="card-product p-3">
+                      <img
+                        src="{{ $service->foto_services ? url($service->foto_services) : asset('assets/images/components/image.png') }}"
+                        class="card-img-top" alt="Service Image">
+                      <div class="card-body text-start mt-4">
+                        <h5 class="card-title">{{ $service->nama_services }}</h5>
+                        <div class="footer-card">
+                          <div class="price d-flex justify-content-start">
+                            <span
+                              class="price">{{ 'Rp' . number_format($service->harga_services ?? 0, 0, ',', '.') }}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://i.ebayimg.com/images/g/OEEAAOSwTnxhSBXT/s-l1200.jpg" class="card-img-top"
-                    alt="Sparepart Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">LOGIC SPEAKERS SET MERCEDES-BENZ E350 W212 OEM 2010-2018.</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp7.787.804</span>
+                @endif
+              @empty
+              @endforelse
+
+              {{-- Cek apakah ada data untuk products --}}
+              @forelse ($products as $product)
+                @if ($product->id_bengkel === $bengkel->id_bengkel)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 position-relative">
+                    <a href="{{ route('Detail-ProductSparePart', ['type' => 'product', 'id' => $product->id_produk]) }}"
+                      class="card-product p-3">
+                      <img
+                        src="{{ $product->foto_produk ? url($product->foto_produk) : asset('assets/images/components/image.png') }}"
+                        class="card-img-top" alt="Product Image">
+                      {{-- Badge stok di kanan atas --}}
+                      <span class="badge-stock position-absolute top-0 end-0 m-3"
+                        style="border-start-end-radius: 5px; border-end-start-radius:5px; background-color:var(--main-light-blue); font-size:10px; padding:5px; width:30%; color:var(--main-white)">
+                        Stock:
+                        @if ($product->stok_produk >= 1000)
+                          1000+
+                        @else
+                          {{ $product->stok_produk }}
+                        @endif
+                      </span>
+                      <div class="card-body text-start mt-4">
+                        <h5 class="card-title">{{ $product->nama_produk }}</h5>
+                        <div class="footer-card">
+                          <div class="price d-flex justify-content-start">
+                            <span
+                              class="price">{{ 'Rp' . number_format($product->harga_produk ?? 0, 0, ',', '.') }}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
-                </a>
-              </div>
+                @endif
+              @empty
+              @endforelse
+
+              {{-- Cek apakah ada data untuk spareparts --}}
+              @forelse ($spareparts as $sparepart)
+                @if ($sparepart->id_bengkel === $bengkel->id_bengkel)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <a href="{{ route('Detail-ProductSparePart', ['type' => 'sparepart', 'id' => $sparepart->id_spare_part]) }}"
+                      class="card-product p-3">
+                      <img
+                        src="{{ $sparepart->foto_spare_part ? url($sparepart->foto_spare_part) : asset('assets/images/components/image.png') }}"
+                        class="card-img-top" alt="Spare Part Image">
+                      <div class="card-body text-start mt-4">
+                        <h5 class="card-title">{{ $sparepart->nama_spare_part }}</h5>
+                        <div class="footer-card">
+                          <div class="price d-flex justify-content-start">
+                            <span
+                              class="price">{{ 'Rp' . number_format($sparepart->harga_spare_part ?? 0, 0, ',', '.') }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                @endif
+              @empty
+              @endforelse
+
+              {{-- Jika semua kategori kosong --}}
+              @if ($services->isEmpty() && $products->isEmpty() && $spareparts->isEmpty())
+                <div class="text-center w-100">
+                  <img src="{{ asset('assets/images/components/empty.png') }}" width="200" alt="No Data">
+                  <p>Data saat ini tidak ditemukan.</p>
+                </div>
+              @endif
             </div>
           </div>
+
           <div class="tab-pane" id="service">
             {{-- Display service cards --}}
             <div class="row py-5">
@@ -338,132 +387,77 @@
           <div class="tab-pane" id="product">
             {{-- isi card --}}
             <div class="row py-5">
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmgDTyalHBoNMXH-vCdIJTlNK7U7FvU0Ilog&s"
-                    class="card-img-top" alt="Product Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Disc Brake Mercy</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp2500.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmgDTyalHBoNMXH-vCdIJTlNK7U7FvU0Ilog&s"
-                    class="card-img-top" alt="Product Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Disc Brake Mercy</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp2500.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmgDTyalHBoNMXH-vCdIJTlNK7U7FvU0Ilog&s"
-                    class="card-img-top" alt="Product Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Disc Brake Mercy</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp2500.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmgDTyalHBoNMXH-vCdIJTlNK7U7FvU0Ilog&s"
-                    class="card-img-top" alt="Product Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">Disc Brake Mercy</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp2500.550</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
+              @forelse ($products as $product)
+                @if ($product->id_bengkel === $bengkel->id_bengkel)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 position-relative">
+                    <a href="{{ route('Detail-ProductSparePart', ['type' => 'product', 'id' => $product->id_produk]) }}"
+                      class="card-product p-3">
+                      <img
+                        src="{{ $product->foto_produk ? url($product->foto_produk) : asset('assets/images/components/image.png') }}"
+                        class="card-img-top" alt="Product Image">
 
+                      {{-- Badge stok di kanan atas --}}
+                      <span class="badge-stock position-absolute top-0 end-0 m-3"
+                        style="border-start-end-radius: 5px; border-end-start-radius:5px; background-color:var(--main-light-blue); font-size:10px; padding:5px; width:30%; color:var(--main-white)">
+                        Stock:
+                        @if ($product->stok_produk >= 1000)
+                          1000+
+                        @else
+                          {{ $product->stok_produk }}
+                        @endif
+                      </span>
+
+
+                      <div class="card-body text-start mt-4">
+                        <h5 class="card-title">{{ $product->nama_produk }}</h5>
+                        <div class="footer-card">
+                          <div class="price d-flex justify-content-start">
+                            <span
+                              class="price">{{ 'Rp' . number_format($product->harga_produk ?? 0, 0, ',', '.') }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                @endif
+              @empty
+                <div class="text-center">
+                  <img src="{{ asset('assets/images/components/empty.png') }}" width="200" alt="No Data">
+                  <p>Data saat ini tidak ditemukan.</p>
+                </div>
+              @endforelse
+            </div>
           </div>
           <div class="tab-pane" id="spareparts">
             {{-- isi card --}}
             <div class="row py-5">
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://i.ebayimg.com/images/g/OEEAAOSwTnxhSBXT/s-l1200.jpg" class="card-img-top"
-                    alt="Spareparts Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">LOGIC SPEAKERS SET MERCEDES-BENZ E350 W212 OEM 2010-2018.</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp7.787.804</span>
+              @forelse ($spareparts as $sparepart)
+                @if ($sparepart->id_bengkel === $bengkel->id_bengkel)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <a href="{{ route('Detail-ProductSparePart', ['type' => 'sparepart', 'id' => $sparepart->id_spare_part]) }}"
+                      class="card-product p-3">
+                      <img
+                        src="{{ $sparepart->foto_spare_part ? url($sparepart->foto_spare_part) : asset('assets/images/components/image.png') }}"
+                        class="card-img-top" alt="Product Image">
+                      <div class="card-body text-start mt-4">
+
+                        <h5 class="card-title">{{ $sparepart->nama_spare_part }}</h5>
+                        <div class="footer-card">
+                          <div class="price d-flex justify-content-start">
+                            <span
+                              class="price">{{ 'Rp' . number_format($sparepart->harga_spare_part ?? 0, 0, ',', '.') }}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </a>
                   </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://i.ebayimg.com/images/g/OEEAAOSwTnxhSBXT/s-l1200.jpg" class="card-img-top"
-                    alt="Spareparts Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">LOGIC SPEAKERS SET MERCEDES-BENZ E350 W212 OEM 2010-2018.</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp7.787.804</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://i.ebayimg.com/images/g/OEEAAOSwTnxhSBXT/s-l1200.jpg" class="card-img-top"
-                    alt="Spareparts Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">LOGIC SPEAKERS SET MERCEDES-BENZ E350 W212 OEM 2010-2018.</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp7.787.804</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card-product p-3">
-                  <img src="https://i.ebayimg.com/images/g/OEEAAOSwTnxhSBXT/s-l1200.jpg" class="card-img-top"
-                    alt="Spareparts Image">
-                  <div class="card-body text-start">
-                    <p class="workshop-name">Akina Speed Star</p>
-                    <h5 class="card-title">LOGIC SPEAKERS SET MERCEDES-BENZ E350 W212 OEM 2010-2018.</h5>
-                    <div class="footer-card">
-                      <div class="price d-flex justify-content-start">
-                        <span class="price">Rp7.787.804</span>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
+                @endif
+              @empty
+                <div class="text-center">
+                  <img src="{{ asset('assets/images/components/empty.png') }}" width="200" alt="No Data">
+                  <p>Data saat ini tidak ditemukan.</p>
+                </div>
+              @endforelse
             </div>
 
           </div>
@@ -578,8 +572,8 @@
             </ul>
           </nav>
         </div>
-      </section>
-    </div>
+  </section>
+  </div>
 
   </section>
 @endsection

@@ -144,6 +144,42 @@
             <h2 class="mt-5 pt-3">{{ $bengkel->nama_bengkel }}</h2>
             <p>{{ $bengkel->tagline_bengkel }}</p>
         </div>
+      </div>
+    </div>
+  </div>
+  <section class="mt-5">
+    <div class="custom-tabs-container">
+      <ul class="custom-tabs shadow text-center">
+        <li class="custom-tab-item">
+          <a class="custom-tab-link active" data-tab="service">
+            Service
+          </a>
+        </li>
+        <li class="custom-tab-item">
+          <a class="custom-tab-link" data-tab="product">
+            Product
+          </a>
+        </li>
+        <li class="custom-tab-item">
+          <a class="custom-tab-link" data-tab="spareparts">
+            Spareparts
+          </a>
+        </li>
+      </ul>
+      <select class="custom-dropdown shadow">
+        <option value="service" selected>Service</option>
+        <option value="product">Product</option>
+        <option value="spareparts">Spareparts</option>
+      </select>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane active" id="service">
+        <div class="d-flex justify-content-between align-items-center mt-5">
+          <h4 class="fs-5">Your Service</h4>
+          <a href="{{ route('profile.workshop.workshopSET.service.create') }}" class="btn btn-custom-2 mt-3">+
+            Add New
+            Service</a>
+        </div>
         <div class="row">
             <div class="col-md-8">
                 <div class="card info-event mb-4">

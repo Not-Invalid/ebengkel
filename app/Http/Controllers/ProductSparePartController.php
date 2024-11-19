@@ -13,12 +13,23 @@ use Illuminate\Support\Facades\Session;
 
 class ProductSparePartController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel')->get();
-        $product = Product::where('delete_produk', 'N')->with('bengkel')->get();
+        $querySparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel');
+        $queryProduct = Product::where('delete_produk', 'N')->with('bengkel');
+    
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $querySparepart->where('nama_spare_part', 'LIKE', '%' . $search . '%');
+            $queryProduct->where('nama_produk', 'LIKE', '%' . $search . '%');
+        }
+    
+        $sparepart = $querySparepart->get();
+        $product = $queryProduct->get();
+    
         return view('ProductSparepart.index', compact('sparepart', 'product'));
     }
+    
     public function detail($type, $id)
     {
         if ($type == 'product') {

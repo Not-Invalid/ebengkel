@@ -17,13 +17,18 @@ use Illuminate\Support\Carbon;
 
 class WorkshopController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
+        $query = Bengkel::where('delete_bengkel', 'N');
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama_bengkel', 'LIKE', '%' . $search . '%');
+        }
+        $bengkels = $query->get();
         return view('workshop.index', compact('bengkels'));
     }
 
-    public function detail($id)
+    public function detail($id, $type = null, $itemId = null)
     {
         $bengkel = Bengkel::where('id_bengkel', $id)
             ->where('delete_bengkel', 'N')
@@ -34,23 +39,35 @@ class WorkshopController extends Controller
         }
     
         $services = Service::where('id_bengkel', $id)->where('delete_services', 'N')->get();
+        $products = Product::where('id_bengkel', $id)->where('delete_produk', 'N')->get();
+        $spareparts = SpareParts::where('id_bengkel', $id)->where('delete_spare_part', 'N')->get();
+        // Check if a specific product or spare part detail is requested
+        $detailData = null;
+        if ($type && $itemId) {
+            if ($type == 'product') {
+                $detailData = Product::where('id_product', $itemId)->first();
+            } elseif ($type == 'sparepart') {
+                $detailData = SpareParts::where('id_spare_part', $itemId)->first();
+            }
+    
+            // Check if detail data exists and load related workshop data
+            if ($detailData) {
+                $detailData->load('bengkel');
+            } else {
+                return redirect()->back()->with('error_status', ucfirst($type) . ' not found.');
+            }
+        }
+    
         $bengkel->open_time = Carbon::parse($bengkel->open_time)->format('H:i');
         $bengkel->close_time = Carbon::parse($bengkel->close_time)->format('H:i');
     
-        // Decode the JSON fields into arrays
         $serviceAvailable = json_decode($bengkel->service_available, true);
         $paymentMethods = json_decode($bengkel->payment, true);
     
-        // Ambil semua ulasan untuk bengkel tertentu
         $ulasan = ReviewWorkshop::with('pelanggan')->where('id_bengkel', $id)->get();
-    
-        // Hitung rata-rata rating dan jumlah ulasan
         $averageRating = $ulasan->avg('rating');
         $totalReviews = $ulasan->count();
     
-        $averageRating = $ulasan->avg('rating');  // Menghitung rata-rata rating
-
-        // Tentukan kategori berdasarkan rata-rata rating
         if ($averageRating < 2) {
             $ratingCategory = 'Bad';
         } elseif ($averageRating >= 2 && $averageRating < 3) {
@@ -62,17 +79,22 @@ class WorkshopController extends Controller
         } elseif ($averageRating >= 4.5) {
             $ratingCategory = 'Outstanding';
         }
+    
         return view('workshop.detail', compact(
-            'bengkel', 
-            'serviceAvailable', 
-            'paymentMethods', 
-            'services', 
-            'ulasan', 
-            'averageRating', 
-            'totalReviews', 
+            'bengkel',
+            'serviceAvailable',
+            'paymentMethods',
+            'services',
+            'products',
+            'spareparts',
+            'detailData',
+            'ulasan',
+            'averageRating',
+            'totalReviews',
             'ratingCategory'
         ));
     }
+    
 
     public function showWorkshop()
     {
