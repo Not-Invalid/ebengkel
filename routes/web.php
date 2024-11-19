@@ -16,12 +16,15 @@ use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController
 use App\Http\Controllers\SuperAdmin\MerkMobilController;
 use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
+use App\Http\Controllers\SuperAdmin\KategoriBlogController as SuperAdminKategoriBlogController;
+use App\Http\Controllers\SuperAdmin\BlogController as SuperAdminBlogController;
 use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\SuperAdmin\SettingsController as SuperAdminSettingsController;
 use App\Http\Controllers\SuperAdmin\StaffController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\WorkshopController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +74,10 @@ Route::prefix('superadmin')->group(function () {
     Route::post('merk-mobil/update/{id}', [MerkMobilController::class, 'update'])->name('merk-mobil-update');
     Route::delete('merk-mobil/delete/{id}', [MerkMobilController::class, 'delete'])->name('merk-mobil-delete');
 
+    Route::get('blog-admin', [SuperAdminBlogController::class, 'index'])->name('blog-admin');
+    Route::get('blog/create', [SuperAdminBlogController::class, 'create'])->name('blog-admin-create');
+    Route::post('blog/store', [SuperAdminBlogController::class, 'store'])->name('blog-admin-store');
+
     Route::get('inbox', [SuperAdminMessagesController::class, 'index'])->name('inbox');
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
@@ -87,6 +94,13 @@ Route::prefix('superadmin')->group(function () {
     Route::get('product-sparepart-category/edit/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'editCategory'])->name('product-sparepart-edit');
     Route::post('product-sparepart-category/update{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'updateCategory'])->name('product-sparepart-update');
     Route::delete('product-sparepart-category/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'deleteCategory'])->name('product-sparepart-delete');
+
+    Route::get('blog-category', [SuperAdminKategoriBlogController::class, 'index'])->name('blog-category');
+    Route::get('blog-category/create', [SuperAdminKategoriBlogController::class, 'create'])->name('blog-category-create');
+    Route::post('blog-category/store', [SuperAdminKategoriBlogController::class, 'store'])->name('blog-category-send');
+    Route::get('blog-category/edit/{id}', [SuperAdminKategoriBlogController::class, 'edit'])->name('blog-category-edit');
+    Route::post('blog-category/update{id}', [SuperAdminKategoriBlogController::class, 'update'])->name('blog-category-update');
+    Route::delete('blog-category/{id}', [SuperAdminKategoriBlogController::class, 'delete'])->name('blog-category-delete');
 
     Route::get('staff-admin', [StaffController::class, 'index'])->name('data-staff-admin');
     Route::get('staff-admin/create', [StaffController::class, 'create'])->name('data-staff-create');
@@ -118,6 +132,10 @@ Route::prefix('event')->group(function () {
     Route::get('event-detail/{id}', [EventController::class, 'detail'])->name('event.detail');
     Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
     Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+});
+
+Route::prefix('blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog');
 });
 
 // Workshop route
