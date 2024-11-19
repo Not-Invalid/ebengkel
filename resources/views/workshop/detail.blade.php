@@ -219,7 +219,7 @@
           </div>
         </div>
       </section>
-      <sectione>
+      <section class="mt-5">
         <div class="custom-tabs-container">
           <ul class="custom-tabs shadow text-center">
             <li class="custom-tab-item">
@@ -315,6 +315,7 @@
                     </a>
                   </div>
                 @endif
+                {{-- isi pagination product disini --}}
               @empty
               @endforelse
 
@@ -339,6 +340,7 @@
                     </a>
                   </div>
                 @endif
+                {{-- isi pagination sparepart disini --}}
               @empty
               @endforelse
 
@@ -349,11 +351,11 @@
                   <p>Data saat ini tidak ditemukan.</p>
                 </div>
               @endif
+
             </div>
           </div>
-
+          <!-- Service Tab -->
           <div class="tab-pane" id="service">
-            {{-- Display service cards --}}
             <div class="row py-5">
               @forelse ($services as $service)
                 @if ($service->id_bengkel === $bengkel->id_bengkel)
@@ -364,7 +366,6 @@
                         src="{{ $service->foto_services ? url($service->foto_services) : asset('assets/images/components/image.png') }}"
                         class="card-img-top" alt="Service Image">
                       <div class="card-body text-start mt-4">
-
                         <h5 class="card-title">{{ $service->nama_services }}</h5>
                         <div class="footer-card">
                           <div class="price d-flex justify-content-start">
@@ -382,32 +383,49 @@
                   <p>Data saat ini tidak ditemukan.</p>
                 </div>
               @endforelse
+              <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation">
+                  <ul class="pagination">
+                    @if ($services->onFirstPage())
+                      <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                      </li>
+                    @else
+                      <li class="page-item">
+                        <a href="{{ $services->previousPageUrl() . '&tab=service' }}" class="page-link">Previous</a>
+                      </li>
+                    @endif
+                    @foreach ($services->getUrlRange(1, $services->lastPage()) as $page => $url)
+                      <li class="page-item {{ $page == $services->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $url . '&tab=service' }}">{{ $page }}</a>
+                      </li>
+                    @endforeach
+                    @if ($services->hasMorePages())
+                      <li class="page-item">
+                        <a href="{{ $services->nextPageUrl() . '&tab=service' }}" class="page-link">Next</a>
+                      </li>
+                    @else
+                      <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                      </li>
+                    @endif
+                  </ul>
+                </nav>
+              </div>
             </div>
           </div>
+
+          <!-- Product Tab -->
           <div class="tab-pane" id="product">
-            {{-- isi card --}}
             <div class="row py-5">
               @forelse ($products as $product)
                 @if ($product->id_bengkel === $bengkel->id_bengkel)
-                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 position-relative">
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <a href="{{ route('Detail-ProductSparePart', ['type' => 'product', 'id' => $product->id_produk]) }}"
                       class="card-product p-3">
                       <img
                         src="{{ $product->foto_produk ? url($product->foto_produk) : asset('assets/images/components/image.png') }}"
                         class="card-img-top" alt="Product Image">
-
-                      {{-- Badge stok di kanan atas --}}
-                      <span class="badge-stock position-absolute top-0 end-0 m-3"
-                        style="border-start-end-radius: 5px; border-end-start-radius:5px; background-color:var(--main-light-blue); font-size:10px; padding:5px; width:30%; color:var(--main-white)">
-                        Stock:
-                        @if ($product->stok_produk >= 1000)
-                          1000+
-                        @else
-                          {{ $product->stok_produk }}
-                        @endif
-                      </span>
-
-
                       <div class="card-body text-start mt-4">
                         <h5 class="card-title">{{ $product->nama_produk }}</h5>
                         <div class="footer-card">
@@ -426,10 +444,40 @@
                   <p>Data saat ini tidak ditemukan.</p>
                 </div>
               @endforelse
+              <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation">
+                  <ul class="pagination">
+                    @if ($products->onFirstPage())
+                      <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                      </li>
+                    @else
+                      <li class="page-item">
+                        <a href="{{ $products->previousPageUrl() . '&tab=product' }}" class="page-link">Previous</a>
+                      </li>
+                    @endif
+                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                      <li class="page-item {{ $page == $products->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $url . '&tab=product' }}">{{ $page }}</a>
+                      </li>
+                    @endforeach
+                    @if ($products->hasMorePages())
+                      <li class="page-item">
+                        <a href="{{ $products->nextPageUrl() . '&tab=product' }}" class="page-link">Next</a>
+                      </li>
+                    @else
+                      <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                      </li>
+                    @endif
+                  </ul>
+                </nav>
+              </div>
             </div>
           </div>
+
+          <!-- Spare Parts Tab -->
           <div class="tab-pane" id="spareparts">
-            {{-- isi card --}}
             <div class="row py-5">
               @forelse ($spareparts as $sparepart)
                 @if ($sparepart->id_bengkel === $bengkel->id_bengkel)
@@ -438,9 +486,8 @@
                       class="card-product p-3">
                       <img
                         src="{{ $sparepart->foto_spare_part ? url($sparepart->foto_spare_part) : asset('assets/images/components/image.png') }}"
-                        class="card-img-top" alt="Product Image">
+                        class="card-img-top" alt="Sparepart Image">
                       <div class="card-body text-start mt-4">
-
                         <h5 class="card-title">{{ $sparepart->nama_spare_part }}</h5>
                         <div class="footer-card">
                           <div class="price d-flex justify-content-start">
@@ -458,9 +505,39 @@
                   <p>Data saat ini tidak ditemukan.</p>
                 </div>
               @endforelse
+              <div class="d-flex justify-content-center mt-4">
+                <nav aria-label="Page navigation">
+                  <ul class="pagination">
+                    @if ($spareparts->onFirstPage())
+                      <li class="page-item disabled">
+                        <a class="page-link">Previous</a>
+                      </li>
+                    @else
+                      <li class="page-item">
+                        <a href="{{ $spareparts->previousPageUrl() . '&tab=spareparts' }}"
+                          class="page-link">Previous</a>
+                      </li>
+                    @endif
+                    @foreach ($spareparts->getUrlRange(1, $spareparts->lastPage()) as $page => $url)
+                      <li class="page-item {{ $page == $spareparts->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $url . '&tab=spareparts' }}">{{ $page }}</a>
+                      </li>
+                    @endforeach
+                    @if ($spareparts->hasMorePages())
+                      <li class="page-item">
+                        <a href="{{ $spareparts->nextPageUrl() . '&tab=spareparts' }}" class="page-link">Next</a>
+                      </li>
+                    @else
+                      <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                      </li>
+                    @endif
+                  </ul>
+                </nav>
+              </div>
             </div>
-
           </div>
+
           <div class="tab-pane" id="ulasan">
 
             <div class="reviews-header d-flex justify-content-between align-items-center py-5">
@@ -477,8 +554,6 @@
                 <div class="rating-text">{{ $totalReviews }} verified reviews</div>
               </span>
             </div>
-
-
             <hr>
             @foreach ($ulasan as $review)
               <div class="review-card d-flex align-items-start mb-4">
@@ -548,32 +623,14 @@
                       </div>
 
                       <button type="submit" class="btn btn-review">Kirim Ulasan</button>
-
                     </form>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
-
-          <!-- Static Pagination -->
-          <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-            <ul class="pagination">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
         </div>
-  </section>
-  </div>
-
+      </section>
+    </div>
   </section>
 @endsection
