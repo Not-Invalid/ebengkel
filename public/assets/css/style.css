@@ -113,10 +113,6 @@
 }
 
 /* used Car */
-.featured-cars {
-  background-color: var(--main-white);
-  padding: 80px 0;
-}
 
 .nama {
   font-size: 15px;
@@ -125,11 +121,8 @@
 .car-img {
   width: 100%;
   height: 200px;
-  /* Atur tinggi gambar secara konsisten */
   object-fit: cover;
-  /* Agar gambar tidak terdistorsi dan tetap proporsional */
   border-radius: 8px;
-  /* Radius sudut gambar */
 }
 
 .card {
@@ -137,6 +130,9 @@
   transition: transform 0.2s;
   background: var(--main-white);
   padding: 10px;
+  width: 350px;
+  height: 400px;
+  scroll-snap-align: start;
 }
 
 .card:hover {
@@ -153,57 +149,403 @@
   font-weight: 600;
 }
 
-/* Optional: Card Image Position */
 .card-body {
   padding-top: 15px;
 }
 
-/* Custom styles for carousel controls */
-.carousel-control-prev,
-.carousel-control-next {
-  background-color: rgba(0, 0, 0, 0.5);
-  /* Semi-transparent black background */
-  border-radius: 50%;
-  /* Membuat tombol melingkar */
-  color: white;
-  /* Warna ikon tombol */
-  padding: 15px;
-  /* Memberikan padding agar tombol lebih besar */
-  transition: background-color 0.3s ease;
-  /* Efek transisi saat hover */
-  width: 50px;
-  /* Lebar tombol */
+.featured-cars #carousel-custom {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+}
+
+.featured-cars .horizontal {
+  width: 100%;
+  overflow-x: scroll;
+  scrollbar-color: transparent transparent;
+  padding-bottom: 2rem;
+  scroll-snap-type: x mandatory;
+}
+
+.featured-cars .horizontal::-webkit-scrollbar {
+  display: none;
+}
+
+/* End */
+
+/* get Start */
+.get-start .section-title {
+  margin-bottom: 25px;
+}
+
+.get-start-list {
+  display: grid;
+  gap: 20px;
+}
+
+.get-start-card {
+  border-radius: 16px;
+  transition: transform 0.2s;
+  background: var(--main-white);
+  padding: 16px;
+  width: 100%;
+  height: 300px;
+}
+
+.get-start-card:hover {
+  transform: translateY(-5px);
+}
+
+.get-start-card .card-icon {
+  color: var(--main-blue-dark);
   height: 50px;
-  /* Tinggi tombol */
-  font-size: 25px;
-  /* Ukuran ikon tombol lebih besar */
+  width: 50px;
+  font-size: 36px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  filter: invert(1);
-  /* Membuat ikon tombol berwarna putih */
+.get-start-card .icon-1 {
+  --icon-card-bg: var(--mimi-pink);
+  --icon-card-color: var(--deep-cerise);
 }
 
-/* Hover effect */
-.carousel-control-prev:hover,
-.carousel-control-next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  /* Warna latar belakang tombol lebih gelap saat hover */
+.get-start-card .icon-2 {
+  --icon-card-bg: var(--columbia-blue);
+  --icon-card-color: var(--carolina-blue);
 }
 
-/* Posisi tombol kontrol di tengah */
-.carousel-control-prev,
-.carousel-control-next {
-  top: 50%;
-  transform: translateY(-50%);
-  /* Posisi vertikal di tengah */
+.get-start-card .icon-3 {
+  --icon-card-bg: var(--honey-dew);
+  --icon-card-color: var(--medium-sea-green);
 }
 
-/* Memastikan carousel berfungsi dengan baik */
-.carousel-inner {
+.get-start-card .icon-4 {
+  --icon-card-bg: var(--pale-purple-pantone);
+  --icon-card-color: var(--slate-blue);
+}
+
+.get-start-card .card-title {
+  color: var(--main-black);
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.get-start-card .card-text {
+  color: var(--independence);
+}
+
+.get-start-card .card-link {
   position: relative;
+  color: var(--main-blue);
+  width: max-content;
+  font-weight: 500;
+}
+
+.get-start-card .card-link::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--main-blue);
+  transition: 0.5s ease;
+}
+
+.get-start-card .card-link:is(:hover, :focus)::before {
+  width: 100%;
+}
+
+/* End */
+/* Content */
+.hero-section {
+  background-color: #f8f9fa;
+}
+
+.hero-section img {
+  object-fit: cover;
+  height: 400px;
+  width: 100%;
+}
+
+.hero-section .card {
+  height: 400px;
+  width: 100%;
+}
+
+.article-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0) 100%);
+  color: white;
+}
+
+.article-category {
+  display: inline-block;
+  background-color: #166a9b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.article-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.article-meta {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.category-blog {
+  display: inline-block;
+  background: #f0f4ff;
+  color: #3b82f6;
+  padding: 7px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  width: fit-content;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.meta {
+  font-size: 14px;
+  color: #666;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+}
+
+.meta span+span {
+  margin-left: 12px;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.rounded-card img {
+  border-radius: 0;
+}
+
+.rounded-card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.pagination {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.pagination li {
+  margin: 0 5px;
+  font-weight: 600;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.pagination .active a {
+  background-color: #166a9b;
+  color: white;
+}
+
+.pagination .disabled a {
+  color: #cccccc;
+  font-weight: 600;
+}
+
+.pagination .ellipsis {
+  color: #333;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.Category {
+  display: inline-block;
+  padding: 4px 20px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
   display: flex;
   align-items: center;
-  /* Mengatur carousel items di tengah */
+  color: #666;
+}
+
+.Category.active {
+  background-color: #333;
+  color: white;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 15px;
+  background-color: white;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+  width: 150px;
+}
+
+.search-icon {
+  color: #777e90;
+  margin-right: 5px;
+}
+
+.btn.btn-custom {
+  padding: 0.4rem 1rem !important;
+  background-color: var(--main-blue) !important;
+  color: var(--main-white) !important;
+}
+
+.btn.btn-custom:active {
+  background-color: var(--main-blue-dark) !important;
+  color: var(--main-white) !important;
+  transform: translateY(2px) !important;
+}
+
+/* baru */
+.article-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+article {
+  --img-scale: 1.001;
+  --title-color: black;
+  --link-icon-translate: -20px;
+  --link-icon-opacity: 0;
+  position: relative;
+  border-radius: 16px;
+  background: #fff;
+  transform-origin: center;
+  transition: all 0.4s ease-in-out;
+  overflow: hidden;
+  box-shadow: none;
+  border: none;
+  height: 100%;
+}
+
+article a::after {
+  position: absolute;
+  inset-block: 0;
+  inset-inline: 0;
+  cursor: pointer;
+  content: "";
+}
+
+article:hover {
+  --img-scale: 1.1;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+article h2 {
+  margin: 0 0 18px 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  color: var(--title-color);
+  transition: color 0.3s ease-out;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.articles img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  transform: scale(var(--img-scale));
+  transition: transform 0.4s ease-in-out;
+}
+
+.article-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+article a {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.articles {
+  display: grid;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* End */
+
+/* Media */
+@media (min-width: 768px) {
+  .get-start-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1200px) {
+  .get-start-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .blog .has-scrollbar {
+    padding-bottom: 50px;
+  }
 }

@@ -53,6 +53,71 @@
             <img src="{{ asset('assets/images/bg/header-shape.svg') }}" alt="shape" style="margin-bottom: -5px;">
         </div>
     </div>
+
+    {{-- GET START  --}}
+    <section class="section get-start bg-white" style="padding-top: 50px; padding-bottom: 50px;">
+        <div class="container">
+            <h2 class="h2 section-title">Apa itu Ebengkelku?</h2>
+
+            <ul class="get-start-list">
+                <!-- Card 1: Bergabung dengan Ebengkelku -->
+                <li>
+                    <div class="get-start-card shadow">
+                        <div class="card-icon icon-1">
+                            <i class='bx bx-user-plus'></i>
+                        </div>
+                        <h3 class="card-title">Bergabung dengan Ebengkelku</h3>
+
+                        <p class="card-text mb-3">Daftar sekarang untuk akses layanan bengkel berkualitas dan perluas
+                            jangkauan
+                            pelanggan Anda.</p>
+                        <a href="#" class="card-link text-decoration-none">Daftar Sekarang</a>
+                    </div>
+                </li>
+
+                <!-- Card 2: Temukan Layanan -->
+                <li>
+                    <div class="get-start-card shadow">
+                        <div class="card-icon icon-2">
+                            <i class="bx bx-car"></i>
+                        </div>
+                        <h3 class="card-title">Pilih Layanan Anda</h3>
+                        <p class="card-text">
+                            Pengguna pilih layanan yang sesuai. Bengkel tawarkan berbagai perawatan dan perbaikan terbaik.
+                        </p>
+                    </div>
+                </li>
+
+                <!-- Card 3: Temukan Bengkel Terdekat -->
+                <li>
+                    <div class="get-start-card shadow">
+                        <div class="card-icon icon-3">
+                            <i class="bx bx-map-pin"></i>
+                        </div>
+                        <h3 class="card-title">Cari Bengkel Terdekat</h3>
+                        <p class="card-text">
+                            Pengguna mudah temukan bengkel terdekat. Pemilik bengkel bisa lebih dikenal oleh pelanggan.
+                        </p>
+                    </div>
+                </li>
+
+                <!-- Card 4: Jadwalkan Servis -->
+                <li>
+                    <div class="get-start-card shadow">
+                        <div class="card-icon icon-4">
+                            <i class="bx bx-calendar-check"></i>
+                        </div>
+                        <h3 class="card-title">Atur Jadwal Servis</h3>
+                        <p class="card-text">
+                            Pengguna pilih waktu servis. Pemilik bengkel terima dan atur jadwal servis dengan mudah.
+                        </p>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </section>
+
     {{-- Latest Event Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
         <div class="container">
@@ -114,7 +179,6 @@
         </div>
     </section>
 
-
     {{-- Latest Workshop Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
         <div class="container">
@@ -124,8 +188,8 @@
                     @if ($bengkels->isEmpty())
                         <div class="d-flex justify-content-center pb-5">
                             <div class="text-center">
-                                <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                                    alt="No workshops">
+                                <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
+                                    width="200" alt="No workshops">
                                 <p>No data available for workshops.</p>
                             </div>
                         </div>
@@ -266,14 +330,11 @@
     </section>
 
     {{-- used car --}}
-    <!-- Featured Cars Section -->
-    <section class="featured-cars">
-        <div class="container">
-            <!-- Section Header -->
+    <section class="featured-cars section bg-white">
+        <div class="container ">
             <div class="section-title text-start">
                 <h4 class="text-primary py-2"><i class='bx bx-box'></i> Used Car</h4>
             </div>
-
             @if ($mobilList->isEmpty())
                 <div class="d-flex justify-content-center pb-5">
                     <div class="text-center">
@@ -283,100 +344,145 @@
                     </div>
                 </div>
             @else
-                <div id="carCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                    <!-- Carousel Inner -->
-                    <div class="carousel-inner">
-                        @foreach ($mobilList->chunk(3) as $index => $chunk)
-                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                <div class="row justify-content-center">
-                                    @foreach ($chunk as $car)
-                                        <div class="col-12 col-md-4">
-                                            <article class="card h-100 border-0 shadow">
-                                                @if ($car->fotos && $car->fotos->file_foto_mobil_1)
-                                                    <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
-                                                        class="car-img">
-                                                @else
-                                                    <img src="{{ asset('assets/images/components/image.png') }}"
-                                                        alt="Car Image" class="car-img">
-                                                @endif
-                                                <div class="card-body">
-                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <h3 class="h5 mb-0">
-                                                            {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}</h3>
-                                                        <span class="badge">{{ $car->tahun_mobil }}</span>
-                                                    </div>
-
-                                                    <div class="row g-3 mb-3 mt-2">
-                                                        <div class="col-6">
-                                                            <div class="d-flex align-items-center text-muted">
-                                                                <i class="fas fa-tag specs-icon me-2"></i>
-                                                                <div class="nama">{{ $car->merkMobil->nama_merk }}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="d-flex align-items-center text-muted">
-                                                                <i class="fas fa-gauge specs-icon me-2"></i>
-                                                                <div class="nama">{{ $car->km_mobil }} KM</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="d-flex align-items-center text-muted">
-                                                                <i class="fas fa-gas-pump specs-icon me-2"></i>
-                                                                <div class="nama">{{ $car->bahan_bakar_mobil }}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="d-flex align-items-center text-muted">
-                                                                <i class="fas fa-sitemap specs-icon me-2"></i>
-                                                                <div class="nama">{{ $car->jenis_transmisi_mobil }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <hr>
-
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            <span class="h5 mb-0">Rp
-                                                                {{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
-                                                        </div>
-                                                        <div class="d-flex gap-2">
-                                                            <button class="btn btn-primary px-4">Detail Car</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
+                <div class="horizontal">
+                    <div id="carousel-custom">
+                        @foreach ($mobilList as $car)
+                            <div class="carousel-content">
+                                <div class="card h-100 border-0 shadow">
+                                    @if ($car->fotos && $car->fotos->file_foto_mobil_1)
+                                        <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
+                                            class="car-img">
+                                    @else
+                                        <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
+                                            class="car-img">
+                                    @endif
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h3 class="h5 mb-0">
+                                                {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}</h3>
+                                            <span class="badge">{{ $car->tahun_mobil }}</span>
                                         </div>
-                                    @endforeach
+
+                                        <div class="row g-3 mb-3 mt-2">
+                                            <div class="col-6">
+                                                <div class="d-flex align-items-center text-muted">
+                                                    <i class="fas fa-tag specs-icon me-2"></i>
+                                                    <div class="nama">{{ $car->merkMobil->nama_merk }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="d-flex align-items-center text-muted">
+                                                    <i class="fas fa-gauge specs-icon me-2"></i>
+                                                    <div class="nama">{{ $car->km_mobil }} KM</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="d-flex align-items-center text-muted">
+                                                    <i class="fas fa-gas-pump specs-icon me-2"></i>
+                                                    <div class="nama">{{ $car->bahan_bakar_mobil }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="d-flex align-items-center text-muted">
+                                                    <i class="fas fa-sitemap specs-icon me-2"></i>
+                                                    <div class="nama">{{ $car->jenis_transmisi_mobil }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <span class="h5 mb-0">Rp
+                                                    {{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-primary px-4">Detail Car</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-
-                    <!-- Kontrol Carousel -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carCarousel"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Sebelumnya</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carCarousel"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Selanjutnya</span>
-                    </button>
                 </div>
             @endif
+            <div class="text-center mt-5">
+                <a href=" {{ route('used-car') }}" class="btn btn-more">
+                    More Used Car <i class="bx bx-chevron-right align-icon"></i>
+                </a>
+            </div>
         </div>
+    </section>
 
+    <!-- #BLOG -->
+    <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
+        <div class="container mb-2">
+            <div class="section-title d-flex justify-content-between">
+                <h4 class="text-primary py-2"> Latest Blog</h4>
+                <a href="#" class="btn btn-custom mb-2"> View More</a>
+            </div>
+        </div>
+        <section class="articles">
+            <article class="shadow">
+                <a href="../blog/detail_blog.html">
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src="https://www.specialoffers.jcb/id/tips/japan/shutterstock_10.jpg"
+                                alt="Sushi and sashimi" />
+                        </figure>
+                        <div class="article-body">
+                            <span class="category-blog">Food</span>
+                            <h2>Penjelasan Lengkap Tentang Sushi dan Sashimi yang Wajib Dicoba di Jepang!</h2>
+                            <div class="meta">
+                                <span>Bening Mata Author</span>
+                                <span>Oktober 12, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </article>
 
-        <!-- View More Link -->
-        <div class="text-center mt-5">
-            <a href=" {{ route('used-car') }}" class="btn btn-more">
-                More Used Car <i class="bx bx-chevron-right align-icon"></i>
-            </a>
-        </div>
-        </div>
+            <article class="shadow">
+                <a href="#">
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src="https://www.agoda.com/wp-content/uploads/2024/07/dubai-uae-featured-1244x700.jpg"
+                                alt="Guide" />
+                        </figure>
+                        <div class="article-body">
+                            <span class="category-blog">Hotel</span>
+                            <h2>Panduan Lengkap untuk Memulai</h2>
+                            <div class="meta">
+                                <span>Bening Mata Author</span>
+                                <span>Oktober 12, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </article>
+
+            <article class="shadow">
+                <a href="#">
+                    <div class="article-wrapper">
+                        <figure>
+                            <img src="https://www.agoda.com/wp-content/uploads/2023/09/Visit-Korea-like-a-local-Cook-3-Authentic-Korean-Dishes.jpg"
+                                alt="Guide" />
+                        </figure>
+                        <div class="article-body">
+                            <span class="category-blog">Food</span>
+                            <h2>Wisata Kuliner Dunia: Destinasi Rasa yang Harus Dicoba</h2>
+                            <div class="meta">
+                                <span>Bening Mata Author</span>
+                                <span>Oktober 12, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </article>
+            <!-- More articles... -->
+        </section>
     </section>
 
 @endsection
