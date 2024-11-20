@@ -9,7 +9,7 @@ class Blog extends Model
     protected $table = 'tb_blog';
 
     protected $fillable = [
-        'judul', 'konten', 'penulis', 'tanggal_post', 'id_kategori'
+        'foto_cover','judul', 'konten', 'penulis', 'tanggal_post', 'id_kategori'
     ];
 
     public function kategori()
