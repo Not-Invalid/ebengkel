@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('tb_blog', function (Blueprint $table) {
             $table->id();
+            $table->text('foto_cover');
             $table->string('judul');
+            $table->string('slug')->unique();
             $table->text('konten');
             $table->string('penulis')->nullable();
             $table->timestamp('tanggal_post')->useCurrent();
