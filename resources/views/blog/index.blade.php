@@ -17,7 +17,7 @@
             </p>
         </header>
 
-        <!-- Hero Section -->
+        <!-- Hero Section (Optional, you can remove if not needed) -->
         <section class="hero-section mb-5">
             <div class="container">
                 <div class="row">
@@ -42,7 +42,7 @@
             </div>
         </section>
 
-        <!-- Categories Section -->
+        <!-- Categories Section (Optional) -->
         <div class="categories d-flex justify-content-center mb-4">
             <div id="categoryCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
@@ -51,110 +51,42 @@
                             <div class="col-6 col-md-auto mb-2 mt-2">
                                 <span class="category-blog active">All</span>
                             </div>
-                            <div class="col-6 col-md-auto mb-2 mt-2">
-                                <span class="category-blog">Tour</span>
-                            </div>
-                            <div class="col-6 col-md-auto mb-2 mt-2">
-                                <span class="category-blog">Travel</span>
-                            </div>
-                            <div class="col-6 col-md-auto mb-2 mt-2">
-                                <span class="category-blog">Adventure</span>
-                            </div>
-                            <div class="col-6 col-md-auto mb-2 mt-2">
-                                <span class="category-blog">Food</span>
-                            </div>
-                            <div class="col-6 col-md-auto mb-2 mt-2">
-                                <span class="category-blog">Hotel</span>
-                            </div>
+                            @foreach($kategoriBlogs as $kategori)
+                                <div class="col-6 col-md-auto mb-2 mt-2">
+                                    <span class="category-blog">{{ $kategori->nama_kategori }}</span>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
-
-                <!-- Tombol Navigasi Carousel dengan ukuran yang lebih kecil -->
-                <button class="carousel-control-prev btn-sm" type="button" data-bs-target="#categoryCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next btn-sm" type="button" data-bs-target="#categoryCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
             </div>
         </div>
 
-
-
-        <div class="col-lg-auto mb-2 mt-2">
-            <div class="search-box d-flex align-items-center w-100 w-md-25 mb-4">
-                <span class="search-icon">
-                    <span class="iconify" data-icon="mdi-magnify" data-inline="false"></span>
-                </span>
-                <input type="text" class="form-control" placeholder="Cari disini" />
-            </div>
-        </div>
-
-        <!-- Articles Section -->
         <section class="articles">
-            <article class="shadow">
-                <a href="../blog/detail_blog.html">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img
-                                src="https://www.specialoffers.jcb/id/tips/japan/shutterstock_10.jpg"
-                                alt="Sushi and sashimi"
-                            />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Food</span>
-                            <h2>Penjelasan Lengkap Tentang Sushi dan Sashimi yang Wajib Dicoba di Jepang!</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
+            @foreach($blogs as $blog)
+                <article class="shadow">
+                    <a href="{{ route('blog.show', $blog->slug) }}">
+                        <div class="article-wrapper">
+                            <figure>
+                                <img
+                                    src="{{ $blog->foto_cover ? asset($blog->foto_cover) : asset('assets/images/components/image.png') }}"
+                                    alt="{{ $blog->judul }}"
+                                />
+                            </figure>
+                            <div class="article-body">
+                                <span class="category-blog">{{ $blog->kategori->nama_kategori }}</span>
+                                <h2>{{ $blog->judul }}</h2>
+                                <div class="meta">
+                                    <span>{{ $blog->penulis ?: 'Anonymous' }}</span>
+                                    <span>{{ \Carbon\Carbon::parse($blog->tanggal_post)->format('M d, Y') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </article>
-
-            <article class="shadow">
-                <a href="#">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.agoda.com/wp-content/uploads/2024/07/dubai-uae-featured-1244x700.jpg" alt="Guide" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Hotel</span>
-                            <h2>Panduan Lengkap untuk Memulai</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </article>
-
-            <article class="shadow">
-                <a href="#">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.agoda.com/wp-content/uploads/2023/09/Visit-Korea-like-a-local-Cook-3-Authentic-Korean-Dishes.jpg" alt="Guide" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Food</span>
-                            <h2>Wisata Kuliner Dunia: Destinasi Rasa yang Harus Dicoba</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </article>
-
-            <!-- More articles... -->
-
+                    </a>
+                </article>
+            @endforeach
         </section>
+
 
         <!-- Pagination Section -->
         <nav aria-label="Page navigation">
