@@ -71,7 +71,9 @@
                         <p class="card-text mb-3">Daftar sekarang untuk akses layanan bengkel berkualitas dan perluas
                             jangkauan
                             pelanggan Anda.</p>
-                        <a href="#" class="card-link text-decoration-none">Daftar Sekarang</a>
+                        @if (auth()->guest())
+                            <a href="{{ route('register') }}" class="card-link text-decoration-none">Daftar Sekarang</a>
+                        @endif
                     </div>
                 </li>
 
@@ -398,7 +400,9 @@
                                                     {{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
                                             </div>
                                             <div class="d-flex gap-2">
-                                                <button class="btn btn-primary px-4">Detail Car</button>
+                                                <button class="btn btn-primary px-4">
+                                                    Detail <i class="fas fa-arrow-right ms-2"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -421,68 +425,60 @@
         <div class="container mb-2">
             <div class="section-title d-flex justify-content-between">
                 <h4 class="text-primary py-2"> Latest Blog</h4>
-                <a href="#" class="btn btn-custom mb-2"> View More</a>
+                <a href="{{ route('blog') }}" class="btn btn-custom mb-2"> View More</a>
             </div>
         </div>
-        <section class="articles">
-            <article class="shadow">
-                <a href="../blog/detail_blog.html">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.specialoffers.jcb/id/tips/japan/shutterstock_10.jpg"
-                                alt="Sushi and sashimi" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Food</span>
-                            <h2>Penjelasan Lengkap Tentang Sushi dan Sashimi yang Wajib Dicoba di Jepang!</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
+        <section class="articles py-2">
+            @foreach($latestBlogs as $blog)
+                <article class="shadow">
+                    <a href="{{ route('blog.show', $blog->slug) }}">
+                        <div class="article-wrapper">
+                            <figure>
+                                <img src="{{ $blog->foto_cover ? asset($blog->foto_cover) : asset('assets/images/components/image.png') }}"
+                                     alt="{{ $blog->judul }}" />
+                            </figure>
+                            <div class="article-body">
+                                <span class="category-blog">{{ $blog->kategori->nama_kategori }}</span>
+                                <h2>{{ $blog->judul }}</h2>
+                                <div class="meta">
+                                    <span>{{ $blog->penulis ?: 'Anonymous' }}</span>
+                                    <span>{{ \Carbon\Carbon::parse($blog->tanggal_post)->format('M d, Y') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </article>
-
-            <article class="shadow">
-                <a href="#">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.agoda.com/wp-content/uploads/2024/07/dubai-uae-featured-1244x700.jpg"
-                                alt="Guide" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Hotel</span>
-                            <h2>Panduan Lengkap untuk Memulai</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </article>
-
-            <article class="shadow">
-                <a href="#">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.agoda.com/wp-content/uploads/2023/09/Visit-Korea-like-a-local-Cook-3-Authentic-Korean-Dishes.jpg"
-                                alt="Guide" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Food</span>
-                            <h2>Wisata Kuliner Dunia: Destinasi Rasa yang Harus Dicoba</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            <!-- More articles... -->
+                    </a>
+                </article>
+            @endforeach
         </section>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const carousel = document.querySelector('.horizontal');
+          const scrollDistance = 250;
+          let scrollInterval;
+
+          function startAutoScroll() {
+            scrollInterval = setInterval(function () {
+              if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) {
+                carousel.scrollLeft = 0;
+              } else {
+                carousel.scrollLeft += scrollDistance;
+              }
+            }, 3000);
+          }
+
+          startAutoScroll();
+
+          carousel.addEventListener('mouseenter', function () {
+            clearInterval(scrollInterval);
+          });
+
+          carousel.addEventListener('mouseleave', function () {
+            startAutoScroll();
+          });
+        });
+    </script>
+
 
 @endsection
