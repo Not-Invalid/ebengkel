@@ -9,6 +9,8 @@ use App\Models\UsedCar;
 use App\Models\MerkMobil;
 use App\Models\SpareParts;
 use App\Models\SupportCategory;
+use App\Models\Blog;
+use App\Models\KategoriBlog;
 use Illuminate\Routing\Controller;
 
 class PageController extends Controller
@@ -21,8 +23,12 @@ class PageController extends Controller
         $sparepart = SpareParts::where('delete_spare_part', 'N')->get();
         $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->get();
         $merks = MerkMobil::all();
-        return view('index', compact('bengkels', 'events', 'products', 'sparepart', 'mobilList', 'merks'));
+
+        $latestBlogs = Blog::latest()->take(3)->get();
+
+        return view('index', compact('bengkels', 'events', 'products', 'sparepart', 'mobilList', 'merks', 'latestBlogs'));
     }
+
 
     public function contact()
     {
