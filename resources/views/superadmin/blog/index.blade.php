@@ -30,7 +30,7 @@
                         <td>{{ $data->penulis }}</td> <!-- Menampilkan penulis blog -->
                         <td>{{ $data->kategori->nama_kategori }}</td> <!-- Menampilkan nama kategori -->
                         <td>
-                            <a href="{{ route('support-center-info-edit', $data->id) }}" class="btn btn-custom-3 my-2" title="Edit" data-bs-toggle="tooltip">
+                            <a href="{{ route('blog-admin-edit', $data->id) }}" class="btn btn-custom-3 my-2" title="Edit" data-bs-toggle="tooltip">
                                 <i class="fas fa-edit text-primary"></i>
                             </a>
 
