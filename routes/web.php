@@ -80,6 +80,7 @@ Route::prefix('superadmin')->group(function () {
     Route::post('blog/store', [SuperAdminBlogController::class, 'store'])->name('blog-admin-store');
     Route::get('blog/edit/{id}', [SuperAdminBlogController::class, 'edit'])->name('blog-admin-edit');
     Route::post('blog/update/{id}', [SuperAdminBlogController::class, 'update'])->name('blog-admin-update');
+    Route::delete('blog/delete/{id}', [SuperAdminBlogController::class, 'delete'])->name('blog-admin-delete');
 
     Route::get('inbox', [SuperAdminMessagesController::class, 'index'])->name('inbox');
 
