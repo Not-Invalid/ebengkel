@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
+use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -227,6 +228,12 @@ Route::prefix('profile')->group(function () {
 });
 
 Route::prefix('POS')->group(function () {
-    Route::get('/', [PosAuthController::class, 'showregister'])->name('pos.register.show');
-    Route::get('login', [PosAuthController::class, 'showlogin'])->name('pos.register.show');
+    Route::get('pos/redirect{id_bengkel}', [PosAuthController::class, 'redirectToPos'])->name('pos.redirect');
+    Route::get('register/{id_bengkel}', [PosAuthController::class, 'showregister'])->name('pos.register.show');
+    Route::post('register', [PosAuthController::class, 'register'])->name('pos.register');
+    Route::get('login/{id_bengkel}', [PosAuthController::class, 'showlogin'])->name('pos.login.show');
+    Route::post('login', [PosAuthController::class, 'login'])->name('pos.login');
+    Route::post('logout', [PosAuthController::class, 'logout'])->name('pos.logout');
+
+    Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
 });

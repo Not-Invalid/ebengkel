@@ -26,19 +26,23 @@
         </div>
 
         <div class="right-side">
-            <form class="login-form" id="loginForm">
+            <form action="{{ route('pos.login') }}" class="login-form" method="POST" id="loginForm">
+                @csrf
+                <input type="hidden" name="id_bengkel" value="{{ request('id_bengkel') }}">
                 <h3>Sign In</h3>
                 <div class="input-group">
                     <i class="bx bx-envelope icon"></i>
-                    <input type="email" id="email" placeholder="Email address" required>
+                    <input type="email" id="email" name="email_pegawai" placeholder="Email address" required>
                 </div>
                 <div class="input-group">
                     <i class="bx bx-lock icon"></i>
-                    <input type="password" id="password" class="password-field" placeholder="Password" required>
+                    <input type="password" id="password" name="password_pegawai" class="password-field"
+                        placeholder="Password" required>
                     <i class='bx bx-hide eye-icon'></i>
                 </div>
                 <button type="submit" class="submit-btn">Sign In</button>
             </form>
+
         </div>
     </div>
 

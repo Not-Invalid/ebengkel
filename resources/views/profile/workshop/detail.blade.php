@@ -147,7 +147,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <div class="card info-event mb-4">
+        <div class="card info-event">
           <div class="card-body">
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-calendar text-primary me-2'></i>
@@ -205,8 +205,10 @@
             </p>
           </div>
         </div>
-        <a href="{{ route('pos.register.show') }}" target="_blank" class="btn btn-custom-2 w-100">Hubungkan Ke
-          POS</a>
+        <a href="{{ route('pos.redirect', ['id_bengkel' => $bengkel->id_bengkel]) }}" target="_blank"
+            class="btn btn-custom-2 w-100">
+            Hubungkan Ke POS
+        </a>
       </div>
     </div>
   </div>
@@ -383,7 +385,7 @@
               <div class="text-center">
                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
                   alt="No spareparts">
-                <p>No data available for services.</p>
+                <p>No data available for spareparts.</p>
               </div>
             </div>
           @endforelse

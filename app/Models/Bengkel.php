@@ -14,10 +14,10 @@ class Bengkel extends Model
     public $timestamps = false;
     public $incrementing = true;
 /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+ * The attributes that are mass assignable.
+ *
+ * @var array<int, string>
+ */
     protected $fillable = [
         'id_pelanggan',
         'foto_cover_bengkel',
@@ -34,6 +34,7 @@ class Bengkel extends Model
         'payment',
         'whatsapp',
         'instagram',
+        'POS',
     ];
 
     /**
@@ -42,8 +43,8 @@ class Bengkel extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'service_available' => 'array', 
-        'payment' => 'array',           
+        'service_available' => 'array',
+        'payment' => 'array',
     ];
 
     public function pelanggan()
