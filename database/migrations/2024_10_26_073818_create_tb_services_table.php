@@ -20,6 +20,7 @@ class CreateTbServicesTable extends Migration
             $table->integer('harga_services')->nullable();
             $table->text('keterangan_services')->nullable();
             $table->text('foto_services')->nullable();
+            $table->dateTime('create_services')->nullable();
             $table->string('delete_services', 1)->default('N');
         });
     }

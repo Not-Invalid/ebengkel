@@ -82,20 +82,47 @@
               @endforeach
             </div>
           @endif
-          <!-- Static Pagination -->
-          <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-            <ul class="pagination">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
+          <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                {{-- Previous Page Link --}}
+                @if ($bengkels->onFirstPage())
+                  <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                  </li>
+                @else
+                  <li class="page-item">
+                    <a href="{{ $bengkels->previousPageUrl() }}" class="page-link">Previous</a>
+                  </li>
+                @endif
+
+                {{-- Pagination Elements --}}
+                @foreach ($bengkels->getUrlRange(1, $bengkels->lastPage()) as $page => $url)
+                  @if ($page == $bengkels->currentPage())
+                    <li class="page-item active" aria-current="page">
+                      <a class="page-link" href="{{ $url }}">{{ $page }} <span
+                          class="visually-hidden">(current)</span></a>
+                    </li>
+                  @else
+                    <li class="page-item">
+                      <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                  @endif
+                @endforeach
+
+                {{-- Next Page Link --}}
+                @if ($bengkels->hasMorePages())
+                  <li class="page-item">
+                    <a href="{{ $bengkels->nextPageUrl() }}" class="page-link">Next</a>
+                  </li>
+                @else
+                  <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                  </li>
+                @endif
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
