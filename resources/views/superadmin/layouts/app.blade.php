@@ -25,6 +25,9 @@
 
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet">
 </head>
 
 <body class="@yield('body-class')">
@@ -267,6 +270,7 @@
     <script src="{{ asset('template/assets/extensions/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('template/assets/static/js/pages/date-picker.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
 
     {{-- Toastr JS --}}
@@ -353,6 +357,27 @@
             iconInput.addEventListener('input', updateIconPreview);
 
             updateIconPreview();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#konten').summernote({
+                placeholder: 'Tulis konten blog Anda...',
+                tabsize: 2,
+                height: 300,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
         });
     </script>
 </body>
