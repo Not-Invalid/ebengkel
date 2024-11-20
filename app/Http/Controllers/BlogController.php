@@ -8,9 +8,21 @@ use App\Models\KategoriBlog;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::with('kategori')->latest()->get();
+
+        $kategoriId = $request->input('kategori');
+
+        if ($kategoriId) {
+            $blogs = Blog::with('kategori')
+                ->where('id_kategori', $kategoriId)
+                ->latest()
+                ->paginate(10);
+        } else {
+
+            $blogs = Blog::with('kategori')->latest()->paginate(10);
+        }
+
         $kategoriBlogs = KategoriBlog::all();
 
         return view('blog.index', compact('blogs', 'kategoriBlogs'));
@@ -18,13 +30,9 @@ class BlogController extends Controller
 
     public function show($judul)
     {
-        // Cari blog berdasarkan judul yang sudah diubah menjadi slug
-        $blog = Blog::where('slug', $judul)->firstOrFail();  // Menggunakan 'slug' untuk mencari blog
 
-        // Mengembalikan tampilan dengan data blog
+        $blog = Blog::where('slug', $judul)->firstOrFail();
+
         return view('blog.detail', compact('blog'));
     }
-
-
-
 }
