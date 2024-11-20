@@ -131,4 +131,18 @@ class BlogController extends Controller
         return redirect()->route('blog-admin')->with('status', 'Blog berhasil diperbarui.');
     }
 
+    public function delete($id)
+    {
+        $blog = Blog::findOrFail($id);
+
+        if ($blog->foto_cover && file_exists(public_path($blog->foto_cover))) {
+            unlink(public_path($blog->foto_cover));
+        }
+
+        $blog->delete();
+
+        return redirect()->route('blog-admin')->with('success', 'Blog berhasil dihapus.');
+    }
+
+
 }
