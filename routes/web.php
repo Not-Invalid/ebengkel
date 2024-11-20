@@ -78,6 +78,8 @@ Route::prefix('superadmin')->group(function () {
     Route::get('blog-admin', [SuperAdminBlogController::class, 'index'])->name('blog-admin');
     Route::get('blog/create', [SuperAdminBlogController::class, 'create'])->name('blog-admin-create');
     Route::post('blog/store', [SuperAdminBlogController::class, 'store'])->name('blog-admin-store');
+    Route::get('blog/edit/{id}', [SuperAdminBlogController::class, 'edit'])->name('blog-admin-edit');
+    Route::post('blog/update/{id}', [SuperAdminBlogController::class, 'update'])->name('blog-admin-update');
 
     Route::get('inbox', [SuperAdminMessagesController::class, 'index'])->name('inbox');
 
@@ -137,6 +139,7 @@ Route::prefix('event')->group(function () {
 
 Route::prefix('blog')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('blog');
+    Route::get('/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
 
 // Workshop route
