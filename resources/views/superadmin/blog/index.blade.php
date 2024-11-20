@@ -18,7 +18,7 @@
                     <th>No</th>
                     <th>Judul</th>
                     <th>Penulis</th>
-                    <th>Kategori</th> <!-- Menambahkan kolom Kategori -->
+                    <th>Kategori</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -26,15 +26,15 @@
                 @foreach($blogs as  $data)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $data->judul }}</td> <!-- Menampilkan judul blog -->
-                        <td>{{ $data->penulis }}</td> <!-- Menampilkan penulis blog -->
-                        <td>{{ $data->kategori->nama_kategori }}</td> <!-- Menampilkan nama kategori -->
+                        <td>{{ $data->judul }}</td>
+                        <td>{{ $data->penulis }}</td>
+                        <td>{{ $data->kategori->nama_kategori }}</td>
                         <td>
                             <a href="{{ route('blog-admin-edit', $data->id) }}" class="btn btn-custom-3 my-2" title="Edit" data-bs-toggle="tooltip">
                                 <i class="fas fa-edit text-primary"></i>
                             </a>
 
-                            <form action="{{ route('support-center-info-delete', $data->id) }}" method="POST" style="display:inline-block;">
+                            <form action="{{ route('blog-admin-delete', $data->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-delete" title="Delete" data-bs-toggle="tooltip" style="border: none; background: none;">
