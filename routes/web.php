@@ -229,7 +229,7 @@ Route::prefix('profile')->group(function () {
 });
 
 Route::prefix('POS')->group(function () {
-    Route::get('pos/redirect{id_bengkel}', [PosAuthController::class, 'redirectToPos'])->name('pos.redirect');
+    Route::get('pos/redirect/{id_bengkel}', [PosAuthController::class, 'redirectToPos'])->name('pos.redirect');
     Route::get('register/{id_bengkel}', [PosAuthController::class, 'showregister'])->name('pos.register.show');
     Route::post('register', [PosAuthController::class, 'register'])->name('pos.register');
     Route::get('login/{id_bengkel}', [PosAuthController::class, 'showlogin'])->name('pos.login.show');
