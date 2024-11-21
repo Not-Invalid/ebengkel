@@ -26,8 +26,10 @@
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
 
+    {{-- Lama --}}
+    {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet"> --}}
 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
 </head>
 
 <body class="@yield('body-class')">
@@ -89,8 +91,7 @@
                                                 class="submenu-link">Product & Spare Parts</a>
                                         </li>
                                         <li class="submenu-item">
-                                            <a href="{{ route('blog-category') }}"
-                                                class="submenu-link">Blog</a>
+                                            <a href="{{ route('blog-category') }}" class="submenu-link">Blog</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -144,26 +145,27 @@
                             </a>
                         </li>
                         @if (Auth::user()->role === 'Administrator')
-                        <li class="sidebar-item has-sub">
-                            <a href="#" class="sidebar-link">
-                                <i class="fas fa-user-gear"></i>
-                                <span>Management Users</span>
-                            </a>
-                            <ul class="submenu">
-                                <li class="submenu-item has-sub {{ request()->routeIs('data-pelanggan') ? 'active' : '' }}">
-                                    <a href="{{ route('data-pelanggan') }}" class="sidebar-link">
-                                        <i class="fas fa-users" style="color: #25396f !important;"></i>
-                                        Data Pelanggan
-                                    </a>
-                                </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="{{ route('data-staff-admin') }}" class="sidebar-link">
-                                        <i class="fas fa-user-tie" style="color: #25396f !important;"></i>
-                                        Data Staff Admin
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="sidebar-item has-sub">
+                                <a href="#" class="sidebar-link">
+                                    <i class="fas fa-user-gear"></i>
+                                    <span>Management Users</span>
+                                </a>
+                                <ul class="submenu">
+                                    <li
+                                        class="submenu-item has-sub {{ request()->routeIs('data-pelanggan') ? 'active' : '' }}">
+                                        <a href="{{ route('data-pelanggan') }}" class="sidebar-link">
+                                            <i class="fas fa-users" style="color: #25396f !important;"></i>
+                                            Data Pelanggan
+                                        </a>
+                                    </li>
+                                    <li class="submenu-item has-sub">
+                                        <a href="{{ route('data-staff-admin') }}" class="sidebar-link">
+                                            <i class="fas fa-user-tie" style="color: #25396f !important;"></i>
+                                            Data Staff Admin
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         @endif
                     </ul>
                     <ul class="menu">
@@ -360,7 +362,10 @@
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script>
+    {{-- Lama --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-bs5.min.js"></script> --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
 
     <script>
         $(document).ready(function() {
