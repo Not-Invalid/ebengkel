@@ -14,17 +14,18 @@
     --main-green: #28a745;
     --bg-transparent: rgba(0, 0, 0, 0);
 }
-.title-header {
-    color: var(--main-blue);
-    position: relative;
-    z-index: 10;
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+font-size: 1rem;
+line-height: 2.15;
+padding-left: .75em;
+padding-right: .75em;
 }
 
-.custom-total {
-    background-color: #f8f9fa;
-    border: 1px solid #6c757d;
-    border-radius: 5px; 
+.card-registration .select-arrow {
+top: 13px;
 }
 
-
-
+.price {
+    font-size: 13px;
+}

@@ -36,7 +36,7 @@ class ServiceController extends Controller
             'nama_services' => 'required|string|max:255',
             'keterangan_services' => 'required|string',
             'harga_services' => 'nullable|string',
-            'foto_services' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto_services' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         if ($request->hasFile('foto_services')) {

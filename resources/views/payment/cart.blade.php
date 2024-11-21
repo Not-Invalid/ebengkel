@@ -15,137 +15,119 @@
         </div>
         <div class="bg-white" style="position: absolute; width: 100%; top: 0; bottom: 0; left: 0; right: 0; opacity: 0.7;">
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h4 class="title-header">Cart</h4>
-                </div>
-            </div>
-        </div>
     </section>
-    <section class="my-4">
-        <div class="container">
-            <div class="row">
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-3">
-                        <h4><b>Keranjang Belanja</b></h4>
-                    </div>
-                    <div class="d-flex justify-content-start">
-                        <span id="item-count">0 item di keranjang Anda.</span>
-                    </div>
-                </div>
+    <section class="h-100 py-2">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12">
+                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-lg-8">
+                                    <div class="p-5">
+                                        <div class="d-flex justify-content-between align-items-center mb-5">
+                                            <h1 class="fw-bold mb-0">Shopping Cart</h1>
+                                            <h6 class="mb-0 text-muted">{{ count($cartItems) }} items</h6>
+                                        </div>
+                                        <hr class="my-4">
 
-                <!-- Bagian Produk dan Kode Kupon -->
-                <div class="col-12 col-lg-8">
-                    <div class="card p-4 border-0 shadow">
-                        <div class="row text-muted pb-2 mb-2 d-none d-md-flex">
-                            <div class="col-5"><b>Product</b></div>
-                            <div class="col-3 text-center"><b>Price</b></div>
-                            <div class="col-2 text-center"><b>Quantity</b></div>
-                            <div class="col-2 text-end"><b>Total Price</b></div>
-                        </div>
+                                        <!-- Loop through Cart Items -->
+                                        @foreach ($cartItems as $item)
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                                    <img src="{{ isset($item->produk->foto_produk) ? url($item->produk->foto_produk) : (isset($item->produk->foto_spare_part) ? url($item->produk->foto_spare_part) : asset('assets/images/components/image.png')) }}"
+                                                        class="img-fluid rounded-3 border" alt="{{ $item->produk->nama_produk }}">
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                                    <h6 class="text-muted">
+                                                        @if($item->produk && $item->produk->kategoriProduct)
+                                                            {{ $item->produk->kategoriProduct->nama_kategori_spare_part }}
+                                                        @else
+                                                            No category
+                                                        @endif
+                                                    </h6>
+                                                    <h6 class="mb-0">{{ $item->produk ? $item->produk->nama_produk : 'No product' }}</h6>
+                                                </div>
+                                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                    <button class="btn btn-link px-2" onclick="decreaseQuantity({{ $item->id }})">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                    <input id="quantity-{{ $item->id }}" name="quantity" type="text" value="{{ $item->quantity }}" class="form-control form-control-sm quantity-input" onchange="updateCartItemQuantity({{ $item->id }}, this.value)" pattern="\d*" data-stock="{{ $item->produk->stok_produk }}" />
+                                                    <button class="btn btn-link px-2" onclick="increaseQuantity({{ $item->id }})">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-3 col-lg-2 col-xl-2">
+                                                    <p class="mb-0 fw-semibold price">Rp {{ number_format($item->produk->harga_produk * $item->quantity, 0, ',', '.') }}</p> <!-- Display in Rupiah -->
+                                                </div>
+                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                    <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-muted" style="background: none; border: none; padding: 0;">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <hr class="my-4">
+                                        @endforeach
 
-                        <!-- Produk Item 1 -->
-                        @foreach($cartItems as $cartItem)
-                            <div class="border-bottom py-3 product-item">
-                                <div class="row align-items-center">
-                                    <div class="col-12 col-md-5 col-lg-5 d-flex align-items-center mb-3 mb-md-0">
-                                        <img src="{{ asset('assets/images/product/'.$cartItem->produk->foto_produk) }}" class="img-fluid me-3" alt="gambar produk" style="width: 80px; height: 120px;">
-                                        <div>
-                                            <p class="mb-0"><b>{{ $cartItem->produk->nama_produk }}</b></p>
-                                            <small class="text-muted">{{ $cartItem->produk->merk_produk }}</small>
-                                            <p class="mb-0 d-md-none">Rp {{ number_format($cartItem->produk->harga_produk, 0, ',', '.') }}</p> <!-- Harga di layar kecil -->
+
+                                        <div class="pt-5">
+                                            <h6 class="mb-0"><a href="" class="text-body text-decoration-none"><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
                                         </div>
                                     </div>
-                                    <div class="col-4 col-md-3 text-center d-none d-md-block">
-                                        <p class="mb-0" style="white-space: nowrap;">Rp {{ number_format($cartItem->produk->harga_produk, 0, ',', '.') }}</p>
-                                    </div>
-                                    <div class="col-6 col-md-2 d-flex align-items-center justify-content-center mb-2 mb-md-0">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary me-2" onclick="kurangiKuantitas(this, {{ $cartItem->produk->harga_produk }})">-</button>
-                                        <span class="border px-2 quantity" data-quantity="{{ $cartItem->quantity }}" data-price="{{ $cartItem->produk->harga_produk }}">{{ $cartItem->quantity }}</span>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="tambahKuantitas(this, {{ $cartItem->produk->harga_produk }})">+</button>
-                                    </div>
-                                    <div class="col-6 col-md-2 text-end mt-3 mt-md-0 total-price-wrapper">
-                                        <p class="mb-0 total-item-price" style="white-space: nowrap;">
-                                            <b>Rp {{ number_format($cartItem->total_price, 0, ',', '.') }}</b>
-                                        </p>
+                                </div>
+
+                                <div class="col-lg-4 bg-body-tertiary">
+                                    <div class="p-5">
+                                        <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                                        <hr class="my-4">
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <h5 class="text-uppercase">items {{ count($cartItems) }}</h5>
+                                            <h5>Rp {{ number_format($totalPrice, 0, ',', '.') }}</h5> <!-- Example: € to IDR conversion rate 1€ = 16,000 IDR -->
+                                        </div>
+
+                                        <h5 class="text-uppercase mb-3">Shipping</h5>
+                                        <div class="mb-4 pb-2">
+                                            <select data-mdb-select-init>
+                                                <option value="1">Standard-Delivery - Rp 10,000</option> <!-- Adjusted to Rupiah -->
+                                                <option value="2">Express Delivery - Rp 20,000</option> <!-- Adjusted to Rupiah -->
+                                            </select>
+                                        </div>
+
+                                        <h5 class="text-uppercase mb-3">Code Voucher</h5>
+                                        <div class="mb-5">
+                                            <div data-mdb-input-init class="form-outline">
+                                                <input type="text" id="form3Examplea2" class="form-control form-control-lg" placeholder="Enter your code" />
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <div class="d-flex justify-content-between mb-5">
+                                            <h5 class="text-uppercase">Total price</h5>
+                                            <h5>Rp {{ number_format($totalPrice, 0, ',', '.') }}</h5> <!-- Assuming fixed shipping fee and conversion rate -->
+                                        </div>
+
+                                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">
+                                            Checkout
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-
-                </div>
-
-
-                <!-- Kode Kupon dan Summary - Posisi di Samping untuk Tablet dan Ke Atas -->
-                <div class="col-12 col-lg-4 mt-3 mt-md-0">
-                    <div class="card p-4 border-0 shadow">
-                        <h5><b>Kode Kupon</b></h5>
-                        <div class="mb-3">
-                            <input type="text" class="form-control" id="coupon-code" placeholder="Kode Kupon">
-                            <button class="btn btn-primary w-100 mt-2 mb-3" onclick="applyDiscount()">Terapkan</button>
-                        </div>
-
-                        <div class="card p-3 border-0 custom-total">
-                            <h5><b>Total Keranjang</b></h5>
-                            <div class="d-flex justify-content-between my-3">
-                                <p class="mb-0">Subtotal</p>
-                                <p class="mb-0">Rp <span id="subtotal">0</span></p>
-                            </div>
-                            <div class="d-flex justify-content-between my-3">
-                                <p class="mb-0">Pengiriman</p>
-                                <p class="mb-0">Rp <span id="shipping">0</span></p>
-                            </div>
-                            <div class="d-flex justify-content-between my-3">
-                                <p class="mb-0">Diskon</p>
-                                <p class="mb-0">Rp <span id="discount">0</span></p>
-                            </div>
-                            <div class="d-flex justify-content-between my-3 border-top pt-3">
-                                <p class="mb-0"><b>Total Keranjang</b></p>
-                                <p class="mb-0"><b><span id="grand-total">0</span></b></p>
-                            </div>
-                            <button class="btn btn-primary w-100 mt-3">CHECKOUT</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
 
 
     <script>
         // Fungsi untuk menambah kuantitas produk
-        function tambahKuantitas(button, pricePerItem) {
-            const quantitySpan = button.previousElementSibling;
-            let quantity = parseInt(quantitySpan.getAttribute("data-quantity"));
-            quantity++;
-            quantitySpan.setAttribute("data-quantity", quantity);
-            quantitySpan.textContent = quantity;
-            const totalItemPriceElement = button.closest(".product-item").querySelector(".total-item-price");
-            const newItemTotal = pricePerItem * quantity;
-            totalItemPriceElement.textContent = "Rp " + newItemTotal.toLocaleString('id-ID');
-            updateTotalPrice();
-        }
 
-        // Fungsi untuk mengurangi kuantitas produk
-        function kurangiKuantitas(button, pricePerItem) {
-            const quantitySpan = button.nextElementSibling;
-            let quantity = parseInt(quantitySpan.getAttribute("data-quantity"));
-
-            if (quantity > 1) {
-                quantity--;
-                quantitySpan.setAttribute("data-quantity", quantity);
-                quantitySpan.textContent = quantity;
-
-                const totalItemPriceElement = button.closest(".product-item").querySelector(".total-item-price");
-                const newItemTotal = pricePerItem * quantity;
-                totalItemPriceElement.textContent = "Rp " + newItemTotal.toLocaleString('id-ID');
-            } else {
-                const productItem = button.closest(".product-item");
-                productItem.remove();
-            }
-            updateTotalPrice();
-        }
 
 
         // Fungsi untuk menghitung subtotal dan grand total
@@ -164,36 +146,112 @@
             updateItemCount();
         }
 
-        // Fungsi untuk menerapkan diskon berdasarkan kode kupon
-        function applyDiscount() {
-            const couponCode = document.getElementById("coupon-code").value.trim();
-            if (couponCode.toLowerCase() === "fathan") {
-                document.getElementById("discount").textContent = "10.000";
-            } else if (couponCode === "DISKON5000") {
-                document.getElementById("discount").textContent = "5.000";
+        // Function to handle the increment (plus) button click
+        function increaseQuantity(itemId) {
+            const quantityInput = document.querySelector(`#quantity-${itemId}`);
+            let quantity = parseInt(quantityInput.value) || 0;
+            const maxStock = parseInt(quantityInput.getAttribute('data-stock'));
+
+            if (quantity < maxStock) {
+                quantity++;
+                quantityInput.value = quantity;
+                updateCartItemQuantity(itemId, quantity);
             } else {
-                document.getElementById("discount").textContent = "0";
+                alert(`Maksimum kuantitas yang tersedia adalah ${maxStock}`);
             }
-            updateTotalPrice();
         }
 
-        // Fungsi untuk mengupdate jumlah item di keranjang
-        function updateItemCount() {
-            let itemCount = 0;
-            document.querySelectorAll(".product-item").forEach(item => {
-                const quantity = parseInt(item.querySelector(".quantity").getAttribute("data-quantity"));
-                itemCount += quantity;
+        // Function to handle the decrement (minus) button click
+        function decreaseQuantity(itemId) {
+            const quantityInput = document.querySelector(`#quantity-${itemId}`);
+            let quantity = parseInt(quantityInput.value) || 1;
+
+            if (quantity > 1) {
+                quantity--;
+                quantityInput.value = quantity;
+                updateCartItemQuantity(itemId, quantity);
+            } else {
+                alert('Kuantitas tidak boleh kurang dari 1.');
+            }
+        }
+
+        // Function to update the cart item quantity
+        function updateCartItemQuantity(itemId, quantity) {
+            // Convert quantity to integer and validate
+            quantity = parseInt(quantity) || 1;
+            const quantityInput = document.querySelector(`#quantity-${itemId}`);
+            const maxStock = parseInt(quantityInput.getAttribute('data-stock'));
+
+            if (quantity > maxStock) {
+                alert(`Maksimum kuantitas yang tersedia adalah ${maxStock}`);
+                quantityInput.value = maxStock;
+                return;
+            }
+
+            if (quantity < 1) {
+                alert('Kuantitas tidak boleh kurang dari 1.');
+                quantityInput.value = 1;
+                return;
+            }
+
+            // Kirim permintaan ke server untuk memperbarui kuantitas
+            fetch(`/cart/update/${itemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Perbarui UI dengan harga dan kuantitas baru
+                    document.querySelector(`#quantity-${itemId}`).value = data.newQuantity;
+                    updateTotalPrice();
+                } else {
+                    alert('Terjadi kesalahan saat memperbarui item di keranjang');
+                }
             });
-
-            const itemCountText = itemCount === 1 ? `${itemCount} item` : `${itemCount} items`;
-            document.getElementById("item-count").textContent = `${itemCountText} di keranjang Anda.`;
         }
+
+        // Allow only numeric input in the text field
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+            });
+        });
+
+
 
         // Event listener untuk memastikan total harga dan jumlah item terupdate setelah halaman dimuat
         document.addEventListener("DOMContentLoaded", function() {
             updateItemCount();
             updateTotalPrice();
         });
+
+        function removeFromCart(cartItemId) {
+            fetch(`/cart/remove/${cartItemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update cart UI with new item count and total price
+                    document.querySelector('#cart-count').innerText = data.cartCount;
+                    document.querySelector('#total-price').innerText = `€ ${data.totalPrice}`;
+
+                    // Optionally, update cart items list
+                    updateCartItems(data.cartItems);
+                } else {
+                    alert('Error removing item from cart');
+                }
+            });
+        }
+
     </script>
 
 @endsection

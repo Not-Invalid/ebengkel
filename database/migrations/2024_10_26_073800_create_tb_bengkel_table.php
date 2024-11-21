@@ -36,6 +36,7 @@ class CreateTbBengkelTable extends Migration
             $table->string('lat_bengkel')->nullable();
             $table->string('long_bengkel')->nullable();
             $table->string('status_bengkel')->nullable();
+            $table->string('POS', 1)->default('N');
             $table->dateTime('create_bengkel')->nullable();
             $table->string('delete_bengkel', 1)->default('N');
         });

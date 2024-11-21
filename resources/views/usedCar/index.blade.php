@@ -101,6 +101,11 @@
                                 @endforeach
                             </div>
                         @endif
+                        <div id="no-result-message" style="display: none; text-align: center; margin-top: 30px;">
+                            <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
+                                alt="No Result">
+                            <p>Oops! Tidak ada mobil yang sesuai dengan kriteria filter Anda.</p>
+                        </div>
                         <!-- Static Pagination -->
                         <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
                             <ul class="pagination">
@@ -214,8 +219,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             const carCards = document.querySelectorAll('.col-12'); // Select all car cards
+            const noResultMessage = document.getElementById('no-result-message'); // No result message element
 
             function filterCars() {
+                let anyCardVisible = false; // Flag to check if any card is visible
+
                 carCards.forEach(function(card) {
                     const carBrand = card.querySelector('.jenis').textContent.trim();
                     const carPriceText = card.querySelector('.price').textContent.trim();
@@ -289,8 +297,20 @@
                     }
 
                     // Show or hide the card
-                    card.style.display = showCard ? 'block' : 'none';
+                    if (showCard) {
+                        card.style.display = 'block';
+                        anyCardVisible = true; // Found at least one card
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
+
+                // If no card is visible, show the "no result" message
+                if (anyCardVisible) {
+                    noResultMessage.style.display = 'none';
+                } else {
+                    noResultMessage.style.display = 'block';
+                }
             }
 
             checkboxes.forEach(checkbox => checkbox.addEventListener('change', filterCars));

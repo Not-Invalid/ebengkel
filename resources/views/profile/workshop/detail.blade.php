@@ -147,7 +147,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <div class="card info-event mb-4">
+        <div class="card info-event">
           <div class="card-body">
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-calendar text-primary me-2'></i>
@@ -161,7 +161,8 @@
             </div>
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-map text-primary me-2'></i>
-              <span><span class="title-desc fw-semibold">Alamat :</span> {{ $bengkel->alamat_bengkel }}</span>
+              <span><span class="title-desc fw-semibold">Alamat :</span>
+                {{ $bengkel->alamat_bengkel }}</span>
             </div>
             <hr>
             <p class="mb-4">
@@ -204,10 +205,15 @@
             </p>
           </div>
         </div>
+        <a href="{{ route('pos.redirect', ['id_bengkel' => $bengkel->id_bengkel]) }}" target="_blank"
+            class="btn btn-custom-2 w-100">
+            Hubungkan Ke POS
+        </a>
       </div>
     </div>
   </div>
-  <section>
+
+  <section class="mt-5">
     <div class="custom-tabs-container">
       <ul class="custom-tabs shadow text-center">
         <li class="custom-tab-item">
@@ -379,26 +385,27 @@
               <div class="text-center">
                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
                   alt="No spareparts">
-                <p>No data available for services.</p>
+                <p>No data available for spareparts.</p>
               </div>
             </div>
           @endforelse
         </div>
       </div>
-      <!-- Static Pagination -->
-      <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-        <ul class="pagination">
-          <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-          </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
+    </div>
+    <!-- Static Pagination -->
+    <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
     </div>
   </section>
 

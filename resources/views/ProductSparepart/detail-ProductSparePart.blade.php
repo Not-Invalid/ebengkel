@@ -149,6 +149,54 @@
                         });
                     @endif
                 });
+
+                document.querySelector('#add-to-cart-btn').addEventListener('click', function() {
+                    const productId = {{ $data->id_produk }}; // Assuming you're passing product ID to the view
+                    const quantity = parseInt(document.querySelector('.form-control').value) || 1;
+
+                    // Send AJAX request to add product to cart
+                    fetch('{{ route('cart.add') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        },
+                        body: JSON.stringify({
+                            id_produk: productId,
+                            quantity: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update cart UI with new item count and total price
+                            document.querySelector('#cart-count').innerText = data.cartCount;
+                            document.querySelector('#total-price').innerText = `Rp ${data.totalPrice}`;
+
+                            // Optionally, update cart items list
+                            updateCartItems(data.cartItems);
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+                });
+
+                // Function to update the cart items in the UI
+                function updateCartItems(cartItems) {
+                    const cartItemsContainer = document.querySelector('#cart-items-container');
+                    cartItemsContainer.innerHTML = '';  // Clear existing items
+
+                    cartItems.forEach(item => {
+                        const itemElement = document.createElement('div');
+                        itemElement.innerHTML = `
+                            <div>${item.produk.name} - € ${item.total_price}</div>
+                            <div>Quantity: ${item.quantity}</div>
+                            <button onclick="removeFromCart(${item.id})">Remove</button>
+                        `;
+                        cartItemsContainer.appendChild(itemElement);
+                    });
+                }
+
             </script>
 
     @endsection

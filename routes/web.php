@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController as PelangganAuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Pos\AuthController as PosAuthController;
+use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ReviewWorkshopController;
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAdminAuthController;
 use App\Http\Controllers\SuperAdmin\DashboardController;
 use App\Http\Controllers\SuperAdmin\DataPelangganController as SuperAdminPelangganController;
@@ -17,18 +17,21 @@ use App\Http\Controllers\SuperAdmin\EventController as SuperAdminEventController
 use App\Http\Controllers\SuperAdmin\MerkMobilController;
 use App\Http\Controllers\SuperAdmin\MessagesController as SuperAdminMessagesController;
 use App\Http\Controllers\SuperAdmin\ProductSparepartController as SuperAdminProductSparePartController;
+use App\Http\Controllers\SuperAdmin\KategoriBlogController as SuperAdminKategoriBlogController;
+use App\Http\Controllers\SuperAdmin\BlogController as SuperAdminBlogController;
+use App\Http\Controllers\SuperAdmin\ProfileController as SuperAdminProfileController;
+use App\Http\Controllers\SuperAdmin\SettingsController as SuperAdminSettingsController;
 use App\Http\Controllers\SuperAdmin\StaffController;
 use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\SuperAdmin\SettingsController as SuperAdminSettingsController;
 use App\Models\ReviewWorkshop;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\MyorderController;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 
@@ -50,6 +53,7 @@ Route::middleware('auth:pelanggan')->group(function () {
 
     Route::get('cart', [CartController::class, 'showCart'])->name('cart');
     Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update/{itemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
 
@@ -75,10 +79,17 @@ Route::prefix('superadmin')->group(function () {
     Route::post('merk-mobil/update/{id}', [MerkMobilController::class, 'update'])->name('merk-mobil-update');
     Route::delete('merk-mobil/delete/{id}', [MerkMobilController::class, 'delete'])->name('merk-mobil-delete');
 
+    Route::get('blog-admin', [SuperAdminBlogController::class, 'index'])->name('blog-admin');
+    Route::get('blog/create', [SuperAdminBlogController::class, 'create'])->name('blog-admin-create');
+    Route::post('blog/store', [SuperAdminBlogController::class, 'store'])->name('blog-admin-store');
+    Route::get('blog/edit/{id}', [SuperAdminBlogController::class, 'edit'])->name('blog-admin-edit');
+    Route::post('blog/update/{id}', [SuperAdminBlogController::class, 'update'])->name('blog-admin-update');
+    Route::delete('blog/delete/{id}', [SuperAdminBlogController::class, 'delete'])->name('blog-admin-delete');
+
     Route::get('inbox', [SuperAdminMessagesController::class, 'index'])->name('inbox');
 
     Route::get('workshop', [SuperAdminWorkshopController::class, 'index'])->name('workshop-data');
-    Route::get('workshop/detail', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
+    Route::get('workshop/detail/{id}', [SuperAdminWorkshopController::class, 'detail'])->name('workshop-detail');
 
     Route::get('data-pelanggan', [SuperAdminPelangganController::class, 'index'])->name('data-pelanggan');
 
@@ -92,6 +103,13 @@ Route::prefix('superadmin')->group(function () {
     Route::post('product-sparepart-category/update{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'updateCategory'])->name('product-sparepart-update');
     Route::delete('product-sparepart-category/{id_kategori_spare_part}', [SuperAdminProductSparePartController::class, 'deleteCategory'])->name('product-sparepart-delete');
 
+    Route::get('blog-category', [SuperAdminKategoriBlogController::class, 'index'])->name('blog-category');
+    Route::get('blog-category/create', [SuperAdminKategoriBlogController::class, 'create'])->name('blog-category-create');
+    Route::post('blog-category/store', [SuperAdminKategoriBlogController::class, 'store'])->name('blog-category-send');
+    Route::get('blog-category/edit/{id}', [SuperAdminKategoriBlogController::class, 'edit'])->name('blog-category-edit');
+    Route::post('blog-category/update{id}', [SuperAdminKategoriBlogController::class, 'update'])->name('blog-category-update');
+    Route::delete('blog-category/{id}', [SuperAdminKategoriBlogController::class, 'delete'])->name('blog-category-delete');
+
     Route::get('staff-admin', [StaffController::class, 'index'])->name('data-staff-admin');
     Route::get('staff-admin/create', [StaffController::class, 'create'])->name('data-staff-create');
     Route::post('staff-admin/store', [StaffController::class, 'store'])->name('data-staff-send');
@@ -101,7 +119,6 @@ Route::prefix('superadmin')->group(function () {
 
     Route::get('settings/change-password', [SuperAdminSettingsController::class, 'index'])->name('change-password');
     Route::post('/reset-password', [SuperAdminSettingsController::class, 'resetPassword'])->name('reset-password');
-
 
 });
 
@@ -123,6 +140,11 @@ Route::prefix('event')->group(function () {
     Route::get('event-detail/{id}', [EventController::class, 'detail'])->name('event.detail');
     Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
     Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+});
+
+Route::prefix('blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog');
+    Route::get('/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
 
 // Workshop route
@@ -216,4 +238,15 @@ Route::prefix('profile')->group(function () {
     Route::prefix('my-order')->group(function () {
         Route::get('/', [MyorderController::class, 'index'])->name('my-order.index');
     });
+});
+
+Route::prefix('POS')->group(function () {
+    Route::get('pos/redirect{id_bengkel}', [PosAuthController::class, 'redirectToPos'])->name('pos.redirect');
+    Route::get('register/{id_bengkel}', [PosAuthController::class, 'showregister'])->name('pos.register.show');
+    Route::post('register', [PosAuthController::class, 'register'])->name('pos.register');
+    Route::get('login/{id_bengkel}', [PosAuthController::class, 'showlogin'])->name('pos.login.show');
+    Route::post('login', [PosAuthController::class, 'login'])->name('pos.login');
+    Route::post('logout', [PosAuthController::class, 'logout'])->name('pos.logout');
+
+    Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
 });

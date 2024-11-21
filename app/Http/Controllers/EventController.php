@@ -10,11 +10,23 @@ use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        $events = Event::orderBy('created_at', 'DESC')->paginate(12);
+        $query = Event::query();
+
+        // Implementasi pencarian
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama_event', 'LIKE', '%' . $search . '%')
+                ->orWhere('lokasi', 'LIKE', '%' . $search . '%')
+                ->orWhere('tipe_harga', 'LIKE', '%' . $search . '%');
+        }
+
+        $events = $query->orderBy('created_at', 'DESC')->paginate(12);
+
         return view('event.index', compact('events'));
     }
+
     public function detail($id)
     {
         $event = Event::findOrFail($id);

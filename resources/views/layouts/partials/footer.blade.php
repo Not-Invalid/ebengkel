@@ -9,6 +9,7 @@
                 <li><a href="{{ route('about') }}">About</a></li>
                 <li><a href="{{ route('contact') }}">Contact</a></li>
                 <li><a href="{{ route('career') }}">Career</a></li>
+                <li><a href="{{ route('blog') }}">Blog</a></li>
               </ul>
             </div> <!-- footer link -->
           </div>

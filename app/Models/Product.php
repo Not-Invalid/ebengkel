@@ -31,6 +31,12 @@ class Product extends Model
     {
         return $this->belongsTo(KategoriSparePart::class, 'id_kategori_produk', 'id_kategori_spare_part');
     }
+
+    public function kategoriProduct()
+    {
+        return $this->belongsTo(KategoriSparePart::class, 'id_kategori_spare_part', 'id_kategori_spare_part');
+    }
+
     public function bengkel()
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');

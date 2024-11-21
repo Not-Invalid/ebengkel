@@ -29,8 +29,8 @@
           <div class="d-flex justify-content-center align-items-center" style="min-height: 50px;">
             <form method="GET" action="" style="width: 60%;">
               <div class="input-group">
-                <input type="text" name="search" required maxlength="255" placeholder="Ketik kata kunci..."
-                  class="form-control" style="border-radius: 20px 0 0 20px;">
+                <input type="text" name="search" value="{{ request('search') }}" required maxlength="255"
+                  placeholder="Ketik kata kunci..." class="form-control" style="border-radius: 20px 0 0 20px;">
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-search" style="border-radius: 0 20px 20px 0;">
                     <i class='bx bx-search-alt align-icon'></i>
@@ -43,7 +43,7 @@
       </div>
     </div>
   </section>
-  {{-- Latest Workshop Section --}}
+
   <section class="section bg-white" style="padding-bottom: 50px;">
     <div class="container">
       <div class="row">
@@ -82,20 +82,47 @@
               @endforeach
             </div>
           @endif
-          <!-- Static Pagination -->
-          <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-            <ul class="pagination">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
+          <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                {{-- Previous Page Link --}}
+                @if ($bengkels->onFirstPage())
+                  <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                  </li>
+                @else
+                  <li class="page-item">
+                    <a href="{{ $bengkels->previousPageUrl() }}" class="page-link">Previous</a>
+                  </li>
+                @endif
+
+                {{-- Pagination Elements --}}
+                @foreach ($bengkels->getUrlRange(1, $bengkels->lastPage()) as $page => $url)
+                  @if ($page == $bengkels->currentPage())
+                    <li class="page-item active" aria-current="page">
+                      <a class="page-link" href="{{ $url }}">{{ $page }} <span
+                          class="visually-hidden">(current)</span></a>
+                    </li>
+                  @else
+                    <li class="page-item">
+                      <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                    </li>
+                  @endif
+                @endforeach
+
+                {{-- Next Page Link --}}
+                @if ($bengkels->hasMorePages())
+                  <li class="page-item">
+                    <a href="{{ $bengkels->nextPageUrl() }}" class="page-link">Next</a>
+                  </li>
+                @else
+                  <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                  </li>
+                @endif
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
