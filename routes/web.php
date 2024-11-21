@@ -27,6 +27,8 @@ use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopCont
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\WorkshopController;
+use App\Models\ReviewWorkshop;
+use App\Http\Controllers\MyorderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -228,6 +230,11 @@ Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'showSetting'])->name('profile.setting');
         Route::post('reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
 
+    });
+
+    //payment
+    Route::prefix('my-order')->group(function () {
+        Route::get('/', [MyorderController::class, 'index'])->name('my-order.index');
     });
 });
 

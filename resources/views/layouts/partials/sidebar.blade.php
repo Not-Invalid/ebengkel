@@ -70,6 +70,12 @@
                 <i class='bx bx-car'></i>
                 <span class="menu-text">Used Car</span>
             </a>
+            <a href="{{ route('my-order.index') }}"
+                class="menu-item {{ request()->is('my-order*') ? 'active' : '' }}">
+                <i class='bx bx-package'></i>
+                <span class="menu-text">My Order</span>
+            </a>
+
             <a href="{{ route('profile.setting') }}"
                 class="menu-item {{ request()->is('profile/settings*') ? 'active' : '' }}">
                 <i class="bx bx-cog"></i>
