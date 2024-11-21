@@ -51,4 +51,9 @@ class Bengkel extends Model
     {
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
     }
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class, 'id_bengkel', 'id_bengkel');
+    }
+
 }
