@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 
+<style>
+    .error {
+        color: #ff0606;
+        font-size: 0.85rem
+    }
+</style>
 
 <body>
     <div class="container">
@@ -33,50 +39,65 @@
                 <h3>Sign Up</h3>
                 <div class="input-group">
                     <i class="bx bx-user icon"></i>
-                    <input type="text" id="text" name="nama_pegawai" placeholder="Username" required>
+                    <input type="text" id="nama" name="nama_pegawai" placeholder="Username"
+                        value="{{ old('nama_pegawai') }}" required>
+                    @error('nama_pegawai')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="input-group">
                     <i class="bx bx-phone icon"></i>
-                    <input type="text" id="text" name="telp_pegawai" placeholder="No. Telp" required
-                        pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    <input type="text" id="telp" name="telp_pegawai" placeholder="No. Telp"
+                        value="{{ old('telp_pegawai') }}" required pattern="[0-9]*"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                    @error('telp_pegawai')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="input-group">
                     <i class="bx bx-envelope icon"></i>
-                    <input type="email" id="email" name="email_pegawai" placeholder="Email address" required>
+                    <input type="email" id="email" name="email_pegawai" placeholder="Email address"
+                        value="{{ old('email_pegawai') }}" required>
+                    @error('email_pegawai')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="input-group">
-                    <i class="bx bx-lock icon"></i>
+                    <i class="bx bx-lock icon "></i>
                     <input type="password" id="password" name="password_pegawai" class="password-field"
                         placeholder="Password" required>
                     <i class='bx bx-hide eye-icon'></i>
                 </div>
                 <div class="input-group">
-                    <i class="bx bx-lock icon"></i>
-                    <input type="password" id="password" name="password_pegawai_confirmation" class="password-field"
-                        placeholder="Confirm Password" required>
+                    <i class="bx bx-lock icon "></i>
+                    <input type="password" id="password-confirm" name="password_pegawai_confirmation"
+                        class="password-field" placeholder="Confirm Password" required>
                     <i class='bx bx-hide eye-icon'></i>
                 </div>
                 <button type="submit" class="submit-btn">Sign Up</button>
             </form>
 
+
         </div>
     </div>
 
     <script>
-        const pwShowHide = document.querySelector(".eye-icon");
-        const passwordField = document.querySelector("#password");
+        const pwShowHide = document.querySelectorAll(".eye-icon");
+        const passwordFields = document.querySelectorAll(".password-field");
 
-        pwShowHide.addEventListener("click", () => {
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                pwShowHide.classList.replace("bx-hide", "bx-show");
-            } else {
-                passwordField.type = "password";
-                pwShowHide.classList.replace("bx-show", "bx-hide");
-            }
+        // Tambahkan event listener untuk setiap ikon
+        pwShowHide.forEach((icon, index) => {
+            icon.addEventListener("click", () => {
+                if (passwordFields[index].type === "password") {
+                    passwordFields[index].type = "text";
+                    icon.classList.replace("bx-hide", "bx-show");
+                } else {
+                    passwordFields[index].type = "password";
+                    icon.classList.replace("bx-show", "bx-hide");
+                }
+            });
         });
     </script>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 

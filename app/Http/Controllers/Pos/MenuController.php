@@ -3,99 +3,66 @@
 namespace App\Http\Controllers\Pos;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Bengkel;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Request;
 
 class MenuController extends Controller
 {
-    // public function index()
-    // {
-    //     $menus = Menu::where('is_delete', 'N')->get();  // Menampilkan menu yang tidak dihapus
-    //     return view('menu.index', compact('menus'));
-    // }
+    public function index($id_bengkel)
+    {
+        $bengkel = Bengkel::find($id_bengkel);
 
-    // // Menampilkan form untuk membuat menu baru
-    // public function create()
-    // {
-    //     return view('menu.create');
-    // }
+        if (!$bengkel) {
+            return redirect()->route('profile.workshop')->with('error_status', 'Bengkel tidak ditemukan.');
+        }
 
-    // // Menyimpan menu baru ke database
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'nama_menu' => 'required|string|max:30',
-    //         'link_menu' => 'nullable|url',
-    //         'icon_menu' => 'nullable|string|max:50',
-    //         'menu_type' => 'nullable|string|max:20',
-    //         'parent_id_1' => 'nullable|integer',
-    //         'parent_id_2' => 'nullable|integer',
-    //         'parent_id_3' => 'nullable|integer',
-    //     ]);
+        $menus = Menu::with('children')->whereNull('parent_id')->orderBy('order')->get();
+        return view('pos.masterdata-menu.index', compact('bengkel', 'menus'));
+    }
+    public function create()
+    {
+        $parents = Menu::whereNull('parent_id')->get();
+        return view('menu.create', compact('parents'));
+    }
 
-    //     Menu::create([
-    //         'nama_menu' => $request->nama_menu,
-    //         'link_menu' => $request->link_menu,
-    //         'icon_menu' => $request->icon_menu,
-    //         'menu_type' => $request->menu_type,
-    //         'parent_id_1' => $request->parent_id_1,
-    //         'parent_id_2' => $request->parent_id_2,
-    //         'parent_id_3' => $request->parent_id_3,
-    //         'menu_position' => $request->menu_position,
-    //         'input_by' => auth()->user()->name,
-    //         'input_date' => now(),
-    //     ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'route' => 'nullable|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'parent_id' => 'nullable|exists:menus,id',
+            'order' => 'required|integer',
+        ]);
 
-    //     return redirect()->route('menu.index')->with('success', 'Menu berhasil dibuat');
-    // }
+        Menu::create($request->all());
+        return redirect()->route('menu.index')->with('success', 'Menu created successfully.');
+    }
 
-    // // Menampilkan form untuk mengedit menu
-    // public function edit($id)
-    // {
-    //     $menu = Menu::findOrFail($id);
-    //     return view('menu.edit', compact('menu'));
-    // }
+    public function edit(Menu $menu)
+    {
+        $parents = Menu::whereNull('parent_id')->where('id', '!=', $menu->id)->get();
+        return view('menu.edit', compact('menu', 'parents'));
+    }
 
-    // // Mengupdate menu yang ada
-    // public function update(Request $request, $id)
-    // {
-    //     $validated = $request->validate([
-    //         'nama_menu' => 'required|string|max:30',
-    //         'link_menu' => 'nullable|url',
-    //         'icon_menu' => 'nullable|string|max:50',
-    //         'menu_type' => 'nullable|string|max:20',
-    //         'parent_id_1' => 'nullable|integer',
-    //         'parent_id_2' => 'nullable|integer',
-    //         'parent_id_3' => 'nullable|integer',
-    //     ]);
+    public function update(Request $request, Menu $menu)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'route' => 'nullable|string|max:255',
+            'icon' => 'nullable|string|max:255',
+            'parent_id' => 'nullable|exists:menus,id',
+            'order' => 'required|integer',
+        ]);
 
-    //     $menu = Menu::findOrFail($id);
-    //     $menu->update([
-    //         'nama_menu' => $request->nama_menu,
-    //         'link_menu' => $request->link_menu,
-    //         'icon_menu' => $request->icon_menu,
-    //         'menu_type' => $request->menu_type,
-    //         'parent_id_1' => $request->parent_id_1,
-    //         'parent_id_2' => $request->parent_id_2,
-    //         'parent_id_3' => $request->parent_id_3,
-    //         'menu_position' => $request->menu_position,
-    //         'update_by' => auth()->user()->name,
-    //         'update_date' => now(),
-    //     ]);
+        $menu->update($request->all());
+        return redirect()->route('menu.index')->with('success', 'Menu updated successfully.');
+    }
 
-    //     return redirect()->route('menu.index')->with('success', 'Menu berhasil diperbarui');
-    // }
-
-    // // Menghapus menu
-    // public function destroy($id)
-    // {
-    //     $menu = Menu::findOrFail($id);
-    //     $menu->update([
-    //         'is_delete' => 'Y',
-    //         'delete_by' => auth()->user()->name,
-    //         'delete_date' => now(),
-    //     ]);
-
-    //     return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus');
-    // }
+    public function destroy(Menu $menu)
+    {
+        $menu->delete();
+        return redirect()->route('menu.index')->with('success', 'Menu deleted successfully.');
+    }
 }

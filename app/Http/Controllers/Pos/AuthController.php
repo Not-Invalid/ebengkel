@@ -46,7 +46,16 @@ class AuthController extends Controller
             'id_bengkel' => 'required|exists:tb_bengkel,id_bengkel',
         ]);
 
+        $bengkel = Bengkel::find($request->id_bengkel);
+
+        if ($bengkel->POS === 'Y') {
+            return back()->withErrors([
+                'id_bengkel' => 'POS untuk bengkel ini sudah aktif.',
+            ]);
+        }
+
         Pegawai::create([
+            'id_bengkel' => $request->id_bengkel,
             'nama_pegawai' => $request->nama_pegawai,
             'telp_pegawai' => $request->telp_pegawai,
             'email_pegawai' => $request->email_pegawai,
@@ -54,14 +63,11 @@ class AuthController extends Controller
             'role' => 'Outlet',
         ]);
 
-        $bengkel = Bengkel::find($request->id_bengkel);
-        if ($bengkel) {
-            $bengkel->POS = 'Y';
-            $bengkel->save();
-        }
+        $bengkel->POS = 'Y';
+        $bengkel->save();
 
         return redirect()->route('pos.login.show', ['id_bengkel' => $request->id_bengkel])
-            ->with('status', 'Registration successful. Please login.');
+            ->with('status', 'Registrasi berhasil. Silakan login.');
     }
 
     public function login(Request $request)
@@ -71,24 +77,39 @@ class AuthController extends Controller
             'password_pegawai' => 'required',
             'id_bengkel' => 'required|exists:tb_bengkel,id_bengkel',
         ]);
+        $pegawai = Pegawai::where('email_pegawai', $request->email_pegawai)
+            ->where('id_bengkel', $request->id_bengkel)
+            ->first();
 
-        if (Auth::guard('pegawai')->attempt([
-            'email_pegawai' => $request->email_pegawai,
-            'password' => $request->password_pegawai,
-        ])) {
-            $request->session()->regenerate();
-            return redirect()->route('pos.index', ['id_bengkel' => $request->id_bengkel])
-                ->with('status', 'Login successful!');
+        if (!$pegawai) {
+            return back()->withErrors([
+                'email_pegawai' => 'Pegawai atau bengkel tidak sesuai.',
+            ]);
         }
+        if (!Hash::check($request->password_pegawai, $pegawai->password_pegawai)) {
+            return back()->withErrors([
+                'password_pegawai' => 'Password salah.',
+            ]);
+        }
+        Auth::guard('pegawai')->login($pegawai);
+        $request->session()->regenerate();
 
-        return back()->withErrors([
-            'email_pegawai' => 'The provided credentials do not match our records.',
-        ]);
+        return redirect()->route('pos.index', ['id_bengkel' => $request->id_bengkel])
+            ->with('status', 'Login berhasil!');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        $idBengkel = $request->input('id_bengkel');
+
         Auth::guard('pegawai')->logout();
-        return redirect()->route('pos.login.show')->with('status', 'You have been logged out.');
+
+        if ($idBengkel) {
+            return redirect()->route('pos.login.show', ['id_bengkel' => $idBengkel])
+                ->with('status', 'You have been logged out.');
+        }
+
+        return redirect()->route('pos.redirect', ['id_bengkel' => $idBengkel])
+            ->with('error_status', 'Bengkel tidak ditemukan.');
     }
 }
