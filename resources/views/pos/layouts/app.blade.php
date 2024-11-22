@@ -150,30 +150,19 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i
-                                    class="fas fa-database"></i><span>Master
-                                    Data</span></a>
-                            <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.menu.index') ? 'active' : '' }}">
-                                    <a class="nav-link"
-                                        href="{{ route('pos.menu.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Menu</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="index.html">Ecommerce Dashboard</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
+                        <li class="dropdown ">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
-                                <span>Utilities</span></a>
+                                <span>Master Data</span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="utilities-contact.html">Contact</a></li>
-                                <li>
-                                    <a class="nav-link" href="utilities-invoice.html">Invoice</a>
+                                <li class="{{ request()->routeIs('pos.product.index') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Product</a>
                                 </li>
                                 <li>
-                                    <a href="utilities-subscribe.html">Subscribe</a>
+                                    <a class="nav-link" href="utilities-invoice.html">SparePart</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="utilities-invoice.html">Service</a>
                                 </li>
                             </ul>
                         </li>
