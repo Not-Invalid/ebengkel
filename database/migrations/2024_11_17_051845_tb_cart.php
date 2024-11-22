@@ -16,13 +16,11 @@ return new class extends Migration
             $table->integer('id_pelanggan');
             $table->unsignedInteger('id_produk');
             $table->integer('quantity')->default(1);
-            $table->integer('total_price');
+            $table->decimal('total_price', 10, 2);
             $table->timestamps();
-
             $table->foreign('id_pelanggan')->references('id_pelanggan')->on('tb_pelanggan')->onDelete('cascade');
             $table->foreign('id_produk')->references('id_produk')->on('tb_produk')->onDelete('cascade');
         });
-
     }
 
     /**
