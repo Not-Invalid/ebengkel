@@ -167,7 +167,7 @@ $imageName = 'foto_bengkel_' . now()->format('Ymd_His') . '.' . $image->getClien
 $image->move(public_path('assets/images/workshops/profile'), $imageName);
 $validatedData['foto_bengkel'] = url('assets/images/workshops/profile/' . $imageName);
 } else {
-$validatedData['foto_bengkel'] = url('assets/images/default-workshop.jpg');
+$validatedData['foto_bengkel'] = url('assets/images/components/image.png');
 }
 
 // Custom image upload handling for 'foto_cover_bengkel'
@@ -177,7 +177,7 @@ $coverImageName = 'foto_cover_bengkel_' . now()->format('Ymd_His') . '.' . $cove
 $coverImage->move(public_path('assets/images/workshops/cover'), $coverImageName);
 $validatedData['foto_cover_bengkel'] = url('assets/images/workshops/cover/' . $coverImageName);
 } else {
-$validatedData['foto_cover_bengkel'] = url('assets/images/default-cover.jpg');
+$validatedData['foto_cover_bengkel'] = url('assets/images/components/image.png');
 }
 
 Bengkel::create($validatedData);
