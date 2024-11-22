@@ -5,10 +5,11 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MyorderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
-use App\Http\Controllers\Pos\MenuController as PosMenuController;
+use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -28,8 +29,6 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
-use App\Models\ReviewWorkshop;
-use App\Http\Controllers\MyorderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -248,5 +247,16 @@ Route::prefix('POS')->group(function () {
     Route::post('logout', [PosAuthController::class, 'logout'])->name('pos.logout');
 
     Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
-    Route::get('menu/{id_bengkel}', [PosMenuController::class, 'index'])->name('pos.menu.index');
+
+    Route::prefix('Master-data')->group(function () {
+        Route::prefix('pos/{id_bengkel}/product')->group(function () {
+            Route::get('/', [PosProductController::class, 'index'])->name('pos.product.index');
+            Route::get('create', [PosProductController::class, 'create'])->name('pos.product.create');
+            Route::post('store', [PosProductController::class, 'store'])->name('pos.product.store');
+            Route::get('edit/{id_produk}', [PosProductController::class, 'edit'])->name('pos.product.edit');
+            Route::put('update/{id_produk}', [PosProductController::class, 'update'])->name('pos.product.update');
+            Route::delete('delete/{id_produk}', [PosProductController::class, 'destroy'])->name('pos.product.destroy');
+        });
+    });
+
 });
