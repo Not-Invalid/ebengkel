@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\MenuController as PosMenuController;
+use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -118,7 +119,6 @@ Route::prefix('superadmin')->group(function () {
 
     Route::get('settings/change-password', [SuperAdminSettingsController::class, 'index'])->name('change-password');
     Route::post('/reset-password', [SuperAdminSettingsController::class, 'resetPassword'])->name('reset-password');
-
 });
 
 // UsedCar
@@ -230,7 +230,6 @@ Route::prefix('profile')->group(function () {
     Route::prefix('settings')->group(function () {
         Route::get('/', [ProfileController::class, 'showSetting'])->name('profile.setting');
         Route::post('reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
-
     });
 
     //payment
@@ -249,4 +248,5 @@ Route::prefix('POS')->group(function () {
 
     Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
     Route::get('menu/{id_bengkel}', [PosMenuController::class, 'index'])->name('pos.menu.index');
+    Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
 });
