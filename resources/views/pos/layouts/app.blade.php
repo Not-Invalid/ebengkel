@@ -110,7 +110,7 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="features-profile.html" class="dropdown-item has-icon">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
@@ -177,6 +177,21 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="nav-link">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">General</li>
+                        <li class="{{ request()->routeIs('pos.management-staff') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('pos.management-staff', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
+                                    class="fas fa-users"></i>
+                                <span>Management Staff</span>
+                            </a>
+                        </li>
                     </ul>
                 </aside>
             </div>
@@ -219,6 +234,8 @@
     {{-- Template JS file --}}
     <script src="{{ asset('template_pos/js/scripts.js') }}"></script>
     <script src="{{ asset('template_pos/js/custom.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
