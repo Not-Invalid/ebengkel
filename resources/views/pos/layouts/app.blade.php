@@ -164,17 +164,19 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
-                                <span>Utilities</span></a>
+                        <li class="dropdown active">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-bag-shopping"></i>
+                                <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="utilities-contact.html">Contact</a></li>
-                                <li>
-                                    <a class="nav-link" href="utilities-invoice.html">Invoice</a>
+                                <li class="{{ request()->routeIs('pos.tranksaksi_pos.index') ? 'active' : '' }}"><a
+                                        href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
                                 </li>
                                 <li>
+                                    <a class="nav-link" href="utilities-invoice.html">Pesanan</a>
+                                </li>
+                                {{-- <li>
                                     <a href="utilities-subscribe.html">Subscribe</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
