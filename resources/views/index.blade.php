@@ -193,7 +193,7 @@
                         <div class="d-flex justify-content-center pb-5">
                             <div class="text-center">
                                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
-                                    width="200" alt="No workshops">
+                                     width="200" alt="No workshops">
                                 <p>No data available for workshops.</p>
                             </div>
                         </div>
@@ -202,9 +202,9 @@
                             @foreach ($bengkels as $bengkel)
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                     <a href="{{ route('workshop.detail', $bengkel->id_bengkel) }}"
-                                        class="card-product p-3">
+                                       class="card-product p-3">
                                         <img src="{{ isset($bengkel) && $bengkel->foto_bengkel ? url($bengkel->foto_bengkel) : asset('assets/images/components/image.png') }}"
-                                            class="card-img-top" alt="Workshop Image">
+                                             class="card-img-top" alt="Workshop Image">
                                         <div class="card-body text-start">
                                             <div class="d-flex align-items-center location-map">
                                                 <i class='bx bx-map-pin'></i>
@@ -226,15 +226,19 @@
                             @endforeach
                         </div>
                     @endif
-                    <div class="text-center mt-4">
-                        <a href="{{ route('workshop.show') }}" class="btn btn-more">
-                            More Workshop <i class="bx bx-chevron-right align-icon"></i>
-                        </a>
-                    </div>
+
+                    @if (!$bengkels->isEmpty())  <!-- Only show the "More Workshop" button if there are workshops -->
+                        <div class="text-center mt-4">
+                            <a href="{{ route('workshop.show') }}" class="btn btn-more">
+                                More Workshop <i class="bx bx-chevron-right align-icon"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
+
 
     {{-- New Product Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
@@ -335,7 +339,7 @@
 
     {{-- used car --}}
     <section class="featured-cars section bg-white">
-        <div class="container ">
+        <div class="container">
             <div class="section-title text-start">
                 <h4 class="text-primary py-2"><i class='bx bx-car'></i> Used Car</h4>
             </div>
@@ -343,7 +347,7 @@
                 <div class="d-flex justify-content-center pb-5">
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                            alt="No UsedCar">
+                             alt="No UsedCar">
                         <p>No data available for UsedCar.</p>
                     </div>
                 </div>
@@ -355,10 +359,10 @@
                                 <div class="card h-100 border-0 shadow">
                                     @if ($car->fotos && $car->fotos->file_foto_mobil_1)
                                         <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
-                                            class="car-img">
+                                             class="car-img">
                                     @else
                                         <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
-                                            class="car-img">
+                                             class="car-img">
                                     @endif
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -413,12 +417,12 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="text-center mt-5">
+                    <a href="{{ route('used-car') }}" class="btn btn-more">
+                        More Used Car <i class="bx bx-chevron-right align-icon"></i>
+                    </a>
+                </div>
             @endif
-            <div class="text-center mt-5">
-                <a href=" {{ route('used-car') }}" class="btn btn-more">
-                    More Used Car <i class="bx bx-chevron-right align-icon"></i>
-                </a>
-            </div>
         </div>
     </section>
 
