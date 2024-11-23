@@ -37,6 +37,11 @@ class Product extends Model
         return $this->belongsTo(KategoriSparePart::class, 'id_kategori_spare_part', 'id_kategori_spare_part');
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
     public function bengkel()
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');
