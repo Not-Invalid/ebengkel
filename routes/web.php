@@ -53,11 +53,12 @@ Route::prefix('pelanggan')->group(function () {
 
 Route::middleware('auth:pelanggan')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-
     Route::get('cart', [CartController::class, 'showCart'])->name('cart');
-    Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::post('/cart/update/{itemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
-    Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/add-to-cart', [ProductSparePartController::class, 'addToCart'])->middleware('auth');
+    Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
+    Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);    
+    Route::post('/cart/remove/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.remove');
+    Route::post('checkout/', [CartController::class, 'showPayment'])->name('payment');
 });
 
 Route::prefix('superadmin')->group(function () {
@@ -248,7 +249,6 @@ Route::prefix('POS')->group(function () {
     Route::get('login/{id_bengkel}', [PosAuthController::class, 'showlogin'])->name('pos.login.show');
     Route::post('login', [PosAuthController::class, 'login'])->name('pos.login');
     Route::post('logout', [PosAuthController::class, 'logout'])->name('pos.logout');
-
     Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
     Route::get('management-staff/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-staff');
     Route::get('management-staff/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-staff.create');
