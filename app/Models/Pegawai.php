@@ -15,6 +15,7 @@ class Pegawai extends Authenticatable
 
     protected $fillable = [
         'id_bengkel',
+        'id_pelanggan',
         'nama_pegawai',
         'telp_pegawai',
         'email_pegawai',

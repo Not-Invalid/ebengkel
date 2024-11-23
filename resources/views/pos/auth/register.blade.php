@@ -57,7 +57,7 @@
                 <div class="input-group">
                     <i class="bx bx-envelope icon"></i>
                     <input type="email" id="email" name="email_pegawai" placeholder="Email address"
-                        value="{{ old('email_pegawai') }}" required>
+                        value="{{ $emailPelanggan }}" readonly>
                     @error('email_pegawai')
                         <small class="error">{{ $message }}</small>
                     @enderror
@@ -76,8 +76,6 @@
                 </div>
                 <button type="submit" class="submit-btn">Sign Up</button>
             </form>
-
-
         </div>
     </div>
 

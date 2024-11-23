@@ -150,33 +150,20 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i
-                                    class="fas fa-database"></i><span>Master
-                                    Data</span></a>
+                        <li class="dropdown ">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
+                                <span>Master Data</span></a>
                             <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.menu.index') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.product.index') ? 'active' : '' }}">
                                     <a class="nav-link"
-                                        href="{{ route('pos.menu.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Menu</a>
+                                        href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Product</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="index.html">Ecommerce Dashboard</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown active">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-bag-shopping"></i>
-                                <span>Transaksi</span></a>
-                            <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.tranksaksi_pos.index') ? 'active' : '' }}"><a
-                                        href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
+                                    <a class="nav-link" href="utilities-invoice.html">SparePart</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="utilities-invoice.html">Pesanan</a>
+                                    <a class="nav-link" href="utilities-invoice.html">Service</a>
                                 </li>
-                                {{-- <li>
-                                    <a href="utilities-subscribe.html">Subscribe</a>
-                                </li> --}}
                             </ul>
                         </li>
                         <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
