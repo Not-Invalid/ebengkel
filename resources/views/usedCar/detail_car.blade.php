@@ -21,48 +21,59 @@
     </section>
     <div class="container gallery">
         <section class="pt-5 image">
-            <div class="row">
-                <div class="col-md-6 gallery-item">
-                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                        data-bs-img="{{ $mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png' }}">
-                        <img src="{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}"
-                            alt="Car Image" class="img-fluid main-image object-fit-cover">
-                    </a>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-6 col-6 picture">
-                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png' }}">
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}"
-                                    alt="Car Image" class="img-fluid small-image-1 object-fit-cover">
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-6 picture">
-                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png' }}">
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}"
-                                    alt="Car Image" class="img-fluid img-fluid small-image-2 object-fit-cover">
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-6 picture">
-                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png' }}">
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}"
-                                    alt="Car Image" class="img-fluid small-image-3 object-fit-cover">
-                            </a>
-                        </div>
-                        <div class="col-md-6 col-6 picture position-relative">
-                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                                data-bs-img="{{ $mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png' }}">
-                                <img src="{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
-                                    alt="Car Image" class="img-fluid img-fluid small-image-4 object-fit-cover">
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Main Image Carousel Item -->
+            <div class="carousel-item active">
+                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png' }}">
+                    <img src="{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}"
+                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                </a>
             </div>
-        </section>
+            <!-- Additional Image Carousel Items -->
+            <div class="carousel-item">
+                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png' }}">
+                    <img src="{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}"
+                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png' }}">
+                    <img src="{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}"
+                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png' }}">
+                    <img src="{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}"
+                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
+                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png' }}">
+                    <img src="{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
+                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                </a>
+            </div>
+        </div>
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+
 
         <div class="modal fade" id="carImageModal" tabindex="-1" aria-labelledby="carImageModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -73,16 +84,14 @@
                     </div>
                     <div class="modal-body text-center">
                         <!-- Carousel Start -->
-                        <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div id="carImageModalCarousel" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner" id="carouselImages">
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel"
-                                data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carImageModalCarousel" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel"
-                                data-bs-slide="next">
+                            <button class="carousel-control-next" type="button" data-bs-target="#carImageModalCarousel" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -224,51 +233,83 @@
             <div class="col-md-12 text-center">
                 <h5 class="fw-bold py-3">Bagikan</h5>
 
-                <!-- Tombol Facebook -->
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https://new2.ebengkelku.com" target="_blank"
-                    class="btn btn-outline-primary my-3">
+                <!-- Facebook Share Button -->
+                <a href="javascript:void(0);" onclick="shareOnFacebook('{{ url()->current() }}')" class="btn btn-outline-primary my-3">
                     <i class='bx bxl-facebook-circle'></i> Facebook
                 </a>
 
-                <!-- Tombol Twitter -->
-                <a href="https://twitter.com/intent/tweet?url=https://new2.ebengkelku.com&text=Kunjungi%20situs%20web%20ebengkelku!"
-                    target="_blank" class="btn btn-outline-info my-3">
-                    <i class='bx bxl-twitter'></i> Twitter
-                </a>
-
-                <!-- Tombol Instagram -->
+                <!-- Instagram Share Button -->
                 <a href="https://www.instagram.com" target="_blank" class="btn btn-outline-danger my-3">
                     <i class='bx bxl-instagram'></i> Instagram
                 </a>
+
+                <!-- WhatsApp Share Button -->
+                <a href="javascript:void(0);" onclick="shareOnWhatsApp('{{ url()->current() }}')" class="btn btn-outline-success my-3">
+                    <i class='bx bxl-whatsapp'></i> WhatsApp
+                </a>
             </div>
         </div>
+
+        </div>
+
     </div>
 
     <script>
-        var carImageLinks = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#carImageModal"]');
-        carImageLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                var images = [
-                    "{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}",
-                    "{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}",
-                    "{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}",
-                    "{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}",
-                    "{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
-                ];
+        document.addEventListener('DOMContentLoaded', function() {
+            var carImageLinks = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#carImageModal"]');
+            if (carImageLinks.length > 0) {
+                carImageLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        var imageUrl = link.getAttribute('data-bs-img');
+                        var images = [
+                            "{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}",
+                            "{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}",
+                            "{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}",
+                            "{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}",
+                            "{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
+                        ];
 
-                var carouselInner = document.getElementById('carouselImages');
-                carouselInner.innerHTML = '';
+                        var carouselInner = document.getElementById('carouselImages');
+                        carouselInner.innerHTML = '';
 
-                images.forEach(function(imageUrl, index) {
-                    var activeClass = (index === 0) ? 'active' : '';
-                    var carouselItem = `
-                        <div class="carousel-item ${activeClass}">
-                            <img src="${imageUrl}" class="d-block w-100" alt="Car Image">
-                        </div>
-                    `;
-                    carouselInner.innerHTML += carouselItem;
+                        images.forEach(function(imageUrl, index) {
+                            var activeClass = (index === 0) ? 'active' : '';
+                            var carouselItem = `
+                                <div class="carousel-item ${activeClass}">
+                                    <img src="${imageUrl}" class="d-block w-100" alt="Car Image">
+                                </div>
+                            `;
+                            carouselInner.innerHTML += carouselItem;
+                        });
+
+                        var modal = new bootstrap.Modal(document.getElementById('carImageModal'));
+                        modal.show();
+                    });
                 });
-            });
+            }
         });
+
+        document.addEventListener('hidden.bs.modal', function (event) {
+            document.body.classList.remove('modal-open');
+            document.body.style.paddingRight = '';
+            document.body.style.overflow = '';
+
+            const modalBackdrop = document.querySelector('.modal-backdrop');
+            if (modalBackdrop) {
+                modalBackdrop.remove();
+            }
+        });
+
+
+        function shareOnFacebook(url) {
+            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            window.open(fbUrl, '_blank', 'width=600,height=400');
+        }
+
+        function shareOnWhatsApp(url) {
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(url)}`;
+            window.open(whatsappUrl, '_blank', 'width=600,height=400');
+        }
+
     </script>
 @endsection
