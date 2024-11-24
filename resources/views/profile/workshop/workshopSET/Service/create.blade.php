@@ -164,7 +164,7 @@
       </div>
 
       <div class="mt-3 d-flex gap-2">
-        <button type="submit" class="btn btn-custom-icon">Save</button>
+        <button type="submit" class="btn btn-custom-icon">Create</button>
         <a href="{{ route('profile.workshop.detail', ['id_bengkel' => $id_bengkel]) }}" class="btn btn-cancel">Cancel</a>
       </div>
 
