@@ -52,14 +52,14 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="id_kategori_spare_part" id="id_kategori_spare_part" class="did-floating-select">
-                        <option value="" selected disabled hidden>Pilih Jenis</option>
+                        <option value="" selected disabled hidden>Select Type</option>
                         @foreach ($kategoriSparePart as $kategori)
                             <option value="{{ $kategori->id_kategori_spare_part }}">
                                 {{ $kategori->nama_kategori_spare_part }}
                             </option>
                         @endforeach
                     </select>
-                    <label class="did-floating-label">Pilih Jenis Sparepart</label>
+                    <label class="did-floating-label">Select Spare Part Type</label>
                 </div>
             </div>
 
@@ -70,9 +70,9 @@
                         <option value="" selected disabled hidden>Pilih Kualitas</option>
                         <option value="original">Original</option>
                         <option value="aftermarket">Aftermarket</option>
-                        <option value="kw">KW</option>
+                        <!--<option value="kw">KW</option>-->
                     </select>
-                    <label class="did-floating-label">Pilih Kualitas Sparepart</label>
+                    <label class="did-floating-label">Select Spare Part Quality</label>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="merk_spare_part"
                         name="merk_spare_part" required />
-                    <label class="did-floating-label">Merk Spare Part</label>
+                    <label class="did-floating-label">Spare Part Brand</label>
                 </div>
             </div>
 
@@ -89,7 +89,7 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="nama_spare_part"
                         name="nama_spare_part" required />
-                    <label class="did-floating-label">Nama Spare Part</label>
+                    <label class="did-floating-label">Spare Part Name</label>
                 </div>
             </div>
 
@@ -98,7 +98,7 @@
                     <input class="did-floating-input" type="text" placeholder=" " id="harga_spare_part"
                         name="harga_spare_part" required pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Harga Spare Part</label>
+                    <label class="did-floating-label">Spare Part Price</label>
                 </div>
             </div>
 
@@ -106,7 +106,7 @@
                 <div class="did-floating-label-content">
                     <textarea class="did-floating-input" placeholder=" " id="keterangan_spare_part" name="keterangan_spare_part" required
                         style="height: 100px!important;resize: none"></textarea>
-                    <label class="did-floating-label">Keterangan Spare Part</label>
+                    <label class="did-floating-label">Spare Part Description</label>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="number" placeholder=" " id="stok_spare_part"
                         name="stok_spare_part" required />
-                    <label class="did-floating-label">Stok Spare Part</label>
+                    <label class="did-floating-label">Spare Part Stock</label>
                 </div>
             </div>
 

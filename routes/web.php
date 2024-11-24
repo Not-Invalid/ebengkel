@@ -9,6 +9,9 @@ use App\Http\Controllers\MyorderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
+use App\Http\Controllers\Pos\MenuController as PosMenuController;
+use App\Http\Controllers\Pos\ProfileController as PosProfileController;
+use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +32,8 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
+use App\Models\ReviewWorkshop;
+use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -118,7 +123,6 @@ Route::prefix('superadmin')->group(function () {
 
     Route::get('settings/change-password', [SuperAdminSettingsController::class, 'index'])->name('change-password');
     Route::post('/reset-password', [SuperAdminSettingsController::class, 'resetPassword'])->name('reset-password');
-
 });
 
 // UsedCar
@@ -230,7 +234,6 @@ Route::prefix('profile')->group(function () {
     Route::prefix('settings')->group(function () {
         Route::get('/', [ProfileController::class, 'showSetting'])->name('profile.setting');
         Route::post('reset-password', [ProfileController::class, 'resetPassword'])->name('profile.resetPassword');
-
     });
 
     //payment
@@ -247,6 +250,17 @@ Route::prefix('POS')->group(function () {
     Route::post('login', [PosAuthController::class, 'login'])->name('pos.login');
     Route::post('logout', [PosAuthController::class, 'logout'])->name('pos.logout');
     Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
+    Route::get('management-staff/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-staff');
+    Route::get('management-staff/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-staff.create');
+    Route::post('management-staff/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-staff.store');
+    Route::get('management-staff/edit/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'edit'])->name('pos.management-staff.edit');
+    Route::post('management-staff/update/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'update'])->name('pos.management-staff.update');
+    Route::delete('management-staff/delete/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'delete'])->name('pos.management-staff.delete');
+
+    Route::get('profile/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'index'])->name('profile-pegawai');
+    Route::post('profile/update/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'update'])->name('profile-pegawai.update');
+
+    Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
 
     Route::prefix('Master-data')->group(function () {
         Route::prefix('pos/{id_bengkel}/product')->group(function () {
@@ -258,5 +272,4 @@ Route::prefix('POS')->group(function () {
             Route::delete('delete/{id_produk}', [PosProductController::class, 'destroy'])->name('pos.product.destroy');
         });
     });
-
 });

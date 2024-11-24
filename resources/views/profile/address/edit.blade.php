@@ -17,7 +17,7 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="nama_penerima"
                         value="{{ $address->nama_penerima }}" />
-                    <label class="did-floating-label">Nama Penerima</label>
+                    <label class="did-floating-label">Recipient Name</label>
                 </div>
             </div>
 
@@ -26,7 +26,7 @@
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="telp_penerima"
                         pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                         value="{{ $address->telp_penerima }}" />
-                    <label class="did-floating-label">No Telp Penerima</label>
+                    <label class="did-floating-label">Recipient Phone</label>
                 </div>
             </div>
 
@@ -34,7 +34,7 @@
                 <div class="did-floating-label-content">
                     <textarea class="did-floating-input form-control" name="lokasi_alamat_pengiriman" placeholder=" " rows="4"
                         required style="height: 100px;resize: none">{{ $address->lokasi_alamat_pengiriman }}</textarea>
-                    <label class="did-floating-label">Alamat</label>
+                    <label class="did-floating-label">Address</label>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                     <input class="did-floating-input" type="text" placeholder=" " name="kodepos_alamat_pengiriman"
                         value="{{ $address->kodepos_alamat_pengiriman }}" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Kode Pos</label>
+                    <label class="did-floating-label">Pos Code</label>
                 </div>
             </div>
 
@@ -61,7 +61,7 @@
                     <select name="provinsi" id="provinsi" class="did-floating-select">
                         <option value="{{ $address->provinsi }}" selected>{{ $address->provinsi }}</option>
                     </select>
-                    <label class="did-floating-label">Provinsi</label>
+                    <label class="did-floating-label">Province</label>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
                     <select name="kota" id="kota" class="did-floating-select">
                         <option value="{{ $address->kota }}" selected>{{ $address->kota }}</option>
                     </select>
-                    <label class="did-floating-label">Kota</label>
+                    <label class="did-floating-label">City</label>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
                     <select name="kecamatan" id="kecamatan" class="did-floating-select">
                         <option value="{{ $address->kecamatan }}" selected>{{ $address->kecamatan }}</option>
                     </select>
-                    <label class="did-floating-label">Kecamatan</label>
+                    <label class="did-floating-label">District</label>
                 </div>
             </div>
 
@@ -91,7 +91,7 @@
                         <option value="office">Office</option>
                         <option value="home">Home</option>
                     </select>
-                    <label class="did-floating-label">Status Alamat</label>
+                    <label class="did-floating-label">Address Status</label>
                 </div>
             </div>
 
@@ -154,7 +154,8 @@
                         let provinsiDropdown = $('#provinsi');
                         provinsiDropdown.empty();
                         provinsiDropdown.append(
-                            '<option value="" selected disabled hidden>Pilih Provinsi</option>');
+                            '<option value="" selected disabled hidden>Select Province</option>'
+                            );
 
                         if (response.data && Array.isArray(response.data)) {
                             $.each(response.data, function(index, provinsi) {
@@ -176,7 +177,7 @@
                         let kotaDropdown = $('#kota');
                         kotaDropdown.empty();
                         kotaDropdown.append(
-                            '<option value="" selected disabled hidden>Pilih Kota/Kabupaten</option>'
+                            '<option value="" selected disabled hidden>Select City</option>'
                         );
 
                         if (response.data && Array.isArray(response.data)) {
@@ -190,9 +191,9 @@
                     });
                 } else {
                     $('#kota').empty().append(
-                        '<option value="" selected disabled hidden>Pilih Kota/Kabupaten</option>');
+                        '<option value="" selected disabled hidden>Select City</option>');
                     $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Pilih Kecamatan</option>');
+                        '<option value="" selected disabled hidden>Select District</option>');
                 }
             });
 
@@ -203,7 +204,7 @@
                         let kecamatanDropdown = $('#kecamatan');
                         kecamatanDropdown.empty();
                         kecamatanDropdown.append(
-                            '<option value="" selected disabled hidden>Pilih Kecamatan</option>'
+                            '<option value="" selected disabled hidden>Select District</option>'
                         );
 
                         if (response.data && Array.isArray(response.data)) {
@@ -217,7 +218,7 @@
                     });
                 } else {
                     $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Pilih Kecamatan</option>');
+                        '<option value="" selected disabled hidden>Select District</option>');
                 }
             });
 
