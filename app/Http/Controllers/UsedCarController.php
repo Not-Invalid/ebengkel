@@ -35,7 +35,7 @@ class UsedCarController extends Controller
             ->first();
 
         if (!$mobilList) {
-            return redirect()->route('used-car')->with('error_status', 'Workshop not found.');
+            return redirect()->route('used-car')->with('status_error', 'Workshop not found.');
         }
         // Format nomor telepon pelanggan
         if ($mobilList->pelanggan) {
@@ -48,7 +48,7 @@ class UsedCarController extends Controller
     public function showUsedCar()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add an usedcar');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to add an usedcar');
         }
         $mobilList = UsedCar::with('pelanggan')
             ->where('id_pelanggan', Session::get('id_pelanggan'))
@@ -61,7 +61,7 @@ class UsedCarController extends Controller
     public function create()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add an usedcar.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to add an usedcar.');
         }
 
         $carMerks = MerkMobil::all();
@@ -175,7 +175,7 @@ class UsedCarController extends Controller
             ->first();
 
         if (!$mobil) {
-            return redirect()->route('profile-used-car')->with('error_status', 'Used car not found.');
+            return redirect()->route('profile-used-car')->with('status_error', 'Used car not found.');
         }
 
         $carMerks = MerkMobil::all();
@@ -301,7 +301,7 @@ class UsedCarController extends Controller
     private function deleteFolderIfEmpty($folderPath)
     {
         if (is_dir($folderPath)) {
-            if (count(scandir($folderPath)) == 2) { // Hanya '.' dan '..' yang ada
+            if (count(scandir($folderPath)) == 2) {
                 rmdir($folderPath);
             }
         }
