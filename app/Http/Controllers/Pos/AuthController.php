@@ -87,7 +87,7 @@ class AuthController extends Controller
 
         return redirect()->route('pos.login.show', [
             'id_bengkel' => $request->id_bengkel,
-        ])->with('status', 'Registrasi berhasil. Silakan login.');
+        ])->with('status', 'Registration Successfull. Please login!.');
     }
 
     public function login(Request $request)
@@ -121,7 +121,7 @@ class AuthController extends Controller
 
         return redirect()->route('pos.index', [
             'id_bengkel' => $request->id_bengkel,
-        ])->with('status', 'Login berhasil!');
+        ])->with('status', 'Login Succesfull!');
     }
 
     public function logout(Request $request)
