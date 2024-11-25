@@ -18,6 +18,6 @@ class MessageController extends Controller
         ]);
 
         Message::create($validate);
-        return redirect()->back()->with('status',  'Pesan Anda telah terkirim' );
+        return redirect()->back()->with('status',  'Your message has been sent' );
     }
 }
