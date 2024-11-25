@@ -10,7 +10,6 @@ class BlogController extends Controller
 {
     public function index(Request $request)
     {
-
         $kategoriId = $request->input('kategori');
 
         if ($kategoriId) {
@@ -19,7 +18,6 @@ class BlogController extends Controller
                 ->latest()
                 ->paginate(10);
         } else {
-
             $blogs = Blog::with('kategori')->latest()->paginate(10);
         }
 
@@ -28,11 +26,16 @@ class BlogController extends Controller
         return view('blog.index', compact('blogs', 'kategoriBlogs'));
     }
 
-    public function show($judul)
+
+    public function show($slug)
     {
+        $blog = Blog::where('slug', $slug)->firstOrFail();
 
-        $blog = Blog::where('slug', $judul)->firstOrFail();
+        $relatedArticles = Blog::where('id_kategori', $blog->id_kategori)
+                                ->where('slug', '!=', $slug)
+                                ->take(3)
+                                ->get();
 
-        return view('blog.detail', compact('blog'));
+        return view('blog.detail', compact('blog', 'relatedArticles'));
     }
 }
