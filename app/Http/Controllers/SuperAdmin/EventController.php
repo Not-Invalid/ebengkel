@@ -133,9 +133,9 @@ class EventController extends Controller
 
             $event->save();
 
-            return redirect()->route('event-data')->with('status', 'Event berhasil diperbarui.');
+            return redirect()->route('event-data')->with('status', 'Event has been successfully updated.');
         } catch (\Exception $e) {
-            return redirect()->route('event-data')->with('status_error', 'Terjadi kesalahan dalam memperbarui event.');
+            return redirect()->route('event-data')->with('status_error', 'An error occurred while updating the event.');
         }
     }
 
@@ -149,7 +149,7 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('event-data')->with('status', 'Event berhasil dihapus.');
+        return redirect()->route('event-data')->with('status', 'Event has been successfully deleted.');
     }
 
     public function showPesertaEvent($eventId)
