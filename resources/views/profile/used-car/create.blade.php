@@ -54,19 +54,19 @@
                     <div class="col-md-6">
                         <div class="did-floating-label-content">
                             <input class="did-floating-input" type="text" placeholder=" " id="nama_mobil"
-                                name="nama_mobil" />
-                            <label class="did-floating-label">Nama Mobil</label>
+                                name="nama_mobil" required />
+                            <label class="did-floating-label">Car Name</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="did-floating-label-content">
                             <select class="did-floating-input" id="merk_mobil_id" name="merk_mobil_id" required>
-                                <option value="" disabled selected hidden>Pilih Merk Mobil</option>
+                                <option value="" disabled selected hidden>Select Car Merk</option>
                                 @foreach ($carMerks as $merk)
                                     <option value="{{ $merk->id }}">{{ $merk->nama_merk }}</option>
                                 @endforeach
                             </select>
-                            <label class="did-floating-label">Merk Mobil</label>
+                            <label class="did-floating-label">Car Merk</label>
                         </div>
                     </div>
                 </div>
@@ -75,16 +75,16 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="harga_mobil"
-                            name="harga_mobil" />
-                        <label class="did-floating-label">Harga Mobil</label>
+                        <input class="did-floating-input" type="text" placeholder=" " id="harga_mobil" name="harga_mobil"
+                            required />
+                        <label class="did-floating-label">Car Price</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="plat_nomor"
-                            name="plat_nomor_mobil" />
-                        <label class="did-floating-label">Plat Nomor Mobil</label>
+                            name="plat_nomor_mobil" required />
+                        <label class="did-floating-label">Car License Plate Number</label>
                     </div>
                 </div>
             </div>
@@ -92,53 +92,54 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="tahun_mobil"
-                            name="tahun_mobil" />
-                        <label class="did-floating-label">Tahun Mobil</label>
+                        <input class="did-floating-input" type="text" placeholder=" " id="tahun_mobil" name="tahun_mobil"
+                            required />
+                        <label class="did-floating-label">Car Year</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="km_mobil" name="km_mobil" />
-                        <label class="did-floating-label">KM Mobil</label>
+                        <input class="did-floating-input" type="text" placeholder=" " id="km_mobil" name="km_mobil"
+                            required />
+                        <label class="did-floating-label">KM Car</label>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nomor_rangka_mobil"
                             name="nomor_rangka_mobil" />
-                        <label class="did-floating-label">Nomor Rangka Mobil</label>
+                        <label class="did-floating-label">Car Chassis Number</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nomor_mesin"
                             name="nomor_mesin_mobil" />
-                        <label class="did-floating-label">Nomor Mesin Mobil</label>
+                        <label class="did-floating-label">Car Engine Number </label>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="kapasitas_mesin_mobil"
-                            name="kapasitas_mesin_mobil" />
-                        <label class="did-floating-label">Kapasitas Mesin Mobil</label>
+                            name="kapasitas_mesin_mobil" required />
+                        <label class="did-floating-label">Car Engine Capacity</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <select class="did-floating-input" id="bahan_bakar" name="bahan_bakar_mobil" required>
-                            <option value="" disabled selected hidden>Pilih bahan bakar</option>
+                            <option value="" disabled selected hidden>Select Fuel Type</option>
                             <option value="bensin">Bensin</option>
                             <option value="diesel">Diesel</option>
                             <option value="listrik">Listrik</option>
                         </select>
-                        <label class="did-floating-label">Bahan Bakar Mobil</label>
+                        <label class="did-floating-label">Car Fuel Type </label>
                     </div>
 
                 </div>
@@ -148,17 +149,17 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <select class="did-floating-input" id="transmisi_mobil" name="jenis_transmisi_mobil" required>
-                            <option value="" disabled selected hidden>Pilih transmisi</option>
+                            <option value="" disabled selected hidden>Select Transmission</option>
                             <option value="matic">Matic</option>
                             <option value="manual">Manual</option>
                         </select>
-                        <label class="did-floating-label">Jenis Transmisi Mobil</label>
+                        <label class="did-floating-label">Car Transmission Type</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
-                        <select class="did-floating-input" id="bulan_pajak_mobil" name="bulan_pajak_mobil">
-                            <option value="" disabled selected>Pilih Bulan Pajak</option>
+                        <select class="did-floating-input" id="bulan_pajak_mobil" name="bulan_pajak_mobil" required>
+                            <option value="" disabled selected>Select Tax Month</option>
                             <option value="Januari">Januari</option>
                             <option value="Februari">Februari</option>
                             <option value="Maret">Maret</option>
@@ -172,7 +173,8 @@
                             <option value="November">November</option>
                             <option value="Desember">Desember</option>
                         </select>
-                        <label class="did-floating-label">Bulan Pajak Mobil</label>
+                        <label class="did-floating-label">Car Tax Month
+                        </label>
                     </div>
                 </div>
             </div>
@@ -181,30 +183,30 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="tahun_pajak_mobil"
-                            name="tahun_pajak_mobil" />
-                        <label class="did-floating-label">Tahun Pajak Mobil</label>
+                            name="tahun_pajak_mobil" required />
+                        <label class="did-floating-label">Car Tax Year</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="date" placeholder=" " id="terakhir_pajak_mobil"
-                            name="terakhir_pajak_mobil" />
-                        <label class="did-floating-label">Terakhir Pajak Mobil</label>
+                            name="terakhir_pajak_mobil" required />
+                        <label class="did-floating-label">Last Car Tax</label>
                     </div>
                 </div>
-                <div class="col-md-12">
+                {{-- <div class="col-md-12">
                     <div class="did-floating-label-content">
                         <select class="did-floating-input" id="pemakaian" name="pemakaian" required>
-                            <option value="" disabled selected hidden>Pilih Tahun Pemakaian</option>
-                            <option value="Di Bawah 1  Tahun">Di Bawah 1 Tahun</option>
-                            <option value="Di Bawah 3  Tahun">Di Bawah 3 Tahun</option>
-                            <option value="Di Bawah 5  Tahun">Di Bawah 5 Tahun</option>
-                            <option value="Di Bawah 7  Tahun">Di Bawah 7 Tahun</option>
-                            <option value="Di Bawah 10 Tahun">Di Bawah 10 Tahun</option>
+                            <option value="" disabled selected hidden>Select Car Year</option>
+                            <option value="Under 1 Year">Under 1 Year</option>
+                            <option value="Under 3 Years">Under 3 Years</option>
+                            <option value="Under 5 Years">Under 5 Years</option>
+                            <option value="Under 7 Years">Under 7 Years</option>
+                            <option value="Under 10 Years">Under 10 Years</option>
                         </select>
-                        <label class="did-floating-label">Tahun Pemakaian</label>
+                        <label class="did-floating-label">Car Year</label>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <div class="row mb-3">
@@ -212,20 +214,20 @@
                     <div class="did-floating-label-content">
                         <textarea class="did-floating-input" placeholder=" " id="keterangan_mobil" name="keterangan_mobil"
                             style="resize: none; height:100px;"></textarea>
-                        <label class="did-floating-label">Keterangan Mobil</label>
+                        <label class="did-floating-label">Car Decription</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <textarea class="did-floating-input" placeholder=" " id="lokasi_mobil" name="lokasi_mobil"
-                            style="resize: none; height:100px;"></textarea>
-                        <label class="did-floating-label">Lokasi Mobil</label>
+                            style="resize: none; height:100px;" required></textarea>
+                        <label class="did-floating-label">Car Location</label>
                     </div>
                 </div>
             </div>
 
             <div class="form-group mb-3">
-                <label for="foto_mobil" class="mb-2">Foto Mobil 1</label>
+                <label for="foto_mobil" class="mb-2">Car Foto 1</label>
 
                 <!-- Foto Mobil 1 -->
                 <div class="col-md-12">
@@ -243,13 +245,13 @@
                     </label>
                     <input type="file" class="file-input" name="file_foto_mobil_1" id="file_foto_mobil_1"
                         onchange="previewImage('file_foto_mobil_1', 'foto1Preview')" style="display: none;"
-                        accept="image/*">
+                        accept="image/*" required>
                 </div>
 
                 <!-- Foto Mobil 2 -->
                 <div class="col-md-12">
                     <label for="file_foto_mobil_2" class="upload-label">
-                        <label for="foto_mobil_2" class="mb-2 mt-3">Foto Mobil 2</label>
+                        <label for="foto_mobil_2" class="mb-2 mt-3">Car Foto 2</label>
 
                         <div class="upload-box">
                             <div class="preview-container d-flex justify-content-center"
@@ -262,13 +264,13 @@
                     </label>
                     <input type="file" class="file-input" name="file_foto_mobil_2" id="file_foto_mobil_2"
                         onchange="previewImage('file_foto_mobil_2', 'foto2Preview')" style="display: none;"
-                        accept="image/*">
+                        accept="image/*" required>
                 </div>
 
                 <!-- Foto Mobil 3 -->
                 <div class="col-md-12">
                     <label for="file_foto_mobil_3" class="upload-label">
-                        <label for="foto_mobil_3" class="mb-2 mt-3">Foto Mobil 3</label>
+                        <label for="foto_mobil_3" class="mb-2 mt-3">Car Foto 3</label>
 
                         <div class="upload-box">
                             <div class="preview-container d-flex justify-content-center"
@@ -281,13 +283,13 @@
                     </label>
                     <input type="file" class="file-input" name="file_foto_mobil_3" id="file_foto_mobil_3"
                         onchange="previewImage('file_foto_mobil_3', 'foto3Preview')" style="display: none;"
-                        accept="image/*">
+                        accept="image/*" required>
                 </div>
 
                 <!-- Foto Mobil 4 -->
                 <div class="col-md-12">
                     <label for="file_foto_mobil_4" class="upload-label">
-                        <label for="foto_mobil_4" class="mb-2 mt-3">Foto Mobil 4</label>
+                        <label for="foto_mobil_4" class="mb-2 mt-3">Car Foto 4</label>
                         <div class="upload-box">
                             <div class="preview-container d-flex justify-content-center"
                                 onclick="triggerFileInput('file_foto_mobil_4')">
@@ -299,13 +301,13 @@
                     </label>
                     <input type="file" class="file-input" name="file_foto_mobil_4" id="file_foto_mobil_4"
                         onchange="previewImage('file_foto_mobil_4', 'foto4Preview')" style="display: none;"
-                        accept="image/*">
+                        accept="image/*" required>
                 </div>
 
                 <!-- Foto Mobil 5 -->
                 <div class="col-md-12">
                     <label for="file_foto_mobil_5" class="upload-label">
-                        <label for="foto_mobil_5" class="mb-2 mt-3">Foto Mobil 5</label>
+                        <label for="foto_mobil_5" class="mb-2 mt-3">Car Foto 5</label>
 
                         <div class="upload-box">
                             <div class="preview-container d-flex justify-content-center"
@@ -318,18 +320,16 @@
                     </label>
                     <input type="file" class="file-input" name="file_foto_mobil_5" id="file_foto_mobil_5"
                         onchange="previewImage('file_foto_mobil_5', 'foto5Preview')" style="display: none;"
-                        accept="image/*">
+                        accept="image/*" required>
                 </div>
             </div>
 
             <div class="d-flex justify-content-start mt-3">
-                <!-- Tombol Simpan -->
                 <button type="submit" class="btn btn-custom-icon me-2">
-                    Simpan
+                    Save
                 </button>
 
-                <!-- Tombol Back yang berada di sebelah kanan -->
-                <a href="{{ route('profile-used-car') }}" class="btn btn-danger">Back</a>
+                <a href="{{ route('profile-used-car') }}" class="btn btn-cancel">Cancel</a>
             </div>
         </form>
     </div>
