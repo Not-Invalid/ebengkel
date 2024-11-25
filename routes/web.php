@@ -56,12 +56,12 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::get('cart', [CartController::class, 'showCart'])->name('cart');
     Route::post('/add-to-cart', [ProductSparePartController::class, 'addToCart'])->middleware('auth');
     Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
-    Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);    
+    Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);
     Route::post('/cart/remove/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.remove');
     Route::post('checkout/', [CartController::class, 'showPayment'])->name('payment');
 });
 
-Route::prefix('superadmin')->group(function () {
+Route::prefix('superadmin')->middleware(['auth:superadmin', \App\Http\Middleware\SessionTimeout::class])->group(function () {
     Route::get('/', [SuperAdminAuthController::class, 'showLogin'])->name('login-admin');
     Route::post('login', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
     Route::post('logout/admin', [SuperAdminAuthController::class, 'logout'])->name('logout-admin');
