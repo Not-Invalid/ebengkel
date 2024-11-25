@@ -49,7 +49,7 @@
 
         <div class="d-flex justify-content-end mt-4">
             <nav aria-label="Page navigation">
-                <ul class="pagination">
+                <ul class="pagination gap-2">
                     @if ($blogs->onFirstPage())
                         <li class="page-item disabled">
                             <span class="page-link bg-light border-0 rounded-pill"><i class="fas fa-chevron-left"></i></span>
