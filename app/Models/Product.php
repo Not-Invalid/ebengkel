@@ -42,6 +42,11 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class, 'id_produk');
+    }
+
     public function bengkel()
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');
