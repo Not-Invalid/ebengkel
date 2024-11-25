@@ -22,6 +22,9 @@ class AuthController extends Controller
 
         if (Auth::guard('superadmin')->attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
+
+            session(['expires_at' => now()->addMinutes((int) config('session.lifetime'))]);
+
             return redirect()->route('superadmin')->with('status', 'Login successful!');
         }
 
@@ -29,6 +32,7 @@ class AuthController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->with('status_error', 'Login failed. Please check your credentials.');
     }
+
 
     public function logout()
     {
