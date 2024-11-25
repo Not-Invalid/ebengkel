@@ -17,7 +17,7 @@ class ProductController extends Controller
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found!.');
         }
 
         if (!Auth::guard('pegawai')->check()) {
@@ -43,7 +43,7 @@ class ProductController extends Controller
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found!.');
         }
 
         $categories = KategoriSparePart::all();
@@ -81,7 +81,21 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('pos.product.index', $id_bengkel)->with('status', 'Produk berhasil ditambahkan.');
+        return redirect()->route('pos.product.index', $id_bengkel)->with('status', 'Product successfully added!.');
+    }
+
+    public function show($id_bengkel, $id_produk)
+    {
+        $bengkel = Bengkel::find($id_bengkel);
+
+        if (!$bengkel) {
+            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found!.');
+        }
+
+        $product = Product::find($id_produk);
+        $categories = KategoriSparePart::all();
+
+        return view('pos.masterdata-product.show', compact('bengkel', 'product', 'categories'));
     }
 
     public function edit($id_bengkel, $id_produk)
@@ -89,7 +103,7 @@ class ProductController extends Controller
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found!.');
         }
 
         $product = Product::findOrFail($id_produk);
@@ -120,6 +134,10 @@ class ProductController extends Controller
         $product->stok_produk = $request->stok_produk;
 
         if ($request->hasFile('foto_produk')) {
+
+            if ($product->foto_produk && file_exists(public_path($product->foto_produk))) {
+                unlink(public_path($product->foto_produk));
+            }
             $imageName = 'foto_produk_' . now()->format('Ymd_His') . '.' . $request->foto_produk->extension();
             $request->foto_produk->move(public_path('assets/images/products'), $imageName);
             $product->foto_produk = 'assets/images/products/' . $imageName;
@@ -127,20 +145,17 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('pos.product.index', ['id_bengkel' => $id_bengkel])->with('status', 'Produk berhasil diperbarui.');
+        return redirect()->route('pos.product.index', ['id_bengkel' => $id_bengkel])->with('status', 'Product successfully updated!');
     }
 
     public function destroy($id_bengkel, $id_produk)
     {
         $product = Product::findOrFail($id_produk);
-
-        if ($product) {
-            $product->delete_produk = 'Y';
-            $product->save();
-            return redirect()->route('pos.product.index', $id_bengkel)->with('status', 'Produk berhasil dihapus.');
+        if ($product->foto_produk && file_exists(public_path($product->foto_produk))) {
+            unlink(public_path($product->foto_produk));
         }
-
-        return back()->with('error_status', 'Produk tidak ditemukan.');
+        $product->delete();
+        return redirect()->route('pos.product.index', $id_bengkel)->with('status', 'Product Successfully deleted!');
     }
 
 }
