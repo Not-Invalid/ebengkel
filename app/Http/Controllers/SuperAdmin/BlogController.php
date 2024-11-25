@@ -66,7 +66,7 @@ class BlogController extends Controller
         $blog->tanggal_post = now();
         $blog->save();
 
-        return redirect()->route('blog-admin')->with('status', 'Blog berhasil ditambahkan.');
+        return redirect()->route('blog-admin')->with('status', 'Blog has been successfully created.');
     }
 
     public function edit($id)
@@ -128,7 +128,7 @@ class BlogController extends Controller
         $blog->foto_cover = $coverPath;
         $blog->save();
 
-        return redirect()->route('blog-admin')->with('status', 'Blog berhasil diperbarui.');
+        return redirect()->route('blog-admin')->with('status', 'Blog has been successfully updated.');
     }
 
     public function delete($id)
@@ -141,7 +141,7 @@ class BlogController extends Controller
 
         $blog->delete();
 
-        return redirect()->route('blog-admin')->with('success', 'Blog berhasil dihapus.');
+        return redirect()->route('blog-admin')->with('status', 'Blog has been successfully deleted.');
     }
 
 
