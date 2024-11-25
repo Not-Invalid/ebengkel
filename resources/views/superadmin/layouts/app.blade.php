@@ -70,55 +70,11 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="sidebar-item has-sub">
-                            <a href="#" class="sidebar-link">
-                                <i class="fas fa-database"></i>
-                                <span>Master Data</span>
+                        <li class="sidebar-item {{ request()->routeIs('inbox') ? 'active' : '' }}">
+                            <a href="{{ route('inbox') }}" class="sidebar-link">
+                                <i class="fas fa-inbox"></i>
+                                <span>Inbox</span>
                             </a>
-                            <ul class="submenu">
-                                <li class="submenu-item has-sub">
-                                    <a href="#" class="submenu-link">
-                                        <i class="fas fa-list"></i>
-                                        Category
-                                    </a>
-                                    <ul class="submenu submenu-level-2">
-                                        <li class="submenu-item">
-                                            <a href="{{ route('support-center-category') }}"
-                                                class="submenu-link">Support Center</a>
-                                        </li>
-                                        <li class="submenu-item">
-                                            <a href="{{ route('product-sparepart-category') }}"
-                                                class="submenu-link">Product & Spare Parts</a>
-                                        </li>
-                                        <li class="submenu-item">
-                                            <a href="{{ route('blog-category') }}" class="submenu-link">Blog</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="#" class="submenu-link">
-                                        <i class="fas fa-tags"></i>
-                                        Merk
-                                    </a>
-                                    <ul class="submenu submenu-level-2">
-                                        <li class="submenu-item">
-                                            <a href="{{ route('merk-mobil') }}" class="submenu-link">Mobil</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="{{ route('workshop-data') }}" class="sidebar-link">
-                                        <i class="fas fa-wrench" style="color: #25396f !important;"></i>
-                                        Workshop
-                                    </a>
-                                </li>
-                                <li class="submenu-item has-sub">
-                                    <a href="{{ route('inbox') }}" class="sidebar-link">
-                                        <i class="fas fa-inbox" style="color: #25396f !important;"></i>
-                                        Inbox
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="sidebar-item {{ request()->routeIs('blog-admin') ? 'active' : '' }}">
                             <a href="{{ route('blog-admin') }}" class="sidebar-link">
@@ -144,6 +100,43 @@
                                 <span>Profile</span>
                             </a>
                         </li>
+                    </ul>
+                    <ul class="menu">
+                        <li class="sidebar-title">Master Data</li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="fas fa-list"></i>
+                                <span>Category</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item has-sub">
+                                    <a href="{{ route('support-center-category') }}" class="sidebar-link">Support Center</a>
+                                </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="{{ route('product-sparepart-category') }}" class="sidebar-link">Product & Spare Parts</a>
+                                </li>
+                                <li class="submenu-item has-sub">
+                                    <a href="{{ route('blog-category') }}" class="sidebar-link">Blog</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class="sidebar-link">
+                                <i class="fas fa-tags"></i>
+                                <span>Brand</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item has-sub">
+                                    <a href="{{ route('merk-mobil') }}" class="sidebar-link">Mobil</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('workshop-data') ? 'active' : '' }}">
+                            <a href="{{ route('workshop-data') }}" class="sidebar-link">
+                                <i class="fas fa-building"></i>
+                                <span>Workshop</span>
+                            </a>
+                        </li>
                         @if (Auth::user()->role === 'Administrator')
                             <li class="sidebar-item has-sub">
                                 <a href="#" class="sidebar-link">
@@ -151,18 +144,11 @@
                                     <span>Management Users</span>
                                 </a>
                                 <ul class="submenu">
-                                    <li
-                                        class="submenu-item has-sub {{ request()->routeIs('data-pelanggan') ? 'active' : '' }}">
-                                        <a href="{{ route('data-pelanggan') }}" class="sidebar-link">
-                                            <i class="fas fa-users" style="color: #25396f !important;"></i>
-                                            Data Pelanggan
-                                        </a>
+                                    <li class="submenu-item has-sub">
+                                        <a href="{{ route('support-center-category') }}" class="sidebar-link">Data Pelanggan</a>
                                     </li>
                                     <li class="submenu-item has-sub">
-                                        <a href="{{ route('data-staff-admin') }}" class="sidebar-link">
-                                            <i class="fas fa-user-tie" style="color: #25396f !important;"></i>
-                                            Data Staff Admin
-                                        </a>
+                                        <a href="{{ route('product-sparepart-category') }}" class="sidebar-link">Data Staff Admin</a>
                                     </li>
                                 </ul>
                             </li>
@@ -177,10 +163,7 @@
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item has-sub">
-                                    <a href="{{ route('change-password') }}" class="sidebar-link">
-                                        <i class="fas fa-user-lock" style="color: #25396f !important;"></i>
-                                        Change Password
-                                    </a>
+                                    <a href="{{ route('change-password') }}" class="sidebar-link">Change Password</a>
                                 </li>
                             </ul>
                         </li>
