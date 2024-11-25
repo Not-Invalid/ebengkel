@@ -27,7 +27,7 @@ class MerkMobilController extends Controller
 
         MerkMobil::create($request->all());
 
-        return redirect()->route('merk-mobil')->with('status', 'Merk Mobil berhasil ditambahkan.');
+        return redirect()->route('merk-mobil')->with('status', 'Car Brand has been successfully created.');
     }
 
     public function edit($id)
@@ -45,7 +45,7 @@ class MerkMobilController extends Controller
         $merk = MerkMobil::findOrFail($id);
         $merk->update($request->all());
 
-        return redirect()->route('merk-mobil')->with('status', 'Merk Mobil berhasil diperbarui.');
+        return redirect()->route('merk-mobil')->with('status', 'Car Brand has been successfully updated.');
     }
 
     public function delete($id)
@@ -53,6 +53,6 @@ class MerkMobilController extends Controller
         $merk = MerkMobil::findOrFail($id);
         $merk->delete();
 
-        return redirect()->route('merk-mobil')->with('status', 'Merk Mobil berhasil dihapus.');
+        return redirect()->route('merk-mobil')->with('status', 'Car Brand has been successfully deleted.');
     }
 }
