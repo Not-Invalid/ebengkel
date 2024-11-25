@@ -30,7 +30,7 @@ class KategoriBlogController extends Controller
             'nama_kategori' => $request->nama_kategori,
         ]);
 
-        return redirect()->route('blog-category')->with('status', 'Kategori Blog berhasil ditambahkan.');
+        return redirect()->route('blog-category')->with('status', 'Blog Category has been successfully created.');
     }
 
     public function edit($id)
@@ -51,7 +51,7 @@ class KategoriBlogController extends Controller
         $category->nama_kategori = $request->nama_kategori;
         $category->save();
 
-        return redirect()->route('blog-category')->with('status', 'Kategori Blog berhasil diupdate.');
+        return redirect()->route('blog-category')->with('status', 'Blog Category has been successfully updated.');
     }
 
     public function delete($id)
@@ -59,6 +59,6 @@ class KategoriBlogController extends Controller
         $category = KategoriBlog::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('blog-category')->with('status', 'Kategori Blog berhasil dihapus.');
+        return redirect()->route('blog-category')->with('status', 'Blog Category has been successfully deleted.');
     }
 }
