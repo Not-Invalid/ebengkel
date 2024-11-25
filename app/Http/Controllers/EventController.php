@@ -14,7 +14,6 @@ class EventController extends Controller
     {
         $query = Event::query();
 
-        // Implementasi pencarian
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where('nama_event', 'LIKE', '%' . $search . '%')
