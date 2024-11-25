@@ -5,7 +5,7 @@
 @stop
 
 @php
-    $header = 'Edit Product';
+    $header = 'Detail Product';
 @endphp
 <style>
     .image-preview {
@@ -41,7 +41,6 @@
     }
 
     .upload-box::after {
-        content: 'Click to upload';
         display: block;
         font-size: 14px;
         color: #999;
@@ -50,30 +49,19 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Edit Product
-                <span>
-                    <br>
-                    <small class="text-danger">* Indicated requred fields</small>
-                </span>
-            </h4>
+            <h4>Detail Product</h4>
         </div>
         <div class="card-body">
-            <form
-                action="{{ route('pos.product.update', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
-                method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
-
+            <form>
                 <div class="form-group">
-                    <label for="nama_produk">Product Name <span class="text-danger">*</span></label>
+                    <label for="nama_produk">Product Name</label>
                     <input type="text" class="form-control" name="nama_produk"
-                        value="{{ old('nama_produk', $product->nama_produk) }}" required>
+                        value="{{ old('nama_produk', $product->nama_produk) }}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_kategori_spare_part">Product Type <span class="text-danger">*</span></label>
-                    <select name="id_kategori_spare_part" class="form-control" required>
+                    <label for="id_kategori_spare_part">Product Type</label>
+                    <select name="id_kategori_spare_part" class="form-control" disabled>
                         <option value="" disabled>Select Type</option>
                         @foreach ($categories as $kategori)
                             <option value="{{ $kategori->id_kategori_spare_part }}"
@@ -85,41 +73,40 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="kualitas_produk">Product Quality <span class="text-danger">*</span></label>
-                    <select name="kualitas_produk" class="form-control" required>
+                    <label for="kualitas_produk">Product Quality</label>
+                    <select name="kualitas_produk" class="form-control" disabled>
                         <option value="original" @if ($product->kualitas_produk == 'original') selected @endif>Original</option>
                         <option value="aftermarket" @if ($product->kualitas_produk == 'aftermarket') selected @endif>Aftermarket</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="merk_produk">Product Merk <span class="text-danger">*</span></label>
+                    <label for="merk_produk">Product Merk</label>
                     <input type="text" class="form-control" name="merk_produk"
-                        value="{{ old('merk_produk', $product->merk_produk) }}" required>
+                        value="{{ old('merk_produk', $product->merk_produk) }}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label for="stok_produk">Product Stock <span class="text-danger">*</span></label>
+                    <label for="stok_produk">Product Stock</label>
                     <input type="number" class="form-control" name="stok_produk"
-                        value="{{ old('stok_produk', $product->stok_produk) }}" required>
+                        value="{{ old('stok_produk', $product->stok_produk) }}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label for="harga_produk">Product Price <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="harga_produk"
-                        value="{{ old('harga_produk', $product->harga_produk) }}" required>
+                    <label for="harga_produk">Product Price</label>
+                    <input type="text" class="form-control" name="harga_produk" id="harga_produk"
+                        value="{{ old('harga_produk', $product->harga_produk) }}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label for="keterangan_produk">Description </label>
-                    <textarea class="form-control" name="keterangan_produk">{{ old('keterangan_produk', $product->keterangan_produk) }}</textarea>
+                    <label for="keterangan_produk">Description</label>
+                    <textarea class="form-control" name="keterangan_produk" readonly>{{ old('keterangan_produk', $product->keterangan_produk) }}</textarea>
                 </div>
 
                 <div class="form-group mb-3">
                     <div class="upload-box">
-                        <label for="foto_produk" class="upload-label">Product Photo <span
-                                class="text-danger">*</span></label>
-                        <input type="file" class="file-input" name="foto_produk" id="foto_produk"
+                        <label for="foto_produk" class="upload-label">Product Photo</label>
+                        <input type="file" class="file-input" name="foto_produk" id="foto_produk" readonly
                             onchange="previewImage('foto_produk', 'product')">
                         <div class="preview-container d-flex justify-content-center">
                             <img id="product" src="{{ url($product->foto_produk) }}" alt="product Photo Preview"
@@ -127,9 +114,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-custom-icon">Save</button>
+                <div class="d-flex justify-content-end">
                     <a href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
                         class="btn btn-cancel">Back</a>
                 </div>
@@ -155,5 +140,18 @@
                 preview.src = '';
             }
         }
+    </script>
+    <script>
+        let hargaProduk = document.getElementById('harga_produk').value;
+
+        function formatRupiah(angka) {
+            var rupiah = '';
+            var angkarev = angka.toString().split('').reverse().join('');
+            for (var i = 0; i < angkarev.length; i++)
+                if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+            return 'Rp ' + rupiah.split('', rupiah.length - 1).reverse().join('');
+        }
+
+        document.getElementById('harga_produk').value = formatRupiah(hargaProduk);
     </script>
 @endsection

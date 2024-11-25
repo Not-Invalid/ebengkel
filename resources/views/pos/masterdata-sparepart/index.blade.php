@@ -3,7 +3,7 @@
     eBengkelku | POS
 @stop
 @php
-    $header = 'Master Product';
+    $header = 'Master Spare Parts';
 @endphp
 @section('content')
 
@@ -21,52 +21,51 @@
         </div>
 
         <div class="d-flex justify-end mb-4 mt-4">
-            <a href="{{ route('pos.product.create', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+            <a href="{{ route('pos.sparepart.create', ['id_bengkel' => $bengkel->id_bengkel]) }}"
                 class="btn btn-info text-white px-4 py-2 mx-2">Add Product</a>
         </div>
     </div>
+
 
     <div class="table-responsive bg-white rounded shadow">
         <table class="table table-bordered table-striped text-center">
             <thead class="bg-light-grey text-white">
                 <tr>
                     <th class="text-center">No</th>
-                    <th class="text-center">Product Name</th>
-                    <th class="text-center">Product Merk</th>
-                    <th class="text-center">Product Photo</th>
-                    <th class="text-center">Product Price</th>
+                    <th class="text-center">Sparepart Name</th>
+                    <th class="text-center">Sparepart Merk</th>
+                    <th class="text-center">Sparepart Photo</th>
+                    <th class="text-center">Sparepart Price</th>
                     <th class="text-center">Action</th>
                 </tr>
             </thead>
             <tbody id="staff-table-body">
-                @if ($products->isEmpty())
+                @if ($sparepart->isEmpty())
                     <tr>
                         <td colspan="6" class="text-center">Data Not Found</td>
                     </tr>
                 @else
-                    @foreach ($products as $index => $product)
+                    @foreach ($sparepart as $index => $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $product->nama_produk }}</td>
-                            <td>{{ $product->merk_produk }}</td>
+                            <td>{{ $item->nama_spare_part }}</td>
+                            <td>{{ $item->merk_spare_part }}</td>
                             <td>
-                                <img src="{{ isset($product->foto_produk) ? url($product->foto_produk) : asset('assets/images/components/image.png') }}"
+                                <img src="{{ isset($item->foto_spare_part) ? url($item->foto_spare_part) : asset('assets/images/components/image.png') }}"
                                     alt="Product Image" width="50" height="50" class="rounded">
                             </td>
-                            <td>Rp{{ number_format($product->harga_produk, 0, ',', '.') }}</td>
+                            <td>Rp{{ number_format($item->harga_spare_part, 0, ',', '.') }}</td>
                             <td>
-                                <a href="{{ route('pos.product.show', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
+                                <a href="{{ route('pos.sparepart.show', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
                                     class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
-
-                                <a href="{{ route('pos.product.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
+                                <a href="{{ route('pos.sparepart.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
                                     class="btn btn-sm btn-warning"><i class="fas fa-pen-to-square"></i></a>
-
                                 <a href="#" class="btn btn-sm btn-danger"
-                                    onclick="confirmDelete('{{ $product->id_produk }}', '{{ $bengkel->id_bengkel }}', '{{ $product->id_produk }}')">
+                                    onclick="confirmDelete('{{ $item->id_spare_part }}', '{{ $bengkel->id_bengkel }}', '{{ $item->id_spare_part }}')">
                                     <i class="fas fa-trash"></i>
                                 </a>
-                                <form id="delete-form-{{ $product->id_produk }}"
-                                    action="{{ route('pos.product.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
+                                <form id="delete-form-{{ $item->id_spare_part }}"
+                                    action="{{ route('pos.sparepart.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
                                     method="POST" style="display: none;">
                                     @csrf
                                     @method('DELETE')
@@ -82,28 +81,28 @@
     <div class="d-flex justify-content-end mt-4">
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                @if ($products->onFirstPage())
+                @if ($sparepart->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
                     </li>
                 @else
                     <li class="page-item">
-                        <a href="{{ $products->previousPageUrl() }}" class="page-link"><i
+                        <a href="{{ $sparepart->previousPageUrl() }}" class="page-link"><i
                                 class="fa-solid fa-chevron-left"></i></a>
                     </li>
                 @endif
 
-                @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-                    @if ($page == $products->currentPage())
+                @foreach ($sparepart->getUrlRange(1, $sparepart->lastPage()) as $page => $url)
+                    @if ($page == $sparepart->currentPage())
                         <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
                     @else
                         <li class="page-item"><a href="{{ $url }}" class="page-link">{{ $page }}</a></li>
                     @endif
                 @endforeach
 
-                @if ($products->hasMorePages())
+                @if ($sparepart->hasMorePages())
                     <li class="page-item">
-                        <a href="{{ $products->nextPageUrl() }}" class="page-link"><i
+                        <a href="{{ $sparepart->nextPageUrl() }}" class="page-link"><i
                                 class="fa-solid fa-chevron-right"></i></a>
                     </li>
                 @else
@@ -115,14 +114,14 @@
         </nav>
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Real-time filter dropdown for number of records per page
         document.getElementById('perPage').addEventListener('change', function() {
             const perPageValue = this.value;
             const url = new URL(window.location.href);
-            url.searchParams.set('per_page', perPageValue); // Set the per_page parameter
-            window.location.href = url; // Reload page with new query
+            url.searchParams.set('per_page', perPageValue);
+            window.location.href = url;
         });
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -155,7 +154,7 @@
         });
     </script>
     <script>
-        function confirmDelete(productId, bengkelId, productId) {
+        function confirmDelete(sparepartId, bengkelId, sparepartId) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -172,7 +171,7 @@
                 },
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + productId).submit();
+                    document.getElementById('delete-form-' + sparepartId).submit();
                 }
             });
         }
