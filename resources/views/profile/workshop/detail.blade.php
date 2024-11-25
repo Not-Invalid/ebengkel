@@ -147,7 +147,7 @@
     </div>
     <div class="row">
       <div class="col-md-8">
-        <div class="card info-event">
+        <div class="card info-event mb-4">
           <div class="card-body">
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-calendar text-primary me-2'></i>
@@ -161,7 +161,7 @@
             </div>
             <div class="d-flex align-items-center mb-3">
               <i class='bx bx-map text-primary me-2'></i>
-              <span><span class="title-desc fw-semibold">Alamat :</span>
+              <span><span class="title-desc fw-semibold">Address :</span>
                 {{ $bengkel->alamat_bengkel }}</span>
             </div>
             <hr>
@@ -169,7 +169,7 @@
             <div class="row d-flex justify-content-between">
               <div class="col-lg-6 mb-3">
                 <div>
-                  <span class="title-desc fw-semibold my-2">Service Available</span>
+                  <span class="title-desc fw-semibold">Service Available:</span>
                   @foreach ($serviceAvailable as $service)
                     <p><i class='bx bx-check-circle align-icon fs-5 m-0'
                         style="color: var(--main-green)"></i>{{ $service }}</p>
@@ -178,7 +178,7 @@
               </div>
               <div class="col-lg-6">
                 <div>
-                  <span class="title-desc fw-semibold my-2">Payment Methods</span>
+                  <span class="title-desc fw-semibold">Payment Methods:</span>
                   @foreach ($paymentMethods as $method)
                     <p><i class='bx bx-check-circle align-icon fs-5 m-0' style="color: var(--main-green)"></i>
                       {{ $method }}
@@ -194,7 +194,7 @@
       <div class="col-md-4">
         <div class="card info-event mb-4">
           <div class="card-header title-desc fw-semibold">
-            Hubungi Kami
+            Contact Us
           </div>
           <div class="card-body">
             <p><i class='bx bxl-whatsapp align-icon me-2' style="color: var(--main-green)"></i>
@@ -206,8 +206,8 @@
           </div>
         </div>
         <a href="{{ route('pos.redirect', ['id_bengkel' => $bengkel->id_bengkel]) }}" target="_blank"
-            class="btn btn-custom-2 w-100">
-            Hubungkan Ke POS
+          class="btn btn-custom-2 w-100">
+          Connect to POS
         </a>
       </div>
     </div>

@@ -7,23 +7,45 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
+    <title>@yield('title')</title>
+
+    {{-- Bootstrap --}}
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/bootstrap/css/bootstrap.min.css') }}" />
 
     {{-- Toastr CSS --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
         integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    {{-- Boxicons --}}
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    {{-- Font awesome --}}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     {{-- Aos --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
-    {{-- Custom styles --}}
+    {{-- Css libraries --}}
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/jqvmap/dist/jqvmap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/weather-icon/css/weather-icons.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/weather-icon/css/weather-icons-wind.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/summernote/summernote-bs4.css') }}" />
+
+    {{-- Template and Custom css --}}
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ asset('template_pos/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('template_pos/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('template_pos/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('template_pos/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('template_pos/css/components.css') }}" />
+    <!-- Start GA -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+
+        gtag("config", "UA-94034622-3");
+    </script>
+    <!-- /END GA -->
 
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
@@ -38,12 +60,18 @@
             background-color: #bd362f !important;
             color: #fff !important;
         }
+
+        #toast-container>.toast:before {
+            font-family: FontAwesome;
+            content: "\f00c";
+            margin-right: 10px;
+        }
     </style>
     <title>@yield('title')</title>
-
 </head>
 
 <body class="@yield('body-class')">
+
     {{-- Loader --}}
     <div id="loader">
         <div id="center">
@@ -59,82 +87,146 @@
 
     {{-- Sidebar --}}
     <div id="app">
-        <div id="sidebar" class="active">
-            <div class="sidebar-wrapper active">
-                <div class="sidebar-header">
-                    <img src="{{ asset('assets/images/logo/logo_side.png') }}" alt="" srcset="" />
-                </div>
-                <div class="sidebar-menu">
-                    <ul class="menu">
-                        <li class="sidebar-title">Main Menu</li>
-                        <li class="sidebar-item">
-                            <a href="index.html" class="sidebar-link">
-                                <i data-feather="home" width="20"></i>
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg main-navbar">
+                <form class="form-inline mr-auto">
+                    <ul class="navbar-nav mr-3">
+                        <li>
+                            <a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i
+                                    class="fas fa-bars"></i></a>
+                        </li>
+                    </ul>
+                </form>
+                <ul class="navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown"
+                            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                            <img alt="image"
+                                src="{{ Auth::guard('pegawai')->user()->foto_pegawai ?? asset('assets/images/components/avatar.png') }}"
+                                class="rounded-circle mr-1">
+                            <div class="d-sm-none d-lg-inline-block">
+                                Hi, {{ Auth::guard('pegawai')->user()->nama_pegawai ?? 'Guest' }}
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="dropdown-item has-icon">
+                                <i class="far fa-user"></i> Profile
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <form id="logout-form" action="{{ route('pos.logout') }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                                <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
+                            </form>
+                            <a href="#" class="dropdown-item has-icon text-danger"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-sidebar sidebar-style-2">
+                <aside id="sidebar-wrapper">
+                    <div class="sidebar-brand">
+                        <a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                            <img src="  {{ asset('assets/images/logo/logo_side.png') }}" alt=""
+                                style="width: 85%" height="45px">
+                        </a>
+                    </div>
+                    <div class="sidebar-brand sidebar-brand-sm">
+                        <a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                            <img src="{{ asset('assets/images/logo/icon.png') }}" alt="" style="height: 50px"
+                                width="50px">
+                        </a>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">Main Menu</li>
+                        <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
+                                    class="fas fa-home"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                    </ul>
-                </div>
-                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
-            </div>
-        </div>
-        <div id="main">
-            <nav class="navbar navbar-header navbar-expand navbar-light">
-                <a class="sidebar-toggler" href="#"><span class="navbar-toggler-icon"></span></a>
-                <button class="btn navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
-                        <li class="dropdown">
-                            <a href="#" data-bs-toggle="dropdown"
-                                class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="avatar me-1">
-                                    <img src="{{ isset($data_pelanggan) && $data_pelanggan->foto_pelanggan ? url($data_pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"
-                                        alt="Profile Picture" srcset="" />
-                                </div>
+                        <li class="dropdown ">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
+                                <span>Master Data</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="{{ request()->routeIs('pos.product.index') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Product</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="utilities-invoice.html">SparePart</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="utilities-invoice.html">Service</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="nav-link">
+                                <i class="fas fa-user"></i> Profile
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <div class="dropdown-divider"></div>
-                                <form id="logout-form" action="{{ route('pos.logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-                                <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i data-feather="log-out"></i> Logout
-                                </a>
-                            </div>
                         </li>
                     </ul>
-                </div>
-            </nav>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">General</li>
+                        <li class="{{ request()->routeIs('pos.management-staff') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('pos.management-staff', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
+                                    class="fas fa-users"></i>
+                                <span>Management Staff</span>
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
 
-            @yield('content')
-
-            <footer>
-                <div class="footer clearfix mb-0 text-muted">
-                    <div class="d-flex justify-content-center">
-                        Copyright &copy; {{ now()->year }} eBengkelku - Service, Spare Part & Smart Tools
-                        Powered By <a href="https://cnplus.id/" target="_blank" class="text-success">CNPLUS</a>
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-header">
+                        <h1>{{ $header }}</h1>
                     </div>
+                    @yield('content')
+                </section>
+            </div>
+            <footer class="main-footer">
+                <div class="footer-left">
+                    Copyright &copy; {{ now()->year }} eBengkelku - Service, Spare Part & Smart Tools
+                    Powered By <a href="https://cnplus.id/" target="_blank" class="text-success">CNPLUS</a>
                 </div>
             </footer>
         </div>
     </div>
 
-    {{-- Template JS --}}
-    <script src="{{ asset('template_pos/js/feather-icons/feather.js') }}"></script>
-    <script src="{{ asset('template_pos/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('template_pos/js/app.js') }}"></script>
-    <script src="{{ asset('template_pos/js/main.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    {{-- General JS --}}
+    <script src="{{ asset('template_pos/modules/jquery.min.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/popper.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/tooltip.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ asset('template_pos//modules/moment.min.js') }}"></script>
+    <script src="{{ asset('template_pos/js/stisla.js') }}"></script>
 
-    {{-- Aos --}}
+    {{-- JS libraries --}}
+    <script src="{{ asset('template_pos/modules/simple-weather/jquery.simpleWeather.min.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/chart.min.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/jqvmap/dist/jquery.vmap.min.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+
+    {{-- Template JS file --}}
+    <script src="{{ asset('template_pos/js/scripts.js') }}"></script>
+    <script src="{{ asset('template_pos/js/custom.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
     {{-- Toastr JS --}}
@@ -198,6 +290,7 @@
             return rupiah;
         }
     </script>
+
 </body>
 
 </html>

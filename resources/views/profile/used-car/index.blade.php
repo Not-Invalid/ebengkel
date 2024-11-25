@@ -56,7 +56,7 @@
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                        <button type="submit" class="btn btn-delete">Delete</button>
                                     </form>
                                 </div>
                             </div>

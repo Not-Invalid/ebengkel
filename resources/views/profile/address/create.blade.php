@@ -9,13 +9,14 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <h4>Add Address</h4>
+        <p class="text-danger">*indicates required fields</p>
         <form action="{{ route('address.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="nama_penerima"
                         required />
-                    <label class="did-floating-label">Nama Penerima</label>
+                    <label class="did-floating-label">Recipient Name<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -23,8 +24,7 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="telp_penerima"
                         required pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Nama
-                        Telp Penerima</label>
+                    <label class="did-floating-label">Recipient Phone<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -32,7 +32,7 @@
                 <div class="did-floating-label-content">
                     <textarea class="did-floating-input form-control" name="lokasi_alamat_pengiriman" placeholder=" " rows="4"
                         required style="height: 100px;resize: none"></textarea>
-                    <label class="did-floating-label">Alamat</label>
+                    <label class="did-floating-label">Address<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -41,12 +41,12 @@
                     <input class="did-floating-input" type="text" placeholder=" " id="name"
                         name="kodepos_alamat_pengiriman" required pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Kodepos </label>
+                    <label class="did-floating-label">Pos Code<span class="text-danger">*</span></label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
-                <label style="color: #3a6fb0">Pinpoint Alamat</label>
+                <label style="color: #3a6fb0">Pinpoint Address</label>
                 <div class="map-container">
                     <div id="map" style="height: 400px; border-radius: 4px"></div>
                 </div>
@@ -57,43 +57,50 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="provinsi" id="provinsi" class="did-floating-select">
-                        <option value="" selected disabled hidden>Pilih Provinsi</option>
+                        <option value="" selected disabled hidden>Select Province</option>
                     </select>
-                    <label class="did-floating-label">Provinsi</label>
+                    <label class="did-floating-label">Province</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="kota" id="kota" class="did-floating-select">
-                        <option value="" selected disabled hidden>Pilih Kota</option>
+                        <option value="" selected disabled hidden>Select City</option>
                     </select>
-                    <label class="did-floating-label">Kota</label>
+                    <label class="did-floating-label">City</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="kecamatan" id="kecamatan" class="did-floating-select">
-                        <option value="" selected disabled hidden>Pilih Kecamatan</option>
+                        <option value="" selected disabled hidden>Select District</option>
                     </select>
-                    <label class="did-floating-label">Kecamatan</label>
+                    <label class="did-floating-label">District</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="status_alamat_pengiriman" id="status_alamat_pengiriman" class="did-floating-select">
-                        <option value="" selected disabled hidden>Pilih Status</option>
+                        <option value="" selected disabled hidden>Select Status</option>
                         <option value="office">Office</option>
                         <option value="home">Home</option>
                     </select>
-                    <label class="did-floating-label">Status Alamat</label>
+                    <label class="did-floating-label">Address Status</label>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Simpan</button>
-            <a href="{{ route('profile.address') }}" class="btn btn-danger mt-3">Back</a>
+            <div class="form-group">
+                <div class="d-flex justify-content-end align-items-center gap-2">
+                    <a href="{{ route('profile.address') }}" class="btn btn-cancel">Cancel</a>
+                    <button type="submit" class="btn btn-custom-icon">
+                        Submit
+                        <i class="bx bxs-send fs-5"></i>
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 
@@ -152,7 +159,7 @@
                 let provinsiDropdown = $('#provinsi');
                 provinsiDropdown.empty();
                 provinsiDropdown.append(
-                    '<option value="" selected disabled hidden>Pilih Provinsi</option>');
+                    '<option value="" selected disabled hidden>Select Province</option>');
 
                 if (response.data && Array.isArray(response.data)) {
                     $.each(response.data, function(index, provinsi) {
@@ -172,7 +179,7 @@
                         let kotaDropdown = $('#kota');
                         kotaDropdown.empty();
                         kotaDropdown.append(
-                            '<option value="" selected disabled hidden>Pilih Kota/Kabupaten</option>'
+                            '<option value="" selected disabled hidden>Select City</option>'
                         );
 
                         if (response.data && Array.isArray(response.data)) {
@@ -186,9 +193,9 @@
                     });
                 } else {
                     $('#kota').empty().append(
-                        '<option value="" selected disabled hidden>Pilih Kota/Kabupaten</option>');
+                        '<option value="" selected disabled hidden>Select City</option>');
                     $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Pilih Kecamatan</option>');
+                        '<option value="" selected disabled hidden>Select District</option>');
                 }
             });
 
@@ -200,7 +207,7 @@
                         let kecamatanDropdown = $('#kecamatan');
                         kecamatanDropdown.empty();
                         kecamatanDropdown.append(
-                            '<option value="" selected disabled hidden>Pilih Kecamatan</option>'
+                            '<option value="" selected disabled hidden>Select District</option>'
                         );
 
                         if (response.data && Array.isArray(response.data)) {
@@ -214,7 +221,7 @@
                     });
                 } else {
                     $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Pilih Kecamatan</option>');
+                        '<option value="" selected disabled hidden>Select District</option>');
                 }
             });
             $('form').submit(function(event) {

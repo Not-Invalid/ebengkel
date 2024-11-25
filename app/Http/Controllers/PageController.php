@@ -21,10 +21,14 @@ class PageController extends Controller
         $events = Event::all();
         $products = Product::where('delete_produk', 'N')->get();
         $sparepart = SpareParts::where('delete_spare_part', 'N')->get();
-        $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->get();
+        $mobilList = UsedCar::where('delete_mobil', 'N')
+        ->with('merkMobil')
+        ->orderBy('create_date', 'asc')
+        ->take(9)
+        ->get();
         $merks = MerkMobil::all();
 
-        $latestBlogs = Blog::latest()->take(3)->get();
+        $latestBlogs = Blog::latest()->take(6)->get();
 
         return view('index', compact('bengkels', 'events', 'products', 'sparepart', 'mobilList', 'merks', 'latestBlogs'));
     }

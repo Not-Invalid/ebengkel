@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 
+<style>
+    .error {
+        color: #ff0606;
+        font-size: 0.85rem
+    }
+</style>
 
 <body>
     <div class="container">
@@ -33,12 +39,18 @@
                 <div class="input-group">
                     <i class="bx bx-envelope icon"></i>
                     <input type="email" id="email" name="email_pegawai" placeholder="Email address" required>
+                    @error('email_pegawai')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="input-group">
                     <i class="bx bx-lock icon"></i>
                     <input type="password" id="password" name="password_pegawai" class="password-field"
                         placeholder="Password" required>
                     <i class='bx bx-hide eye-icon'></i>
+                    @error('password_pegawai')
+                        <small class="error">{{ $message }}</small>
+                    @enderror
                 </div>
                 <button type="submit" class="submit-btn">Sign In</button>
             </form>

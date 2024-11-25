@@ -13,13 +13,13 @@
 
       reader.onload = function(e) {
         preview.src = e.target.result;
-        preview.style.display = 'block'; // Show the image preview
+        preview.style.display = 'block';
       };
 
-      reader.readAsDataURL(input.files[0]); // Read the image file as a data URL
+      reader.readAsDataURL(input.files[0]);
     } else {
-      preview.style.display = 'none'; // Hide the preview if no file is selected
-      preview.src = ''; // Clear the source
+      preview.style.display = 'none';
+      preview.src = '';
     }
   }
 </script>
@@ -29,10 +29,10 @@
     const closeDay = document.getElementById('close_day');
 
     if (openDay === 'Every Day') {
-      closeDay.value = ''; // Clear value
-      closeDay.disabled = true; // Disable close day
+      closeDay.value = '';
+      closeDay.disabled = true;
     } else {
-      closeDay.disabled = false; // Enable close day
+      closeDay.disabled = false;
     }
   }
 </script>
@@ -135,6 +135,7 @@
 @section('content')
   <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
     <h4>Add Workshop</h4>
+    <p class="text-danger">*indicates required fields</p>
     <form action="{{ route('profile.workshop.store') }}" method="POST" enctype="multipart/form-data">
       @csrf
       <div class="form-group mb-4">
@@ -164,35 +165,33 @@
 
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
-          <input class="did-floating-input" type="text" placeholder=" " id="nama_bengkel" name="nama_bengkel"
-            required />
-          <label class="did-floating-label">Nama Bengkel</label>
+          <input class="did-floating-input" type="text" placeholder=" " id="nama_bengkel" name="nama_bengkel" required />
+          <label class="did-floating-label">Workshop Name<span class="text-danger">*</span></label>
         </div>
       </div>
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
-          <input class="did-floating-input" type="text" placeholder=" " id="tagline_bengkel" name="tagline_bengkel"
-            required />
-          <label class="did-floating-label">Tagline Bengkel</label>
+          <input class="did-floating-input" type="text" placeholder=" " id="tagline_bengkel" name="tagline_bengkel" />
+          <label class="did-floating-label">Workshop Tagline</label>
         </div>
       </div>
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
           <textarea class="did-floating-input form-control" name="alamat_bengkel" placeholder=" " rows="4" required
             style="height: 100px;resize: none"></textarea>
-          <label class="did-floating-label">Alamat Bengkel</label>
+          <label class="did-floating-label">Workshop Address<span class="text-danger">*</span></label>
         </div>
       </div>
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
           <input class="did-floating-input" type="text" placeholder="https://" id="gmaps" name="gmaps"
             required />
-          <label class="did-floating-label">Link Google Maps</label>
+          <label class="did-floating-label">Google Maps Link<span class="text-danger">*</span></label>
         </div>
       </div>
 
       <div class="form-group mb-3 text-center">
-        <label for="open_day" class="w-100">Schedule</label>
+        <label for="open_day" class="w-100">Open Day<span class="text-danger">*</span></label>
       </div>
 
       <div class="row mb-3">
@@ -230,7 +229,7 @@
         </div>
       </div>
       <div class="form-group mb-3 text-center">
-        <label for="open_time" class="w-100">Clock</label>
+        <label for="open_time" class="w-100">Open Hour<span class="text-danger">*</span></label>
       </div>
       <div class="row mb-3">
         <div class="col-md-6 py-2">
@@ -251,7 +250,7 @@
 
 
       <div class="form-group mb-4">
-        <label for="service_available" class="section-title">Service Available</label>
+        <label for="service_available" class="section-title">Service Available<span class="text-danger">*</span></label>
         <div class="options-group">
           <label class="option-item">
             <input type="checkbox" name="service_available[]" value="Service at Workshop" id="serviceOffline">
@@ -265,7 +264,7 @@
       </div>
 
       <div class="form-group mb-4">
-        <label for="payment" class="section-title">Payment Methods</label>
+        <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
         <div class="options-group">
           <label class="option-item">
             <input type="checkbox" name="payment[]" value="Cash" id="paymentCash">
@@ -285,22 +284,27 @@
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
           <input class="did-floating-input" type="text" name="whatsapp" placeholder="62" required pattern="[0-9]*"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-          <label class="did-floating-label">Whatsapp </label>
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');" required />
+          <label class="did-floating-label">WhatsApp<span class="text-danger">*</span></label>
         </div>
       </div>
 
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
           <input class="did-floating-input" type="text" placeholder="username" id="instagram"
-            name="instagram"required />
+            name="instagram" />
           <label class="did-floating-label">Instagram</label>
         </div>
       </div>
-      <div class="mt-3 d-flex gap-2">
-        <button type="submit" class="btn btn-custom-icon">Save</button>
-        <a href="{{ route('profile.workshop') }}" class="btn btn-cancel">Cancel</a>
-      </div>
+      <div class="form-group">
+            <div class="d-flex justify-content-end align-items-center gap-2">
+                <a href="{{ route('profile.workshop') }}" class="btn btn-cancel">Cancel</a>
+                <button type="submit" class="btn btn-custom-icon">
+                    Submit
+                    <i class="bx bxs-send fs-5"></i>
+                </button>
+            </div>
+        </div>
     </form>
   </div>
 

@@ -2,72 +2,89 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
-use App\Models\Product;
-use App\Models\KategoriSparePart;
-use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
     public function showCart()
-    {
-        $pelanggan = auth('pelanggan')->user();
+{
+    $customerId = Session::get('id_pelanggan');
 
-        if (!$pelanggan) {
-            return redirect()->route('login')->with('status_error', 'You need to be logged in to view your cart.');
-        }
-
-        $kategoriSparePart = KategoriSparePart::all();
-
-        $cartItems = Cart::with('produk.kategoriProduct')
-                        ->where('id_pelanggan', $pelanggan->id_pelanggan)
-                        ->get();
-        $totalPrice = $cartItems->sum('total_price');
-
-        return view('payment.cart', compact('cartItems', 'totalPrice', 'kategoriSparePart'));
+    if (!$customerId) {
+        return redirect()->route('login')->with('error', 'You must be logged in to view your cart.');
     }
-    public function addToCart(Request $request)
-    {
 
-        $validated = $request->validate([
-            'id_produk' => 'required|exists:tb_produk,id_produk',
+    // Fetch updated cart items from the database along with the stock of the product
+    $cartItems = Cart::with('produk')->where('id_pelanggan', $customerId)->get();
+
+    // Calculate the total price of the items in the cart
+    $totalItemPrice = $cartItems->sum(function ($item) {
+        return optional($item->produk)->harga * $item->quantity;
+    });
+
+    $couponDiscount = 0;
+    $totalAmount = $totalItemPrice - $couponDiscount;
+
+    return view('payment.cart', compact('cartItems', 'totalItemPrice', 'couponDiscount', 'totalAmount'));
+}
+
+//     public function showCart()
+// {
+//     $customerId = Session::get('id_pelanggan');
+
+//     if (!$customerId) {
+//         return redirect()->route('login')->with('error', 'You must be logged in to view your cart.');
+//     }
+
+//     // Fetch updated cart items from the database
+//     $cartItems = Cart::with('produk')->where('id_pelanggan', $customerId)->get();
+
+//     // Calculate the total price of the items in the cart
+//     $totalItemPrice = $cartItems->sum(function ($item) {
+//         return optional($item->produk)->harga * $item->quantity;
+//     });
+
+//     $couponDiscount = 0;
+//     $totalAmount = $totalItemPrice - $couponDiscount;
+
+//     return view('payment.cart', compact('cartItems', 'totalItemPrice', 'couponDiscount', 'totalAmount'));
+// }
+
+
+    public function updateQuantityAjax(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $pelanggan = auth('pelanggan')->user();
-
-        if (!$pelanggan) {
-            return response()->json(['success' => false, 'message' => 'You need to be logged in to add products to the cart.']);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => 'Invalid quantity input.']);
         }
 
-        $produk = Product::findOrFail($validated['id_produk']);
-        $totalPrice = $produk->harga_produk * $validated['quantity'];
+        // Temukan item keranjang berdasarkan ID
+        $cartItem = Cart::findOrFail($id);
+        $newQuantity = $request->input('quantity');
 
-        $cartItem = Cart::where('id_pelanggan', $pelanggan->id_pelanggan)
-                        ->where('id_produk', $produk->id_produk)
-                        ->first();
+        // Update kuantitas item di keranjang
+        $cartItem->quantity = $newQuantity;
 
-        if ($cartItem) {
+        // Hitung ulang total harga berdasarkan kuantitas yang baru
+        $product = $cartItem->produk;  // Ambil produk terkait
+        $totalItemPrice = $product->harga * $newQuantity;
 
-            $cartItem->quantity += $validated['quantity'];
-            $cartItem->total_price += $totalPrice;
-            $cartItem->save();
-        } else {
 
-            Cart::create([
-                'id_pelanggan' => $pelanggan->id_pelanggan,
-                'id_produk' => $produk->id_produk,
-                'quantity' => $validated['quantity'],
-                'total_price' => $totalPrice,
-            ]);
-        }
+        // Perbarui total harga di database
+        $cartItem->total_price = $totalItemPrice;
+        $cartItem->save();    
 
-        $cartItems = Cart::with('produk')
-                        ->where('id_pelanggan', $pelanggan->id_pelanggan)
-                        ->get();
-        $cartCount = $cartItems->count();
-        $totalPrice = $cartItems->sum('total_price');
+        // Menghitung total harga untuk semua item keranjang yang dipilih
+        $selectedItemIds = $request->input('selectedItemIds', []);
+        $totalAmount = $this->calculateTotalPrice($selectedItemIds);
 
         return response()->json([
             'success' => true,
@@ -77,32 +94,31 @@ class CartController extends Controller
         ]);
     }
 
-    
     public function updateCartItem(Request $request, $id)
     {
         $cartItem = Cart::findOrFail($id);
         $product = $cartItem->produk;
         $quantity = $request->quantity;
-        
+
         if ($quantity > $product->stok_produk) {
             return response()->json(['success' => false, 'message' => 'Kuantitas yang diminta melebihi stok yang tersedia.']);
         }
 
-        $cartItem->quantity = $quantity;
-        $cartItem->save();
+        // Find the cart item by its ID and ensure it belongs to the logged-in customer
+        $cartItem = Cart::where('id', $id)->where('id_pelanggan', $customerId)->first();
 
         return response()->json(['success' => true, 'message' => 'Keranjang berhasil diperbarui.']);
     }
-    
+
     public function removeFromCart($id)
     {
 
         $cartItem = Cart::find($id);
-        
+
         if ($cartItem) {
-            
+
             $cartItem->delete();
-            
+
             return redirect()->route('cart')->with('status', 'Item removed successfully');
         }
 

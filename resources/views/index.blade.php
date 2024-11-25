@@ -133,7 +133,6 @@
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <a href="{{ route('event.detail', $event->id_event) }}" class="card-event p-3">
                                         <img src="{{ asset($event->image_cover) }}" class="card-img-top"
-                                            alt="{{ $event->nama_event }}" class="card-img-top"
                                             alt="{{ $event->nama_event }}">
                                         <div class="card-body text-start">
                                             <p class="card-title mt-4">{{ $event->nama_event }}</p>
@@ -153,8 +152,7 @@
                                             </div>
                                             <div class="footer-card">
                                                 <div class="price d-flex justify-content-start">
-                                                    <span
-                                                        class="price">{{ $event->tipe_harga === 'Gratis' ? 'Free' : 'Rp' . number_format($event->harga, 0, ',', '.') }}</span>
+                                                    <span class="price">{{ $event->tipe_harga === 'Gratis' ? 'Free' : 'Rp' . number_format($event->harga, 0, ',', '.') }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,15 +169,19 @@
                             </div>
                         @endif
                     </div>
-                    <div class="text-center mt-4">
-                        <a href="{{ route('event.show') }}" class="btn btn-more">
-                            More Event <i class="bx bx-chevron-right align-icon"></i>
-                        </a>
-                    </div>
+                    {{-- Only show the "More Event" button if there are events available --}}
+                    @if ($events->isNotEmpty())
+                        <div class="text-center mt-4">
+                            <a href="{{ route('event.show') }}" class="btn btn-more">
+                                More Event <i class="bx bx-chevron-right align-icon"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
+
 
     {{-- Latest Workshop Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
@@ -191,7 +193,7 @@
                         <div class="d-flex justify-content-center pb-5">
                             <div class="text-center">
                                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
-                                    width="200" alt="No workshops">
+                                     width="200" alt="No workshops">
                                 <p>No data available for workshops.</p>
                             </div>
                         </div>
@@ -200,9 +202,9 @@
                             @foreach ($bengkels as $bengkel)
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                     <a href="{{ route('workshop.detail', $bengkel->id_bengkel) }}"
-                                        class="card-product p-3">
+                                       class="card-product p-3">
                                         <img src="{{ isset($bengkel) && $bengkel->foto_bengkel ? url($bengkel->foto_bengkel) : asset('assets/images/components/image.png') }}"
-                                            class="card-img-top" alt="Workshop Image">
+                                             class="card-img-top" alt="Workshop Image">
                                         <div class="card-body text-start">
                                             <div class="d-flex align-items-center location-map">
                                                 <i class='bx bx-map-pin'></i>
@@ -224,15 +226,19 @@
                             @endforeach
                         </div>
                     @endif
-                    <div class="text-center mt-4">
-                        <a href="{{ route('workshop.show') }}" class="btn btn-more">
-                            More Workshop <i class="bx bx-chevron-right align-icon"></i>
-                        </a>
-                    </div>
+
+                    @if (!$bengkels->isEmpty())  <!-- Only show the "More Workshop" button if there are workshops -->
+                        <div class="text-center mt-4">
+                            <a href="{{ route('workshop.show') }}" class="btn btn-more">
+                                More Workshop <i class="bx bx-chevron-right align-icon"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
+
 
     {{-- New Product Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
@@ -333,15 +339,15 @@
 
     {{-- used car --}}
     <section class="featured-cars section bg-white">
-        <div class="container ">
+        <div class="container">
             <div class="section-title text-start">
-                <h4 class="text-primary py-2"><i class='bx bx-box'></i> Used Car</h4>
+                <h4 class="text-primary py-2"><i class='bx bx-car'></i> Used Car</h4>
             </div>
             @if ($mobilList->isEmpty())
                 <div class="d-flex justify-content-center pb-5">
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                            alt="No UsedCar">
+                             alt="No UsedCar">
                         <p>No data available for UsedCar.</p>
                     </div>
                 </div>
@@ -353,10 +359,10 @@
                                 <div class="card h-100 border-0 shadow">
                                     @if ($car->fotos && $car->fotos->file_foto_mobil_1)
                                         <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
-                                            class="car-img">
+                                             class="car-img">
                                     @else
                                         <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
-                                            class="car-img">
+                                             class="car-img">
                                     @endif
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -411,73 +417,113 @@
                         @endforeach
                     </div>
                 </div>
+                <div class="text-center mt-5">
+                    <a href="{{ route('used-car') }}" class="btn btn-more">
+                        More Used Car <i class="bx bx-chevron-right align-icon"></i>
+                    </a>
+                </div>
             @endif
-            <div class="text-center mt-5">
-                <a href=" {{ route('used-car') }}" class="btn btn-more">
-                    More Used Car <i class="bx bx-chevron-right align-icon"></i>
-                </a>
-            </div>
         </div>
     </section>
 
     <!-- #BLOG -->
-    <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
-        <div class="container mb-2">
-            <div class="section-title d-flex justify-content-between">
+    <section class="featured-blogs section bg-white py-5">
+        <div class="container">
+            <div class="section-title d-flex justify-content-between align-items-center">
                 <h4 class="text-primary py-2"> Latest Blog</h4>
                 <a href="{{ route('blog') }}" class="btn btn-custom mb-2"> View More</a>
             </div>
-        </div>
-        <section class="articles py-2">
-            @foreach($latestBlogs as $blog)
-                <article class="shadow">
-                    <a href="{{ route('blog.show', $blog->slug) }}">
-                        <div class="article-wrapper">
-                            <figure>
-                                <img src="{{ $blog->foto_cover ? asset($blog->foto_cover) : asset('assets/images/components/image.png') }}"
-                                     alt="{{ $blog->judul }}" />
-                            </figure>
-                            <div class="article-body">
-                                <span class="category-blog">{{ $blog->kategori->nama_kategori }}</span>
-                                <h2>{{ $blog->judul }}</h2>
-                                <div class="meta">
-                                    <span>{{ $blog->penulis ?: 'Anonymous' }}</span>
-                                    <span>{{ \Carbon\Carbon::parse($blog->tanggal_post)->format('M d, Y') }}</span>
+
+            @if ($latestBlogs->isEmpty())
+                <div class="d-flex justify-content-center pb-5">
+                    <div class="text-center">
+                        <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
+                            alt="No Blog Available">
+                        <p>No data available for Blogs.</p>
+                    </div>
+                </div>
+            @else
+                <div class="horizontal">
+                    <div id="carousel-custom">
+                        @foreach ($latestBlogs as $blog)
+                            <div class="carousel-content">
+                                <div class="card-blog h-100 border-0 shadow">
+                                    <a href="{{ route('blog.show', $blog->slug) }}" class="text-decoration-none">
+                                        <figure class="m-0">
+                                            <img src="{{ $blog->foto_cover ? asset($blog->foto_cover) : asset('assets/images/components/image.png') }}"
+                                                alt="Blog Image" class="articles-img">
+                                        </figure>
+                                        <div class="card-blog-body">
+                                            <span class="category-blog">{{ $blog->kategori->nama_kategori }}</span>
+                                            <h5 class="article-title py-2">{{ $blog->judul }}</h5>
+                                            <div class="meta">
+                                                <span>{{ $blog->penulis ?: 'Anonymous' }}</span>
+                                                <span>{{ \Carbon\Carbon::parse($blog->tanggal_post)->format('M d, Y') }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </article>
-            @endforeach
-        </section>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        </div>
     </section>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-          const carousel = document.querySelector('.horizontal');
-          const scrollDistance = 250;
-          let scrollInterval;
+            const carCarousel = document.querySelector('.featured-cars .horizontal');
+            const carScrollDistance = 250;
+            let carScrollInterval;
 
-          function startAutoScroll() {
-            scrollInterval = setInterval(function () {
-              if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth) {
-                carousel.scrollLeft = 0;
-              } else {
-                carousel.scrollLeft += scrollDistance;
-              }
-            }, 3000);
-          }
+            function startCarAutoScroll() {
+                carScrollInterval = setInterval(function () {
+                    if (carCarousel.scrollLeft + carCarousel.clientWidth >= carCarousel.scrollWidth) {
+                        carCarousel.scrollLeft = 0;
+                    } else {
+                        carCarousel.scrollLeft += carScrollDistance;
+                    }
+                }, 3000);
+            }
 
-          startAutoScroll();
+            startCarAutoScroll();
 
-          carousel.addEventListener('mouseenter', function () {
-            clearInterval(scrollInterval);
-          });
+            carCarousel.addEventListener('mouseenter', function () {
+                clearInterval(carScrollInterval);
+            });
 
-          carousel.addEventListener('mouseleave', function () {
-            startAutoScroll();
-          });
+            carCarousel.addEventListener('mouseleave', function () {
+                startCarAutoScroll();
+            });
+
+            const blogCarousel = document.querySelector('.featured-blogs .horizontal');
+            const blogScrollDistance = 250;
+            let blogScrollInterval;
+
+            function startBlogAutoScroll() {
+                blogScrollInterval = setInterval(function () {
+                    if (blogCarousel.scrollLeft + blogCarousel.clientWidth >= blogCarousel.scrollWidth) {
+                        blogCarousel.scrollLeft = 0;
+                    } else {
+                        blogCarousel.scrollLeft += blogScrollDistance;
+                    }
+                }, 3000);
+            }
+
+            startBlogAutoScroll();
+
+            blogCarousel.addEventListener('mouseenter', function () {
+                clearInterval(blogScrollInterval);
+            });
+
+            blogCarousel.addEventListener('mouseleave', function () {
+                startBlogAutoScroll();
+            });
         });
+
+
     </script>
 
 

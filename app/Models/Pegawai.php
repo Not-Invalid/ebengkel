@@ -14,6 +14,8 @@ class Pegawai extends Authenticatable
     public $timestamps = true;
 
     protected $fillable = [
+        'id_bengkel',
+        'id_pelanggan',
         'nama_pegawai',
         'telp_pegawai',
         'email_pegawai',
@@ -30,5 +32,10 @@ class Pegawai extends Authenticatable
     public function getAuthPassword()
     {
         return $this->password_pegawai;
+    }
+
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class, 'id_bengkel', 'id_bengkel');
     }
 }

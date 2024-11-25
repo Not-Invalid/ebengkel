@@ -66,7 +66,7 @@ class BlogController extends Controller
         $blog->tanggal_post = now();
         $blog->save();
 
-        return redirect()->route('blog-admin')->with('success', 'Blog berhasil ditambahkan.');
+        return redirect()->route('blog-admin')->with('status', 'Blog berhasil ditambahkan.');
     }
 
     public function edit($id)
