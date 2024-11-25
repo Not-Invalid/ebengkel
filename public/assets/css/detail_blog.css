@@ -210,12 +210,18 @@
 
 .all {
   padding: 5px 10px;
-  border: 1px solid #9cc945;
+  background-color: var(--main-light-blue);
   margin: 0;
+  color: var(--main-white);
+  text-decoration: none;
   border-radius: 5px;
   margin-top: 100px;
   margin-bottom: 20px;
 }
+
+.all:active {
+    transform: translateY(2px);
+  }
 
 .share {
   font-size: 14px;
@@ -338,16 +344,17 @@ article a {
   color: white;
 }
 
-.category {
-  display: inline-block;
-  background: #f0f4ff;
-  color: #3b82f6;
-  padding: 5px 10px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  width: fit-content;
+.category-blog {
+    display: inline-block;
+    background: var(--main-light-blue);
+    color: var(--main-white);
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    width: fit-content;
 }
 
 .title {
