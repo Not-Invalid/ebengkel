@@ -51,14 +51,14 @@ class ProductSparePartController extends Controller
     public function createSparepart()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in.');
         }
 
         $id_pelanggan = Session::get('id_pelanggan');
         $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
 
         if (!$bengkel) {
-            return redirect()->route('home')->with('error_status', 'No associated workshop found.');
+            return redirect()->route('home')->with('status_error', 'No associated workshop found.');
         }
 
         $id_bengkel = $bengkel->id_bengkel;
@@ -104,7 +104,7 @@ class ProductSparePartController extends Controller
     public function editSparepart($id_spare_part)
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in .');
+            return redirect()->route('home')->with('status_error', 'You must be logged in .');
         }
 
         $id_pelanggan = Session::get('id_pelanggan');
@@ -158,21 +158,21 @@ class ProductSparePartController extends Controller
             ]);
             return back()->with('status', 'Spare part deleted successfully.');
         } else {
-            return back()->with('error_status', 'Address not found.');
+            return back()->with('status_error', 'Address not found.');
         }
     }
 
     public function createProduct()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add a service.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to add a service.');
         }
 
         $id_pelanggan = Session::get('id_pelanggan');
         $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
 
         if (!$bengkel) {
-            return redirect()->route('home')->with('error_status', 'No associated workshop found.');
+            return redirect()->route('home')->with('status_error', 'No associated workshop found.');
         }
 
         $id_bengkel = $bengkel->id_bengkel;
@@ -219,7 +219,7 @@ class ProductSparePartController extends Controller
     public function editProduct($id_product)
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in .');
+            return redirect()->route('home')->with('status_error', 'You must be logged in .');
         }
 
         $id_pelanggan = Session::get('id_pelanggan');
@@ -273,7 +273,7 @@ class ProductSparePartController extends Controller
             ]);
             return back()->with('status', 'Product deleted successfully.');
         } else {
-            return back()->with('error_status', 'Address not found.');
+            return back()->with('status_error', 'Address not found.');
         }
     }
 
