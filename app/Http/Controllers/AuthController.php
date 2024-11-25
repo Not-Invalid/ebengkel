@@ -26,19 +26,14 @@ class AuthController extends Controller
         'password' => 'required|min:8',
     ]);
 
-    // Manually check credentials by retrieving the user and verifying the password
     $user = Pelanggan::where('email_pelanggan', $request->email)->first();
 
-    // Check if user exists and password matches
     if ($user && Hash::check($request->password, $user->password_pelanggan)) {
-        // Log the user in
         Auth::guard('pelanggan')->login($user);
         $request->session()->regenerate();
 
-        // Set the session variable
         Session::put('id_pelanggan', $user->id_pelanggan);
 
-        // Log the login time
         $logData = [
             'id_pelanggan' => $user->id_pelanggan,
             'tgl_log_pelanggan' => now(),
