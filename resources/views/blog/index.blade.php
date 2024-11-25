@@ -99,7 +99,7 @@
                             <div class="article-body">
                                 <span class="category-blog">{{ $blog->kategori->nama_kategori }}</span>
                                 <h2>{{ $blog->judul }}</h2>
-                                <div class="meta">
+                                <div class="meta d-flex justify-content-between">
                                     <span>{{ $blog->penulis ?: 'Anonymous' }}</span>
                                     <span>{{ \Carbon\Carbon::parse($blog->tanggal_post)->format('M d, Y') }}</span>
                                 </div>
