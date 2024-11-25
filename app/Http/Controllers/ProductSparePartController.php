@@ -20,19 +20,19 @@ class ProductSparePartController extends Controller
     {
         $querySparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel');
         $queryProduct = Product::where('delete_produk', 'N')->with('bengkel');
-    
+
         if ($request->has('search')) {
             $search = $request->input('search');
             $querySparepart->where('nama_spare_part', 'LIKE', '%' . $search . '%');
             $queryProduct->where('nama_produk', 'LIKE', '%' . $search . '%');
         }
-    
+
         $sparepart = $querySparepart->get();
         $product = $queryProduct->get();
-    
+
         return view('ProductSparepart.index', compact('sparepart', 'product'));
     }
-    
+
     public function detail($type, $id)
     {
         if ($type == 'product') {
@@ -281,69 +281,57 @@ class ProductSparePartController extends Controller
     public function addToCart(Request $request)
     {
         Log::info('Add to cart request data:', $request->all());
-        
+
         try {
-            // Get the inputs from the request
             $productId = $request->input('id_produk');
             $quantity = $request->input('quantity');
             $userId = Session::get('id_pelanggan');
-            
-            // Log the received data
+
             Log::info("Product ID: $productId, Quantity: $quantity, User ID: $userId");
-    
-            // Validate the inputs
+
             if (empty($productId) || empty($quantity) || $quantity <= 0) {
                 Log::error("Invalid input: Product ID or quantity is missing or invalid");
                 return response()->json(['success' => false, 'message' => 'Invalid input. Please provide a valid product and quantity.']);
             }
-    
-            // Find the product by ID
+
             $product = Product::find($productId);
-    
-            // Check if the product exists
+
             if (!$product) {
                 Log::error("Product not found: ID $productId");
                 return response()->json(['success' => false, 'message' => 'Product not found.']);
             }
-    
-            // Check if the quantity is available
+
             if ($quantity > $product->stok_produk) {
                 Log::error("Not enough stock for product: ID $productId");
                 return response()->json(['success' => false, 'message' => 'Not enough stock available.']);
             }
-    
-            // Calculate the total price
+
             $totalPrice = $product->harga_produk * $quantity;
-    
-            // Log the calculated total price for debugging
+
             Log::info("Calculated total price: Rp " . number_format($totalPrice, 0, ',', '.'));
-    
-            // Check if totalPrice is calculated correctly
+
             if ($totalPrice <= 0) {
                 Log::error("Calculated total price is not valid: " . $totalPrice);
                 return response()->json(['success' => false, 'message' => 'Failed to calculate total price.']);
             }
-    
-            // Add the product to the cart
+
             $cart = Cart::create([
                 'id_pelanggan' => $userId,
                 'id_produk' => $productId,
                 'quantity' => $quantity,
-                'total_price' => $totalPrice, // Ensure total_price is passed correctly
+                'total_price' => $totalPrice,
             ]);
-    
-            // Log the cart creation
+
             Log::info("Product added to cart: Cart ID {$cart->id}, User ID $userId");
-    
-            // Return success response
+
             return response()->json(['success' => true, 'message' => 'Product added to cart!']);
         } catch (\Exception $e) {
-            // Log any errors
+
             Log::error("Error adding to cart: " . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'An error occurred. Please try again.']);
         }
     }
-    
-    
-    
+
+
+
 }
