@@ -44,11 +44,12 @@
         color: #999;
     }
 </style>
+
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <h4>Edit Used Car</h4>
-        <form class="py-4" action="{{ route('used-car-update', $mobil->id_mobil) }}" method="POST"
-            enctype="multipart/form-data">
+        <p class="text-danger">*indicates required fields</p>
+        <form class="py-4" action="{{ route('used-car-update', $mobil->id_mobil) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -57,7 +58,7 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="nama_mobil" name="nama_mobil"
                             value="{{ old('nama_mobil', $mobil->nama_mobil) }}" required />
-                        <label class="did-floating-label car">Car Name</label>
+                        <label class="did-floating-label car">Car Name<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -71,7 +72,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        <label class="did-floating-label">Car Merk</label>
+                        <label class="did-floating-label">Car Merk<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -81,7 +82,7 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="harga_mobil" name="harga_mobil"
                             value="{{ old('harga_mobil', number_format($mobil->harga_mobil, 0, ',', '.')) }}" required />
-                        <label class="did-floating-label car">Car Price</label>
+                        <label class="did-floating-label car">Car Price<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -89,7 +90,7 @@
                         <input class="did-floating-input" type="text" placeholder=" " id="plat_nomor"
                             name="plat_nomor_mobil" value="{{ old('plat_nomor_mobil', $mobil->plat_nomor_mobil) }}"
                             required />
-                        <label class="did-floating-label car">Car Lisense Plate Number</label>
+                        <label class="did-floating-label car">Car License Plate Number<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -99,34 +100,17 @@
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="tahun_mobil" name="tahun_mobil"
                             value="{{ old('tahun_mobil', $mobil->tahun_mobil) }}" required />
-                        <label class="did-floating-label car">Car Year</label>
+                        <label class="did-floating-label car">Car Year<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="km_mobil" name="km_mobil"
-                            value="{{ old('km_mobil', $mobil->km_mobil) }}" required />
-                        <label class="did-floating-label car">KM Car</label>
+                            value="{{ old('km_mobil', $ mobil->km_mobil) }}" required />
+                        <label class="did-floating-label car">KM Car<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="row">
-                <div class="col-md-6">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="nomor_rangka_mobil"
-                            name="nomor_rangka_mobil" value="{{ old('nomor_rangka_mobil', $mobil->nomor_rangka_mobil) }}" />
-                        <label class="did-floating-label car">Car Chassis Number</label>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="nomor_mesin"
-                            name="nomor_mesin_mobil" value="{{ old('nomor_mesin_mobil', $mobil->nomor_mesin_mobil) }}" />
-                        <label class="did-floating-label car">Car Engine Number</label>
-                    </div>
-                </div>
-            </div> --}}
 
             <div class="row">
                 <div class="col-md-6">
@@ -134,24 +118,24 @@
                         <input class="did-floating-input" type="text" placeholder=" " id="kapasitas_mesin_mobil"
                             name="kapasitas_mesin_mobil"
                             value="{{ old('kapasitas_mesin_mobil', $mobil->kapasitas_mesin_mobil) }}" required />
-                        <label class="did-floating-label car">Car Engine Capacity</label>
+                        <label class="did-floating-label car">Car Engine Capacity<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <select class="did-floating-input" id="bahan_bakar" name="bahan_bakar_mobil" required>
-                            <option value="" disabled selected hidden>Seleect Fuel Type</option>
+                            <option value="" disabled selected hidden>Select Fuel Type</option>
                             <option value="bensin"
                                 {{ old('bahan_bakar_mobil', $mobil->bahan_bakar_mobil) == 'bensin' ? 'selected' : '' }}>
-                                Bensin</option>
+                                Gasoline</option>
                             <option value="diesel"
                                 {{ old('bahan_bakar_mobil', $mobil->bahan_bakar_mobil) == 'diesel' ? 'selected' : '' }}>
                                 Diesel</option>
                             <option value="listrik"
                                 {{ old('bahan_bakar_mobil', $mobil->bahan_bakar_mobil) == 'listrik' ? 'selected' : '' }}>
-                                Listrik</option>
+                                Electric</option>
                         </select>
-                        <label class="did-floating-label">Car Fuel Type</label>
+                        <label class="did-floating-label">Car Fuel Type<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -160,15 +144,15 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <select class="did-floating-input" id="transmisi_mobil" name="jenis_transmisi_mobil" required>
-                            <option value="" disabled selected hidden>Select Transmission</option>
+                            <option value="" disabled selected hidden>Select Transmission Type</option>
                             <option value="matic"
                                 {{ old('jenis_transmisi_mobil', $mobil->jenis_transmisi_mobil) == 'matic' ? 'selected' : '' }}>
-                                Matic</option>
+                                Automatic</option>
                             <option value="manual"
                                 {{ old('jenis_transmisi_mobil', $mobil->jenis_transmisi_mobil) == 'manual' ? 'selected' : '' }}>
                                 Manual</option>
                         </select>
-                        <label class="did-floating-label">Car Transmission Type</label>
+                        <label class="did-floating-label">Car Transmission Type<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -177,42 +161,42 @@
                             <option value="" disabled selected>Select Tax Month</option>
                             <option value="Januari"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Januari' ? 'selected' : '' }}>
-                                Januari</option>
+                                January</option>
                             <option value="Februari"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Februari' ? 'selected' : '' }}>
-                                Februari</option>
+                                February</option>
                             <option value="Maret"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Maret' ? 'selected' : '' }}>
-                                Maret</option>
+                                March</option>
                             <option value="April"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'April' ? 'selected' : '' }}>
                                 April</option>
                             <option value="Mei"
-                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Mei' ? 'selected' : '' }}>Mei
-                            </option>
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Mei' ? 'selected' : '' }}>
+                                May</option>
                             <option value="Juni"
-                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Juni' ? 'selected' : '' }}>Juni
-                            </option>
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Juni' ? 'selected' : '' }}>
+                                June</option>
                             <option value="Juli"
-                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Juli' ? 'selected' : '' }}>Juli
-                            </option>
+                                {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Juli' ? 'selected' : '' }}>
+                                July</option>
                             <option value="Agustus"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Agustus' ? 'selected' : '' }}>
-                                Agustus</option>
+                                August</option>
                             <option value="September"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'September' ? 'selected' : '' }}>
                                 September</option>
                             <option value="Oktober"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Oktober' ? 'selected' : '' }}>
-                                Oktober</option>
+                                October</option>
                             <option value="November"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'November' ? 'selected' : '' }}>
                                 November</option>
                             <option value="Desember"
                                 {{ old('bulan_pajak_mobil', $mobil->bulan_pajak_mobil) == 'Desember' ? 'selected' : '' }}>
-                                Desember</option>
+                                December</option>
                         </select>
-                        <label class="did-floating-label">Car Tax Month</label>
+                        <label class="did-floating-label">Car Tax Month<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -223,7 +207,7 @@
                         <input class="did-floating-input" type="text" placeholder=" " id="tahun_pajak_mobil"
                             name="tahun_pajak_mobil" value="{{ old('tahun_pajak_mobil', $mobil->tahun_pajak_mobil) }}"
                             required />
-                        <label class="did-floating-label car">Car Tax Year</label>
+                        <label class="did-floating-label car">Car Tax Year<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -231,23 +215,9 @@
                         <input class="did-floating-input" type="date" placeholder=" " id="terakhir_pajak_mobil"
                             name="terakhir_pajak_mobil"
                             value="{{ old('terakhir_pajak_mobil', $mobil->terakhir_pajak_mobil) }}" required />
-                        <label class="did-floating-label car">Last Car Tax</label>
+                        <label class="did-floating-label car">Last Car Tax<span class="text-danger">*</span></label>
                     </div>
                 </div>
-                {{-- <div class="col-md-12">
-                    <div class="did-floating-label-content">
-                        <select class="did-floating-input" id="pemakaian" name="pemakaian" required>
-                            <option value="{{ old('pemakaian', $mobil->pemakaian) }}" disabled selected hidden>
-                                {{ $mobil->pemakaian }}</option>
-                            <option value="Under 1 Year">Under 1 Year</option>
-                            <option value="Under 3 Years">Under 3 Years</option>
-                            <option value="Under 5 Years">Under 5 Years</option>
-                            <option value="Under 7 Years">Under 7 Years</option>
-                            <option value="Under 10 Years">Under 10 Years</option>
-                        </select>
-                        <label class="did-floating-label">Car Year</label>
-                    </div>
-                </div> --}}
             </div>
 
             <div class="row mb-3">
@@ -255,14 +225,14 @@
                     <div class="did-floating-label-content">
                         <textarea class="did-floating-input" placeholder=" " id="keterangan_mobil" name="keterangan_mobil"
                             style="resize: none; height:100px;">{{ old('keterangan_mobil', $mobil->keterangan_mobil) }}</textarea>
-                        <label class="did-floating-label car">Car Decription</label>
+                        <label class="did-floating-label car">Car Description</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <textarea class="did-floating-input" placeholder=" " id="lokasi_mobil" name="lokasi_mobil" required
                             style="resize: none; height:100px;">{{ old('lokasi_mobil', $mobil->lokasi_mobil) }}</textarea>
-                        <label class="did-floating-label car">Car Location</label>
+                        <label class="did-floating-label car">Car Location<span class="text-danger">*</span></label>
                     </div>
                 </div>
             </div>
@@ -287,8 +257,7 @@
                     @else
                         <input type="file" class="form-control mt-2" name="file_foto_mobil_1" id="file_foto_mobil_1"
                             onchange="previewImage('file_foto_mobil_1', 'foto1Preview')" style="display: none;" required>
-                        <div class="preview-container d-flex justify-content-center"
-                            onclick="triggerFileInput('file_foto_mobil_1')">
+                        <div class="preview-container d-flex justify-content-center onclick="triggerFileInput('file_foto_mobil_1')">
                             <img id="foto1Preview" src="#" alt="Foto Mobil 1 Preview" class="image-preview"
                                 style="display: none; width: 200px; margin-top: 10px; cursor: pointer;">
                         </div>
@@ -359,7 +328,7 @@
                     @if ($mobil->fotos && $mobil->fotos->file_foto_mobil_4)
                         <div class="upload-box">
                             <label for="file_foto_mobil_4" class="upload-label">Upload Foto</label>
-                            <input type="file" class="file-input" name="file_foto_mobil_4" id="file_foto_mobil_4"
+                            <input type="file" class="file-input" name="file _foto_mobil_4" id="file_foto_mobil_4"
                                 onchange="previewImage('file_foto_mobil_4', 'foto4Preview')" style="display: none;"
                                 required>
                             <div class="preview-container d-flex justify-content-center"
@@ -409,12 +378,15 @@
                     @endif
                 </div>
             </div>
-            <div class="d-flex justify-content-start mt-3">
-                <button type="submit" class="btn btn-custom-icon me-2">
-                    Update
-                </button>
 
-                <a href="{{ route('profile-used-car') }}" class="btn btn-cancel">Cancel</a>
+            <div class="form-group">
+                <div class="d-flex justify-content-end align-items-center gap-2">
+                    <a href="{{ route('profile-used-car') }}" class="btn btn-cancel">Cancel</a>
+                    <button type="submit" class="btn btn-custom-icon">
+                        Save
+                        <i class="bx bxs-save fs-5"></i>
+                    </button>
+                </div>
             </div>
         </form>
     </div>
