@@ -14,13 +14,13 @@
 
       reader.onload = function(e) {
         preview.src = e.target.result;
-        preview.style.display = 'block'; // Show the image preview
+        preview.style.display = 'block';
       };
 
-      reader.readAsDataURL(input.files[0]); // Read the image file as a data URL
+      reader.readAsDataURL(input.files[0]);
     } else {
-      preview.style.display = 'none'; // Hide the preview if no file is selected
-      preview.src = ''; // Clear the source
+      preview.style.display = 'none';
+      preview.src = '';
     }
   }
 </script>
@@ -30,10 +30,10 @@
     const closeDay = document.getElementById('close_day');
 
     if (openDay === 'Every Day') {
-      closeDay.value = ''; // Clear value
-      closeDay.disabled = true; // Disable close day
+      closeDay.value = '';
+      closeDay.disabled = true;<span class="text-danger">*</span>
     } else {
-      closeDay.disabled = false; // Enable close day
+      closeDay.disabled = false;
     }
   }
 </script>
@@ -129,6 +129,7 @@
 @section('content')
   <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
     <h4>Edit bengkel</h4>
+    <p class="text-danger">*indicates required fields</p>
     <form action="{{ route('profile.workshop.update', $bengkel->id_bengkel) }}" method="POST" enctype="multipart/form-data">
       @csrf
       @method('PUT')
@@ -168,7 +169,7 @@
         <div class="did-floating-label-content">
           <input class="did-floating-input" type="text" placeholder=" " id="nama_bengkel" name="nama_bengkel"
             value="{{ old('nama_bengkel', $bengkel->nama_bengkel) }}" required />
-          <label class="did-floating-label">Workshop Name</label>
+          <label class="did-floating-label">Workshop Name<span class="text-danger">*</span></label>
         </div>
       </div>
 
@@ -186,22 +187,22 @@
         <div class="did-floating-label-content">
           <textarea class="did-floating-input form-control" name="alamat_bengkel" placeholder=" " rows="4" required
             style="height: 100px;resize: none">{{ old('alamat_bengkel', $bengkel->alamat_bengkel) }}</textarea>
-          <label class="did-floating-label">Workshop Address</label>
+          <label class="did-floating-label">Workshop Address<span class="text-danger">*</span></label>
         </div>
       </div>
 
       <!-- Google Maps Link -->
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
-          <input class="did-floating-input" type="text" placeholder="https://" id="gmaps" name="gmaps"
+          <input class="did-floating-input" type="text" placeholder="https://" id="gmaps" name="gmaps" required
             value="{{ old('gmaps', $bengkel->gmaps) }}" />
-          <label class="did-floating-label">Google Maps Link</label>
+          <label class="did-floating-label">Google Maps Link<span class="text-danger">*</span></label>
         </div>
       </div>
 
       <!-- Schedule -->
       <div class="form-group mb-3 text-center">
-        <label for="open_day" class="w-100">Open Day</label>
+        <label for="open_day" class="w-100">Open Day<span class="text-danger">*</span></label>
       </div>
       <div class="row mb-3">
         <div class="col-md-6 py-2">
@@ -259,7 +260,7 @@
 
       <!-- Clock -->
       <div class="form-group mb-3 text-center">
-        <label for="open_time" class="w-100">Open Hour</label>
+        <label for="open_time" class="w-100">Open Hour<span class="text-danger">*</span></label>
       </div>
       <div class="row mb-3">
         <div class="col-md-6 py-2">
@@ -319,7 +320,7 @@
       </div> --}}
       <!-- Service Available -->
       <div class="form-group mb-4">
-        <label for="service_available" class="section-title">Service Available</label>
+        <label for="service_available" class="section-title">Service Available<span class="text-danger">*</span></label>
         <div class="options-group">
           <label class="option-item">
             <input type="checkbox" name="service_available[]" value="Service at Workshop" id="serviceOffline"
@@ -336,7 +337,7 @@
 
       <!-- Payment Methods -->
       <div class="form-group mb-4">
-        <label for="payment" class="section-title">Payment Methods</label>
+        <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
         <div class="options-group">
           <label class="option-item">
             <input type="checkbox" name="payment[]" value="Cash" id="paymentCash"
@@ -362,7 +363,7 @@
           <input class="did-floating-input" type="text" name="whatsapp" placeholder="62"
             value="{{ old('whatsapp', $bengkel->whatsapp) }}" required pattern="[0-9]*"
             oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-          <label class="did-floating-label">WhatsApp</label>
+          <label class="did-floating-label">WhatsApp<span class="text-danger">*</span></label>
         </div>
       </div>
 
@@ -370,16 +371,21 @@
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
           <input class="did-floating-input" type="text" placeholder="username" id="instagram" name="instagram"
-            value="{{ old('instagram', $bengkel->instagram) }}" required />
+            value="{{ old('instagram', $bengkel->instagram) }}" />
           <label class="did-floating-label">Instagram</label>
         </div>
       </div>
 
       <!-- Submit Button -->
-      <div class="mt-3 d-flex gap-2">
-        <button type="submit" class="btn btn-custom-icon mt-3">Update</button>
-        <a href="{{ route('profile.workshop') }}" class="btn btn-cancel mt-3">Cancel</a>
-      </div>
+      <div class="form-group">
+        <div class="d-flex justify-content-end align-items-center gap-2">
+            <a href="{{ route('profile.workshop') }}" class="btn btn-cancel">Cancel</a>
+            <button type="submit" class="btn btn-custom-icon">
+                Save
+                <i class="bx bxs-save fs-5"></i>
+            </button>
+        </div>
+    </div>
     </form>
   </div>
 
