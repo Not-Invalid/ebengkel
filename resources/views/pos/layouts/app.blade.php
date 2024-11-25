@@ -166,9 +166,10 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
+                        <li class="{{ request()->routeIs('profile-pegawai') ? 'active' : '' }}">
                             <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="nav-link">
-                                <i class="fas fa-user"></i> Profile
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
                             </a>
                         </li>
                     </ul>
@@ -180,6 +181,15 @@
                                     class="fas fa-users"></i>
                                 <span>Management Staff</span>
                             </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-gear"></i>
+                                <span>Settings</span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="nav-link" href="">Change Password</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </aside>
