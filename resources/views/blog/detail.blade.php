@@ -70,49 +70,29 @@
         <!-- Related Articles Section -->
         <div class="d-flex justify-content-between align-items-center mt-5">
             <h3 class="related-articles-title">Artikel Lain Buatmu</h3>
-            <span class="all">See All</span>
+            <a class="all" href="{{ route('blog', ['kategori' => $relatedArticles->first()->id_kategori]) }}">See All</a>
         </div>
-        <section class="articles">
-            <article class="shadow">
-                <a href="{{ route('blog.show', 1) }}">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.specialoffers.jcb/id/tips/japan/shutterstock_10.jpg"
-                                alt="Sushi and sashimi" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Food</span>
-                            <h2>Penjelasan Lengkap Tentang Sushi dan Sashimi yang Wajib Dicoba di Jepang!</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
+        <section class="articles py-5">
+            @foreach ($relatedArticles as $article)
+                <article class="shadow">
+                    <a href="{{ route('blog.show', $article->slug) }}">
+                        <div class="article-wrapper">
+                            <figure>
+                                <img  src="{{ $blog->foto_cover ? asset($blog->foto_cover) : asset('assets/images/components/image.png') }}"
+                                    alt="{{ $blog->judul }}" />
+                            </figure>
+                            <div class="article-body">
+                                <span class="category-blog">{{ $article->kategori->nama_kategori }}</span>
+                                <h2>{{ $article->judul }}</h2>
+                                <div class="meta d-flex justify-content-between">
+                                    <span>{{ $article->penulis }}</span>
+                                    <span>{{ \Carbon\Carbon::parse($blog->tanggal_post)->format('M d, Y') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </article>
-
-            <article class="shadow">
-                <a href="{{ route('blog.show', 2) }}">
-                    <div class="article-wrapper">
-                        <figure>
-                            <img src="https://www.agoda.com/wp-content/uploads/2024/07/dubai-uae-featured-1244x700.jpg"
-                                alt="Guide" />
-                        </figure>
-                        <div class="article-body">
-                            <span class="category-blog">Hotel</span>
-                            <h2>Panduan Lengkap untuk Memulai</h2>
-                            <div class="meta">
-                                <span>Bening Mata Author</span>
-                                <span>Oktober 12, 2024</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            <!-- Add more related articles if needed -->
+                    </a>
+                </article>
+            @endforeach
         </section>
-    </div>
-
     </div>
 @endsection
