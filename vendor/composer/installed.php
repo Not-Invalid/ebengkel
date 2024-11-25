@@ -3,11 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-<<<<<<< HEAD
-        'reference' => 'e8ae3f2fa1edf8368bcd10596cfa07981c63205e',
-=======
-        'reference' => '8fb2c5d2ae1f63c3cc67380b893d0edb6e858305',
->>>>>>> origin/daw
+        'reference' => '38fef81b95293466201b00d4936d387a7de54264',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -401,11 +397,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-<<<<<<< HEAD
-            'reference' => 'e8ae3f2fa1edf8368bcd10596cfa07981c63205e',
-=======
-            'reference' => '8fb2c5d2ae1f63c3cc67380b893d0edb6e858305',
->>>>>>> origin/daw
+            'reference' => '38fef81b95293466201b00d4936d387a7de54264',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -518,6 +510,15 @@
             'install_path' => __DIR__ . '/../marcj/topsort',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'midtrans/midtrans-php' => array(
+            'pretty_version' => '2.6.1',
+            'version' => '2.6.1.0',
+            'reference' => '737ddabeb0c4d40316c4db132f9ef5c8f7a1b3a6',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../midtrans/midtrans-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'mockery/mockery' => array(
             'pretty_version' => '1.6.12',

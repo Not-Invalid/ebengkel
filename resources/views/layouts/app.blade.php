@@ -24,7 +24,6 @@
     {{-- Custom styles --}}
     <link rel="stylesheet" href="{{ asset('assets/css/partials.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-
     {{-- Poppins font --}}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800">
     @stack('css')

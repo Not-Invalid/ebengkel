@@ -111,7 +111,8 @@
                                             <h5>Rp {{ number_format($totalPrice, 0, ',', '.') }}</h5> <!-- Assuming fixed shipping fee and conversion rate -->
                                         </div>
 
-                                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">
+                                        <button type="button" onclick="window.location.href='{{ route('payment') }}'" 
+                                            class="btn btn-dark btn-block btn-lg">
                                             Checkout
                                         </button>
                                     </div>

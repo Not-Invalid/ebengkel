@@ -77,12 +77,13 @@ class CartController extends Controller
         ]);
     }
 
+    
     public function updateCartItem(Request $request, $id)
     {
         $cartItem = Cart::findOrFail($id);
         $product = $cartItem->produk;
         $quantity = $request->quantity;
-
+        
         if ($quantity > $product->stok_produk) {
             return response()->json(['success' => false, 'message' => 'Kuantitas yang diminta melebihi stok yang tersedia.']);
         }
@@ -92,20 +93,63 @@ class CartController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Keranjang berhasil diperbarui.']);
     }
-
+    
     public function removeFromCart($id)
     {
 
         $cartItem = Cart::find($id);
-
+        
         if ($cartItem) {
-
+            
             $cartItem->delete();
-
+            
             return redirect()->route('cart')->with('status', 'Item removed successfully');
         }
 
         return redirect()->route('cart')->with('status_error', 'Item not found');
     }
+    
+    //midtrans
+    private function generateOrderId($prefix = 'ORDER')
+    {
+        return $prefix . '-' . strtoupper(uniqid());
+    }
 
+    public function payment(Request $request) {
+        $pelanggan = auth('pelanggan')->user();
+    
+        // Periksa apakah pelanggan sudah login
+        if (!$pelanggan) {
+            return redirect()->route('login')->with('status_error', 'You need to be logged in to proceed with payment.');
+        }
+    
+        // Ambil data dari keranjang
+        $cartItems = Cart::with('produk')->where('id_pelanggan', $pelanggan->id_pelanggan)->get();
+        $totalPrice = $cartItems->sum('total_price');
+    
+        \Midtrans\Config::$serverKey = config('midtrans.server_key');
+        \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false); // Pastikan ini true
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
+      
+    
+        // Buat parameter transaksi
+        $params = [
+            'transaction_details' => [
+                'order_id' => $this->generateOrderId(),  // Pastikan ini menghasilkan ID yang unik dan valid
+                'gross_amount' => $totalPrice,
+            ],
+            'customer_details' => [
+                'first_name' => $pelanggan->nama_pelanggan,
+                'email' => $pelanggan->email,
+                'phone' => $pelanggan->nomor_telepon,
+            ],
+        ];        
+    
+        // Dapatkan Snap Token dari Midtrans
+        // $snapToken = \Midtrans\Snap::getSnapToken($params);
+    
+        // Kirim data ke view
+        return view('payment.payment', compact( 'cartItems', 'totalPrice'));
+    }
 }
