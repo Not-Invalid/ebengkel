@@ -106,7 +106,7 @@
                 <div class="col-md-6">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="km_mobil" name="km_mobil"
-                            value="{{ old('km_mobil', $ mobil->km_mobil) }}" required />
+                            value="{{ old('km_mobil', $mobil->km_mobil) }}" required />
                         <label class="did-floating-label car">KM Car<span class="text-danger">*</span></label>
                     </div>
                 </div>
