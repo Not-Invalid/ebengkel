@@ -40,7 +40,7 @@ class StaffController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('data-staff-admin')->with('status', 'Staff berhasil ditambahkan.');
+        return redirect()->route('data-staff-admin')->with('status', 'Staff has been successfully created.');
     }
 
     public function edit($id)
@@ -68,7 +68,7 @@ class StaffController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('data-staff-admin')->with('status', 'Staff berhasil diupdate.');
+        return redirect()->route('data-staff-admin')->with('status', 'Staff has been successfully updated.');
     }
 
     public function delete($id)
@@ -77,7 +77,6 @@ class StaffController extends Controller
 
         $staff->delete();
 
-        return redirect()->route('data-staff-admin')->with('status', 'Staff berhasil dihapus.');
+        return redirect()->route('data-staff-admin')->with('status', 'Staff has been successfully deleted.');
     }
-
 }
