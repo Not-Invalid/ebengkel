@@ -17,7 +17,7 @@ class ProfileController extends Controller
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('status_error', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
         $pegawai = Auth::guard('pegawai')->user();
@@ -55,23 +55,20 @@ class ProfileController extends Controller
                 if (imagewebp($img, $webpPath, 90)) {
                     imagedestroy($img);
 
-                    // Simpan URL gambar ke dalam database
                     $pegawai->foto_pegawai = url('assets/images/profile_picture/' . $imageName);
                 } else {
-                    Log::error('Gagal mengkonversi gambar ke WebP.');
+                    Log::error('Failed to convert image to WebP.');
                 }
             } else {
-                Log::error('Gagal membuat gambar dari string.');
+                Log::error('Failed to create image from string.');
             }
         } else {
-            Log::info('Foto pegawai tidak ada atau tidak valid.');
+            Log::info('No photo provided or the photo is invalid.');
         }
-
 
         $pegawai->save();
 
         return redirect()->route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $pegawai->id_pegawai])
-        ->with('status', 'Profile updated successfully.');
-
+            ->with('status', 'Profile updated successfully.');
     }
 }
