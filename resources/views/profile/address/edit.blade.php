@@ -10,6 +10,7 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <h4>Edit Address</h4>
+        <p class="text-danger">*indicates required fields</p>
         <form action="{{ route('address.update', $address->id_alamat_pengiriman) }}" method="POST">
             @csrf
 
@@ -17,7 +18,7 @@
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="nama_penerima"
                         value="{{ $address->nama_penerima }}" />
-                    <label class="did-floating-label">Recipient Name</label>
+                    <label class="did-floating-label">Recipient Name<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -26,7 +27,7 @@
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="telp_penerima"
                         pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                         value="{{ $address->telp_penerima }}" />
-                    <label class="did-floating-label">Recipient Phone</label>
+                    <label class="did-floating-label">Recipient Phone<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -34,7 +35,7 @@
                 <div class="did-floating-label-content">
                     <textarea class="did-floating-input form-control" name="lokasi_alamat_pengiriman" placeholder=" " rows="4"
                         required style="height: 100px;resize: none">{{ $address->lokasi_alamat_pengiriman }}</textarea>
-                    <label class="did-floating-label">Address</label>
+                    <label class="did-floating-label">Address<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -43,7 +44,7 @@
                     <input class="did-floating-input" type="text" placeholder=" " name="kodepos_alamat_pengiriman"
                         value="{{ $address->kodepos_alamat_pengiriman }}" pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Pos Code</label>
+                    <label class="did-floating-label">Pos Code<span class="text-danger">*</span></label>
                 </div>
             </div>
 
@@ -95,9 +96,14 @@
                 </div>
             </div>
 
-            <div>
-                <button type="submit" class="btn btn-primary mt-3">Update</button>
-                <a href="{{ route('profile.address') }}" class="btn btn-danger mt-3">Back</a>
+            <div class="form-group">
+                <div class="d-flex justify-content-end align-items-center gap-2">
+                    <a href="{{ route('profile.address') }}" class="btn btn-cancel">Cancel</a>
+                    <button type="submit" class="btn btn-custom-icon">
+                        Save
+                        <i class="bx bxs-save fs-5"></i>
+                    </button>
+                </div>
             </div>
         </form>
     </div>
