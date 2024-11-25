@@ -14,14 +14,14 @@ class ServiceController extends Controller
     public function createService()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add a service.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to add a service.');
         }
 
         $id_pelanggan = Session::get('id_pelanggan');
         $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
 
         if (!$bengkel) {
-            return redirect()->route('home')->with('error_status', 'No associated workshop found.');
+            return redirect()->route('home')->with('status_error', 'No associated workshop found.');
         }
 
         $id_bengkel = $bengkel->id_bengkel;
@@ -66,7 +66,7 @@ class ServiceController extends Controller
         $service = Service::find($id_services);
 
         if (!$service) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Service not found.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Service not found.');
         }
 
         return view('profile.workshop.workshopSET.service.edit', compact('service'));
@@ -122,7 +122,7 @@ class ServiceController extends Controller
         } else {
 
             return redirect()->route('profile.workshop.detail', ['id_bengkel' => $request->id_bengkel])
-                            ->with('error_status', 'Service not found.');
+                            ->with('status_error', 'Service not found.');
         }
     }
 
