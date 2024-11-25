@@ -16,14 +16,14 @@ class PegawaiController extends Controller
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('status_error', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
         $perPage = $request->get('per_page', 10);
 
         $pegawai = Pegawai::where('id_bengkel', $id_bengkel)
                             ->where('delete_pegawai', 'N')
-                            ->whereIn('role', ['Administrator', 'Kasir'])
+                            ->whereIn('role', ['Administrator', 'Cashier'])
                             ->paginate($perPage);
 
         return view('pos.management-staff.index', compact('bengkel', 'pegawai'));
@@ -34,7 +34,7 @@ class PegawaiController extends Controller
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('status_error', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
         $randomPassword = Str::random(8);
@@ -49,13 +49,13 @@ class PegawaiController extends Controller
             'nama_pegawai' => 'required|string|max:255',
             'email_pegawai' => 'required|email|unique:tb_pegawai,email_pegawai',
             'telp_pegawai' => 'required|string|max:15',
-            'role' => 'required|in:Administrator,Kasir,Outlet',
+            'role' => 'required|in:Administrator,Cashier,Outlet',
         ]);
 
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('status_error', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
         $randomPassword = Str::random(8);
@@ -73,8 +73,9 @@ class PegawaiController extends Controller
         $pegawai->save();
 
         return redirect()->route('pos.management-staff', ['id_bengkel' => $id_bengkel])
-            ->with('status', 'Pegawai berhasil ditambahkan.');
+            ->with('status', 'Staff successfully added.');
     }
+
     public function edit($id_bengkel, $id_pegawai)
     {
 
@@ -90,7 +91,7 @@ class PegawaiController extends Controller
             'nama_pegawai' => 'required|string|max:255',
             'email_pegawai' => 'required|email|unique:tb_pegawai,email_pegawai,' . $id_pegawai . ',id_pegawai',
             'telp_pegawai' => 'required|string|max:20',
-            'role' => 'required|string|in:Administrator,Kasir',
+            'role' => 'required|string|in:Administrator,Cashier',
         ]);
 
         $pegawai = Pegawai::findOrFail($id_pegawai);
