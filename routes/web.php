@@ -66,7 +66,7 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::post('/cart/update/{itemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 
-
+    Route::get('/cart/count', [CartController::class, 'countCart'])->name('cart.count');
     Route::get('/payment', [CartController::class, 'payment'])->name('payment');
     Route::post('/add-to-cart', [ProductSparePartController::class, 'addToCart'])->middleware('auth');
     Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
@@ -322,5 +322,3 @@ Route::prefix('POS')->group(function () {
 
     Route::get('change-password', [PosSettingController::class, 'showChangePassword'])->name('pos.change-password');
 });
-
-
