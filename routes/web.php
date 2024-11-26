@@ -37,6 +37,8 @@ use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use App\Models\ReviewWorkshop;
 use App\Http\Controllers\StockController as ControllersStockController;
+use App\Http\Controllers\PaymentController;
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -57,11 +59,17 @@ Route::prefix('pelanggan')->group(function () {
 Route::middleware('auth:pelanggan')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('cart', [CartController::class, 'showCart'])->name('cart');
+    Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/update/{itemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+    Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+
+    Route::get('/payment', [CartController::class, 'payment'])->name('payment');
     Route::post('/add-to-cart', [ProductSparePartController::class, 'addToCart'])->middleware('auth');
     Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
     Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);
     Route::post('/cart/remove/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.remove');
-    Route::post('checkout/', [CartController::class, 'showPayment'])->name('payment');
+    Route::post('checkout/', [CartController::class, 'payment'])->name('payment');
 });
 
 Route::prefix('superadmin')->middleware(['auth:superadmin', \App\Http\Middleware\SessionTimeout::class])->group(function () {
@@ -306,3 +314,5 @@ Route::prefix('POS')->group(function () {
         });
     });
 });
+
+

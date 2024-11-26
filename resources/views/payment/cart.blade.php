@@ -164,7 +164,6 @@
       </div>
     </div>
   </section>
-
   <div class="container mt-5">
     <div class="row">
       <div class="col-lg-8">
@@ -212,7 +211,10 @@
               <span id="total-selected-price">Rp 0</span>
             </li>
           </ul>
-          <button class="btn btn-success w-100">Place order</button>
+          <form action="{{ route('payment') }}" method="POST">
+            @csrf
+            <button class="btn btn-success w-100">Place order</button>
+        </form>        
         </div>
       </div>
     </div>
