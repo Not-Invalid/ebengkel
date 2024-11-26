@@ -66,7 +66,7 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
     Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);    
     Route::post('/cart/remove/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.remove');
-    Route::post('checkout/', [CartController::class, 'showPayment'])->name('payment');
+    Route::post('checkout/', [CartController::class, 'payment'])->name('payment');
 });
 
 Route::prefix('superadmin')->group(function () {
