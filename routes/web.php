@@ -9,11 +9,13 @@ use App\Http\Controllers\MyorderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
-use App\Http\Controllers\Pos\MenuController as PosMenuController;
-use App\Http\Controllers\Pos\ProfileController as PosProfileController;
-use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
+use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\StockController as PosStockController;
+use App\Http\Controllers\Pos\ProfileController as PosProfileController;
+use App\Http\Controllers\Pos\ServiceController as PosServiceController;
+use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
+use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -34,7 +36,6 @@ use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopCont
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
 use App\Models\ReviewWorkshop;
-use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use App\Http\Controllers\StockController as ControllersStockController;
 use Illuminate\Support\Facades\Route;
 
@@ -280,7 +281,28 @@ Route::prefix('POS')->group(function () {
             Route::post('store', [PosProductController::class, 'store'])->name('pos.product.store');
             Route::get('edit/{id_produk}', [PosProductController::class, 'edit'])->name('pos.product.edit');
             Route::put('update/{id_produk}', [PosProductController::class, 'update'])->name('pos.product.update');
+            Route::get('detail/{id_produk}', [PosProductController::class, 'show'])->name('pos.product.show');
             Route::delete('delete/{id_produk}', [PosProductController::class, 'destroy'])->name('pos.product.destroy');
+        });
+
+        Route::prefix('pos/{id_bengkel}/sparepart')->group(function () {
+            Route::get('/', [PosSparePartController::class, 'index'])->name('pos.sparepart.index');
+            Route::get('create', [PosSparePartController::class, 'create'])->name('pos.sparepart.create');
+            Route::post('store', [PosSparePartController::class, 'store'])->name('pos.sparepart.store');
+            Route::get('edit/{id_spare_part}', [PosSparePartController::class, 'edit'])->name('pos.sparepart.edit');
+            Route::put('update/{id_spare_part}', [PosSparePartController::class, 'update'])->name('pos.sparepart.update');
+            Route::get('detail/{id_spare_part}', [PosSparePartController::class, 'show'])->name('pos.sparepart.show');
+            Route::delete('delete/{id_spare_part}', [PosSparePartController::class, 'destroy'])->name('pos.sparepart.destroy');
+        });
+
+        Route::prefix('pos/{id_bengkel}/service')->group(function () {
+            Route::get('/', [PosServiceController::class, 'index'])->name('pos.service.index');
+            Route::get('create', [PosServiceController::class, 'create'])->name('pos.service.create');
+            Route::post('store', [PosServiceController::class, 'store'])->name('pos.service.store');
+            Route::get('edit/{id_services}', [PosServiceController::class, 'edit'])->name('pos.service.edit');
+            Route::put('update/{id_services}', [PosServiceController::class, 'update'])->name('pos.service.update');
+            Route::get('detail/{id_services}', [PosServiceController::class, 'show'])->name('pos.service.show');
+            Route::delete('delete/{id_services}', [PosServiceController::class, 'destroy'])->name('pos.service.destroy');
         });
     });
 });

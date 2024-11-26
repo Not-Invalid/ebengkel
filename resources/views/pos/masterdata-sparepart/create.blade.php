@@ -3,7 +3,7 @@
     eBengkelku | POS
 @stop
 @php
-    $header = 'Create Product';
+    $header = 'Create Spare Part';
 @endphp
 <style>
     .image-preview {
@@ -48,7 +48,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Add Product
+            <h4>Add Sparepart
                 <span>
                     <br>
                     <small class="text-danger">* Indicated requred fields</small>
@@ -56,17 +56,17 @@
             </h4>
         </div>
         <div class="card-body">
-            <form action="{{ route('pos.product.store', ['id_bengkel' => $bengkel->id_bengkel]) }}" method="POST"
+            <form action="{{ route('pos.sparepart.store', ['id_bengkel' => $bengkel->id_bengkel]) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
 
                 <div class="form-group">
-                    <label for="nama_produk">Product Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nama_produk" required>
+                    <label for="nama_spare_part">Spare Part Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="nama_spare_part" required>
                 </div>
                 <div class="form-group">
-                    <label for="id_kategori_spare_part">Product Type <span class="text-danger">*</span></label>
+                    <label for="id_kategori_spare_part">Spare Part Type <span class="text-danger">*</span></label>
                     <select name="id_kategori_spare_part" class="form-control" required>
                         <option value="" selected disabled hidden>Select Type</option>
                         @foreach ($categories as $kategori)
@@ -77,35 +77,35 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="kualitas_produk">Product Quality <span class="text-danger">*</span></label>
-                    <select name="kualitas_produk" id="kualitas_produk" class="form-control" required>
+                    <label for="kualitas_spare_part">Spare Part Quality <span class="text-danger">*</span></label>
+                    <select name="kualitas_spare_part" id="kualitas_spare_part" class="form-control" required>
                         <option value="" selected disabled hidden>Select Quality</option>
                         <option value="original">Original</option>
                         <option value="aftermarket">Aftermarket</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="merk_produk">Product Merk <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="merk_produk" required>
+                    <label for="merk_spare_part">Spare Part Merk <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="merk_spare_part" required>
                 </div>
                 <div class="form-group">
-                    <label for="stok_produk">Product Stock <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="stok_produk" required>
+                    <label for="stok_spare_part">Spare Part Stock <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="stok_spare_part" required>
                 </div>
                 <div class="form-group">
-                    <label for="harga_produk">Product Price <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="harga_produk" required>
+                    <label for="harga_spare_part">Spare Part Price <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="harga_spare_part" required>
                 </div>
                 <div class="form-group">
-                    <label for="keterangan_produk">Description</label>
-                    <textarea class="form-control" name="keterangan_produk"></textarea>
+                    <label for="keterangan_spare_part">Description</label>
+                    <textarea class="form-control" name="keterangan_spare_part"></textarea>
                 </div>
                 <div class="form-group">
                     <div class="upload-box">
-                        <label for="foto_produk" class="upload-label">Product Photo <span
+                        <label for="foto_spare_part" class="upload-label">Spare Part Photo <span
                                 class="text-danger">*</span></label>
-                        <input type="file" class="file-input" name="foto_produk" id="foto_produk"
-                            onchange="previewImage('foto_produk', 'sparepart')" required>
+                        <input type="file" class="file-input" name="foto_spare_part" id="foto_spare_part"
+                            onchange="previewImage('foto_spare_part', 'sparepart')" required>
                         <div class="preview-container d-flex justify-content-center">
                             <img id="sparepart" src="" alt="Workshop Photo Preview" class="image-preview"
                                 style="display: none; width: 200px; margin-top: 10px;">
@@ -114,7 +114,7 @@
                 </div>
                 <div class="d-flex gap-2 justify-content-end">
                     <button type="submit" class="btn btn-custom-icon">Submit</button>
-                    <a href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+                    <a href="{{ route('pos.sparepart.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
                         class="btn btn-cancel">Cancel</a>
                 </div>
             </form>

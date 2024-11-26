@@ -110,7 +110,8 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="dropdown-item has-icon">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}"
+                                class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
@@ -142,29 +143,13 @@
                         </a>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="menu-header">Main Menu</li>
+                        <li class="menu-header">Menu</li>
                         <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
                             <a class="nav-link"
                                 href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
                                     class="fas fa-home"></i>
                                 <span>Dashboard</span>
                             </a>
-                        </li>
-                        <li class="dropdown ">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i>
-                                <span>Master Data</span></a>
-                            <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.product.index') ? 'active' : '' }}">
-                                    <a class="nav-link"
-                                        href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Product</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="utilities-invoice.html">SparePart</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="utilities-invoice.html">Service</a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="{{ request()->routeIs('pos.management-stock') ? 'active' : '' }}">
                             <a class="nav-link"
@@ -179,6 +164,31 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">Master Data</li>
+                        <li class="{{ request()->routeIs('pos.product.*') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                                <i class="fas fa-cogs"></i>
+                                <span>Product</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('pos.sparepart.*') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('pos.sparepart.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                                <i class="fas fa-cogs"></i>
+                                <span>Sparepart</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->routeIs('pos.service.*') ? 'active' : '' }}">
+                            <a class="nav-link"
+                                href="{{ route('pos.service.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                                <i class="fas fa-cogs"></i>
+                                <span>Service</span>
+                            </a>
+                        </li>
+                    </ul>
+
                     <ul class="sidebar-menu">
                         <li class="menu-header">General</li>
                         <li class="{{ request()->routeIs('pos.management-staff') ? 'active' : '' }}">
