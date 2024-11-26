@@ -26,7 +26,7 @@ class PegawaiController extends Controller
                             ->whereIn('role', ['Administrator', 'Cashier'])
                             ->paginate($perPage);
 
-        return view('pos.management-staff.index', compact('bengkel', 'pegawai'));
+        return view('pos.management-user.index', compact('bengkel', 'pegawai'));
     }
 
     public function create($id_bengkel)
@@ -39,7 +39,7 @@ class PegawaiController extends Controller
 
         $randomPassword = Str::random(8);
 
-        return view('pos.management-staff.create', compact('bengkel', 'randomPassword'));
+        return view('pos.management-user.create', compact('bengkel', 'randomPassword'));
     }
 
     public function store(Request $request, $id_bengkel)
@@ -72,7 +72,7 @@ class PegawaiController extends Controller
         $pegawai->delete_pegawai = 'N';
         $pegawai->save();
 
-        return redirect()->route('pos.management-staff', ['id_bengkel' => $id_bengkel])
+        return redirect()->route('pos.management-user', ['id_bengkel' => $id_bengkel])
             ->with('status', 'Staff successfully added.');
     }
 
@@ -82,7 +82,7 @@ class PegawaiController extends Controller
         $bengkel = Bengkel::findOrFail($id_bengkel);
         $pegawai = Pegawai::findOrFail($id_pegawai);
 
-        return view('pos.management-staff.edit', compact('bengkel', 'pegawai'));
+        return view('pos.management-user.edit', compact('bengkel', 'pegawai'));
     }
 
     public function update(Request $request, $id_bengkel, $id_pegawai)
@@ -102,7 +102,7 @@ class PegawaiController extends Controller
         $pegawai->role = $validated['role'];
         $pegawai->save();
 
-        return redirect()->route('pos.management-staff', ['id_bengkel' => $id_bengkel])
+        return redirect()->route('pos.management-user', ['id_bengkel' => $id_bengkel])
                         ->with('status', 'Staff updated successfully');
     }
 
@@ -113,6 +113,6 @@ class PegawaiController extends Controller
 
         $pegawai->delete();
 
-        return redirect()->route('pos.management-staff', ['id_bengkel' => $id_bengkel])->with('status', 'Staff deleted successfully');
+        return redirect()->route('pos.management-user', ['id_bengkel' => $id_bengkel])->with('status', 'Staff deleted successfully');
     }
 }

@@ -27,7 +27,7 @@
 
     <div class="d-flex justify-end mb-4 mt-4">
         <!-- Add Pegawai Button with margin left -->
-        <a href="{{ route('pos.management-staff.create', $bengkel->id_bengkel) }}" class="btn btn-info text-white px-4 py-2 mx-2">Tambah Pegawai</a>
+        <a href="{{ route('pos.management-user.create', $bengkel->id_bengkel) }}" class="btn btn-info text-white px-4 py-2 mx-2">Tambah Pegawai</a>
     </div>
 </div>
 
@@ -57,10 +57,10 @@
                         <td>{{ $staff->telp_pegawai }}</td>
                         <td>{{ $staff->role }}</td>
                         <td class="d-flex justify-content-center align-items-center gap-4">
-                            <a href="{{ route('pos.management-staff.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" class="btn btn-sm btn-dark">
+                            <a href="{{ route('pos.management-user.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" class="btn btn-sm btn-dark">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <form action="{{ route('pos.management-staff.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" method="POST" class="delete-form">
+                            <form action="{{ route('pos.management-user.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" method="POST" class="delete-form">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">

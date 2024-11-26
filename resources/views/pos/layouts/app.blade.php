@@ -191,11 +191,11 @@
 
                     <ul class="sidebar-menu">
                         <li class="menu-header">General</li>
-                        <li class="{{ request()->routeIs('pos.management-staff') ? 'active' : '' }}">
+                        <li class="{{ request()->routeIs('pos.management-user') ? 'active' : '' }}">
                             <a class="nav-link"
-                                href="{{ route('pos.management-staff', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
+                                href="{{ route('pos.management-user', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
                                     class="fas fa-users"></i>
-                                <span>Management Staff</span>
+                                <span>Management Users</span>
                             </a>
                         </li>
                         <li class="dropdown">

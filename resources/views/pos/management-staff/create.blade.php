@@ -31,7 +31,7 @@
                     <h4>Bengkel: {{ $bengkel->nama_bengkel }}</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('pos.management-staff.store', ['id_bengkel' => $bengkel->id_bengkel]) }}" method="POST">
+                    <form action="{{ route('pos.management-user.store', ['id_bengkel' => $bengkel->id_bengkel]) }}" method="POST">
                         @csrf
                         <!-- Nama Pegawai -->
                         <div class="form-group">
@@ -110,7 +110,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-success">Simpan Pegawai</button>
-                        <a href="{{ route('pos.management-staff', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-danger ml-2">Batal</a>
+                        <a href="{{ route('pos.management-user', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-danger ml-2">Batal</a>
                     </form>
                 </div>
             </div>

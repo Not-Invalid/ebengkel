@@ -31,7 +31,7 @@
                     <h4>Edit Staff for Bengkel: {{ $bengkel->nama_bengkel }}</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('pos.management-staff.update', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $pegawai->id_pegawai]) }}" method="POST">
+                    <form action="{{ route('pos.management-user.update', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $pegawai->id_pegawai]) }}" method="POST">
                         @csrf
 
                         <!-- Nama Pegawai -->
@@ -90,7 +90,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-success">Update</button>
-                        <a href="{{ route('pos.management-staff', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-danger ml-2">Batal</a>
+                        <a href="{{ route('pos.management-user', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-danger ml-2">Batal</a>
                     </form>
                 </div>
             </div>

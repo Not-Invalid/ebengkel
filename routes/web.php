@@ -261,12 +261,12 @@ Route::prefix('POS')->group(function () {
 
 
 
-    Route::get('management-staff/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-staff');
-    Route::get('management-staff/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-staff.create');
-    Route::post('management-staff/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-staff.store');
-    Route::get('management-staff/edit/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'edit'])->name('pos.management-staff.edit');
-    Route::post('management-staff/update/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'update'])->name('pos.management-staff.update');
-    Route::delete('management-staff/delete/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'delete'])->name('pos.management-staff.delete');
+    Route::get('.management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
+    Route::get('.management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
+    Route::post('.management-users/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-user.store');
+    Route::get('.management-users/edit/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'edit'])->name('pos.management-user.edit');
+    Route::post('.management-users/update/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'update'])->name('pos.management-user.update');
+    Route::delete('.management-users/delete/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'delete'])->name('pos.management-user.delete');
 
 
     Route::get('profile/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'index'])->name('profile-pegawai');
