@@ -164,97 +164,6 @@
       </div>
     </div>
   </section>
-
-                                        <!-- Loop through Cart Items -->
-                                        @foreach ($cartItems as $item)
-                                            <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                                <div class="col-md-2 col-lg-2 col-xl-2">
-                                                    <img src="{{ isset($item->produk->foto_produk) ? url($item->produk->foto_produk) : (isset($item->produk->foto_spare_part) ? url($item->produk->foto_spare_part) : asset('assets/images/components/image.png')) }}"
-                                                        class="img-fluid rounded-3 border" alt="{{ $item->produk->nama_produk }}">
-                                                </div>
-                                                <div class="col-md-3 col-lg-3 col-xl-3">
-                                                    <h6 class="text-muted">
-                                                        @if($item->produk && $item->produk->kategoriProduct)
-                                                            {{ $item->produk->kategoriProduct->nama_kategori_spare_part }}
-                                                        @else
-                                                            No category
-                                                        @endif
-                                                    </h6>
-                                                    <h6 class="mb-0">{{ $item->produk ? $item->produk->nama_produk : 'No product' }}</h6>
-                                                </div>
-                                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                    <button class="btn btn-link px-2" onclick="decreaseQuantity({{ $item->id }})">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                    <input id="quantity-{{ $item->id }}" name="quantity" type="text" value="{{ $item->quantity }}" class="form-control form-control-sm quantity-input" onchange="updateCartItemQuantity({{ $item->id }}, this.value)" pattern="\d*" data-stock="{{ $item->produk->stok_produk }}" />
-                                                    <button class="btn btn-link px-2" onclick="increaseQuantity({{ $item->id }})">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="col-md-3 col-lg-2 col-xl-2">
-                                                    <p class="mb-0 fw-semibold price">Rp {{ number_format($item->produk->harga_produk * $item->quantity, 0, ',', '.') }}</p> <!-- Display in Rupiah -->
-                                                </div>
-                                                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                                    <form action="{{ route('cart.remove', $item->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="text-muted" style="background: none; border: none; padding: 0;">
-                                                            <i class="fas fa-times"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <hr class="my-4">
-                                        @endforeach
-
-
-                                        <div class="pt-5">
-                                            <h6 class="mb-0"><a href="" class="text-body text-decoration-none"><i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 bg-body-tertiary">
-                                    <div class="p-5">
-                                        <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-                                        <hr class="my-4">
-                                        <div class="d-flex justify-content-between mb-4">
-                                            <h5 class="text-uppercase">items {{ count($cartItems) }}</h5>
-                                            {{-- <h5>Rp {{ number_format($totalPrice, 0, ',', '.') }}</h5> <!-- Example: € to IDR conversion rate 1€ = 16,000 IDR --> --}}
-                                        </div>
-
-                                        <h5 class="text-uppercase mb-3">Shipping</h5>
-                                        <div class="mb-4 pb-2">
-                                            <select data-mdb-select-init>
-                                                <option value="1">Standard-Delivery - Rp 10,000</option> <!-- Adjusted to Rupiah -->
-                                                <option value="2">Express Delivery - Rp 20,000</option> <!-- Adjusted to Rupiah -->
-                                            </select>
-                                        </div>
-
-                                        <h5 class="text-uppercase mb-3">Code Voucher</h5>
-                                        <div class="mb-5">
-                                            <div data-mdb-input-init class="form-outline">
-                                                <input type="text" id="form3Examplea2" class="form-control form-control-lg" placeholder="Enter your code" />
-                                            </div>
-                                        </div>
-
-                                        <hr class="my-4">
-
-                                        <div class="d-flex justify-content-between mb-5">
-                                            <h5 class="text-uppercase">Total price</h5>
-                                            {{-- <h5>Rp {{ number_format($totalPrice, 0, ',', '.') }}</h5> <!-- Assuming fixed shipping fee and conversion rate --> --}}
-                                        </div>
-
-                                        <button type="button" onclick="window.location.href='{{ route('payment') }}'" 
-                                            class="btn btn-dark btn-block btn-lg">
-                                            Checkout
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
   <div class="container mt-5">
     <div class="row">
       <div class="col-lg-8">
@@ -302,7 +211,10 @@
               <span id="total-selected-price">Rp 0</span>
             </li>
           </ul>
-          <button class="btn btn-success w-100">Place order</button>
+          <form action="{{ route('payment') }}" method="POST">
+            @csrf
+            <button class="btn btn-success w-100">Place order</button>
+        </form>        
         </div>
       </div>
     </div>
