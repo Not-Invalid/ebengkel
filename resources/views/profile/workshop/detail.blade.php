@@ -112,7 +112,7 @@
             aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a class="nav-link d-inline-flex align-items-center"
-                  href="{{ route('home') }}">Home</a></li>
+                  href="{{ route('profile.workshop') }}">Workshop</a></li>
               <li class="breadcrumb-item active d-inline-flex align-items-center" aria-current="page">
                 {{ $bengkel->nama_bengkel }}</li>
             </ol>
@@ -198,7 +198,7 @@
           </div>
           <div class="card-body">
             <p><i class='bx bxl-whatsapp align-icon me-2' style="color: var(--main-green)"></i>
-              +{{ $bengkel->whatsapp }}
+              {{ $bengkel->whatsapp }}
             </p>
             <p><i class='bx bxl-instagram align-icon me-2' style="color: #833ab4"></i>
               {{ $bengkel->instagram }}
