@@ -110,7 +110,8 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="dropdown-item has-icon">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}"
+                                class="dropdown-item has-icon">
                                 <i class="far fa-user"></i> Profile
                             </a>
                             <div class="dropdown-divider"></div>
@@ -166,9 +167,25 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="{{ request()->routeIs('pos.index') ? 'active' : '' }}">
-                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="nav-link">
-                                <i class="fas fa-user"></i> Profile
+                        <li class="dropdown ">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-cart"></i>
+                                <span>Transaksi</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="{{ request()->routeIs('pos.tranksaksi_pos.index') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
+                                </li>
+                                <li class="{{ request()->routeIs('pos.tranksaksi_pesanan.index') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Pesanan</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="{{ request()->routeIs('profile-pegawai') ? 'active' : '' }}">
+                            <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}"
+                                class="nav-link">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
                             </a>
                         </li>
                     </ul>
