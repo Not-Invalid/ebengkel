@@ -12,6 +12,7 @@ use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\MenuController as PosMenuController;
 use App\Http\Controllers\Pos\ProfileController as PosProfileController;
 use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
+use App\Http\Controllers\Pos\TransaksiPesananController  as PosPesananController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
@@ -56,7 +57,7 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::get('cart', [CartController::class, 'showCart'])->name('cart');
     Route::post('/add-to-cart', [ProductSparePartController::class, 'addToCart'])->middleware('auth');
     Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
-    Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);    
+    Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);
     Route::post('/cart/remove/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.remove');
     Route::post('checkout/', [CartController::class, 'showPayment'])->name('payment');
 });
@@ -261,6 +262,7 @@ Route::prefix('POS')->group(function () {
     Route::post('profile/update/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'update'])->name('profile-pegawai.update');
 
     Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
+    Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
 
     Route::prefix('Master-data')->group(function () {
         Route::prefix('pos/{id_bengkel}/product')->group(function () {
