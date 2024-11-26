@@ -169,7 +169,7 @@
                         <li class="{{ request()->routeIs('pos.product.*') ? 'active' : '' }}">
                             <a class="nav-link"
                                 href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
-                                <i class="fas fa-cogs"></i>
+                                <i class="fas fa-box"></i>
                                 <span>Product</span>
                             </a>
                         </li>
@@ -183,7 +183,7 @@
                         <li class="{{ request()->routeIs('pos.service.*') ? 'active' : '' }}">
                             <a class="nav-link"
                                 href="{{ route('pos.service.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">
-                                <i class="fas fa-cogs"></i>
+                                <i class="fas fa-wrench"></i>
                                 <span>Service</span>
                             </a>
                         </li>
@@ -203,7 +203,7 @@
                                 <span>Settings</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="">Change Password</a>
+                                    <a class="nav-link" href="{{ route('pos.change-password') }}">Change Password</a>
                                 </li>
                             </ul>
                         </li>
