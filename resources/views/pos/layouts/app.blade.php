@@ -166,6 +166,12 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="{{ request()->routeIs('pos.management-stock') ? 'active' : '' }}">
+                            <a class="nav-link"
+                              href="{{ route('pos.management-stock', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
+                                class="fa-solid fa-cubes"></i>Management Stock
+                            </a>
+                          </li>
                         <li class="{{ request()->routeIs('profile-pegawai') ? 'active' : '' }}">
                             <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}" class="nav-link">
                                 <i class="fas fa-user"></i>
