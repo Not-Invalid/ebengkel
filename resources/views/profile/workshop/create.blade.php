@@ -36,6 +36,22 @@
     }
   }
 </script>
+<script>
+    function formatWhatsappNumber(input) {
+      let number = input.value.trim();
+      if (!number.startsWith('+62')) {
+        if (number.startsWith('62')) {
+          number = '+' + number;
+        } else if (number.startsWith('0')) {
+          number = '+62' + number.slice(1);
+        } else {
+          number = '+62' + number;
+        }
+      }
+      input.value = number;
+    }
+  </script>
+
 <style>
   .image-preview {
     border: 1px solid #ddd;
@@ -283,8 +299,7 @@
 
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
-          <input class="did-floating-input" type="text" name="whatsapp" placeholder="62" required pattern="[0-9]*"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '');" required />
+          <input class="did-floating-input" type="text" name="whatsapp" placeholder="62" required pattern="[\+0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatWhatsappNumber(this);" />
           <label class="did-floating-label">WhatsApp<span class="text-danger">*</span></label>
         </div>
       </div>

@@ -37,6 +37,29 @@
     }
   }
 </script>
+<script>
+    function formatWhatsappNumber(input) {
+      let number = input.value.trim();
+      if (!number.startsWith('+62')) {
+        if (number.startsWith('62')) {
+          number = '+' + number;
+        } else if (number.startsWith('0')) {
+          number = '+62' + number.slice(1);
+        } else {
+          number = '+62' + number;
+        }
+      }
+      input.value = number;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const whatsappInput = document.querySelector('[name="whatsapp"]');
+      if (whatsappInput && whatsappInput.value) {
+        formatWhatsappNumber(whatsappInput);
+      }
+    });
+</script>
+
 <style>
   .image-preview {
     border: 1px solid #ddd;
@@ -360,9 +383,7 @@
       <!-- WhatsApp -->
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
-          <input class="did-floating-input" type="text" name="whatsapp" placeholder="62"
-            value="{{ old('whatsapp', $bengkel->whatsapp) }}" required pattern="[0-9]*"
-            oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+          <input class="did-floating-input" type="text" name="whatsapp" placeholder="62" value="{{ old('whatsapp', $bengkel->whatsapp) }}" required pattern="[\+0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, ''); formatWhatsappNumber(this);" />
           <label class="did-floating-label">WhatsApp<span class="text-danger">*</span></label>
         </div>
       </div>
