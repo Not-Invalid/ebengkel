@@ -71,7 +71,7 @@
                         <p class="card-text mb-3">Daftar sekarang untuk akses layanan bengkel berkualitas dan perluas
                             jangkauan
                             pelanggan Anda.</p>
-                        @if (auth()->guest())
+                        @if (auth('pelanggan')->guest())
                             <a href="{{ route('register') }}" class="card-link text-decoration-none">Daftar Sekarang</a>
                         @endif
                     </div>
