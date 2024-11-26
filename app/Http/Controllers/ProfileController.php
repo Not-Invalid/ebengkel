@@ -66,7 +66,7 @@ class ProfileController extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'telp' => 'required|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $pelanggan->nama_pelanggan = $request->input('nama');
@@ -75,11 +75,17 @@ class ProfileController extends Controller
 
         if ($request->hasFile('foto')) {
             $image = $request->file('foto');
-
             $imageName = 'foto_pelanggan_' . date('Ymd_His') . '.webp';
 
             $img = imagecreatefromstring(file_get_contents($image));
+
             if ($img) {
+                if (!imageistruecolor($img)) {
+                    $trueColorImg = imagecreatetruecolor(imagesx($img), imagesy($img));
+                    imagecopy($trueColorImg, $img, 0, 0, 0, 0, imagesx($img), imagesy($img));
+                    imagedestroy($img);
+                    $img = $trueColorImg;
+                }
 
                 imagewebp($img, public_path('assets/images/profile_picture/' . $imageName), 90);
                 imagedestroy($img);
@@ -92,6 +98,7 @@ class ProfileController extends Controller
 
         return back()->with('status', 'Update profile is successful!');
     }
+
 
     public function showAddress()
     {
