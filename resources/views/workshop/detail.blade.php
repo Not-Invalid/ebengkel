@@ -71,25 +71,24 @@
   });
 </script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const stars = document.querySelectorAll('.rating-form i');
-    const ratingInput = document.getElementById('ratingInput');
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.rating-form i');
+        const ratingInput = document.getElementById('ratingInput');
 
-    stars.forEach((star, index) => {
-      star.addEventListener('click', function() {
-        const selectedValue = parseInt(this.getAttribute('data-value'));
-        ratingInput.value = selectedValue;
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function() {
+                const selectedValue = index + 1;
+                ratingInput.value = selectedValue;
 
-        // Ubah semua bintang menjadi tidak aktif terlebih dahulu
-        stars.forEach(s => s.classList.remove('selected'));
+                stars.forEach(s => s.classList.remove('selected'));
 
-        // Aktifkan bintang dari kiri hingga indeks yang diklik
-        for (let i = 0; i < selectedValue; i++) {
-          stars[i].classList.add('selected');
-        }
-      });
+                for (let i = 0; i < selectedValue; i++) {
+                    stars[i].classList.add('selected');
+                }
+            });
+        });
     });
-  });
+
 </script>
 
 @section('content')
@@ -559,10 +558,9 @@
               <div class="review-card d-flex align-items-start mb-4">
                 <!-- Foto Pelanggan -->
                 <div class="review-photo me-3">
-                  <img
-                    src="{{ $review->foto_pelanggan ? url($review->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"
-                    alt="Foto {{ $review->pelanggan->nama_pelanggan }}" class="rounded-circle" width="50"
-                    height="50">
+                    <img
+                        src="{{ isset($review->pelanggan) && $review->pelanggan->foto_pelanggan ? url($review->pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"
+                        alt="Profile Picture" class="rounded-circle" width="50" height="50">
                 </div>
 
                 <!-- Konten Ulasan -->
@@ -590,7 +588,6 @@
 
 
             <!-- Modal -->
-            <!-- Modal -->
             <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
               aria-hidden="true">
               <div class="modal-dialog">
@@ -604,18 +601,18 @@
                       <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
                       <h3 class="title-rating">Berikan Ulasan Untuk Paket
                         Ini</h3>
-                      <div class="form-group py-3">
-                        <div class="rating-form">
-                          <i class="bx bx-star" data-value="1"></i>
-                          <i class="bx bx-star" data-value="2"></i>
-                          <i class="bx bx-star" data-value="3"></i>
-                          <i class="bx bx-star" data-value="4"></i>
-                          <i class="bx bx-star" data-value="5"></i>
+                        <div class="form-group py-3">
+                            <div class="rating-form">
+                                <i class="bx bx-star" data-value="1"></i>
+                                <i class="bx bx-star" data-value="2"></i>
+                                <i class="bx bx-star" data-value="3"></i>
+                                <i class="bx bx-star" data-value="4"></i>
+                                <i class="bx bx-star" data-value="5"></i>
+                            </div>
+                            <!-- Input hidden untuk menyimpan nilai rating -->
+                            <input type="hidden" name="rating" id="ratingInput" required>
                         </div>
 
-
-                        <input type="hidden" name="rating" id="ratingInput" required>
-                      </div>
 
                       <div class="mb-3">
                         <textarea name="komentar" class="form-control" id="komentar" rows="3"
