@@ -9,20 +9,15 @@ use App\Http\Controllers\MyorderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
-<<<<<<< HEAD
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
-=======
 use App\Http\Controllers\Pos\MenuController as PosMenuController;
 use App\Http\Controllers\Pos\ProfileController as PosProfileController;
 use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\Pos\TransaksiPesananController  as PosPesananController;
->>>>>>> fawas
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\StockController as PosStockController;
-use App\Http\Controllers\Pos\ProfileController as PosProfileController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
-use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\Pos\ServiceController as PosSettingController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
