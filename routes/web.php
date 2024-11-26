@@ -322,5 +322,3 @@ Route::prefix('POS')->group(function () {
 
     Route::get('change-password', [PosSettingController::class, 'showChangePassword'])->name('pos.change-password');
 });
-
-
