@@ -4,21 +4,17 @@ namespace App\Http\Controllers\Pos;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
-class TransaksiPosController extends Controller
+class TransaksiPesananController extends Controller
 {
     public function index($id_bengkel)
     {
         $bengkel = Bengkel::find($id_bengkel);
-        $queryProduct = Product::where('delete_produk', 'N')->with('bengkel');
-
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('error_status', 'Bengkel tidak ditemukan.');
         }
-        $products = $queryProduct->get();
 
-        return view('pos.master-transaksi.pos.index', compact('bengkel', 'products'));
+        return view('pos.master-transaksi.pesanan.index', compact('bengkel'));
     }
 }

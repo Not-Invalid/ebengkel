@@ -151,6 +151,20 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li class="dropdown ">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-cart"></i>
+                                <span>Transaksi</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="{{ request()->routeIs('pos.tranksaksi_pos.index') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
+                                </li>
+                                <li class="{{ request()->routeIs('pos.tranksaksi_pesanan.index') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Pesanan</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="{{ request()->routeIs('pos.management-stock') ? 'active' : '' }}">
                             <a class="nav-link"
                               href="{{ route('pos.management-stock', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
