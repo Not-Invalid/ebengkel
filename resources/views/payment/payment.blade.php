@@ -114,7 +114,7 @@
                             </div>
         
                             <!-- Tombol Bayar -->
-                            <button class="btn btn-dark btn-block btn-lg mt-4">Bayar Sekarang</button>
+                            <button id="payButton" class="btn btn-dark btn-block btn-lg mt-4">Bayar Sekarang</button>
                         </div>
                     </div>
                 </div>
@@ -199,6 +199,30 @@
             document.getElementById('deliveryDate').textContent = `Akan diterima dalam ${deliveryTime}`;
             document.getElementById('selectedShippingPrice').textContent = `Rp ${shippingPrice.toLocaleString()}`;
         }
+
+        document.getElementById('payButton').addEventListener('click', function (e) {
+            e.preventDefault(); // Mencegah form submit default
+
+            // Ambil Snap Token yang dikirim dari controller
+            var snapToken = "{{ $snapToken }}"; // Pastikan kamu sudah mengirimkan snapToken ke view
+            
+            // Panggil Midtrans Snap
+            snap.pay(snapToken, {
+                onSuccess: function(result) {
+                    // Handle sukses pembayaran
+                    alert("Pembayaran sukses! ID Transaksi: " + result.transaction_id);
+                    // Redirect atau tampilkan pesan sukses
+                },
+                onPending: function(result) {
+                    // Handle status pembayaran pending
+                    alert("Pembayaran sedang diproses. Status: " + result.transaction_status);
+                },
+                onError: function(result) {
+                    // Handle error pembayaran
+                    alert("Pembayaran gagal. Kesalahan: " + result.status_message);
+                }
+            });
+        });
 
    </script>
 @endsection
