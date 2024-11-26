@@ -16,6 +16,7 @@ use App\Http\Controllers\Pos\ProfileController as PosProfileController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
 use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
+use App\Http\Controllers\Pos\ServiceController as PosSettingController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -72,11 +73,13 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::post('checkout/', [CartController::class, 'payment'])->name('payment');
 });
 
-Route::prefix('superadmin')->middleware(['auth:superadmin', \App\Http\Middleware\SessionTimeout::class])->group(function () {
+Route::prefix('superadmin')->group(function () {
     Route::get('/', [SuperAdminAuthController::class, 'showLogin'])->name('login-admin');
     Route::post('login', [SuperAdminAuthController::class, 'login'])->name('login-admin-send');
     Route::post('logout/admin', [SuperAdminAuthController::class, 'logout'])->name('logout-admin');
+});
 
+Route::middleware(['auth:superadmin', 'session.timeout'])->prefix('superadmin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'superAdmin'])->name('superadmin');
 
     Route::get('event-data', [SuperAdminEventController::class, 'index'])->name('event-data');
@@ -313,6 +316,8 @@ Route::prefix('POS')->group(function () {
             Route::delete('delete/{id_services}', [PosServiceController::class, 'destroy'])->name('pos.service.destroy');
         });
     });
+
+    Route::get('change-password', [PosSettingController::class, 'showChangePassword'])->name('pos.change-password');
 });
 
 
