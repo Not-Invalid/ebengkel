@@ -11,14 +11,20 @@
 @section('content')
   <div class="card">
     <div class="card-header">
-      <h4>Add Product</h4>
+      <h4>Add Stock
+        <span>
+          <br>
+          <small class="text-danger">* Indicated requred fields</small>
+        </span>
+      </h4>
+
     </div>
     <div class="card-body">
       <form action="{{ route('pos.management-stock.store', $bengkel->id_bengkel) }}" method="POST">
         @csrf
 
         <div class="form-group">
-          <label for="product_id">Product</label>
+          <label for="product_id">Product <span class="text-danger">*</span></label>
           <select name="product_id" id="product_id" class="form-control @error('product_id') is-invalid @enderror">
             <option value="">Select Product</option>
             @foreach ($products as $product)
@@ -33,7 +39,7 @@
         </div>
 
         <div class="form-group">
-          <label for="quantity">Quantity</label>
+          <label for="quantity">Quantity <span class="text-danger">*</span></label>
           <input type="number" name="quantity" id="quantity"
             class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity') }}" required
             min="1">
@@ -50,8 +56,11 @@
           @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Stock</button>
-        <a href="{{ route('pos.management-stock', $bengkel->id_bengkel) }}" class="btn btn-secondary">Cancel</a>
+        <div class="d-flex gap-2 justify-content-end">
+          <button type="submit" class="btn btn-custom-icon">Submit</button>
+          <a href="{{ route('pos.management-stock', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+            class="btn btn-cancel">Cancel</a>
+        </div>
       </form>
     </div>
   </div>
