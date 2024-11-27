@@ -63,7 +63,6 @@
                                         </span>
                                     </a>
                                 </li>
-                            </ul>
                         </div>
                     </nav>
                 </div>
@@ -71,6 +70,24 @@
         </div>
     </div>
 </header>
+
+<script>
+    function updateCartCount() {
+        fetch("{{ route('cart.count') }}")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('countCart').textContent = data.count;
+            })
+            .catch(error => console.log('Error:', error));
+    }
+
+    setInterval(updateCartCount, 3000);
+
+    window.onload = function() {
+        updateCartCount();
+    };
+</script>
+
 
 <script>
     window.onscroll = function() {
