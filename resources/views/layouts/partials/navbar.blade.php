@@ -63,6 +63,17 @@
                                         </span>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="languageDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bx bx-world"></i>
+                                        EN
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                        <li><a class="dropdown-item" href="#">EN</a></li>
+                                        <li><a class="dropdown-item" href="#">ID</a></li>
+                                    </ul>
+                                </li>
                         </div>
                     </nav>
                 </div>
@@ -86,6 +97,17 @@
     window.onload = function() {
         updateCartCount();
     };
+</script>
+
+<script>
+    document.querySelectorAll('.change-language').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const lang = this.getAttribute('data-lang');
+            // Ganti bahasa dengan AJAX atau logika lainnya
+            console.log(`Bahasa dipilih: ${lang}`);
+        });
+    });
 </script>
 
 
