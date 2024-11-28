@@ -87,7 +87,7 @@
                 </div>
                 <div class="form-group">
                     <label for="stok_produk">Product Stock <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="stok_produk" required>
+                    <input type="number" min="0" class="form-control" name="stok_produk" required>
                 </div>
                 <div class="form-group">
                     <label for="harga_produk">Product Price <span class="text-danger">*</span></label>
