@@ -3,7 +3,7 @@
     eBengkelku | POS
 @stop
 @php
-    $header = 'Create Spare Part';
+    $header = 'Add New Spare Part';
 @endphp
 <style>
     .image-preview {
@@ -48,11 +48,8 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Add Sparepart
-                <span>
-                    <br>
-                    <small class="text-danger">* Indicated requred fields</small>
-                </span>
+            <h4 class="text-danger">
+                * Indicated requred fields
             </h4>
         </div>
         <div class="card-body">
@@ -98,7 +95,7 @@
                 </div>
                 <div class="form-group">
                     <label for="keterangan_spare_part">Description</label>
-                    <textarea class="form-control" name="keterangan_spare_part"></textarea>
+                    <textarea class="form-control"style="resize: none; height: 100px !important;" name="keterangan_spare_part"></textarea>
                 </div>
                 <div class="form-group">
                     <div class="upload-box">
@@ -113,9 +110,9 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-custom-icon">Submit</button>
                     <a href="{{ route('pos.sparepart.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
                         class="btn btn-cancel">Cancel</a>
+                    <button type="submit" class="btn btn-custom-icon">Submit</button>
                 </div>
             </form>
         </div>
