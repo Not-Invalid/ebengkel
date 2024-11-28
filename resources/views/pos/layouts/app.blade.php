@@ -23,6 +23,9 @@
   {{-- Aos --}}
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
 
+  {{-- select2 --}}
+  <link href="{{ asset('template_pos/modules/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+
   {{-- Css libraries --}}
   <link rel="stylesheet" href="{{ asset('template_pos/modules/jqvmap/dist/jqvmap.min.css') }}" />
   <link rel="stylesheet" href="{{ asset('template_pos/modules/weather-icon/css/weather-icons.min.css') }}" />
@@ -33,6 +36,7 @@
   <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
   <link rel="stylesheet" href="{{ asset('template_pos/css/style.css') }}" />
   <link rel="stylesheet" href="{{ asset('template_pos/css/components.css') }}" />
+
   <!-- Start GA -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
   <script>
@@ -215,8 +219,11 @@
                 <span>Settings</span></a>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="nav-link" href="{{ route('pos.change-password') }}">Change Password</a>
+                  <a class="nav-link" href="{{ route('pos.change-password', ['id_bengkel' => $bengkel->id_bengkel]) }}">Change Password</a>
                 </li>
+                {{-- <li>
+                    <a class="nav-link" href="{{ route('pos.language', ['id_bengkel' => $bengkel->id_bengkel]) }}">Language</a>
+                </li> --}}
               </ul>
             </li>
           </ul>
@@ -257,6 +264,7 @@
   <script src="{{ asset('template_pos/modules/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
   <script src="{{ asset('template_pos/modules/summernote/summernote-bs4.js') }}"></script>
   <script src="{{ asset('template_pos/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   {{-- Template JS file --}}
   <script src="{{ asset('template_pos/js/scripts.js') }}"></script>
@@ -264,6 +272,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
@@ -327,6 +336,11 @@
       rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
       return rupiah;
     }
+  </script>
+  <script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
   </script>
 
 </body>
