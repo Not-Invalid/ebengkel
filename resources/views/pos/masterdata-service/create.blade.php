@@ -3,7 +3,7 @@
     eBengkelku | POS
 @stop
 @php
-    $header = 'Create Service';
+    $header = 'Add New Service';
 @endphp
 <style>
     .image-preview {
@@ -48,11 +48,8 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Add Service
-                <span>
-                    <br>
-                    <small class="text-danger">* Indicated requred fields</small>
-                </span>
+            <h4 class="text-danger">
+                * Indicated required fields
             </h4>
         </div>
         <div class="card-body">
