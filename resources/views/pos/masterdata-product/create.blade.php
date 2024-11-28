@@ -48,11 +48,8 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Add Product
-                <span>
-                    <br>
-                    <small class="text-danger">* Indicated requred fields</small>
-                </span>
+            <h4 class="text-danger">
+                * Indicated requred fields
             </h4>
         </div>
         <div class="card-body">
