@@ -10,15 +10,14 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
-use App\Http\Controllers\Pos\MenuController as PosMenuController;
-use App\Http\Controllers\Pos\ProfileController as PosProfileController;
-use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
-use App\Http\Controllers\Pos\TransaksiPesananController  as PosPesananController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
-use App\Http\Controllers\Pos\StockController as PosStockController;
+use App\Http\Controllers\Pos\ProfileController as PosProfileController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
-use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
 use App\Http\Controllers\Pos\ServiceController as PosSettingController;
+use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
+use App\Http\Controllers\Pos\StockController as PosStockController;
+use App\Http\Controllers\Pos\TransaksiPesananController as PosPesananController;
+use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -38,13 +37,13 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
-use App\Models\ReviewWorkshop;
-use App\Http\Controllers\StockController as ControllersStockController;
-use App\Http\Controllers\PaymentController;
-use Illuminate\Routing\Route as RoutingRoute;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
+Route::get('/check-login-status', function () {
+    return response()->json(['isLoggedIn' => Auth::check()]);
+});
 
 // Auth routes
 Route::prefix('pelanggan')->group(function () {
@@ -272,15 +271,12 @@ Route::prefix('POS')->group(function () {
     Route::post('management-stock/store/{id_bengkel}/', [PosStockController::class, 'store'])->name('pos.management-stock.store');
     Route::delete('/management-stock/delete/{id_stock}', [PosStockController::class, 'delete'])->name('pos.management-stock.delete');
 
-
-
     Route::get('.management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
     Route::get('.management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
     Route::post('.management-users/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-user.store');
     Route::get('.management-users/edit/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'edit'])->name('pos.management-user.edit');
     Route::post('.management-users/update/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'update'])->name('pos.management-user.update');
     Route::delete('.management-users/delete/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'delete'])->name('pos.management-user.delete');
-
 
     Route::get('profile/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'index'])->name('profile-pegawai');
     Route::post('profile/update/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'update'])->name('profile-pegawai.update');
