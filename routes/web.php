@@ -18,7 +18,7 @@ use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\StockController as PosStockController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
-use App\Http\Controllers\Pos\ServiceController as PosSettingController;
+use App\Http\Controllers\Pos\SettingController as PosSettingController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -274,12 +274,12 @@ Route::prefix('POS')->group(function () {
 
 
 
-    Route::get('.management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
-    Route::get('.management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
-    Route::post('.management-users/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-user.store');
-    Route::get('.management-users/edit/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'edit'])->name('pos.management-user.edit');
-    Route::post('.management-users/update/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'update'])->name('pos.management-user.update');
-    Route::delete('.management-users/delete/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'delete'])->name('pos.management-user.delete');
+    Route::get('management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
+    Route::get('management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
+    Route::post('management-users/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-user.store');
+    Route::get('management-users/edit/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'edit'])->name('pos.management-user.edit');
+    Route::post('management-users/update/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'update'])->name('pos.management-user.update');
+    Route::delete('management-users/delete/{id_bengkel}/{id_pegawai}', [PosPegawaiController::class, 'delete'])->name('pos.management-user.delete');
 
 
     Route::get('profile/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'index'])->name('profile-pegawai');
@@ -295,7 +295,6 @@ Route::prefix('POS')->group(function () {
             Route::post('store', [PosProductController::class, 'store'])->name('pos.product.store');
             Route::get('edit/{id_produk}', [PosProductController::class, 'edit'])->name('pos.product.edit');
             Route::put('update/{id_produk}', [PosProductController::class, 'update'])->name('pos.product.update');
-            Route::get('detail/{id_produk}', [PosProductController::class, 'show'])->name('pos.product.show');
             Route::delete('delete/{id_produk}', [PosProductController::class, 'destroy'])->name('pos.product.destroy');
         });
 
@@ -320,5 +319,8 @@ Route::prefix('POS')->group(function () {
         });
     });
 
-    Route::get('change-password', [PosSettingController::class, 'showChangePassword'])->name('pos.change-password');
+    Route::get('change-password/{id_bengkel}', [PosSettingController::class, 'showChangePassword'])->name('pos.change-password');
+    Route::post('/settings/change-password/{id_bengkel}', [PosSettingController::class, 'updatePassword'])->name('settings.updatePassword');
+
+    // Route::get('language-setting/{id_bengkel}', [PosSettingController::class, 'showLanguageSetting'])->name('pos.language');
 });
