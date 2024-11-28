@@ -23,7 +23,7 @@ class PegawaiController extends Controller
 
         $pegawai = Pegawai::where('id_bengkel', $id_bengkel)
                             ->where('delete_pegawai', 'N')
-                            ->whereIn('role', ['Administrator', 'Cashier'])
+                            ->whereIn('role', ['Administrator', 'Kasir'])
                             ->paginate($perPage);
 
         return view('pos.management-user.index', compact('bengkel', 'pegawai'));
@@ -49,7 +49,7 @@ class PegawaiController extends Controller
             'nama_pegawai' => 'required|string|max:255',
             'email_pegawai' => 'required|email|unique:tb_pegawai,email_pegawai',
             'telp_pegawai' => 'required|string|max:15',
-            'role' => 'required|in:Administrator,Cashier,Outlet',
+            'role' => 'required|in:Administrator,Kasir,Outlet',
         ]);
 
         $bengkel = Bengkel::find($id_bengkel);
@@ -91,7 +91,7 @@ class PegawaiController extends Controller
             'nama_pegawai' => 'required|string|max:255',
             'email_pegawai' => 'required|email|unique:tb_pegawai,email_pegawai,' . $id_pegawai . ',id_pegawai',
             'telp_pegawai' => 'required|string|max:20',
-            'role' => 'required|string|in:Administrator,Cashier',
+            'role' => 'required|string|in:Administrator,Kasir',
         ]);
 
         $pegawai = Pegawai::findOrFail($id_pegawai);
