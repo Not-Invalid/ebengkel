@@ -1,11 +1,11 @@
 @extends('pos.layouts.app')
 
 @section('title')
-  eBengkelku | POS
+  eBengkelku | Management Stock
 @stop
 
 @php
-  $header = 'Stock';
+  $header = 'Stock Inbound';
 @endphp
 
 @section('content')
@@ -21,9 +21,8 @@
     <div class="d-flex justify-center w-100 mx-2 mb-4 mt-4">
       <input type="text" id="search" class="form-control w-60" placeholder="Search">
     </div>
-
     <div class="d-flex justify-end mb-4 mt-4">
-      <a href="{{ route('pos.management-stock.create', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+      <a href="{{ route('pos.management-stock.inbound.create', ['id_bengkel' => $bengkel->id_bengkel]) }}"
         class="btn btn-info text-white px-4 py-2 mx-2">Add New Stock</a>
     </div>
   </div>
@@ -35,13 +34,14 @@
           <th class="text-center">No</th>
           <th class="text-center">Merk Product</th>
           <th class="text-center">Product Name</th>
-          <th class="text-center">Product Photo</th>
+          <th class="text-center">Type</th>
           <th class="text-center">Quantity</th>
+          <th class="text-center">Input By</th>
           <th class="text-center">Description</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>
-      <tbody id="staff-table-body">
+      <tbody id="inbound-table-body">
         @if ($combined->isEmpty())
           <tr>
             <td colspan="7" class="text-center">Data Not Found</td>
@@ -49,22 +49,28 @@
         @else
           @foreach ($combined as $stock)
             <tr>
-              <td>{{ $loop->iteration }}</td>
+              <td>{{ $combined->firstItem() + $loop->iteration - 1 }}</td>
               <td>{{ $stock->product_brand }}</td>
               <td>{{ $stock->product_name }}</td>
               <td>
-                <img src="{{ $stock->product_image }}" alt="Product Image" width="50" height="50" class="rounded">
+                {{-- Display type --}}
+                @if ($stock->type === 'product')
+                  Product
+                @elseif ($stock->type === 'spare_part')
+                  Spare Part
+                @endif
               </td>
               <td>{{ $stock->quantity }}</td>
+              <td>{{ $stock->pegawai ? $stock->pegawai->nama_pegawai : 'N/A' }}</td>
               <td>{{ $stock->description }}</td>
               <td class="d-flex justify-content-center align-items-center">
                 <form
-                  action="{{ route('pos.management-stock.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_stock' => $stock->id_stock]) }}"
+                  action="{{ route('pos.management-stock.inbound.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_stock' => $stock->id_stock]) }}"
                   method="POST" class="delete-form">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-sm btn-danger" title="Delete Stock">
-                    <i class="fas fa-trash-alt"></i> Delete
+                    <i class="fas fa-trash"></i> Delete
                   </button>
                 </form>
               </td>
@@ -79,27 +85,27 @@
   <div class="d-flex justify-content-end mt-4">
     <nav aria-label="Page navigation">
       <ul class="pagination">
-        @if ($products->onFirstPage())
+        @if ($combined->onFirstPage())
           <li class="page-item disabled">
             <span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
           </li>
         @else
           <li class="page-item">
-            <a href="{{ $products->previousPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
+            <a href="{{ $combined->previousPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
           </li>
         @endif
 
-        @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-          @if ($page == $products->currentPage())
+        @foreach ($combined->getUrlRange(1, $combined->lastPage()) as $page => $url)
+          @if ($page == $combined->currentPage())
             <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
           @else
             <li class="page-item"><a href="{{ $url }}" class="page-link">{{ $page }}</a></li>
           @endif
         @endforeach
 
-        @if ($products->hasMorePages())
+        @if ($combined->hasMorePages())
           <li class="page-item">
-            <a href="{{ $products->nextPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
+            <a href="{{ $combined->nextPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
           </li>
         @else
           <li class="page-item disabled">
@@ -113,6 +119,27 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const deleteForms = document.querySelectorAll('.delete-form');
+      deleteForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.submit();
+            }
+          });
+        });
+      });
+    });
     // Real-time filter dropdown for number of records per page
     document.getElementById('perPage').addEventListener('change', function() {
       const perPageValue = this.value;
@@ -148,7 +175,7 @@
       filterTable('receivingnotes-table-body', [1]);
       filterTable('warehouse-table-body', [1, 2]);
       filterTable('staff-table-body', [1, 2]);
-      filterTable('management-stock', [1, 2]);
+      filterTable('inbound-stock', [1, 2]);
     });
   </script>
 

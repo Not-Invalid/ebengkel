@@ -39,4 +39,9 @@ class Pegawai extends Authenticatable
     {
         return $this->hasMany(Pegawai::class, 'id_bengkel', 'id_bengkel');
     }
+    public function stocks()
+    {
+        return $this->hasMany(StockInbound::class, 'id_pegawai');
+    }
+
 }

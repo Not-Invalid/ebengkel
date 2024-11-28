@@ -168,10 +168,15 @@
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-boxes-stacked"></i>
                 <span>Management Stock</span></a>
               <ul class="dropdown-menu">
-                <li class="{{ request()->routeIs('pos.management-stock') ? 'active' : '' }}">
+                <li class="{{ request()->routeIs('pos.management-stock.inbound') ? 'active' : '' }}">
                   <a class="nav-link"
-                    href="{{ route('pos.management-stock', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock
+                    href="{{ route('pos.management-stock.inbound', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock
                     Inbound</a>
+                </li>
+                <li class="{{ request()->routeIs('pos.management-stock.opname') ? 'active' : '' }}">
+                  <a class="nav-link"
+                    href="{{ route('pos.management-stock.opname', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock
+                    Opname</a>
                 </li>
               </ul>
             </li>

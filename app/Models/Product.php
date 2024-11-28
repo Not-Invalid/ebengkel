@@ -44,7 +44,7 @@ class Product extends Model
 
     public function stocks()
     {
-        return $this->hasMany(Stock::class, 'id_produk');
+        return $this->hasMany(StockInbound::class, 'id_produk');
     }
 
     public function bengkel()

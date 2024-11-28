@@ -35,4 +35,9 @@ class SpareParts extends Model
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');
     }
+    
+    public function stocks()
+    {
+        return $this->hasMany(StockInbound::class, 'id_spare_part');
+    }
 }

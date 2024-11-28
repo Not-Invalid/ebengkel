@@ -12,6 +12,8 @@ use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\ProfileController as PosProfileController;
+use App\Http\Controllers\Pos\StockInboundController as PosStockInboundController;
+use App\Http\Controllers\Pos\StockOpnameController as PosStockOpnameController;
 use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
 use App\Http\Controllers\Pos\SettingController as PosSettingController;
@@ -266,10 +268,13 @@ Route::prefix('POS')->group(function () {
     Route::post('logout', [PosAuthController::class, 'logout'])->name('pos.logout');
     Route::get('home/{id_bengkel}', [PosHomeController::class, 'index'])->name('pos.index');
 
-    Route::get('management-stock/{id_bengkel}', [PosStockController::class, 'index'])->name('pos.management-stock');
-    Route::get('management-stock/create/{id_bengkel}', [PosStockController::class, 'create'])->name('pos.management-stock.create');
-    Route::post('management-stock/store/{id_bengkel}/', [PosStockController::class, 'store'])->name('pos.management-stock.store');
-    Route::delete('/management-stock/delete/{id_stock}', [PosStockController::class, 'delete'])->name('pos.management-stock.delete');
+    Route::get('management-stock/inbound/{id_bengkel}', [PosStockInboundController::class, 'index'])->name('pos.management-stock.inbound');
+    Route::get('management-stock/inbound/create/{id_bengkel}', [PosStockInboundController::class, 'create'])->name('pos.management-stock.inbound.create');
+    Route::post('management-stock/inbound/store/{id_bengkel}/', [PosStockInboundController::class, 'store'])->name('pos.management-stock.inbound.store');
+    Route::delete('management-stock/inbound/delete/{id_stock}', [PosStockInboundController::class, 'delete'])->name('pos.management-stock.inbound.delete');
+
+    Route::get('management-stock/opname/{id_bengkel}', [PosStockOpnameController::class, 'index'])->name('pos.management-stock.opname');
+    Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
 
     Route::get('management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
     Route::get('management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
