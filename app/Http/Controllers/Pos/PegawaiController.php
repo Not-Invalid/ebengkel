@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Pos;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Bengkel;
 use App\Models\Pegawai;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PegawaiController extends Controller
 {
@@ -22,9 +22,9 @@ class PegawaiController extends Controller
         $perPage = $request->get('per_page', 10);
 
         $pegawai = Pegawai::where('id_bengkel', $id_bengkel)
-                            ->where('delete_pegawai', 'N')
-                            ->whereIn('role', ['Administrator', 'Kasir'])
-                            ->paginate($perPage);
+            ->where('delete_pegawai', 'N')
+            ->whereIn('role', ['Administrator', 'Kasir'])
+            ->paginate($perPage);
 
         return view('pos.management-user.index', compact('bengkel', 'pegawai'));
     }
@@ -44,7 +44,6 @@ class PegawaiController extends Controller
 
     public function store(Request $request, $id_bengkel)
     {
-
         $validatedData = $request->validate([
             'nama_pegawai' => 'required|string|max:255',
             'email_pegawai' => 'required|email|unique:tb_pegawai,email_pegawai',
@@ -58,7 +57,7 @@ class PegawaiController extends Controller
             return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
-        $randomPassword = Str::random(8);
+        $randomPassword = $request->password_pegawai;
 
         $hashedPassword = Hash::make($randomPassword);
 
@@ -103,7 +102,7 @@ class PegawaiController extends Controller
         $pegawai->save();
 
         return redirect()->route('pos.management-user', ['id_bengkel' => $id_bengkel])
-                        ->with('status', 'Staff updated successfully');
+            ->with('status', 'Staff updated successfully');
     }
 
     public function delete($id_bengkel, $id_pegawai)
