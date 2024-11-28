@@ -90,7 +90,7 @@
                 </div>
                 <div class="form-group">
                     <label for="stok_spare_part">Spare Part Stock <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="stok_spare_part" required>
+                    <input type="number" min="0" class="form-control" name="stok_spare_part" required>
                 </div>
                 <div class="form-group">
                     <label for="harga_spare_part">Spare Part Price <span class="text-danger">*</span></label>

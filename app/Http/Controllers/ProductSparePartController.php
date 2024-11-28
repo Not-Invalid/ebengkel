@@ -8,9 +8,10 @@ use App\Models\Cart;
 use App\Models\KategoriSparePart;
 use App\Models\Product;
 use App\Models\SpareParts;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class ProductSparePartController extends Controller
@@ -277,12 +278,16 @@ class ProductSparePartController extends Controller
         }
     }
 
-
     public function addToCart(Request $request)
     {
         Log::info('Add to cart request data:', $request->all());
 
         try {
+            // Ensure the user is authenticated
+            if (!Auth::check()) {
+                return response()->json(['success' => false, 'message' => 'You must be logged in to add items to the cart.']);
+            }
+
             $productId = $request->input('id_produk');
             $quantity = $request->input('quantity');
             $userId = Session::get('id_pelanggan');
@@ -326,12 +331,9 @@ class ProductSparePartController extends Controller
 
             return response()->json(['success' => true, 'message' => 'Product added to cart!']);
         } catch (\Exception $e) {
-
             Log::error("Error adding to cart: " . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'An error occurred. Please try again.']);
         }
     }
-
-
 
 }
