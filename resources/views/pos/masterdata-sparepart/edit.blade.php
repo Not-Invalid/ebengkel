@@ -5,8 +5,9 @@
 @stop
 
 @php
-    $header = 'Edit Spare Part';
+    $header = 'Edit Sparepart';
 @endphp
+
 <style>
     .image-preview {
         border: 1px solid #ddd;
@@ -46,15 +47,17 @@
         font-size: 14px;
         color: #999;
     }
+
+    .hidden {
+        display: none !important;
+    }
 </style>
+
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Edit Spare Part
-                <span>
-                    <br>
-                    <small class="text-danger">* Indicated requred fields</small>
-                </span>
+            <h4 class="text-danger">
+                * Indicated requred fields
             </h4>
         </div>
         <div class="card-body">
@@ -66,53 +69,20 @@
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
 
                 <div class="form-group">
-                    <label for="nama_spare_part">Spare Part Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nama_spare_part"
-                        value="{{ old('nama_spare_part', $sparepart->nama_spare_part) }}" required>
+                    <label for="nama_sparepart">Sparepart Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="nama_sparepart"
+                        value="{{ old('nama_sparepart', $sparepart->nama_spare_part) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_kategori_spare_part">Spare Part Type <span class="text-danger">*</span></label>
-                    <select name="id_kategori_spare_part" class="form-control" required>
-                        <option value="" disabled>Select Type</option>
-                        @foreach ($categories as $kategori)
-                            <option value="{{ $kategori->id_kategori_spare_part }}"
-                                @if ($sparepart->id_kategori_spare_part == $kategori->id_kategori_spare_part) selected @endif>
-                                {{ $kategori->nama_kategori_spare_part }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label for="harga_sparepart">Sparepart Price <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="harga_sparepart"
+                        value="{{ old('harga_sparepart', $sparepart->harga_spare_part) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="kualitas_spare_part">Spare Part Quality <span class="text-danger">*</span></label>
-                    <select name="kualitas_spare_part" class="form-control" required>
-                        <option value="original" @if ($sparepart->kualitas_spare_part == 'original') selected @endif>Original</option>
-                        <option value="aftermarket" @if ($sparepart->kualitas_spare_part == 'aftermarket') selected @endif>Aftermarket</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="merk_spare_part">Spare Part Merk <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="merk_spare_part"
-                        value="{{ old('merk_spare_part', $sparepart->merk_spare_part) }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="stok_spare_part">Spare Part Stock <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="stok_spare_part"
-                        value="{{ old('stok_spare_part', $sparepart->stok_spare_part) }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="harga_spare_part">Spare Part Price <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="harga_spare_part"
-                        value="{{ old('harga_spare_part', $sparepart->harga_spare_part) }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="keterangan_spare_part">Description </label>
-                    <textarea class="form-control" name="keterangan_spare_part">{{ old('keterangan_spare_part', $sparepart->keterangan_spare_part) }}</textarea>
+                    <label for="keterangan_sparepart">Description </label>
+                    <textarea class="form-control" style="resize: none; height: 100px !important;" name="keterangan_sparepart">{{ old('keterangan_sparepart', $sparepart->keterangan_spare_part) }}</textarea>
                 </div>
 
                 <div class="form-group mb-3">
@@ -129,13 +99,15 @@
                 </div>
 
                 <div class="d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-custom-icon">Save</button>
-                    <a href="{{ route('pos.sparepart.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-                        class="btn btn-cancel">Back</a>
+                    <a href="{{ route('pos.sparepart.index', ['id_bengkel' => $bengkel->id_bengkel]) }}" id="backButton" class="btn btn-danger">Back</a>
+                    <button id="editButton" type="button" class="btn btn-primary">Edit</button>
+                    <button id="cancelButton" type="button" class="btn btn-danger hidden">Cancel</button>
+                    <button id="saveButton" type="submit" class="btn btn-primary hidden">Save</button>
                 </div>
             </form>
         </div>
     </div>
+
     <script>
         function previewImage(inputId, previewId) {
             const input = document.getElementById(inputId);
@@ -155,5 +127,41 @@
                 preview.src = '';
             }
         }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backButton = document.getElementById('backButton');
+            const editButton = document.getElementById('editButton');
+            const cancelButton = document.getElementById('cancelButton');
+            const saveButton = document.getElementById('saveButton');
+
+            const formElements = document.querySelectorAll('form input, form select, form textarea');
+
+            formElements.forEach(element => {
+                element.disabled = true;
+            });
+
+            editButton.addEventListener('click', () => {
+                formElements.forEach(element => {
+                    element.disabled = false;
+                });
+
+                backButton.classList.add('hidden');
+                editButton.classList.add('hidden');
+                saveButton.classList.remove('hidden');
+                cancelButton.classList.remove('hidden');
+            });
+
+            cancelButton.addEventListener('click', () => {
+                formElements.forEach(element => {
+                    element.disabled = true;
+                });
+                backButton.classList.remove('hidden');
+                editButton.classList.remove('hidden');
+                saveButton.classList.add('hidden');
+                cancelButton.classList.add('hidden');
+            });
+        });
     </script>
 @endsection
