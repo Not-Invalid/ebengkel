@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 
 class PelangganSeeder extends Seeder
 {
@@ -31,13 +30,16 @@ class PelangganSeeder extends Seeder
                 'delete_pelanggan' => 'N',
             ],
         ]);
+        DB::table('tb_kategori_spare_part')->insert([
+            'nama_kategori_spare_part' => 'Kaki-kaki',
+        ]);
         DB::table('tb_bengkel')->insert([
             'id_bengkel' => 1,
             'id_pelanggan' => 1,
             'nama_bengkel' => 'Anak Curug',
             'tagline_bengkel' => 'Kendaraan rusak ke ancur aja',
-            'foto_bengkel' =>  'assets/images/components/ANCUR724.png',
-            'foto_cover_bengkel' =>  'assets/images/components/ANCUR724.png',
+            'foto_bengkel' => 'assets/images/components/ANCUR724.png',
+            'foto_cover_bengkel' => 'assets/images/components/ANCUR724.png',
             'alamat_bengkel' => 'Jl. PLP',
             'whatsapp' => '6281234567890',
             'tiktok' => null,
