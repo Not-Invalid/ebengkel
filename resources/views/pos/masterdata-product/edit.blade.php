@@ -7,6 +7,7 @@
 @php
     $header = 'Edit Product';
 @endphp
+
 <style>
     .image-preview {
         border: 1px solid #ddd;
@@ -46,14 +47,19 @@
         font-size: 14px;
         color: #999;
     }
+
+    .hidden {
+        display: none !important;
+    }
 </style>
+
 @section('content')
     <div class="card">
         <div class="card-header">
             <h4>Edit Product
                 <span>
                     <br>
-                    <small class="text-danger">* Indicated requred fields</small>
+                    <small class="text-danger">* Indicated required fields</small>
                 </span>
             </h4>
         </div>
@@ -101,7 +107,7 @@
                 <div class="form-group">
                     <label for="stok_produk">Product Stock <span class="text-danger">*</span></label>
                     <input type="number" class="form-control" name="stok_produk"
-                        value="{{ old('stok_produk', $product->stok_produk) }}" required>
+                        value="{{ old('stok_produk', $product->stok_produk) }}" readonly>
                 </div>
 
                 <div class="form-group">
@@ -111,8 +117,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="keterangan_produk">Description </label>
-                    <textarea class="form-control" name="keterangan_produk">{{ old('keterangan_produk', $product->keterangan_produk) }}</textarea>
+                    <label for="keterangan_produk">Description</label>
+                    <textarea class="form-control" style="resize: none; height: 100px !important;" name="keterangan_produk">{{ old('keterangan_produk', $product->keterangan_produk) }}</textarea>
                 </div>
 
                 <div class="form-group mb-3">
@@ -122,20 +128,22 @@
                         <input type="file" class="file-input" name="foto_produk" id="foto_produk"
                             onchange="previewImage('foto_produk', 'product')">
                         <div class="preview-container d-flex justify-content-center">
-                            <img id="product" src="{{ url($product->foto_produk) }}" alt="product Photo Preview"
+                            <img id="product" src="{{ url($product->foto_produk) }}" alt="Product Photo Preview"
                                 class="image-preview" style="display: block; width: 200px; margin-top: 10px;">
                         </div>
                     </div>
                 </div>
 
                 <div class="d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-custom-icon">Save</button>
-                    <a href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-                        class="btn btn-cancel">Back</a>
+                    <a href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}" id="backButton" class="btn btn-danger">Back</a>
+                    <button id="editButton" type="button" class="btn btn-primary">Edit</button>
+                    <button id="cancelButton" type="button" class="btn btn-danger hidden">Cancel</button>
+                    <button id="saveButton" type="submit" class="btn btn-primary hidden">Save</button>
                 </div>
             </form>
         </div>
     </div>
+
     <script>
         function previewImage(inputId, previewId) {
             const input = document.getElementById(inputId);
@@ -155,5 +163,40 @@
                 preview.src = '';
             }
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backButton = document.getElementById('backButton');
+            const editButton = document.getElementById('editButton');
+            const cancelButton = document.getElementById('cancelButton');
+            const saveButton = document.getElementById('saveButton');
+
+            const formElements = document.querySelectorAll('form input, form select, form textarea');
+
+            formElements.forEach(element => {
+                element.disabled = true;
+            });
+
+            editButton.addEventListener('click', () => {
+                formElements.forEach(element => {
+                    element.disabled = false;
+                });
+
+                backButton.classList.add('hidden');
+                editButton.classList.add('hidden');
+                saveButton.classList.remove('hidden');
+                cancelButton.classList.remove('hidden');
+            });
+
+            cancelButton.addEventListener('click', () => {
+                formElements.forEach(element => {
+                    element.disabled = true;
+                });
+                backButton.classList.remove('hidden');
+                editButton.classList.remove('hidden');
+                saveButton.classList.add('hidden');
+                cancelButton.classList.add('hidden');
+            });
+        });
     </script>
 @endsection
