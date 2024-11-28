@@ -3,7 +3,7 @@
     eBengkelku | POS
 @stop
 @php
-    $header = 'Create Product';
+    $header = 'Add New Product';
 @endphp
 <style>
     .image-preview {
@@ -113,9 +113,8 @@
                     </div>
                 </div>
                 <div class="d-flex gap-2 justify-content-end">
+                    <a href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-cancel">Cancel</a>
                     <button type="submit" class="btn btn-custom-icon">Submit</button>
-                    <a href="{{ route('pos.product.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-                        class="btn btn-cancel">Cancel</a>
                 </div>
             </form>
         </div>
