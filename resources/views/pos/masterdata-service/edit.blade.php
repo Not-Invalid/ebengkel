@@ -46,15 +46,16 @@
         font-size: 14px;
         color: #999;
     }
+
+    .hidden {
+        display: none !important;
+    }
 </style>
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h4>Edit Service
-                <span>
-                    <br>
-                    <small class="text-danger">* Indicated requred fields</small>
-                </span>
+            <h4 class="text-danger">
+                * Indicated required fields
             </h4>
         </div>
         <div class="card-body">
@@ -79,7 +80,7 @@
 
                 <div class="form-group">
                     <label for="keterangan_services">Description </label>
-                    <textarea class="form-control" name="keterangan_services">{{ old('keterangan_services', $service->keterangan_services) }}</textarea>
+                    <textarea class="form-control" style="resize: none; height: 100px !important;" name="keterangan_services">{{ old('keterangan_services', $service->keterangan_services) }}</textarea>
                 </div>
 
                 <div class="form-group mb-3">
@@ -96,9 +97,10 @@
                 </div>
 
                 <div class="d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-custom-icon">Save</button>
-                    <a href="{{ route('pos.service.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-                        class="btn btn-cancel">Back</a>
+                    <a href="{{ route('pos.service.index', ['id_bengkel' => $bengkel->id_bengkel]) }}" id="backButton" class="btn btn-danger">Back</a>
+                    <button id="editButton" type="button" class="btn btn-primary">Edit</button>
+                    <button id="cancelButton" type="button" class="btn btn-danger hidden">Cancel</button>
+                    <button id="saveButton" type="submit" class="btn btn-primary hidden">Save</button>
                 </div>
             </form>
         </div>
@@ -122,5 +124,40 @@
                 preview.src = '';
             }
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backButton = document.getElementById('backButton');
+            const editButton = document.getElementById('editButton');
+            const cancelButton = document.getElementById('cancelButton');
+            const saveButton = document.getElementById('saveButton');
+
+            const formElements = document.querySelectorAll('form input, form select, form textarea');
+
+            formElements.forEach(element => {
+                element.disabled = true;
+            });
+
+            editButton.addEventListener('click', () => {
+                formElements.forEach(element => {
+                    element.disabled = false;
+                });
+
+                backButton.classList.add('hidden');
+                editButton.classList.add('hidden');
+                saveButton.classList.remove('hidden');
+                cancelButton.classList.remove('hidden');
+            });
+
+            cancelButton.addEventListener('click', () => {
+                formElements.forEach(element => {
+                    element.disabled = true;
+                });
+                backButton.classList.remove('hidden');
+                editButton.classList.remove('hidden');
+                saveButton.classList.add('hidden');
+                cancelButton.classList.add('hidden');
+            });
+        });
     </script>
 @endsection
