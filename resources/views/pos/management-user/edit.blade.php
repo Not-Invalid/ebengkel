@@ -1,11 +1,11 @@
 @extends('pos.layouts.app')
 
 @section('title')
-    Ebengkelku | Management Staff - Edit
+    Ebengkelku | POS
 @stop
 
 @php
-    $header = 'Management Staff - Edit';
+    $header = 'Edit User';
 @endphp
 
 @section('content')
