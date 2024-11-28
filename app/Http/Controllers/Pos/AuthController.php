@@ -100,11 +100,12 @@ class AuthController extends Controller
 
         $pegawai = Pegawai::where('email_pegawai', $request->email_pegawai)
             ->where('id_bengkel', $request->id_bengkel)
+            ->whereIn('role', ['Outlet', 'Kasir', 'Administrator'])
             ->first();
 
         if (!$pegawai) {
             return back()->withErrors([
-                'email_pegawai' => 'Pegawai atau bengkel tidak sesuai.',
+                'email_pegawai' => 'Pegawai atau role tidak sesuai.',
             ]);
         }
 
@@ -114,14 +115,12 @@ class AuthController extends Controller
             ]);
         }
 
-        $bengkel = Bengkel::find($request->id_bengkel);
-
         Auth::guard('pegawai')->login($pegawai);
         $request->session()->regenerate();
 
         return redirect()->route('pos.index', [
             'id_bengkel' => $request->id_bengkel,
-        ])->with('status', 'Login Succesfull!');
+        ])->with('status', 'Login berhasil!');
     }
 
     public function logout(Request $request)
