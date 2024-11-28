@@ -304,7 +304,6 @@ Route::prefix('POS')->group(function () {
             Route::post('store', [PosSparePartController::class, 'store'])->name('pos.sparepart.store');
             Route::get('edit/{id_spare_part}', [PosSparePartController::class, 'edit'])->name('pos.sparepart.edit');
             Route::put('update/{id_spare_part}', [PosSparePartController::class, 'update'])->name('pos.sparepart.update');
-            Route::get('detail/{id_spare_part}', [PosSparePartController::class, 'show'])->name('pos.sparepart.show');
             Route::delete('delete/{id_spare_part}', [PosSparePartController::class, 'destroy'])->name('pos.sparepart.destroy');
         });
 
