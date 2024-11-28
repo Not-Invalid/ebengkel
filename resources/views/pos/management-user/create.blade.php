@@ -109,8 +109,10 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-success">Simpan Pegawai</button>
-                        <a href="{{ route('pos.management-user', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-danger ml-2">Batal</a>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a href="{{ route('pos.management-user', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-cancel">Cancel</a>
+                            <button type="submit" class="btn btn-custom-icon">Submit</button>
+                        </div>
                     </form>
                 </div>
             </div>
