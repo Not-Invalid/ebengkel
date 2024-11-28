@@ -34,6 +34,7 @@
                     <th class="text-center">Product Name</th>
                     <th class="text-center">Product Merk</th>
                     <th class="text-center">Product Photo</th>
+                    <th class="text-center">Product Stock</th>
                     <th class="text-center">Product Price</th>
                     <th class="text-center">Action</th>
                 </tr>
@@ -53,25 +54,24 @@
                                 <img src="{{ isset($product->foto_produk) ? url($product->foto_produk) : asset('assets/images/components/image.png') }}"
                                     alt="Product Image" width="50" height="50" class="rounded">
                             </td>
+                            <td>{{ $product->stok_produk }}</td>
                             <td>Rp{{ number_format($product->harga_produk, 0, ',', '.') }}</td>
-                            <td>
-                                <a href="{{ route('pos.product.show', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
-                                    class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
-
+                            <td class="d-flex gap-3 align-items-center justify-content-center">
                                 <a href="{{ route('pos.product.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
-                                    class="btn btn-sm btn-warning"><i class="fas fa-pen-to-square"></i></a>
-
-                                <a href="#" class="btn btn-sm btn-danger"
-                                    onclick="confirmDelete('{{ $product->id_produk }}', '{{ $bengkel->id_bengkel }}', '{{ $product->id_produk }}')">
-                                    <i class="fas fa-trash"></i>
+                                   class="btn btn-sm btn-primary" title="Edit Product">
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <form id="delete-form-{{ $product->id_produk }}"
-                                    action="{{ route('pos.product.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
-                                    method="POST" style="display: none;">
+
+                                <form action="{{ route('pos.product.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_produk' => $product->id_produk]) }}"
+                                      method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete Product">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
                                 </form>
                             </td>
+
                         </tr>
                     @endforeach
                 @endif
@@ -155,26 +155,26 @@
         });
     </script>
     <script>
-        function confirmDelete(productId, bengkelId, productId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'btn btn-custom-icon',
-                    cancelButton: 'btn btn-cancel'
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + productId).submit();
-                }
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.delete-form');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This action cannot be undone!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
             });
-        }
+        });
     </script>
 @endsection
