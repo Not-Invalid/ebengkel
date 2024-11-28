@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card shadow">
                 <div class="card-body">
-                    <form action="{{ route('pos.change.language', $bengkel->id_bengkel) }}" method="POST">
+                    <form action="" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="languageSelect">Select Language</label>
