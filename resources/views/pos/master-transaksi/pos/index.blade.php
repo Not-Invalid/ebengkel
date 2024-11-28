@@ -18,26 +18,32 @@
         </div>
         <div class="main-layout">
             <div class="row">
-                <div class="col-8">
+                <div class="col-12 col-md-8">
                     <!-- Product Section -->
                     <div class="main-container">
                         <h4 class="mb-3 judul">List Produk</h4>
                         <div class="products-grid shadow p-4">
-                            <div class="row">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                                 @foreach ($products as $product)
-                                    <div class="col-md-4 product-wrapper">
-                                        <div class="product-card">
-                                            <div class="product-code">
-                                                {{ $product->id_produk }}
-                                                <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
+                                    <div class="col-12 col-md-6">
+                                        <div class="product-card shadow">
+                                            <div class="custom-card shadow position-relative">
+                                                <div class="image-container position-relative">
+                                                    <img src="{{ $product->foto_produk }}" alt="{{ $product->nama_produk }}"
+                                                        class="card-img-top">
+                                                    <div class="product-code">
+                                                        <span class="product-stock">Stock:
+                                                            {{ $product->stok_produk }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-title">{{ $product->nama_produk }}</div>
+                                                <div class="d-flex justify-content-between mb-3">
+                                                    <span class="product-category">{{ $product->merk_produk }}</span>
+                                                    <div class="product-price">Rp
+                                                        {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
+                                                </div>
+                                                <a class="add-button w-100">TAMBAHKAN</a>
                                             </div>
-                                            <div class="product-title">{{ $product->nama_produk }}</div>
-                                            <div class="product-price">Price: Rp
-                                                {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
-                                            <div class="product-category">{{ $product->merk_produk }}</div>
-                                            <a class="add-button d-flex justify-content-center" style="color: #007bff">
-                                                <i class="fa-solid fa-bag-shopping"></i> TAMBAHKAN
-                                            </a>
                                         </div>
                                     </div>
                                 @endforeach
@@ -45,10 +51,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <div class="cart-container shadow mt-5">
                         <h5 class="order">Active Order</h5>
-                        <!-- Tambahkan container untuk item order -->
                         <div class="order-items-container mb-3">
                             <!-- Item order akan ditampilkan di sini -->
                         </div>
@@ -58,9 +63,9 @@
                             <span class="total-price">0</span>
                         </div>
                         <div class="d-flex">
-                            <button class="trash-btn">
+                            <a class="trash-btn">
                                 <i class="fa-solid fa-trash"></i>
-                            </button>
+                            </a>
                             <button class="checkout-btn">
                                 <i class="fa-solid fa-cart-shopping"></i> CHECKOUT
                             </button>
