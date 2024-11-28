@@ -35,6 +35,7 @@
                     <th class="text-center">Sparepart Name</th>
                     <th class="text-center">Sparepart Merk</th>
                     <th class="text-center">Sparepart Photo</th>
+                    <th class="text-center">Sparepart Stock</th>
                     <th class="text-center">Sparepart Price</th>
                     <th class="text-center">Action</th>
                 </tr>
@@ -54,21 +55,21 @@
                                 <img src="{{ isset($item->foto_spare_part) ? url($item->foto_spare_part) : asset('assets/images/components/image.png') }}"
                                     alt="Product Image" width="50" height="50" class="rounded">
                             </td>
+                            <td>{{ $item->stok_spare_part }}</td>
                             <td>Rp{{ number_format($item->harga_spare_part, 0, ',', '.') }}</td>
-                            <td>
-                                <a href="{{ route('pos.sparepart.show', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
-                                    class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
+                            <td class="d-flex gap-3 align-items-center justify-content-center">
                                 <a href="{{ route('pos.sparepart.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
-                                    class="btn btn-sm btn-warning"><i class="fas fa-pen-to-square"></i></a>
-                                <a href="#" class="btn btn-sm btn-danger"
-                                    onclick="confirmDelete('{{ $item->id_spare_part }}', '{{ $bengkel->id_bengkel }}', '{{ $item->id_spare_part }}')">
-                                    <i class="fas fa-trash"></i>
+                                   class="btn btn-sm btn-primary" title="Edit Product">
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <form id="delete-form-{{ $item->id_spare_part }}"
-                                    action="{{ route('pos.sparepart.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
-                                    method="POST" style="display: none;">
+
+                                <form action="{{ route('pos.sparepart.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_spare_part' => $item->id_spare_part]) }}"
+                                      method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete Product">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
