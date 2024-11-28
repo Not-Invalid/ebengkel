@@ -57,7 +57,7 @@
     <div class="card">
         <div class="card-header">
             <h4 class="text-danger">
-                * Indicated requred fields
+                * Indicated required fields
             </h4>
         </div>
         <div class="card-body">
