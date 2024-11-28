@@ -247,21 +247,15 @@
 
 
             <div class="tab-pane" id="bahasa">
-                {{-- isi card --}}
                 <div class="pt-3">
                     <h5>Language Settings</h5>
                     <hr>
-                    <form>
+                    <form id="languageForm">
                         <div class="mb-3">
-                            <label for="languageSelect" class="form-label">Select Languange</label>
-                            <select class="form-select" id="languageSelect">
-                                <option value="id">Bahasa Indonesia</option>
-                                <option value="en">English</option>
-                                <option value="es">Espa単ol</option>
-                                <!-- Tambahkan bahasa lainnya sesuai kebutuhan -->
-                            </select>
+                            <label for="languageSelect" class="form-label">Select Language</label>
+                            <select class="form-select" id="languageSelect"></select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-primary" id="saveLanguage">Save</button>
                     </form>
                 </div>
             </div>
@@ -276,4 +270,59 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const languageSelect = document.getElementById("languageSelect");
+            const saveButton = document.getElementById("saveLanguage");
+
+            // Ambil daftar bahasa dari API LibreTranslate
+            fetch("https://libretranslate.com/languages")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(language => {
+                        const option = document.createElement("option");
+                        option.value = language.code; // Kode bahasa, contoh: 'en'
+                        option.textContent = language.name; // Nama bahasa, contoh: 'English'
+                        languageSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching languages:", error));
+
+            // Event listener untuk tombol Save
+            saveButton.addEventListener("click", () => {
+                const selectedLanguage = languageSelect.value;
+
+                // Ambil semua elemen teks (kecuali input, textarea, dll.)
+                const elements = document.body.querySelectorAll("*:not(script):not(style)");
+
+                elements.forEach(element => {
+                    // Pastikan elemen memiliki teks
+                    if (element.childNodes.length === 1 && element.childNodes[0].nodeType === Node
+                        .TEXT_NODE) {
+                        const originalText = element.textContent.trim();
+                        if (originalText) {
+                            // Kirim teks ke LibreTranslate untuk diterjemahkan
+                            fetch("https://libretranslate.com/translate", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json"
+                                    },
+                                    body: JSON.stringify({
+                                        q: originalText,
+                                        source: "en", // Ganti ke bahasa sumber default
+                                        target: selectedLanguage,
+                                    }),
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    element.textContent = data
+                                        .translatedText; // Ganti teks dengan hasil terjemahan
+                                })
+                                .catch(error => console.error("Error translating text:", error));
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
