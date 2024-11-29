@@ -190,6 +190,9 @@
                   <li class="{{ request()->routeIs('pos.monitoring-stock') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('pos.monitoring-stock', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock Monitoring</a>
                   </li>
+                  <li class="{{ request()->routeIs('pos.transaction-history') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pos.transaction-history', ['id_bengkel' => $bengkel->id_bengkel]) }}">Transaction History</a>
+                  </li>
                 </ul>
               </li>
             <li class="{{ request()->routeIs('profile-pegawai') ? 'active' : '' }}">
