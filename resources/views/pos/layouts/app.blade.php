@@ -180,6 +180,18 @@
                 </li>
               </ul>
             </li>
+            <li class="dropdown ">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-chart-pie"></i>
+                  <span>Reports</span></a>
+                <ul class="dropdown-menu">
+                  <li class="{{ request()->routeIs('pos.achievement-summary') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pos.achievement-summary', ['id_bengkel' => $bengkel->id_bengkel]) }}">Achievement Summary</a>
+                  </li>
+                  <li class="">
+                    <a class="nav-link" href="">Stock</a>
+                  </li>
+                </ul>
+              </li>
             <li class="{{ request()->routeIs('profile-pegawai') ? 'active' : '' }}">
               <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}"
                 class="nav-link">
