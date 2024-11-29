@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
-use App\Models\Cart;
 use App\Models\KategoriSparePart;
 use App\Models\Product;
 use App\Models\SpareParts;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class ProductSparePartController extends Controller
@@ -275,64 +272,6 @@ class ProductSparePartController extends Controller
             return back()->with('status', 'Product deleted successfully.');
         } else {
             return back()->with('status_error', 'Address not found.');
-        }
-    }
-
-    public function addToCart(Request $request)
-    {
-        Log::info('Add to cart request data:', $request->all());
-
-        try {
-            // Ensure the user is authenticated
-            if (!Auth::check()) {
-                return response()->json(['success' => false, 'message' => 'You must be logged in to add items to the cart.']);
-            }
-
-            $productId = $request->input('id_produk');
-            $quantity = $request->input('quantity');
-            $userId = Session::get('id_pelanggan');
-
-            Log::info("Product ID: $productId, Quantity: $quantity, User ID: $userId");
-
-            if (empty($productId) || empty($quantity) || $quantity <= 0) {
-                Log::error("Invalid input: Product ID or quantity is missing or invalid");
-                return response()->json(['success' => false, 'message' => 'Invalid input. Please provide a valid product and quantity.']);
-            }
-
-            $product = Product::find($productId);
-
-            if (!$product) {
-                Log::error("Product not found: ID $productId");
-                return response()->json(['success' => false, 'message' => 'Product not found.']);
-            }
-
-            if ($quantity > $product->stok_produk) {
-                Log::error("Not enough stock for product: ID $productId");
-                return response()->json(['success' => false, 'message' => 'Not enough stock available.']);
-            }
-
-            $totalPrice = $product->harga_produk * $quantity;
-
-            Log::info("Calculated total price: Rp " . number_format($totalPrice, 0, ',', '.'));
-
-            if ($totalPrice <= 0) {
-                Log::error("Calculated total price is not valid: " . $totalPrice);
-                return response()->json(['success' => false, 'message' => 'Failed to calculate total price.']);
-            }
-
-            $cart = Cart::create([
-                'id_pelanggan' => $userId,
-                'id_produk' => $productId,
-                'quantity' => $quantity,
-                'total_price' => $totalPrice,
-            ]);
-
-            Log::info("Product added to cart: Cart ID {$cart->id}, User ID $userId");
-
-            return response()->json(['success' => true, 'message' => 'Product added to cart!']);
-        } catch (\Exception $e) {
-            Log::error("Error adding to cart: " . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'An error occurred. Please try again.']);
         }
     }
 
