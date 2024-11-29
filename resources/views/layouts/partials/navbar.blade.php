@@ -55,8 +55,8 @@
                                         </a>
                                     </li>
                                 @endif
-                                <li class="nav-item {{ request()->routeIs('cart') ? 'active' : '' }}">
-                                    <a href="{{ route('cart') }}">
+                                <li class="nav-item">
+                                    <a href="">
                                         <i class='bx bx-cart'></i>
                                         <span class="badge badge-pill badge-danger" id="countCart">
                                             0
@@ -82,21 +82,27 @@
     </div>
 </header>
 
+
 <script>
-    function updateCartCount() {
-        fetch("{{ route('cart.count') }}")
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchCartCount();
+    });
+
+    function fetchCartCount() {
+        fetch("{{ route('cart.total') }}", {
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}" // Token CSRF wajib
+                }
+            })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('countCart').textContent = data.count;
+                document.getElementById('countCart').textContent = data.total;
             })
-            .catch(error => console.log('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('countCart').textContent = '0';
+            });
     }
-
-    setInterval(updateCartCount, 3000);
-
-    window.onload = function() {
-        updateCartCount();
-    };
 </script>
 
 <script>
