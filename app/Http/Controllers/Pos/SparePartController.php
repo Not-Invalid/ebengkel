@@ -22,19 +22,19 @@ class SparePartController extends Controller
         if (!Auth::guard('pegawai')->check()) {
             return redirect()->route('pos.login');
         }
-        $search = $request->input('search', '');
+
+        $perPage = $request->get('per_page', 10);
 
         $sparepart = SpareParts::where('id_bengkel', $id_bengkel)
             ->where('delete_spare_part', 'N')
-            ->where(function ($query) use ($search) {
-                if ($search) {
-                    $query->where('nama_spare_part', 'like', "%$search%");
-                }
-            })
             ->with('kategoriSparePart')
             ->paginate(10);
 
-        return view('pos.masterdata-sparepart.index', compact('bengkel', 'sparepart'));
+        $totalEntries = $sparepart->total();
+        $start = ($sparepart->currentPage() - 1) * $perPage + 1;
+        $end = min($sparepart->currentPage() * $perPage, $totalEntries);
+
+        return view('pos.masterdata-sparepart.index', compact('bengkel', 'sparepart', 'totalEntries', 'start', 'end'));
     }
 
     public function create($id_bengkel)
