@@ -20,6 +20,8 @@ use App\Http\Controllers\Pos\SettingController as PosSettingController;
 use App\Http\Controllers\Pos\StockController as PosStockController;
 use App\Http\Controllers\Pos\TransaksiPesananController as PosPesananController;
 use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
+use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
+use App\Http\Controllers\Pos\StockMonitoringController as PosMonitoringStockController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -275,6 +277,9 @@ Route::prefix('POS')->group(function () {
 
     Route::get('management-stock/opname/{id_bengkel}', [PosStockOpnameController::class, 'index'])->name('pos.management-stock.opname');
     Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
+
+    Route::get('report/achievement-summary/{id_bengkel}', [PosAchievementSummaryController::class, 'index'])->name('pos.achievement-summary');
+    Route::get('report/monitoring-stock/{id_bengkel}', [PosMonitoringStockController::class, 'index'])->name('pos.monitoring-stock');
 
     Route::get('management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
     Route::get('management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
