@@ -47,6 +47,6 @@ class StockMonitoringController extends Controller
         $start = ($items->currentPage() - 1) * $perPage + 1;
         $end = min($items->currentPage() * $perPage, $totalEntries);
 
-        return view('pos.reports.stockmonitoring', compact('bengkel', 'items', 'type', 'totalEntries', 'start', 'end'));
+        return view('pos.reports.stock-monitoring.index', compact('bengkel', 'items', 'type', 'totalEntries', 'start', 'end'));
     }
 }
