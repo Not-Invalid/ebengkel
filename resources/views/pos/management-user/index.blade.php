@@ -42,7 +42,7 @@
                                 <th class="text-center">Email</th>
                                 <th class="text-center">No Telp</th>
                                 <th class="text-center">Role</th>
-                                <th class="text-center">Tools</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody id="staff-table-body">
@@ -59,7 +59,7 @@
                                         <td>{{ $staff->telp_pegawai }}</td>
                                         <td>{{ $staff->role }}</td>
                                         <td class="d-flex justify-content-center align-items-center gap-4">
-                                            <a href="{{ route('pos.management-user.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" class="btn btn-sm btn-dark">
+                                            <a href="{{ route('pos.management-user.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" class="btn btn-sm btn-primary">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
                                             <form action="{{ route('pos.management-user.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => $staff->id_pegawai]) }}" method="POST" class="delete-form">
