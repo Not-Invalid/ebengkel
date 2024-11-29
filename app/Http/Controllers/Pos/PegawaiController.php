@@ -26,8 +26,13 @@ class PegawaiController extends Controller
             ->whereIn('role', ['Administrator', 'Kasir'])
             ->paginate($perPage);
 
-        return view('pos.management-user.index', compact('bengkel', 'pegawai'));
+        $totalEntries = $pegawai->total();
+        $start = ($pegawai->currentPage() - 1) * $perPage + 1;
+        $end = min($pegawai->currentPage() * $perPage, $totalEntries);
+
+        return view('pos.management-user.index', compact('bengkel', 'pegawai', 'totalEntries', 'start', 'end'));
     }
+
 
     public function create($id_bengkel)
     {
