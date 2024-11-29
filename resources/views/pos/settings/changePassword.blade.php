@@ -1,6 +1,6 @@
 @extends('pos.layouts.app')
 @section('title')
-    eBengkelku | Change Password
+    eBengkelku | POS
 @stop
 @php
     $header = 'Change Password';
