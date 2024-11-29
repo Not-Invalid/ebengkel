@@ -23,19 +23,19 @@ class ProductController extends Controller
         if (!Auth::guard('pegawai')->check()) {
             return redirect()->route('pos.login');
         }
-        $search = $request->input('search', '');
+
+        $perPage = $request->get('per_page', 10);
 
         $products = Product::where('id_bengkel', $id_bengkel)
             ->where('delete_produk', 'N')
-            ->where(function ($query) use ($search) {
-                if ($search) {
-                    $query->where('nama_produk', 'like', "%$search%");
-                }
-            })
             ->with('kategoriProduk')
             ->paginate(10);
 
-        return view('pos.masterdata-product.index', compact('bengkel', 'products'));
+        $totalEntries = $products->total();
+        $start = ($products->currentPage() - 1) * $perPage + 1;
+        $end = min($products->currentPage() * $perPage, $totalEntries);
+
+        return view('pos.masterdata-product.index', compact('bengkel', 'products', 'start', 'end', 'totalEntries'));
     }
 
     public function create($id_bengkel)
