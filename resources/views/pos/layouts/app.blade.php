@@ -187,8 +187,8 @@
                   <li class="{{ request()->routeIs('pos.achievement-summary') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('pos.achievement-summary', ['id_bengkel' => $bengkel->id_bengkel]) }}">Achievement Summary</a>
                   </li>
-                  <li class="">
-                    <a class="nav-link" href="">Stock</a>
+                  <li class="{{ request()->routeIs('pos.monitoring-stock') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pos.monitoring-stock', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock Monitoring</a>
                   </li>
                 </ul>
               </li>
