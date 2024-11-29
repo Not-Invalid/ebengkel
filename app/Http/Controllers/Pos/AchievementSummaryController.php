@@ -28,6 +28,6 @@ class AchievementSummaryController extends Controller
             ]
         ];
 
-        return view('pos.reports.achievementsummary', compact('bengkel', 'chartData'));
+        return view('pos.reports.achievement-summary.index', compact('bengkel', 'chartData'));
     }
 }
