@@ -1,7 +1,7 @@
 @extends('pos.layouts.app')
 
 @section('title')
-    Ebengkelku | POS
+    eBengkelku | POS
 @stop
 
 @php
