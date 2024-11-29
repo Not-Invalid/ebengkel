@@ -54,22 +54,19 @@
                                     alt="Product Image" width="50" height="50" class="rounded">
                             </td>
                             <td>Rp{{ number_format($services->harga_services, 0, ',', '.') }}</td>
-                            <td>
-                                <a href="{{ route('pos.service.show', ['id_bengkel' => $bengkel->id_bengkel, 'id_services' => $services->id_services]) }}"
-                                    class="btn btn-sm btn-info"><i class="fas fa-info-circle"></i></a>
-
+                            <td class="d-flex gap-3 align-items-center justify-content-center">
                                 <a href="{{ route('pos.service.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_services' => $services->id_services]) }}"
-                                    class="btn btn-sm btn-warning"><i class="fas fa-pen-to-square"></i></a>
-
-                                <a href="#" class="btn btn-sm btn-danger"
-                                    onclick="confirmDelete('{{ $services->id_services }}', '{{ $bengkel->id_bengkel }}', '{{ $services->id_services }}')">
-                                    <i class="fas fa-trash"></i>
+                                   class="btn btn-sm btn-primary" title="Edit Service">
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <form id="delete-form-{{ $services->id_services }}"
-                                    action="{{ route('pos.service.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_services' => $services->id_services]) }}"
-                                    method="POST" style="display: none;">
+
+                                <form action="{{ route('pos.service.destroy', ['id_bengkel' => $bengkel->id_bengkel, 'id_services' => $services->id_services]) }}"
+                                      method="POST" class="delete-form">
                                     @csrf
                                     @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete Service">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -155,26 +152,26 @@
         });
     </script>
     <script>
-        function confirmDelete(serviceId, bengkelId, serviceId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, cancel!',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                reverseButtons: true,
-                customClass: {
-                    confirmButton: 'btn btn-custom-icon',
-                    cancelButton: 'btn btn-cancel'
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + serviceId).submit();
-                }
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.delete-form');
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This action cannot be undone!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
             });
-        }
+        });
     </script>
 @endsection
