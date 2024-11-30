@@ -46,9 +46,9 @@
                                     <th class="text-center">Tanggal Pesanan</th>
                                     <th class="text-center">Nama Pelanggan</th>
                                     <th class="text-center">No Telp</th>
-                                    <th class="text-center">Ekspedisi</th>
+                                    <th class="text-center">Nama Service</th>
                                     <th class="text-center">Status Pesanan</th>
-                                    <th class="text-center">Grand Total</th>
+                                    <th class="text-center">Total Pesanan</th>
                                     <th class="text-center">Tools</th>
                                 </tr>
                             </thead>
@@ -61,19 +61,17 @@
                                     @foreach ($orders as $index => $order)
                                         <tr>
                                             <td>{{ ($orders->currentPage() - 1) * $orders->perPage() + $index + 1 }}</td>
-                                            <td>{{ $order->tanggal }}</td>
-                                            <td>{{ $order->atas_nama }}</td>
-                                            <td>{{ $order->no_telp }}</td>
-                                            <td>{{ $order->kurir }}</td>
-                                            <td>{{ ucfirst($order->status_order) }}</td>
-                                            <td>Rp {{ number_format($order->grand_total, 0, ',', '.') }}</td>
+                                            <td>{{ $order->tgl_pesanan }}</td>
+                                            <td>{{ $order->nama_pemesan }}</td>
+                                            <td>{{ $order->telp_pelanggan }}</td>
+                                            <td>{{ $order->nama_service }}</td>
+                                            <td>{{ ucfirst($order->status) }}</td>
+                                            <td>Rp {{ number_format($order->total_pesanan, 0, ',', '.') }}</td>
                                             <td class="d-flex justify-content-center align-items-center gap-4">
-                                                <a href="{{ route('order.edit', ['id' => $order->id]) }}"
-                                                    class="btn btn-sm btn-dark">
+                                                <a href="#" class="btn btn-sm btn-dark">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </a>
-                                                <form action="{{ route('order.delete', ['id' => $order->id]) }}"
-                                                    method="POST" class="delete-form">
+                                                <form action="#" method="POST" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">
