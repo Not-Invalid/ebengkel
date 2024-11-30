@@ -352,30 +352,49 @@ class WorkshopController extends Controller
         if (!$service) {
             return redirect()->back()->with('error_status', 'Service not found.');
         }
+
+        $bookedDates = PesananService::where('id_bengkel', $id_bengkel)
+            ->pluck('tgl_pesanan')
+            ->toArray();
+
         // Controller
         $services = Service::with('bengkel')->find($id_bengkel);
+
         // Check if the variables are correctly passed
-        return view('service.pesanan', compact('id_bengkel', 'id_services', 'service'));
+        return view('service.pesanan', compact('id_bengkel', 'id_services', 'service', 'bookedDates'));
     }
 
-    public function storePesananServices(Request $request)
+    public function storePesananServices(Request $request, $id_bengkel, $id_services)
     {
+        $customerId = Session::get('id_pelanggan');
+        if (!$customerId) {
+            return redirect()->back()->with('error', 'ID pelanggan tidak ditemukan. Silakan login.');
+        }
         $validated = $request->validate([
-            'id_pelanggan' => 'required|exists:tb_pelanggan,id_pelanggan',
-            'id_bengkel' => 'required|exists:tb_bengkel,id_bengkel',
             'nama_pemesan' => 'required|string|max:255',
+            'telp_pelanggan' => 'required|numeric',
             'tgl_pesanan' => 'required|date',
             'nama_service' => 'required|string|max:255',
         ]);
+
+        $service = Service::find($id_services);
+        if (!$service) {
+            return redirect()->back()->with('error', 'Layanan tidak ditemukan.');
+        }
+
+        $totalHarga = $service->harga_services ?? 0;
         PesananService::create([
-            'id_pelanggan' => $request->id_pelanggan,
-            'id_bengkel' => $request->id_bengkel,
+            'id_pelanggan' => $customerId,
+            'id_bengkel' => $id_bengkel,
+            'telp_pelanggan' => $request->telp_pelanggan,
             'nama_pemesan' => $request->nama_pemesan,
             'tgl_pesanan' => $request->tgl_pesanan,
             'nama_service' => $request->nama_service,
             'status' => 'pending',
+            'total_pesanan' => $totalHarga,
         ]);
-        return redirect()->route('service.detail')->with('status', 'Pesanan berhasil dibuat.');
+        return redirect()->route('service.detail', ['id_bengkel' => $id_bengkel, 'id_services' => $id_services])
+            ->with('status', 'Pesanan berhasil dibuat.');
     }
 
     public function storeReview(Request $request)
