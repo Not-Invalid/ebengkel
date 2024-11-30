@@ -16,13 +16,15 @@ return new class extends Migration
             $table->increments('id_pesanan')->primary();
 
             // Foreign key to tb_pelanggan (signed integer)
-            $table->integer('id_pelanggan');  // Don't use unsigned here
+            $table->integer('id_pelanggan')->nullable();  // Don't use unsigned here
             $table->foreign('id_pelanggan')->references('id_pelanggan')->on('tb_pelanggan')->onDelete('cascade');
 
             // Foreign key to tb_bengkel
             $table->integer('id_bengkel'); // This can remain unsigned as per the table definition
             $table->foreign('id_bengkel')->references('id_bengkel')->on('tb_bengkel')->onDelete('cascade');
 
+            // Telp Pemesan
+            $table->string('telp_pelanggan')->nullable();
             // Nama Pemesan
             $table->string('nama_pemesan');
 
@@ -34,6 +36,9 @@ return new class extends Migration
 
             // Status Pesanan
             $table->string('status');
+
+            // Total Pesanan
+            $table->integer('total_pesanan')->nullable();
 
             // Kolom Timestamps: created_at dan updated_at
             $table->timestamps();
