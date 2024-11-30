@@ -194,7 +194,16 @@
                     <a class="nav-link" href="{{ route('pos.transaction-history', ['id_bengkel' => $bengkel->id_bengkel]) }}">Transaction History</a>
                   </li>
                 </ul>
-              </li>
+            </li>
+            <li class="dropdown ">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-calculator"></i>
+                  <span>Accounting</span></a>
+                <ul class="dropdown-menu">
+                  <li class="{{ request()->routeIs('pos.expense-record') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('pos.expense-record', ['id_bengkel' => $bengkel->id_bengkel]) }}">Expense Record</a>
+                  </li>
+                </ul>
+            </li>
             <li class="{{ request()->routeIs('profile-pegawai') ? 'active' : '' }}">
               <a href="{{ route('profile-pegawai', ['id_bengkel' => $bengkel->id_bengkel, 'id_pegawai' => auth('pegawai')->user()->id_pegawai]) }}"
                 class="nav-link">
@@ -222,6 +231,12 @@
                 <i class="fas fa-wrench"></i>
                 <span>Service</span>
               </a>
+            </li>
+            <li class="{{ request()->routeIs('pos.expense-type.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('pos.expense-type', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                  <i class="fas fa-clipboard-list"></i>
+                  <span>Expense Type</span>
+                </a>
             </li>
           </ul>
 
