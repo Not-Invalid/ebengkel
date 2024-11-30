@@ -7,85 +7,6 @@
 @section('title')
     eBengkelku | Detail Product & SparePart
 @stop
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const decrementButton = document.querySelector('.btn-decrement');
-        const incrementButton = document.querySelector('.btn-increment');
-        const quantityInput = document.querySelector('.form-control');
-        const addToCartButton = document.getElementById('add-to-cart-btn');
-        const maxStock = {{ $data->stok_produk ?? $data->stok_spare_part }}; // Maksimal stok
-
-        // Decrement button functionality
-        decrementButton?.addEventListener('click', () => {
-            const currentValue = parseInt(quantityInput.value) || 1;
-            if (currentValue > 1) quantityInput.value = currentValue - 1;
-        });
-
-        // Increment button functionality
-        incrementButton?.addEventListener('click', () => {
-            const currentValue = parseInt(quantityInput.value) || 1;
-            if (currentValue < maxStock) quantityInput.value = currentValue + 1;
-        });
-
-        // Quantity input validation
-        quantityInput.addEventListener('input', () => {
-            const currentValue = parseInt(quantityInput.value) || 1;
-            if (currentValue > maxStock) quantityInput.value = maxStock;
-            else if (currentValue < 1) quantityInput.value = 1;
-        });
-
-        // Add to Cart
-        addToCartButton.addEventListener('click', () => {
-            const productId = addToCartButton.getAttribute('data-product-id');
-            const quantity = quantityInput.value;
-
-            if (!productId) return alert('Product ID is missing!');
-
-            // Check if the user is logged in via an AJAX request
-            checkLoginStatus().then(isLoggedIn => {
-                if (!isLoggedIn) {
-                    sessionStorage.setItem('redirectedFromCart', 'true');
-                    window.location.href =
-                        '/pelanggan/login'; // Redirect to login if not logged in
-                    return;
-                }
-
-                // Proceed to add the item to the cart if logged in
-                fetch('/add-to-cart', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            id_produk: productId,
-                            quantity: quantity
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            toastr.success(data.message); // Show success toast
-                        } else {
-                            toastr.error(data.message); // Show error toast
-                        }
-                    })
-                    .catch(() => {
-                        toastr.error('An error occurred. Please try again.');
-                    });
-            });
-        });
-
-        function checkLoginStatus() {
-            return fetch('/check-login-status') // Server-side route to check if the user is logged in
-                .then(response => response.json())
-                .then(data => data.isLoggedIn)
-                .catch(() => false); // If any error occurs, assume the user is not logged in
-        }
-    });
-</script>
-
-
 @section('content')
     <section class="section section-white"
         style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom: 20px;">
@@ -169,8 +90,7 @@
 
                     <!-- Action Buttons -->
                     <div class="d-flex gap-3 mb-4">
-                        <button class="btn btn-outline-dark flex-grow-1 py-2" id="add-to-cart-btn"
-                            data-product-id="{{ $data->id_produk }}">
+                        <button class="btn btn-outline-dark flex-grow-1 py-2" id="add-to-cart-btn">
                             <i class="bx bx-cart me-1"></i> Add to Cart
                         </button>
                         <button class="btn btn-primary flex-grow-1 py-2">

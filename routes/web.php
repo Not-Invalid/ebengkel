@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController as PelangganAuthController;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyorderController;
@@ -12,12 +11,11 @@ use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\ProfileController as PosProfileController;
+use App\Http\Controllers\Pos\ServiceController as PosServiceController;
+use App\Http\Controllers\Pos\SettingController as PosSettingController;
+use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
 use App\Http\Controllers\Pos\StockInboundController as PosStockInboundController;
 use App\Http\Controllers\Pos\StockOpnameController as PosStockOpnameController;
-use App\Http\Controllers\Pos\ServiceController as PosServiceController;
-use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
-use App\Http\Controllers\Pos\SettingController as PosSettingController;
-use App\Http\Controllers\Pos\StockController as PosStockController;
 use App\Http\Controllers\Pos\TransaksiPesananController as PosPesananController;
 use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
@@ -42,13 +40,9 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
-Route::get('/check-login-status', function () {
-    return response()->json(['isLoggedIn' => Auth::check()]);
-});
 
 // Auth routes
 Route::prefix('pelanggan')->group(function () {
@@ -65,18 +59,6 @@ Route::prefix('pelanggan')->group(function () {
 
 Route::middleware('auth:pelanggan')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
-    Route::get('cart', [CartController::class, 'showCart'])->name('cart');
-    Route::post('cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::post('/cart/update/{itemId}', [CartController::class, 'updateQuantity'])->name('cart.update');
-    Route::delete('cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
-    Route::get('/cart/count', [CartController::class, 'countCart'])->name('cart.count');
-    Route::get('/payment', [CartController::class, 'payment'])->name('payment');
-    Route::post('/add-to-cart', [ProductSparePartController::class, 'addToCart'])->middleware('auth');
-    Route::post('/cart/update-quantity-ajax/{id}', [CartController::class, 'updateQuantityAjax']);
-    Route::post('/cart/total-amount', [CartController::class, 'calculateTotalAmount']);
-    Route::post('/cart/remove/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.remove');
-    Route::post('checkout/', [CartController::class, 'payment'])->name('payment');
 });
 
 Route::prefix('superadmin')->group(function () {

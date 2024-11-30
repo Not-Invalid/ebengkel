@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->integer('id_pelanggan');
             $table->unsignedInteger('id_produk');
+            $table->integer('id_spare_part');
             $table->integer('quantity')->default(1);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
             $table->foreign('id_pelanggan')->references('id_pelanggan')->on('tb_pelanggan')->onDelete('cascade');
             $table->foreign('id_produk')->references('id_produk')->on('tb_produk')->onDelete('cascade');
+            $table->foreign('id_spare_part')->references('id_spare_part')->on('tb_spare_part')->onDelete('cascade');
         });
+
     }
 
     /**
