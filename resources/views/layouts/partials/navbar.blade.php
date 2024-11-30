@@ -83,7 +83,7 @@
 </header>
 
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         fetchCartCount();
     });
@@ -103,7 +103,7 @@
                 document.getElementById('countCart').textContent = '0';
             });
     }
-</script>
+</script> --}}
 
 <script>
     document.querySelectorAll('.change-language').forEach(item => {
