@@ -17,9 +17,15 @@ class PesananService extends Model
     protected $fillable = [
         'id_pelanggan',
         'id_bengkel',
+        'telp_pelanggan',
         'nama_pemesan',
         'tgl_pesanan',
         'nama_service',
         'status',
+        'total_pesanan'
     ];
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+    }
 }
