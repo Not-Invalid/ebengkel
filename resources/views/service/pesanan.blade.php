@@ -120,29 +120,72 @@
                 action="{{ route('store.pesanan-services', ['id_bengkel' => $id_bengkel, 'id_services' => $id_services]) }}"
                 method="POST">
                 @csrf
+                <!-- Input untuk Nama Pemesan -->
                 <div class="input-box">
-                    <input type="text" id="nama_pemesan" name="nama_pemesan" placeholder="Enter your name" required>
+                    <input type="text" id="nama_pemesan" name="nama_pemesan" placeholder="Masukkan nama Anda" required>
                 </div>
 
+                <!-- Input untuk Nomor Telepon -->
+                <div class="input-box">
+                    <input type="text" id="telp_pelanggan" name="telp_pelanggan"
+                        placeholder="Masukkan nomor telepon Anda" required oninput="validatePhoneNumber(this)">
+                </div>
+
+                <!-- Input untuk Tanggal Pesanan -->
                 <div class="input-box">
                     <input type="date" id="tgl_pesanan" name="tgl_pesanan" value="{{ now()->format('Y-m-d') }}" required>
                 </div>
 
+                <!-- Input untuk Harga (readonly) -->
                 <div class="input-box">
-                    <input type="text" id="nama_service" name="nama_service" value="{{ $service->nama_service }}"
+                    <input type="text" id="total" name="total"
+                        value="Rp {{ isset($service) ? number_format($service->harga_services, 0, ',', '.') : '' }}"
                         readonly>
                 </div>
 
+                <!-- Input untuk Nama Service -->
                 <div class="input-box">
-                    <input type="text" id="harga"
-                        value="Rp {{ number_format($service->harga_service, 0, ',', '.') }}" readonly>
+                    <input type="text" id="nama_service" name="nama_service" value="{{ $service->nama_service ?? '' }}"
+                        required placeholder="Masukkan nama layanan">
                 </div>
 
+                <!-- Tombol Submit -->
                 <div class="input-box button">
                     <input type="submit" value="Pesan Sekarang">
                 </div>
             </form>
 
+            <script>
+                $(document).ready(function() {
+                    // Ambil data bookedDates dari atribut data-booked-dates
+                    var bookedDates = $("#tgl_pesanan").data("booked-dates").split(',');
+
+                    $("#tgl_pesanan").datepicker({
+                        minDate: 0, // Tidak bisa memilih tanggal di masa lalu
+                        dateFormat: "yy-mm-dd", // Format tanggal
+                        beforeShowDay: function(date) {
+                            var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+                            return [bookedDates.indexOf(string) === -1,
+                                ''
+                            ]; // Jika tanggal tidak ada di daftar bookedDates, maka bisa dipilih
+                        }
+                    });
+                });
+            </script>
+
+            <script>
+                function validatePhoneNumber(input) {
+                    // Menghapus semua karakter selain angka
+                    input.value = input.value.replace(/[^0-9]/g, '');
+
+                    // Membatasi panjang input hanya sampai 15 digit
+                    if (input.value.length > 15) {
+                        input.value = input.value.slice(0, 15);
+                    }
+                }
+            </script>
+
         </div>
     </div>
+
 @endsection
