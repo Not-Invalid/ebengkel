@@ -273,9 +273,20 @@ Route::prefix('POS')->group(function () {
     Route::post('management-stock/inbound/store/{id_bengkel}/', [PosStockInboundController::class, 'store'])->name('pos.management-stock.inbound.store');
     Route::delete('management-stock/inbound/delete/{id_stock}', [PosStockInboundController::class, 'delete'])->name('pos.management-stock.inbound.delete');
 
-    Route::get('management-stock/opname/{id_bengkel}', [PosStockOpnameController::class, 'index'])->name('pos.management-stock.opname');
-    Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
 
+    // Route untuk menampilkan daftar stock opname
+    Route::get('management-stock/opname/{id_bengkel}', [PosStockOpnameController::class, 'index'])->name('pos.management-stock.opname');
+    
+    // Route untuk membuat stock opname baru
+    Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
+    
+    // Route untuk menyimpan stock opname baru
+    Route::post('management-stock/opname/store/{id_bengkel}', [PosStockOpnameController::class, 'store'])->name('pos.management-stock.opname.store');
+    
+    // Route untuk menghapus stock opname
+    Route::delete('management-stock/opname/delete/{id_opname}', [PosStockOpnameController::class, 'destroy'])->name('pos.management-stock.opname.delete');
+  
+    
     Route::get('management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
     Route::get('management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
     Route::post('management-users/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-user.store');
