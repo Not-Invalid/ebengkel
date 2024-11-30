@@ -47,6 +47,11 @@ class Product extends Model
         return $this->hasMany(StockInbound::class, 'id_produk');
     }
 
+    public function stocksOpname()
+    {
+        return $this->hasMany(StockOpname::class, 'id_produk', 'id_produk');
+    }
+
     public function bengkel()
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');
