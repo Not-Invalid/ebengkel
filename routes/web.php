@@ -21,6 +21,8 @@ use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
 use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
 use App\Http\Controllers\Pos\StockMonitoringController as PosMonitoringStockController;
 use App\Http\Controllers\Pos\TransactionHistoryController as PosTransactionHistoryController;
+use App\Http\Controllers\Pos\ExpenseRecordController as PosExpenseRecordController;
+use App\Http\Controllers\Pos\JenisPengeluaranController as PosExpenseTypeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -265,6 +267,14 @@ Route::prefix('POS')->group(function () {
     Route::get('report/monitoring-stock/{id_bengkel}', [PosMonitoringStockController::class, 'index'])->name('pos.monitoring-stock');
     Route::get('report/transaction-history/{id_bengkel}', [PosTransactionHistoryController::class, 'index'])->name('pos.transaction-history');
 
+    Route::get('accounting/expense-record/{id_bengkel}', [PosExpenseRecordController::class, 'index'])->name('pos.expense-record');
+    Route::get('accounting/expense-record/{id_bengkel}/create', [PosExpenseRecordController::class, 'create'])->name('pos.expense-record.create');
+    Route::post('accounting/expense-record/{id_bengkel}/store', [PosExpenseRecordController::class, 'store'])->name('pos.expense-record.store');
+    Route::get('accounting/expense-record/{id_bengkel}/edit/{id_pengeluaran}', [PosExpenseRecordController::class, 'edit'])->name('pos.expense-record.edit');
+    Route::put('accounting/expense-record/{id_bengkel}/update/{id_pengeluaran}', [PosExpenseRecordController::class, 'update'])->name('pos.expense-record.update');
+    Route::delete('accounting/expense-record/{id_bengkel}/delete/{id_pengeluaran}', [PosExpenseRecordController::class, 'delete'])->name('pos.expense-record.delete');
+
+
     Route::get('management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
     Route::get('management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
     Route::post('management-users/store/{id_bengkel}', [PosPegawaiController::class, 'store'])->name('pos.management-user.store');
@@ -305,6 +315,15 @@ Route::prefix('POS')->group(function () {
             Route::put('update/{id_services}', [PosServiceController::class, 'update'])->name('pos.service.update');
             Route::get('detail/{id_services}', [PosServiceController::class, 'show'])->name('pos.service.show');
             Route::delete('delete/{id_services}', [PosServiceController::class, 'destroy'])->name('pos.service.destroy');
+        });
+
+        Route::prefix('pos/{id_bengkel}/expense-type')->group(function () {
+            Route::get('/', [PosExpenseTypeController::class, 'index'])->name('pos.expense-type');
+            Route::get('create', [PosExpenseTypeController::class, 'create'])->name('pos.expense-type.create');
+            Route::post('store', [PosExpenseTypeController::class, 'store'])->name('pos.expense-type.store');
+            Route::get('edit/{id_jenis_pengeluaran}', [PosExpenseTypeController::class, 'edit'])->name('pos.expense-type.edit');
+            Route::put('update/{id_jenis_pengeluaran}', [PosExpenseTypeController::class, 'update'])->name('pos.expense-type.update');
+            Route::delete('delete/{id_jenis_pengeluaran}', [PosExpenseTypeController::class, 'destroy'])->name('pos.expense-type.delete');
         });
     });
 
