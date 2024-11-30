@@ -21,18 +21,17 @@ class ServiceController extends Controller
         if (!Auth::guard('pegawai')->check()) {
             return redirect()->route('pos.login');
         }
-        $search = $request->input('search', '');
 
+        $perPage = $request->get('per_page', 10);
         $service = Service::where('id_bengkel', $id_bengkel)
             ->where('delete_services', 'N')
-            ->where(function ($query) use ($search) {
-                if ($search) {
-                    $query->where('nama_services', 'like', "%$search%");
-                }
-            })
             ->paginate(10);
 
-        return view('pos.masterdata-service.index', compact('service', 'bengkel'));
+        $totalEntries = $service->total();
+        $start = ($service->currentPage() - 1) * $perPage + 1;
+        $end = min($service->currentPage() * $perPage, $totalEntries);
+
+        return view('pos.masterdata-service.index', compact('service', 'bengkel', 'totalEntries', 'start', 'end'));
     }
 
     public function create($id_bengkel)
