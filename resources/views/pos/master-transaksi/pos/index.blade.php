@@ -20,30 +20,26 @@
             <div class="row">
                 <div class="col-12 col-md-8">
                     <!-- Product Section -->
-                    <div class="main-container">
-                        <h4 class="mb-3 judul">List Produk</h4>
+                    <div class="main-container mt-3">
+                        <h4 class="judul">List Produk</h4>
                         <div class="products-grid shadow p-4">
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                                 @foreach ($products as $product)
                                     <div class="col-12 col-md-6">
-                                        <div class="product-card shadow">
-                                            <div class="custom-card shadow position-relative">
-                                                <div class="image-container position-relative">
-                                                    <img src="{{ $product->foto_produk }}" alt="{{ $product->nama_produk }}"
-                                                        class="card-img-top">
-                                                    <div class="product-code">
-                                                        <span class="product-stock">Stock:
-                                                            {{ $product->stok_produk }}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="product-title">{{ $product->nama_produk }}</div>
-                                                <div class="d-flex justify-content-between mb-3">
-                                                    <span class="product-category">{{ $product->merk_produk }}</span>
-                                                    <div class="product-price">Rp
-                                                        {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
-                                                </div>
-                                                <a class="add-button w-100">TAMBAHKAN</a>
+                                        <div class="custom-card shadow position-relative">
+                                            <div class="product-code d-flex justify-content-between">
+                                                <span
+                                                    style="font-weight: 600; color: #000;">{{ $product->id_produk }}</span>
+                                                <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
                                             </div>
+                                            <div class="product-title mt-3">{{ $product->nama_produk }}</div>
+                                            <div class="mb-2">
+                                                <div class="product-price">Price : Rp
+                                                    {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
+                                                <div class="product-category">{{ $product->merk_produk }}</div>
+                                            </div>
+                                            <a class="add-button w-100"><i
+                                                    class="fa-solid fa-bag-shopping mr-1"></i>TAMBAHKAN</a>
                                         </div>
                                     </div>
                                 @endforeach
@@ -66,11 +62,32 @@
                             <a class="trash-btn">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                            <button class="checkout-btn">
+                            <a href="{{ route('pos.tranksaksi_pesanan.checkout', ['id_bengkel' => $id_bengkel]) }}"
+                                class="checkout-btn text-center" id="checkoutBtn">
                                 <i class="fa-solid fa-cart-shopping"></i> CHECKOUT
-                            </button>
+                            </a>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Konfirmasi Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin melanjutkan checkout?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary">Lanjutkan</button>
                 </div>
             </div>
         </div>
@@ -130,7 +147,6 @@
                 }
             }
 
-
             function updateActiveOrderDisplay() {
                 const orderItemsContainer = document.querySelector('.order-items-container');
                 orderItemsContainer.innerHTML = '';
@@ -153,7 +169,6 @@
                     orderItemsContainer.appendChild(itemElement);
                 });
 
-
                 // Update totals
                 document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
                 document.querySelector('.total-price').textContent =
@@ -169,6 +184,49 @@
                 };
                 updateActiveOrderDisplay();
             });
+
+            // Checkout button click event
+            document.querySelector('.checkout-btn').addEventListener('click', function() {
+                // Collect order data
+                const orderData = {
+                    items: activeOrder.items,
+                    total_qty: activeOrder.totalItems,
+                    total_harga: activeOrder.total,
+                    tanggal: new Date().toISOString().split('T')[0], // Example: "2024-11-29"
+                    // Add any additional fields here (e.g., customer info)
+                };
+
+                // Send order data to the backend
+                fetch('/tranksaksi/pesanan/store/{id_bengkel}', { // Update the URL with the actual ID
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content')
+                        },
+                        body: JSON.stringify(orderData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Pesanan berhasil dibuat!');
+                            // Optionally, redirect or clear the cart
+                            activeOrder = {
+                                items: [],
+                                total: 0,
+                                totalItems: 0
+                            };
+                            updateActiveOrderDisplay();
+                        } else {
+                            alert('Terjadi kesalahan saat membuat pesanan.');
+                        }
+                    })
+                    .catch(error => {
+                        alert('Terjadi kesalahan.');
+                        console.error('Error:', error);
+                    });
+            });
         });
     </script>
+
 @endsection

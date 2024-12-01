@@ -158,8 +158,10 @@ Route::prefix('blog')->group(function () {
 Route::prefix('workshop')->group(function () {
     Route::get('/', [WorkshopController::class, 'show'])->name('workshop.show');
     Route::get('workshop-detail/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
-    Route::get('workshop/{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
-    Route::post('workshop/review/store', [WorkshopController::class, 'storeReview'])->name('ulasan.store');
+    Route::get('{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
+    Route::get('{id_bengkel}/show-service/{id_services}', [WorkshopController::class, 'showPesananService'])->name('showPesananService');
+    Route::post('{id_bengkel}/store-service/{id_services}', [WorkshopController::class, 'storePesananServices'])->name('store.pesanan-services');
+    Route::post('/review/store', [WorkshopController::class, 'storeReview'])->name('ulasan.store');
 });
 
 // Pages Routes
@@ -287,6 +289,11 @@ Route::prefix('POS')->group(function () {
 
     Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
     Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
+    Route::get('tranksaksi/pesanan/create/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
+    Route::post('tranksaksi/pos/checkout/{id_bengkel}', [PosTransaksiController::class, 'checkout'])->name('pos.tranksaksi_pesanan.checkout');
+    Route::post('tranksaksi/pos/store/{id_bengkel}', [PosPesananController::class, 'store'])->name('pos.tranksaksi_pesanan.store');
+    Route::get('tranksaksi/pesanan/edit/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.tranksaksi_pesanan.edit');
+    Route::get('tranksaksi/pesanan/delete/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
 
     Route::prefix('Master-data')->group(function () {
         Route::prefix('pos/{id_bengkel}/product')->group(function () {
