@@ -20,13 +20,12 @@ class StockInbound extends Model
         'id_pegawai',  // Ensure this is fillable
     ];
 
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'id_produk', 'id_produk'); // Match the actual field name
+    public function product() {
+        return $this->belongsTo(Product::class, 'id_produk');
     }
-    public function sparePart()
-    {
-        return $this->belongsTo(SpareParts::class, 'id_spare_part'); // Adjust as needed
+    
+    public function sparePart() {
+        return $this->belongsTo(SpareParts::class, 'id_spare_part');
     }
     // In StockInbound model
     public function pegawai()

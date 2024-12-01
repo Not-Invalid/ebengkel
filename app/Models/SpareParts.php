@@ -40,4 +40,8 @@ class SpareParts extends Model
     {
         return $this->hasMany(StockInbound::class, 'id_spare_part');
     }
+    public function stocksOpname()
+    {
+        return $this->hasMany(StockOpname::class, 'id_produk', 'id_produk');
+    }
 }

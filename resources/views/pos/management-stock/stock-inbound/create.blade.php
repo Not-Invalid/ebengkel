@@ -7,14 +7,6 @@
 @php
   $header = 'Add New Stock';
 @endphp
-{{-- select2 --}}
-<link href="{{ asset('template_pos/modules/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
-
-<script>
-  $(document).ready(function() {
-    $('.select2').select2();
-  });
-</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -69,8 +61,7 @@
         <!-- Product Dropdown (Only visible if product is selected) -->
         <div id="product-div" class="form-group" style="display: none;">
           <label for="product_id">Product <span class="text-danger">*</span></label>
-          <select name="product_id" id="product_id"
-            class="form-control select2 @error('product_id') is-invalid @enderror">
+          <select name="product_id" id="product_id" class="form-control @error('product_id') is-invalid @enderror">
             <option value="" disabled selected hidden>Select Product</option>
             @foreach ($products as $product)
               <option value="{{ $product->id_produk }}" {{ old('product_id') == $product->id_produk ? 'selected' : '' }}>
