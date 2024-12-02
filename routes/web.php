@@ -265,7 +265,9 @@ Route::prefix('POS')->group(function () {
     Route::get('management-stock/opname/{id_bengkel}', [PosStockOpnameController::class, 'index'])->name('pos.management-stock.opname');
     Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
     Route::post('management-stock/opname/store/{id_bengkel}', [PosStockOpnameController::class, 'store'])->name('pos.management-stock.opname.store');
-    Route::delete('management-stock/opname/delete/{id_opname}', [PosStockOpnameController::class, 'destroy'])->name('pos.management-stock.opname.delete');
+    Route::delete('management-stock/opname/delete/{id_bengkel}/{id_opname}', [PosStockOpnameController::class, 'delete'])
+    ->name('pos.management-stock.opname.delete');
+
 
     Route::get('report/achievement-summary/{id_bengkel}', [PosAchievementSummaryController::class, 'index'])->name('pos.achievement-summary');
     Route::get('report/monitoring-stock/{id_bengkel}', [PosMonitoringStockController::class, 'index'])->name('pos.monitoring-stock');
