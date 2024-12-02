@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Pos;
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
 use App\Models\PesananService;
-use App\Models\OrderOnline;
 use Illuminate\Http\Request;
 
 class TransaksiPesananController extends Controller
@@ -38,5 +37,32 @@ class TransaksiPesananController extends Controller
         }
 
         return view('pos.master-transaksi.pesanan.create', compact('bengkel'));
+    }
+    public function store(Request $request, $id_bengkel)
+    {
+        // Validasi data dari form
+        $request->validate([
+            'tgl_pesanan'    => 'required|date',
+            'nama_pemesan'   => 'required|string|max:255',
+            'telp_pelanggan' => 'required|numeric',
+            'nama_service'   => 'required|string|max:255',
+            'status'         => 'required|string|max:50',
+            'total_pesanan'  => 'required|numeric|min:0',
+        ]);
+
+        // Simpan data ke dalam tabel Pesanan
+        PesananService::create([
+            'id_bengkel'     => $id_bengkel,
+            'tgl_pesanan'    => $request->tgl_pesanan,
+            'nama_pemesan'   => $request->nama_pemesan,
+            'telp_pelanggan' => $request->telp_pelanggan,
+            'nama_service'   => $request->nama_service,
+            'status'         => $request->status,
+            'total_pesanan'  => $request->total_pesanan,
+        ]);
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $id_bengkel])
+            ->with('status', 'Pesanan berhasil ditambahkan!');
     }
 }
