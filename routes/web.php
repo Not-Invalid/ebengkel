@@ -42,6 +42,8 @@ use App\Http\Controllers\SuperAdmin\SupportCenterController;
 use App\Http\Controllers\SuperAdmin\WorkshopController as SuperAdminWorkshopController;
 use App\Http\Controllers\UsedCarController;
 use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -61,6 +63,13 @@ Route::prefix('pelanggan')->group(function () {
 
 Route::middleware('auth:pelanggan')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::delete('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.remove');
+    Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+    Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
+    Route::get('/order', [OrderController::class, 'index'])->name('order');
+
 });
 
 Route::prefix('superadmin')->group(function () {
