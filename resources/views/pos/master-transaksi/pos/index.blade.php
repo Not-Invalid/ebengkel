@@ -20,32 +20,23 @@
             <div class="row">
                 <div class="col-12 col-md-8">
                     <!-- Product Section -->
-                    <div class="main-container mt-3">
-                        <h4 class="judul">List Produk</h4>
-                        <div class="products-grid shadow p-4">
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                                @foreach ($products as $product)
-                                    <div class="col-12 col-md-6">
-                                        <div class="custom-card shadow position-relative">
-                                            <div class="product-code d-flex justify-content-between">
-                                                <span
-                                                    style="font-weight: 600; color: #000;">{{ $product->id_produk }}</span>
-                                                <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
-                                            </div>
-                                            <div class="product-title mt-3">{{ $product->nama_produk }}</div>
-                                            <div class="mb-2">
-                                                <div class="product-price">Price : Rp
-                                                    {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
-                                                <div class="product-category">{{ $product->merk_produk }}</div>
-                                            </div>
-                                            <a class="add-button w-100"><i
-                                                    class="fa-solid fa-bag-shopping mr-1"></i>TAMBAHKAN</a>
-                                        </div>
-                                    </div>
-                                @endforeach
+                    <h4 class="judul">List Produk</h4>
+                    @foreach ($products as $product)
+                        <div class="col-12 col-md-6 mb-3">
+                            <div class="custom-card shadow">
+                                <div class="product-code d-flex justify-content-between">
+                                    <span>{{ $product->id_produk }}</span>
+                                    <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
+                                </div>
+                                <div class="product-title mt-3">{{ $product->nama_produk }}</div>
+                                <div class="product-price">Price : Rp
+                                    {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
+                                <div class="product-category mb-2">{{ $product->merk_produk }}</div>
+                                <a class="add-button w-100"><i class="fa-solid fa-bag-shopping mr-1"
+                                        style="color: "></i>TAMBAHKAN</a>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="cart-container shadow mt-5">
