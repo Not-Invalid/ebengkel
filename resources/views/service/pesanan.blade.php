@@ -1,13 +1,10 @@
 @extends('layouts.app')
-
 @section('title')
     eBengkelku | Pesanan Service
 @stop
-
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/daftar-event.css') }}">
 @endpush
-
 <style>
     .title-header {
         color: var(--main-blue);
@@ -95,7 +92,6 @@
         color: #3498db;
     }
 </style>
-
 @section('content')
     <section class="section section-white"
         style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom: 20px;">
@@ -107,85 +103,65 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4 class="title-header">Service Detail</h4>
+                    <h4 class="title-header">Detail Pesan Services</h4>
                 </div>
             </div>
         </div>
     </section>
-
     <div class="container daftar">
         <div class="wrapper">
-            {{-- <h2 class="text-center">Registrasi Dirimu untuk memesan Service {{ $service->nama_service }}</h2> --}}
+            <h2 class="text-center">Pesan Services {{ $service->nama_services }}</h2>
             <form
                 action="{{ route('store.pesanan-services', ['id_bengkel' => $id_bengkel, 'id_services' => $id_services]) }}"
                 method="POST">
                 @csrf
-                <!-- Input untuk Nama Pemesan -->
                 <div class="input-box">
                     <input type="text" id="nama_pemesan" name="nama_pemesan" placeholder="Masukkan nama Anda" required>
                 </div>
-
-                <!-- Input untuk Nomor Telepon -->
                 <div class="input-box">
                     <input type="text" id="telp_pelanggan" name="telp_pelanggan"
-                        placeholder="Masukkan nomor telepon Anda" required oninput="validatePhoneNumber(this)">
+                        placeholder="Masukkan nomor telepon Anda" required oninput="validatePhoneNumber(this)"
+                        maxlength="15">
                 </div>
-
-                <!-- Input untuk Tanggal Pesanan -->
                 <div class="input-box">
                     <input type="date" id="tgl_pesanan" name="tgl_pesanan" value="{{ now()->format('Y-m-d') }}" required>
                 </div>
-
-                <!-- Input untuk Harga (readonly) -->
                 <div class="input-box">
                     <input type="text" id="total" name="total"
                         value="Rp {{ isset($service) ? number_format($service->harga_services, 0, ',', '.') : '' }}"
-                        readonly>
+                        required>
                 </div>
-
-                <!-- Input untuk Nama Service -->
                 <div class="input-box">
-                    <input type="text" id="nama_service" name="nama_service" value="{{ $service->nama_service ?? '' }}"
+                    <input type="text" id="nama_service" name="nama_service" value="{{ $service->nama_services ?? '' }}"
                         required placeholder="Masukkan nama layanan">
                 </div>
-
-                <!-- Tombol Submit -->
                 <div class="input-box button">
                     <input type="submit" value="Pesan Sekarang">
                 </div>
             </form>
-
             <script>
                 $(document).ready(function() {
-                    // Ambil data bookedDates dari atribut data-booked-dates
                     var bookedDates = $("#tgl_pesanan").data("booked-dates").split(',');
-
                     $("#tgl_pesanan").datepicker({
-                        minDate: 0, // Tidak bisa memilih tanggal di masa lalu
-                        dateFormat: "yy-mm-dd", // Format tanggal
+                        minDate: 0,
+                        dateFormat: "yy-mm-dd",
                         beforeShowDay: function(date) {
                             var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
                             return [bookedDates.indexOf(string) === -1,
                                 ''
-                            ]; // Jika tanggal tidak ada di daftar bookedDates, maka bisa dipilih
+                            ];
                         }
                     });
                 });
             </script>
-
             <script>
                 function validatePhoneNumber(input) {
-                    // Menghapus semua karakter selain angka
                     input.value = input.value.replace(/[^0-9]/g, '');
-
-                    // Membatasi panjang input hanya sampai 15 digit
                     if (input.value.length > 15) {
                         input.value = input.value.slice(0, 15);
                     }
                 }
             </script>
-
         </div>
     </div>
-
 @endsection
