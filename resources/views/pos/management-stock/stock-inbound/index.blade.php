@@ -9,112 +9,128 @@
 @endphp
 
 @section('content')
-  <div class="d-flex justify-between mt-4">
-    <div class="d-flex justify-start mb-4 mt-4">
-      <select name="per_page" id="perPage" class="form-control w-auto mx-2">
-        <option value="10" {{ request('per_page') == '10' ? 'selected' : '' }}>10</option>
-        <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25</option>
-        <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
-        <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
-      </select>
-    </div>
-    <div class="d-flex justify-center w-100 mx-2 mb-4 mt-4">
-      <input type="text" id="search" class="form-control w-60" placeholder="Search">
-    </div>
-    <div class="d-flex justify-end mb-4 mt-4">
-      <a href="{{ route('pos.management-stock.inbound.create', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-        class="btn btn-info text-white px-4 py-2 mx-2">Add New Stock</a>
-    </div>
-  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-between">
+            <div class="d-flex justify-start mb-4">
+              <select name="per_page" id="perPage" class="form-control w-auto mx-2">
+                <option value="10" {{ request('per_page') == '10' ? 'selected' : '' }}>10</option>
+                <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25</option>
+                <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
+                <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
+              </select>
+            </div>
+            <div class="d-flex justify-center w-100 mx-2 mb-4">
+              <input type="text" id="search" class="form-control w-60" placeholder="Search">
+            </div>
 
-  <div class="table-responsive bg-white rounded shadow">
-    <table class="table table-bordered table-striped text-center">
-      <thead class="bg-light-grey text-white">
-        <tr>
-          <th class="text-center">No</th>
-          <th class="text-center">Merk Product</th>
-          <th class="text-center">Product Name</th>
-          <th class="text-center">Type</th>
-          <th class="text-center">Quantity</th>
-          <th class="text-center">Input By</th>
-          <th class="text-center">Description</th>
-          <th class="text-center">Action</th>
-        </tr>
-      </thead>
-      <tbody id="inbound-table-body">
-        @if ($combined->isEmpty())
-          <tr>
-            <td colspan="7" class="text-center">Data Not Found</td>
-          </tr>
-        @else
-          @foreach ($combined as $stock)
-            <tr>
-              <td>{{ $combined->firstItem() + $loop->iteration - 1 }}</td>
-              <td>{{ $stock->product_brand }}</td>
-              <td>{{ $stock->product_name }}</td>
-              <td>
-                {{-- Display type --}}
-                @if ($stock->type === 'product')
-                  Product
-                @elseif ($stock->type === 'spare_part')
-                  Spare Part
+            <div class="d-flex justify-end mb-4">
+              <a href="{{ route('pos.management-stock.inbound.create', $bengkel->id_bengkel) }}"
+                class="btn btn-info text-white px-4 py-2 mx-2">Add New Stock</a>
+            </div>
+          </div>
+
+          <div class="table-responsive bg-white rounded shadow-sm">
+            <table class="table table-bordered table-striped text-center">
+              <thead class="bg-light-grey text-white">
+                <tr>
+                  <th class="text-center">No</th>
+                  <th class="text-center">Merk</th>
+                  <th class="text-center">Name</th>
+                  <th class="text-center">Type</th>
+                  <th class="text-center">Quantity</th>
+                  <th class="text-center">Input By</th>
+                  <th class="text-center">Description</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="inbound-table-body">
+                @if ($combined->isEmpty())
+                  <tr>
+                    <td colspan="8" class="text-center">Data Not Found</td>
+                  </tr>
+                @else
+                  @foreach ($combined as $stock)
+                    <tr>
+                      <td>{{ $combined->firstItem() + $loop->iteration - 1 }}</td>
+                      <td>{{ $stock->product_brand }}</td>
+                      <td>{{ $stock->product_name }}</td>
+                      <td>
+                        {{-- Display type --}}
+                        @if ($stock->type === 'product')
+                          Product
+                        @elseif ($stock->type === 'spare_part')
+                          Spare Part
+                        @endif
+                      </td>
+                      <td>{{ $stock->quantity }}</td>
+                      <td>{{ $stock->pegawai ? $stock->pegawai->nama_pegawai : 'N/A' }}</td>
+                      <td>{{ $stock->description }}</td>
+                      <td class="d-flex justify-content-center align-items-center">
+                        <form
+                          action="{{ route('pos.management-stock.inbound.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_stock' => $stock->id_stock]) }}"
+                          method="POST" class="delete-form">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-sm btn-danger" title="Delete Stock">
+                            <i class="fas fa-trash"></i> Delete
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endforeach
                 @endif
-              </td>
-              <td>{{ $stock->quantity }}</td>
-              <td>{{ $stock->pegawai ? $stock->pegawai->nama_pegawai : 'N/A' }}</td>
-              <td>{{ $stock->description }}</td>
-              <td class="d-flex justify-content-center align-items-center">
-                <form
-                  action="{{ route('pos.management-stock.inbound.delete', ['id_bengkel' => $bengkel->id_bengkel, 'id_stock' => $stock->id_stock]) }}"
-                  method="POST" class="delete-form">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-danger" title="Delete Stock">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </form>
-              </td>
-            </tr>
-          @endforeach
-        @endif
-      </tbody>
-    </table>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between mt-4">
+            <div>
+              <span>Showing {{ $start }} to {{ $end }} of {{ $totalEntries }} entries</span>
+            </div>
+            <div class="d-flex">
+              <nav aria-label="Page navigation">
+                <ul class="pagination">
+                  @if ($combined->onFirstPage())
+                    <li class="page-item disabled">
+                      <span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
+                    </li>
+                  @else
+                    <li class="page-item">
+                      <a href="{{ $combined->previousPageUrl() }}" class="page-link"><i
+                          class="fa-solid fa-chevron-left"></i></a>
+                    </li>
+                  @endif
+
+                  @foreach ($combined->getUrlRange(1, $combined->lastPage()) as $page => $url)
+                    @if ($page == $combined->currentPage())
+                      <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+                    @else
+                      <li class="page-item"><a href="{{ $url }}" class="page-link">{{ $page }}</a></li>
+                    @endif
+                  @endforeach
+
+                  @if ($combined->hasMorePages())
+                    <li class="page-item">
+                      <a href="{{ $combined->nextPageUrl() }}" class="page-link"><i
+                          class="fa-solid fa-chevron-right"></i></a>
+                    </li>
+                  @else
+                    <li class="page-item disabled">
+                      <span class="page-link"><i class="fa-solid fa-chevron-right"></i></span>
+                    </li>
+                  @endif
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Pagination -->
-  <div class="d-flex justify-content-end mt-4">
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
-        @if ($combined->onFirstPage())
-          <li class="page-item disabled">
-            <span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
-          </li>
-        @else
-          <li class="page-item">
-            <a href="{{ $combined->previousPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-left"></i></a>
-          </li>
-        @endif
-
-        @foreach ($combined->getUrlRange(1, $combined->lastPage()) as $page => $url)
-          @if ($page == $combined->currentPage())
-            <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
-          @else
-            <li class="page-item"><a href="{{ $url }}" class="page-link">{{ $page }}</a></li>
-          @endif
-        @endforeach
-
-        @if ($combined->hasMorePages())
-          <li class="page-item">
-            <a href="{{ $combined->nextPageUrl() }}" class="page-link"><i class="fa-solid fa-chevron-right"></i></a>
-          </li>
-        @else
-          <li class="page-item disabled">
-            <span class="page-link"><i class="fa-solid fa-chevron-right"></i></span>
-          </li>
-        @endif
-      </ul>
-    </nav>
-  </div>
 
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -154,13 +170,14 @@
       const filterTable = (tableBodyId, columnIndices) => {
         const tableBody = document.getElementById(tableBodyId);
 
+        if (!tableBody) return; // Ensure the table body exists
+
         searchInput.addEventListener('input', function() {
           const searchText = searchInput.value.toLowerCase();
 
           Array.from(tableBody.children).forEach(row => {
             const matches = columnIndices.some(index =>
-              row.children[index].textContent.toLowerCase().includes(
-                searchText)
+              row.children[index].textContent.toLowerCase().includes(searchText)
             );
             row.style.display = matches ? '' : 'none';
           });
@@ -175,7 +192,7 @@
       filterTable('receivingnotes-table-body', [1]);
       filterTable('warehouse-table-body', [1, 2]);
       filterTable('staff-table-body', [1, 2]);
-      filterTable('inbound-stock', [1, 2]);
+      filterTable('inbound-table-body', [1, 2]);
     });
   </script>
 
