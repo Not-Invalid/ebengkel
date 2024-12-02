@@ -31,7 +31,7 @@
           @enderror
         </div>
 
-        <!-- Product Dropdown (Only visible if 'Product' is selected) -->
+        <!-- Product Dropdown -->
         <div class="form-group" id="product-dropdown" style="display: none;">
           <label for="product_id">Product <span class="text-danger">*</span></label>
           <select name="product_id" id="product_id" class="form-control @error('product_id') is-invalid @enderror">
@@ -47,7 +47,7 @@
           @enderror
         </div>
 
-        <!-- Spare Part Dropdown (Only visible if 'Spare Part' is selected) -->
+        <!-- Spare Part Dropdown -->
         <div class="form-group" id="sparepart-dropdown" style="display: none;">
           <label for="spare_part_id">Spare Part <span class="text-danger">*</span></label>
           <select name="spare_part_id" id="spare_part_id"
@@ -85,6 +85,7 @@
           @enderror
         </div>
 
+
         <div class="d-flex gap-2 justify-content-end">
           <a href="{{ route('pos.management-stock.opname', ['id_bengkel' => $bengkel->id_bengkel]) }}"
             class="btn btn-cancel">Cancel</a>
@@ -95,7 +96,6 @@
   </div>
 
   <script>
-    // JavaScript to toggle visibility of product/spare part dropdowns based on selected stock type
     document.addEventListener('DOMContentLoaded', function() {
       const typeSelector = document.getElementById('type');
       const productDropdown = document.getElementById('product-dropdown');
@@ -124,4 +124,5 @@
       toggleDropdowns();
     });
   </script>
+
 @endsection

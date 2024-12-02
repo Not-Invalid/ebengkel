@@ -69,8 +69,11 @@ class StockInboundController extends Controller
         request()->get('page', 1),
         ['path' => request()->url(), 'query' => request()->query()]
     );
+    $totalEntries = $combined->total();
+    $start = ($combined->currentPage() - 1) * $perPage + 1;
+    $end = min($combined->currentPage() * $perPage, $totalEntries);
 
-    return view('pos.management-stock.stock-inbound.index', compact('bengkel', 'combined'));
+    return view('pos.management-stock.stock-inbound.index', compact('bengkel', 'combined','totalEntries','start','end'));
 }
 
     public function create($id_bengkel)

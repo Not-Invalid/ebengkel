@@ -15,6 +15,7 @@ class CreateTbManagementStockOpnameTable extends Migration
             $table->unsignedInteger('id_produk')->nullable(true); // Nullable for the sake of optional relationships
             $table->integer('id_spare_part')->nullable(true); // Nullable for the sake of optional relationships
             $table->enum('type', ['product', 'spare_part']);
+            $table->integer('recorded_quantity');
             $table->integer('actual_quantity');
             $table->string('description')->nullable();
             $table->foreign('id_bengkel')->references('id_bengkel')->on('tb_bengkel')->onDelete('cascade');
