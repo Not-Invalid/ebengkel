@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
 
     {{-- Bootstrap CSS --}}
@@ -266,7 +267,25 @@
                 }, 16);
             });
         });
+
+
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fungsi formatRupiah sudah ada
+            console.log('DOM Loaded: formatRupiah siap digunakan.');
+
+            // Panggil fungsi atau tambahkan event listener yang memanfaatkan formatRupiah di sini
+            // Misalnya:
+            const priceInput = document.getElementById('price-input');
+            if (priceInput) {
+                priceInput.addEventListener('input', function() {
+                    this.value = formatRupiah(this.value);
+                });
+            }
+        });
+    </script>
+
 </body>
 
 </html>
