@@ -15,8 +15,10 @@ class OrderOnline extends Model
 
     // Kolom yang dapat diisi
     protected $fillable = [
-        'id_outlet',
+        'id_bengkel',
         'id_pelanggan',
+        'id_produk',
+        'id_spare_part',
         'tanggal',
         'total_qty',
         'total_harga',
@@ -40,9 +42,19 @@ class OrderOnline extends Model
         'is_delete',
     ];
 
-    // Relasi jika diperlukan
+    // Add the necessary relationships (e.g., with products, spareparts, customers, etc.)
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+    }
+
+    public function produk()
+    {
+        return $this->belongsTo(Product::class, 'id_produk');
+    }
+
+    public function sparepart()
+    {
+        return $this->belongsTo(SpareParts::class, 'id_spare_part');
     }
 }
