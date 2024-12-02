@@ -89,16 +89,37 @@
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="d-flex gap-3 mb-4">
-                        <button class="btn btn-outline-dark flex-grow-1 py-2" id="add-to-cart-btn">
+                    <form action="{{ route('cart.add') }}" method="POST" class="d-flex gap-3 mb-4">
+                        @csrf
+                        <input type="hidden" name="id_produk" value="{{ $data->id_produk ?? '' }}">
+                        <input type="hidden" name="id_spare_part" value="{{ $data->id_spare_part ?? '' }}">
+                        <input type="hidden" name="quantity" value="1" id="quantity-input">
+                        <button class="btn btn-outline-dark flex-grow-1 py-2" type="submit" id="add-to-cart-btn">
                             <i class="bx bx-cart me-1"></i> Add to Cart
                         </button>
                         <button class="btn btn-primary flex-grow-1 py-2">
                             Buy Now
                         </button>
-                    </div>
+                    </form>
+
                 </div>
             </div>
         </div>
     </section>
+
+    <script>
+        document.querySelector('.btn-increment').addEventListener('click', function () {
+            var quantityInput = document.querySelector('.quantity-input');
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            document.querySelector('#quantity-input').value = quantityInput.value; // Update hidden input
+        });
+
+        document.querySelector('.btn-decrement').addEventListener('click', function () {
+            var quantityInput = document.querySelector('.quantity-input');
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+                document.querySelector('#quantity-input').value = quantityInput.value; // Update hidden input
+            }
+        });
+    </script>
 @endsection
