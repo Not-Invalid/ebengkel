@@ -22,26 +22,26 @@
                         <center>
                             <h4>
                                 <p>&nbsp;</p>
-                                <b style="color: #3a6fb0;">Saling Support</b>
+                                <b style="color: #3a6fb0;">{{ __('messages.saling_support') }}</b>
                             </h4>
                         </center>
                         <ul class="header-btn">
                             @if (Session::has('id_pelanggan'))
                                 <li>
                                     <a class="main-btn btn-one" href="{{ route('profile') }}">
-                                        <i class='bx bx-user'></i> PROFILE
+                                        <i class='bx bx-user'></i>PROFILE
                                     </a>
                                 </li>
                             @else
                                 <li>
                                     <a class="main-btn btn-one" href="{{ route('register') }}">
-                                        REGISTER NOW
+                                        {{ __('messages.register_now') }}
                                     </a>
                                 </li>
                             @endif
                             <li>
                                 <a class="main-btn btn-two video-popup" href="https://www.youtube.com/watch?v=r44RKWyfcFw">
-                                    OUR VIDEO <i class='bx bx-play-circle bx-sm align-icon'></i>
+                                    {{ __('messages.our_video') }} <i class='bx bx-play-circle bx-sm align-icon'></i>
                                 </a>
                             </li>
                         </ul>
@@ -57,7 +57,7 @@
     {{-- GET START  --}}
     <section class="section get-start bg-white" style="padding-top: 50px; padding-bottom: 50px;">
         <div class="container">
-            <h2 class="h2 section-title">Apa itu Ebengkelku?</h2>
+            <h2 class="h2 section-title">{{ __('messages.what_is_ebengkelku') }}</h2>
 
             <ul class="get-start-list">
                 <!-- Card 1: Bergabung dengan Ebengkelku -->
@@ -66,13 +66,11 @@
                         <div class="card-icon icon-1">
                             <i class='bx bx-user-plus'></i>
                         </div>
-                        <h3 class="card-title">Bergabung dengan Ebengkelku</h3>
-
-                        <p class="card-text mb-3">Daftar sekarang untuk akses layanan bengkel berkualitas dan perluas
-                            jangkauan
-                            pelanggan Anda.</p>
+                        <h3 class="card-title">{{ __('messages.join_ebengkelku') }}</h3>
+                        <p class="card-text mb-3">{{ __('messages.join_description') }}</p>
                         @if (auth('pelanggan')->guest())
-                            <a href="{{ route('register') }}" class="card-link text-decoration-none">Daftar Sekarang</a>
+                            <a href="{{ route('register') }}"
+                                class="card-link text-decoration-none">{{ __('messages.register_now') }}</a>
                         @endif
                     </div>
                 </li>
@@ -83,10 +81,8 @@
                         <div class="card-icon icon-2">
                             <i class="bx bx-car"></i>
                         </div>
-                        <h3 class="card-title">Pilih Layanan Anda</h3>
-                        <p class="card-text">
-                            Pengguna pilih layanan yang sesuai. Bengkel tawarkan berbagai perawatan dan perbaikan terbaik.
-                        </p>
+                        <h3 class="card-title">{{ __('messages.choose_service') }}</h3>
+                        <p class="card-text">{{ __('messages.service_description') }}</p>
                     </div>
                 </li>
 
@@ -96,10 +92,8 @@
                         <div class="card-icon icon-3">
                             <i class="bx bx-map-pin"></i>
                         </div>
-                        <h3 class="card-title">Cari Bengkel Terdekat</h3>
-                        <p class="card-text">
-                            Pengguna mudah temukan bengkel terdekat. Pemilik bengkel bisa lebih dikenal oleh pelanggan.
-                        </p>
+                        <h3 class="card-title">{{ __('messages.find_nearby_workshop') }}</h3>
+                        <p class="card-text">{{ __('messages.workshop_description') }}</p>
                     </div>
                 </li>
 
@@ -109,23 +103,19 @@
                         <div class="card-icon icon-4">
                             <i class="bx bx-calendar-check"></i>
                         </div>
-                        <h3 class="card-title">Atur Jadwal Servis</h3>
-                        <p class="card-text">
-                            Pengguna pilih waktu servis. Pemilik bengkel terima dan atur jadwal servis dengan mudah.
-                        </p>
+                        <h3 class="card-title">{{ __('messages.schedule_service') }}</h3>
+                        <p class="card-text">{{ __('messages.schedule_description') }}</p>
                     </div>
                 </li>
-
             </ul>
         </div>
     </section>
-
     {{-- Latest Event Section --}}
     <section class="section bg-white" style="padding-top: 50px; padding-bottom: 50px;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="text-primary py-2"><i class='bx bx-calendar'></i> Latest Event</h4>
+                    <h4 class="text-primary py-2"><i class='bx bx-calendar'></i>{{ __('messages.latest_event') }}</h4>
                     <div class="row">
                         {{-- Check if there are events --}}
                         @if ($events->isNotEmpty())
@@ -152,7 +142,8 @@
                                             </div>
                                             <div class="footer-card">
                                                 <div class="price d-flex justify-content-start">
-                                                    <span class="price">{{ $event->tipe_harga === 'Gratis' ? 'Free' : 'Rp' . number_format($event->harga, 0, ',', '.') }}</span>
+                                                    <span
+                                                        class="price">{{ $event->tipe_harga === 'Gratis' ? 'Free' : 'Rp' . number_format($event->harga, 0, ',', '.') }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,7 +155,7 @@
                                 <div class="text-center">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
                                         width="200" alt="Empty">
-                                    <p>No data available for Events.</p>
+                                    <p>{{ __('messages.no_data_event') }}.</p>
                                 </div>
                             </div>
                         @endif
@@ -173,7 +164,7 @@
                     @if ($events->isNotEmpty())
                         <div class="text-center mt-4">
                             <a href="{{ route('event.show') }}" class="btn btn-more">
-                                More Event <i class="bx bx-chevron-right align-icon"></i>
+                                {{ __('messages.more_event') }} <i class="bx bx-chevron-right align-icon"></i>
                             </a>
                         </div>
                     @endif
@@ -188,13 +179,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="text-primary py-2"><i class='bx bx-building'></i> Latest Workshop</h4>
+                    <h4 class="text-primary py-2"><i class='bx bx-building'></i>{{ __('messages.latest_workshop') }}</h4>
                     @if ($bengkels->isEmpty())
                         <div class="d-flex justify-content-center pb-5">
                             <div class="text-center">
                                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
-                                     width="200" alt="No workshops">
-                                <p>No data available for workshops.</p>
+                                    width="200" alt="No workshops">
+                                <p>{{ __('messages.no_data_workshop') }}.</p>
                             </div>
                         </div>
                     @else
@@ -202,9 +193,9 @@
                             @foreach ($bengkels as $bengkel)
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                     <a href="{{ route('workshop.detail', $bengkel->id_bengkel) }}"
-                                       class="card-product p-3">
+                                        class="card-product p-3">
                                         <img src="{{ isset($bengkel) && $bengkel->foto_bengkel ? url($bengkel->foto_bengkel) : asset('assets/images/components/image.png') }}"
-                                             class="card-img-top" alt="Workshop Image">
+                                            class="card-img-top" alt="Workshop Image">
                                         <div class="card-body text-start">
                                             <div class="d-flex align-items-center location-map">
                                                 <i class='bx bx-map-pin'></i>
@@ -227,10 +218,11 @@
                         </div>
                     @endif
 
-                    @if (!$bengkels->isEmpty())  <!-- Only show the "More Workshop" button if there are workshops -->
+                    @if (!$bengkels->isEmpty())
+                        <!-- Only show the "More Workshop" button if there are workshops -->
                         <div class="text-center mt-4">
                             <a href="{{ route('workshop.show') }}" class="btn btn-more">
-                                More Workshop <i class="bx bx-chevron-right align-icon"></i>
+                                {{ __('messages.more_workshop') }} <i class="bx bx-chevron-right align-icon"></i>
                             </a>
                         </div>
                     @endif
@@ -245,13 +237,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="text-primary py-2"><i class='bx bxl-dropbox'></i> New Product</h4>
+                    <h4 class="text-primary py-2"><i class='bx bxl-dropbox'></i>{{ __('messages.new_product') }}</h4>
                     @if ($products->isEmpty())
                         <div class="d-flex justify-content-center pb-5">
                             <div class="text-center">
                                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
                                     width="200" alt="No product">
-                                <p>No data available for Product.</p>
+                                <p>{{ __('messages.no_data_product') }}.</p>
                             </div>
                         </div>
                     @else
@@ -279,7 +271,7 @@
                         </div>
                         <div class="text-center mt-4">
                             <a href="{{ route('ProductSparePart') }}" class="btn btn-more">
-                                More Product <i class="bx bx-chevron-right align-icon"></i>
+                                {{ __('messages.more_product') }} <i class="bx bx-chevron-right align-icon"></i>
                             </a>
                         </div>
                     @endif
@@ -293,13 +285,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="text-primary py-2"><i class='bx bx-box'></i> Spare Parts</h4>
+                    <h4 class="text-primary py-2"><i class='bx bx-box'></i>{{ __('messages.spare_parts') }}</h4>
                     @if ($products->isEmpty())
                         <div class="d-flex justify-content-center pb-5">
                             <div class="text-center">
                                 <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
                                     width="200" alt="No product">
-                                <p>No data available for Product.</p>
+                                <p>{{ __('messages.no_data_spare_part') }}.</p>
                             </div>
                         </div>
                     @else
@@ -328,7 +320,7 @@
                         </div>
                         <div class="text-center mt-4">
                             <a href="{{ route('ProductSparePart') }}" class="btn btn-more">
-                                More Spare Part <i class="bx bx-chevron-right align-icon"></i>
+                                {{ __('messages.more_spare_part') }} <i class="bx bx-chevron-right align-icon"></i>
                             </a>
                         </div>
                     @endif
@@ -340,15 +332,13 @@
     {{-- used car --}}
     <section class="featured-cars section bg-white">
         <div class="container">
-            <div class="section-title text-start">
-                <h4 class="text-primary py-2"><i class='bx bx-car'></i> Used Car</h4>
-            </div>
+            <h4 class="text-primary py-2"><i class='bx bx-box'></i>{{ __('messages.usedcar') }}</h4>
             @if ($mobilList->isEmpty())
                 <div class="d-flex justify-content-center pb-5">
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                             alt="No UsedCar">
-                        <p>No data available for UsedCar.</p>
+                            alt="No UsedCar">
+                        <p>{{ __('messages.no_data_usedcar') }}.</p>
                     </div>
                 </div>
             @else
@@ -359,10 +349,10 @@
                                 <div class="card h-100 border-0 shadow">
                                     @if ($car->fotos && $car->fotos->file_foto_mobil_1)
                                         <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
-                                             class="car-img">
+                                            class="car-img">
                                     @else
                                         <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
-                                             class="car-img">
+                                            class="car-img">
                                     @endif
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -419,19 +409,19 @@
                 </div>
                 <div class="text-center mt-5">
                     <a href="{{ route('used-car') }}" class="btn btn-more">
-                        More Used Car <i class="bx bx-chevron-right align-icon"></i>
+                        {{ __('more.usedcar') }} <i class="bx bx-chevron-right align-icon"></i>
                     </a>
                 </div>
             @endif
         </div>
     </section>
 
-    <!-- #BLOG -->
+    {{-- Blog --}}
     <section class="featured-blogs section bg-white py-5">
         <div class="container">
             <div class="section-title d-flex justify-content-between align-items-center">
-                <h4 class="text-primary py-2"> Latest Blog</h4>
-                <a href="{{ route('blog') }}" class="btn btn-custom mb-2"> View More</a>
+                <h4 class="text-primary py-2">{{ __('messages.latest_blog') }}</h4>
+                <a href="{{ route('blog') }}" class="btn btn-custom mb-2">{{ __('messages.more_product') }}</a>
             </div>
 
             @if ($latestBlogs->isEmpty())
@@ -439,7 +429,7 @@
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
                             alt="No Blog Available">
-                        <p>No data available for Blogs.</p>
+                        <p>{{ __('messages.no_data_blog') }}.</p>
                     </div>
                 </div>
             @else
@@ -473,13 +463,13 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const carCarousel = document.querySelector('.featured-cars .horizontal');
             const carScrollDistance = 250;
             let carScrollInterval;
 
             function startCarAutoScroll() {
-                carScrollInterval = setInterval(function () {
+                carScrollInterval = setInterval(function() {
                     if (carCarousel.scrollLeft + carCarousel.clientWidth >= carCarousel.scrollWidth) {
                         carCarousel.scrollLeft = 0;
                     } else {
@@ -490,11 +480,11 @@
 
             startCarAutoScroll();
 
-            carCarousel.addEventListener('mouseenter', function () {
+            carCarousel.addEventListener('mouseenter', function() {
                 clearInterval(carScrollInterval);
             });
 
-            carCarousel.addEventListener('mouseleave', function () {
+            carCarousel.addEventListener('mouseleave', function() {
                 startCarAutoScroll();
             });
 
@@ -503,7 +493,7 @@
             let blogScrollInterval;
 
             function startBlogAutoScroll() {
-                blogScrollInterval = setInterval(function () {
+                blogScrollInterval = setInterval(function() {
                     if (blogCarousel.scrollLeft + blogCarousel.clientWidth >= blogCarousel.scrollWidth) {
                         blogCarousel.scrollLeft = 0;
                     } else {
@@ -514,16 +504,14 @@
 
             startBlogAutoScroll();
 
-            blogCarousel.addEventListener('mouseenter', function () {
+            blogCarousel.addEventListener('mouseenter', function() {
                 clearInterval(blogScrollInterval);
             });
 
-            blogCarousel.addEventListener('mouseleave', function () {
+            blogCarousel.addEventListener('mouseleave', function() {
                 startBlogAutoScroll();
             });
         });
-
-
     </script>
 
 
