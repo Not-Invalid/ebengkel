@@ -37,11 +37,6 @@
                                 </div>
                                 <h5 class="card-title">
                                     {{ \Illuminate\Support\Str::limit($bengkel->nama_bengkel, 15) }}</h5>
-                                <div class="mt-3">
-                                    <div class="tagline d-flex justify-content-start">
-                                        <span class="tagline">{{ $bengkel->tagline_bengkel }}</span>
-                                    </div>
-                                </div>
                                 <div class="footer-card d-flex justify-content-start gap-3 mt-3">
                                     <a href="{{ route('profile.workshop.edit', ['id_bengkel' => $bengkel->id_bengkel]) }}"
                                         class="btn btn-link" title="Edit">
