@@ -77,6 +77,12 @@
                     <input type="number" class="form-control" name="harga_services"
                         value="{{ old('harga_services', $service->harga_services) }}" required>
                 </div>
+                <div class="form-group">
+                    <label for="jumlah_services">Jumlah Services <small>(Per hari)</small> <span
+                            class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="jumlah_services"
+                        value="{{ old('jumlah_services', $service->jumlah_services) }}" required>
+                </div>
 
                 <div class="form-group">
                     <label for="keterangan_services">Description </label>
@@ -97,7 +103,8 @@
                 </div>
 
                 <div class="d-flex gap-2 justify-content-end">
-                    <a href="{{ route('pos.service.index', ['id_bengkel' => $bengkel->id_bengkel]) }}" id="backButton" class="btn btn-danger">Back</a>
+                    <a href="{{ route('pos.service.index', ['id_bengkel' => $bengkel->id_bengkel]) }}" id="backButton"
+                        class="btn btn-danger">Back</a>
                     <button id="editButton" type="button" class="btn btn-primary">Edit</button>
                     <button id="cancelButton" type="button" class="btn btn-danger hidden">Cancel</button>
                     <button id="saveButton" type="submit" class="btn btn-primary hidden">Save</button>
