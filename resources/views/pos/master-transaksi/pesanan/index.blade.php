@@ -1,11 +1,11 @@
 @extends('pos.layouts.app')
 
 @section('title')
-    eBengkelku | Pesanan
+    eBengkelku | Pesanan Service
 @stop
 
 @php
-    $header = 'Pesanan';
+    $header = 'Pesanan Service';
 @endphp
 
 @section('content')
@@ -29,8 +29,7 @@
                         </div>
 
                         <div class="d-flex justify-end mb-4">
-                            <form action="{{ route('pos.tranksaksi_pesanan.checkout', $bengkel->id_bengkel) }}"
-                                method="POST">
+                            <form action="{{ route('pos.tranksaksi_pesanan.create', $bengkel->id_bengkel) }}">
                                 @csrf
                                 <button type="submit" class="btn btn-info text-white px-4 py-2 mx-2">Tambah
                                     Pesanan</button>

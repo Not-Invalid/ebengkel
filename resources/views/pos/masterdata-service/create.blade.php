@@ -67,6 +67,11 @@
                     <input type="number" class="form-control" name="harga_services" required>
                 </div>
                 <div class="form-group">
+                    <label for="jumlah_services">Jumlah Services <small>(Per hari)</small> <span
+                            class="text-danger">*</span></label>
+                    <input type="number" class="form-control" name="jumlah_services" required>
+                </div>
+                <div class="form-group">
                     <label for="keterangan_services">Description</label>
                     <textarea class="form-control" name="keterangan_services"></textarea>
                 </div>

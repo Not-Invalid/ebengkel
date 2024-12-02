@@ -26,16 +26,7 @@
     --bg-transparent: rgba(0, 0, 0, 0);
 }
 
-/* Container untuk produk */
-.products-grid {
-    margin-top: 4px;
-}
-
-/* Menjaga desain tetap responsif */
-.row-cols-1 {
-    margin-bottom: 30px;
-}
-
+/* card content */
 .custom-card {
     border: none;
     border-radius: 15px;
@@ -51,12 +42,16 @@
     transform: translateY(-2px);
 }
 
-/* Mengatur posisi gambar agar stock muncul di atas */
-
-.product-stock {
-    color: var(--main-black);
-    font-size: 14px;
+.judul {
     font-weight: 600;
+    color: var(--main-black);
+    margin-top: 12px;
+}
+
+.product-code {
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--main-black);
 }
 
 .product-title {
@@ -65,20 +60,13 @@
     color: var(--main-black);
 }
 
-.product-code {
+.product-price {
     font-size: 14px;
-    color: var(--main-grey);
     font-weight: 500;
+    color: var(--main-black);
 }
 
 .product-category {
-    color: var(--main-black);
-    font-size: 14px;
-    font-weight: 500;
-    margin-top: auto;
-}
-
-.product-price {
     font-size: 14px;
     font-weight: 500;
     color: var(--main-black);
@@ -102,11 +90,9 @@
     color: var(--main-white) !important;
 }
 
-/* Mengatur responsif grid */
-.row-cols-1 {
-    margin-bottom: 30px;
-}
+/* end */
 
+/* cart */
 .cart-container {
     background: white;
     padding: 20px;
@@ -198,29 +184,9 @@
     font-weight: 600;
 }
 
-@media (min-width: 576px) {
-    .row-cols-sm-2 {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-}
+/* end */
 
 @media (max-width: 768px) {
-    .main-layout {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    .products-grid {
-        height: 100%;
-        width: 100%;
-        overflow-y: auto;
-        padding: 10px;
-    }
-
     .cart-container {
         position: fixed;
         bottom: 0;
@@ -231,33 +197,5 @@
         padding: 15px;
         z-index: 10;
         overflow-y: hidden;
-        /* Tidak scrollable */
-    }
-
-    .row.row-cols-1 {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        /* Jarak antar card */
-    }
-}
-
-@media (min-width: 992px) {
-
-    /* Untuk layar lg (laptop besar) */
-    .row-cols-lg-4 {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-}
-
-@media (min-width: 1200px) {
-
-    /* Untuk layar xl (desktop besar) */
-    .row-cols-xl-5 {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
     }
 }
