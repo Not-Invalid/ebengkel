@@ -56,7 +56,7 @@
                                     </li>
                                 @endif
                                 <li class="nav-item">
-                                    <a href="">
+                                    <a href="{{ route('cart.index') }}">
                                         <i class='bx bx-cart'></i>
                                         <span class="badge badge-pill badge-danger" id="countCart">
                                             0
