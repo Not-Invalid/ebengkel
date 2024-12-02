@@ -6,8 +6,11 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyorderController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
+use App\Http\Controllers\Pos\ExpenseRecordController as PosExpenseRecordController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
+use App\Http\Controllers\Pos\JenisPengeluaranController as PosExpenseTypeController;
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\ProfileController as PosProfileController;
@@ -15,14 +18,11 @@ use App\Http\Controllers\Pos\ServiceController as PosServiceController;
 use App\Http\Controllers\Pos\SettingController as PosSettingController;
 use App\Http\Controllers\Pos\SparePartController as PosSparePartController;
 use App\Http\Controllers\Pos\StockInboundController as PosStockInboundController;
+use App\Http\Controllers\Pos\StockMonitoringController as PosMonitoringStockController;
 use App\Http\Controllers\Pos\StockOpnameController as PosStockOpnameController;
+use App\Http\Controllers\Pos\TransactionHistoryController as PosTransactionHistoryController;
 use App\Http\Controllers\Pos\TransaksiPesananController as PosPesananController;
 use App\Http\Controllers\Pos\TransaksiPosController as PosTransaksiController;
-use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
-use App\Http\Controllers\Pos\StockMonitoringController as PosMonitoringStockController;
-use App\Http\Controllers\Pos\TransactionHistoryController as PosTransactionHistoryController;
-use App\Http\Controllers\Pos\ExpenseRecordController as PosExpenseRecordController;
-use App\Http\Controllers\Pos\JenisPengeluaranController as PosExpenseTypeController;
 use App\Http\Controllers\ProductSparePartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ServiceController;
@@ -46,7 +46,14 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [PageController::class, 'index'])->name('home');
+Route::middleware(['lang'])->group(function () {
+    Route::get('/', [PageController::class, 'index'])->name('home');
+});
+
+Route::get('change-language/{lang}', function ($lang) {
+    session(['locale' => $lang]);
+    return back();
+})->name('change-language');
 
 // Auth routes
 Route::prefix('pelanggan')->group(function () {

@@ -67,13 +67,31 @@
                                     <a class="nav-link" href="#" id="languageDropdown" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bx bx-world"></i>
-                                        EN
+                                        <span
+                                            id="activeLanguage">{{ app()->getLocale() === 'id' ? 'ID' : 'EN' }}</span>
+                                        <!-- Menampilkan bahasa aktif -->
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                                        <li><a class="dropdown-item" href="#">EN</a></li>
-                                        <li><a class="dropdown-item" href="#">ID</a></li>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown"
+                                        style="padding: 12px !important">
+                                        <li>
+                                            <a href="{{ route('change-language', 'en') }}"
+                                                onclick="changeLanguage('en')" style="padding: 8px !important"
+                                                class="{{ app()->getLocale() === 'en' ? 'active' : '' }}"
+                                                id="lang-en">
+                                                EN
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('change-language', 'id') }}"
+                                                onclick="changeLanguage('id')" style="padding: 8px !important"
+                                                class="{{ app()->getLocale() === 'id' ? 'active' : '' }}"
+                                                id="lang-id">
+                                                ID
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
+                            </ul>
                         </div>
                     </nav>
                 </div>
@@ -82,6 +100,19 @@
     </div>
 </header>
 
+
+<script>
+    window.onscroll = function() {
+        var header = document.querySelector('.navgition');
+        var sticky = header.offsetTop;
+
+        if (window.pageYOffset > sticky) {
+            header.classList.add('sticky');
+        } else {
+            header.classList.remove('sticky');
+        }
+    };
+</script>
 
 {{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -104,28 +135,3 @@
             });
     }
 </script> --}}
-
-<script>
-    document.querySelectorAll('.change-language').forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const lang = this.getAttribute('data-lang');
-            // Ganti bahasa dengan AJAX atau logika lainnya
-            console.log(`Bahasa dipilih: ${lang}`);
-        });
-    });
-</script>
-
-
-<script>
-    window.onscroll = function() {
-        var header = document.querySelector('.navgition');
-        var sticky = header.offsetTop;
-
-        if (window.pageYOffset > sticky) {
-            header.classList.add('sticky');
-        } else {
-            header.classList.remove('sticky');
-        }
-    };
-</script>
