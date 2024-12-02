@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('tb_cart', function (Blueprint $table) {
             $table->id();
             $table->integer('id_pelanggan');
-            $table->unsignedInteger('id_produk');
-            $table->integer('id_spare_part');
+            $table->unsignedInteger('id_produk')->nullable();
+            $table->integer('id_spare_part')->nullable();
             $table->integer('quantity')->default(1);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
