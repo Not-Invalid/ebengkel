@@ -16,6 +16,7 @@ class StockOpname extends Model
         'id_bengkel',
         'id_produk',
         'id_spare_part',
+        'recorded_quantity',
         'actual_quantity',
         'description',
         'id_pegawai',
