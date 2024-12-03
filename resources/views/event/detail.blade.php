@@ -19,7 +19,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4 class="title-header">Event Detail</h4>
+                    <h4 class="title-header">{{ __('messages.event.event_detail') }}</h4>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
                         <!-- Date and Time -->
                         <div class="d-flex align-items-center mb-3">
                             <i class='bx bx-calendar text-primary me-2'></i>
-                            <span><span class="title-desc">Tanggal:</span>
+                            <span><span class="title-desc">{{ __('messages.event.date') }}:</span>
                                 {{ \Carbon\Carbon::parse($event->event_start_date)->format('d F Y') }}</span>
                         </div>
 
@@ -60,17 +60,18 @@
                         <!-- Location -->
                         <div class="d-flex align-items-center mb-3">
                             <i class='bx bx-map text-primary me-2'></i>
-                            <span><span class="title-desc">Lokasi:</span> {{ $event->alamat_event }}</span>
+                            <span><span class="title-desc">{{ __('messages.event.location') }}:</span>
+                                {{ $event->alamat_event }}</span>
                         </div>
                         <hr>
                         <!-- Description -->
                         <p class="mb-4">
-                            <span class="title-desc my-2">Deskripsi Acara:</span> <br>
+                            <span class="title-desc my-2">{{ __('messages.event.desc') }}:</span> <br>
                             {{ $event->deskripsi }}
                         </p>
                         <hr>
                         <!-- Agenda -->
-                        <h5 class="title-desc">Agenda Acara</h5>
+                        <h5 class="title-desc">{{ __('messages.event.agenda') }}</h5>
                         <ul class="agenda-event">
                             @foreach ($event->agenda_acara as $agenda)
                                 <li class="list-text my-2">
@@ -89,7 +90,7 @@
                 <div class="card info-event mb-4" style="border: 0;">
                     <div class="card-header title-desc"
                         style="outline:none; border-start-end-radius: 10px; border-start-start-radius: 10px;">
-                        Pembicara Acara
+                        {{ __('messages.event.guest') }}
                     </div>
                     <div class="card-body">
                         @foreach ($event->bintang_tamu as $speaker)
@@ -108,13 +109,13 @@
                 <div class="card info-event mb-4" style="border: 0;">
                     <div class="card-header title-desc"
                         style="outline:none; border-start-end-radius: 10px; border-start-start-radius: 10px;">
-                        Tiket Acara
+                        {{ __('messages.event.ticket') }}
                     </div>
                     <div class="card-body text-center">
                         <h5 class="fw-bold">Rp {{ number_format($event->harga, 0, ',', '.') }}</h5>
                         <a href="{{ route('event.daftar', ['id_event' => $event->id_event]) }}"
                             class="btn btn-daftar w-100 mt-2">
-                            <i class='bx bx-cart align-icon'></i> Daftar Sekarang
+                            <i class='bx bx-cart align-icon'></i> {{ __('messages.event.register') }}
                         </a>
                     </div>
                 </div>
@@ -123,7 +124,7 @@
                 <div class="card info-event mb-4" style="border: 0;">
                     <div class="card-header title-desc"
                         style="outline:none; border-start-end-radius: 10px; border-start-start-radius: 10px;">
-                        Hubungi Kami
+                        {{ __('messages.event.contact') }}
                     </div>
                     <div class="card-body">
                         <p><i class='bx bx-phone align-icon me-2'></i>+62 812-9542-9920</p>
