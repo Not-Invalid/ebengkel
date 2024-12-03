@@ -32,6 +32,7 @@ class Bengkel extends Model
         'close_time',
         'service_available',
         'payment',
+        'rekening_bank',
         'whatsapp',
         'instagram',
         'POS',
