@@ -68,6 +68,7 @@
     <div class="row">
       <div class="col-lg-8">
         <div class="cart-summary p-3">
+<<<<<<< HEAD
             <h5>Shipping Info</h5>
             <!-- Dropdown for Shipping Address -->
             <div class="dropdown border mb-3">
@@ -133,6 +134,78 @@
         </div>
       </div>
 
+=======
+          <h5>Shipping Info</h5>
+          <p class="text-muted">Select Address</p>
+          <!-- Dropdown for Shipping Address -->
+          <div class="dropdown mb-3">
+            <button
+              class="btn btn-outline-border dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center"
+              type="button" id="addressDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <div>
+                <p class="mb-0 fw-bold" id="selectedAddressName">Select Address</p>
+                <p class="mb-0 text-muted" id="selectedAddressDetails" style="font-size: 14px;">Please choose your address
+                </p>
+              </div>
+            </button>
+            <ul class="dropdown-menu w-100" aria-labelledby="addressDropdown" style="z-index: 1050;">
+              <li>
+                <a class="dropdown-item"
+                  data-address="Address 1|Bradley McMillian|109 Clarksburg Park Road|Show Low, AZ 85901|Mo. 012-345-6789"
+                  onclick="updateAddress('Address 1', 'Bradley McMillian', '109 Clarksburg Park Road', 'Show Low, AZ 85901', 'Mo. 012-345-6789')">
+                  Address 1
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item"
+                  data-address="Address 2|Bradley McMillian|109 Clarksburg Park Road|Show Low, AZ 85901|Mo. 012-345-6789"
+                  onclick="updateAddress('Address 2', 'Bradley McMillian', '109 Clarksburg Park Road', 'Show Low, AZ 85901', 'Mo. 012-345-6789')">
+                  Address 2
+                </a>
+              </li>
+            </ul>
+          </div>
+          <h5 class="mb-3">Opsi Pengiriman</h5>
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-border dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center"
+              type="button" id="shippingOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <div>
+                <p class="mb-0 fw-bold" id="selectedShippingName">Reguler</p>
+                <p class="mb-0 text-muted" id="selectedShippingCourier" style="font-size: 14px;">J&T Express</p>
+                <p class="mb-0 text-muted" style="font-size: 12px;" id="deliveryDate">Akan diterima pada tanggal
+                  23 Ags - 24 Ags</p>
+              </div>
+              <div class="text-end">
+                <p class="mb-0 fw-bold" id="selectedShippingPrice">Rp 11.000</p>
+              </div>
+            </button>
+            <ul class="dropdown-menu w-100" aria-labelledby="shippingOptionsDropdown" style="z-index: 1050;">
+              <li>
+                <a class="dropdown-item" data-shipping="Reguler" data-price="Rp 11.000" data-courier="J&T Express"
+                  data-time="2-4 Hari" onclick="updateShipping('Reguler', 11000, 'J&T Express', '2-4 Hari')">
+                  Reguler (Rp 11.000) - J&T Express
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" data-shipping="Ekspres" data-price="Rp 25.000" data-courier="Gojek Xpress"
+                  data-time="1-2 Hari" onclick="updateShipping('Ekspres', 25000, 'Gojek Xpress', '1-2 Hari')">
+                  Ekspres (Rp 25.000) - Gojek Xpress
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" data-shipping="Same Day" data-price="Rp 50.000" data-courier="JNE Super Speed"
+                  data-time="Hari yang sama"
+                  onclick="updateShipping('Same Day', 50000, 'JNE Super Speed', 'Hari yang sama')">
+                  Same Day (Rp 50.000) - JNE Super Speed
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+>>>>>>> daw
       <div class="col-lg-4 mb-5">
         <div class="cart-summary p-3">
           <h5>Price Details</h5>
@@ -151,6 +224,7 @@
           </ul>
           <form action="{{ route('cart.place-order') }}" method="POST">
             @csrf
+<<<<<<< HEAD
             <input type="hidden" name="recipient" id="hiddenAddressRecipient">
             <input type="hidden" name="location" id="hiddenAddressLocation">
             <input type="hidden" name="phone" id="hiddenAddressPhone">
@@ -159,6 +233,8 @@
             <input type="hidden" name="sub_district" id="hiddenAddressSubDistrict">
             <input type="hidden" name="city" id="hiddenAddressCity">
             <input type="hidden" name="postal_code" id="hiddenAddressPostalCode">
+=======
+>>>>>>> daw
             <button class="btn btn-success w-100">Place order</button>
           </form>
         </div>
@@ -174,11 +250,22 @@
     const selectedItemsList = document.getElementById('selected-items-list');
     const totalPriceElement = document.getElementById('total-selected-price');
 
+<<<<<<< HEAD
     function updatePriceDetails() {
       let totalPrice = 0;
       let selectedItemsCount = 0;
       let selectedItems = [];
 
+=======
+    const selectedItemsList = document.getElementById('selected-items-list');
+    const totalPriceElement = document.getElementById('total-selected-price');
+
+    function updatePriceDetails() {
+      let totalPrice = 0;
+      let selectedItemsCount = 0;
+      let selectedItems = [];
+
+>>>>>>> daw
       document.querySelectorAll('.cart-item').forEach(item => {
         let checkbox = item.querySelector('.item-select');
         if (checkbox.checked) {
@@ -196,6 +283,10 @@
         }
       });
 
+<<<<<<< HEAD
+=======
+      // Clear the list and add selected items to the summary
+>>>>>>> daw
       selectedItemsList.innerHTML = '';
       selectedItems.forEach(item => {
         const li = document.createElement('li');
@@ -208,11 +299,16 @@
       document.querySelector('.fw-semibold').innerText =
         `${selectedItemsCount} Selected Item${selectedItemsCount > 1 ? 's' : ''}`;
     }
+<<<<<<< HEAD
 
+=======
+    // Tambahkan event listener ke input quantity untuk memanggil updatePriceDetails
+>>>>>>> daw
     document.querySelectorAll('.quantity-input').forEach(input => {
       input.addEventListener('input', updatePriceDetails);
     });
 
+<<<<<<< HEAD
     document.querySelectorAll('.item-select').forEach(checkbox => {
       checkbox.addEventListener('change', updatePriceDetails);
     });
@@ -221,10 +317,27 @@
   </script>
   <script>
 
+=======
+
+    // Menambahkan event listener untuk setiap checkbox
+    document.querySelectorAll('.item-select').forEach(checkbox => {
+      checkbox.addEventListener('change', updatePriceDetails);
+    });
+
+    // Memperbarui Price Details ketika halaman dimuat pertama kali
+    updatePriceDetails();
+  </script>
+  <script>
+    // Remove item from the cart when the trash icon is clicked
+>>>>>>> daw
     document.querySelectorAll('.remove-item').forEach(button => {
       button.addEventListener('click', function() {
         const itemId = this.getAttribute('data-id');
 
+<<<<<<< HEAD
+=======
+        // Make an AJAX request to remove the item from the cart
+>>>>>>> daw
         fetch('{{ route('cart.remove') }}', {
             method: 'DELETE',
             headers: {
@@ -238,9 +351,17 @@
           .then(response => response.json())
           .then(data => {
             if (data.status === 'success') {
+<<<<<<< HEAD
 
               const itemElement = this.closest('.cart-item');
               itemElement.remove();
+=======
+              // Remove the item from the DOM
+              const itemElement = this.closest('.cart-item');
+              itemElement.remove();
+
+              // Optionally, update the price details after removal
+>>>>>>> daw
               updatePriceDetails();
             } else {
               alert(data.message || 'Failed to remove item');
@@ -288,7 +409,11 @@
           .then(response => response.json())
           .then(data => {
             if (data.status === 'success') {
+<<<<<<< HEAD
               updatePriceDetails();
+=======
+              updatePriceDetails(); // Panggil fungsi setelah perubahan kuantitas
+>>>>>>> daw
             } else {
               alert(data.message || 'Failed to update quantity');
             }
@@ -296,6 +421,7 @@
           .catch(error => console.error('Error:', error));
       });
     });
+<<<<<<< HEAD
     function updateAddress(recipient, location, phone, province, district, subDistrict, city, postalCode) {
         const locationWords = location.split(' ');
         let formattedLocation = '';
@@ -318,6 +444,37 @@
     }
 
     function updateShipping(shippingName, shippingPrice, courierName, deliveryTime) {
+=======
+    // // JavaScript to display selected address details
+    // document.querySelectorAll('.dropdown-item').forEach(function(item) {
+    //   item.addEventListener('click', function(e) {
+    //     e.preventDefault();
+    //     var addressDetails = item.getAttribute('data-address');
+    //     var addressArray = addressDetails.split('|');
+    //     var addressText = `
+  //     <h6>${addressArray[0]}</h6>
+  //     <p>${addressArray[1]}<br>${addressArray[2]}<br>${addressArray[3]}<br>${addressArray[4]}</p>
+  //   `;
+    //     var addressDiv = document.getElementById('selected-address');
+    //     addressDiv.innerHTML = addressText;
+    //     addressDiv.style.display = 'block';
+    //     // Change button text to selected address name
+    //     document.getElementById('address-dropdown-btn').textContent = `${addressArray[0]}: ${addressArray[1]}`;
+    //   });
+    // });
+    function updateAddress(addressName, recipient, street, city, phone) {
+      document.getElementById('selectedAddressName').textContent = addressName;
+      document.getElementById('selectedAddressDetails').textContent = recipient + "\n" + street + "\n" + city + "\n" +
+        "Mo. " + phone;
+      document.getElementById('selectedAddress').textContent = "Selected: " + addressName;
+      document.getElementById('selected-address').style.display = 'block';
+      document.getElementById('selected-address').innerHTML =
+        `<h6>${addressName}</h6><p>${recipient}<br>${street}<br>${city}<br>Mo. ${phone}</p>`;
+    }
+
+    function updateShipping(shippingName, shippingPrice, courierName, deliveryTime) {
+      // Mengupdate tampilan teks berdasarkan pilihan
+>>>>>>> daw
       document.getElementById('selectedShippingName').textContent = shippingName;
       document.getElementById('selectedShippingCourier').textContent = courierName;
       document.getElementById('deliveryDate').textContent = `Akan diterima dalam ${deliveryTime}`;
@@ -326,3 +483,4 @@
   </script>
 
 @endsection
+
