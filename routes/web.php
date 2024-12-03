@@ -76,7 +76,6 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
     Route::get('/order', [OrderController::class, 'index'])->name('order');
-
 });
 
 Route::prefix('superadmin')->group(function () {
@@ -85,7 +84,7 @@ Route::prefix('superadmin')->group(function () {
     Route::post('logout/admin', [SuperAdminAuthController::class, 'logout'])->name('logout-admin');
 });
 
-Route::middleware(['auth:superadmin', 'session.timeout'])->prefix('superadmin')->group(function () {
+Route::middleware(['auth:superadmin'])->prefix('superadmin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'superAdmin'])->name('superadmin');
 
     Route::get('event-data', [SuperAdminEventController::class, 'index'])->name('event-data');
@@ -146,38 +145,50 @@ Route::middleware(['auth:superadmin', 'session.timeout'])->prefix('superadmin')-
 });
 
 // UsedCar
-Route::prefix('used-car')->group(function () {
-    Route::get('/', [UsedCarController::class, 'index'])->name('used-car');
-    Route::get('detail/{id_mobil}', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+Route::middleware(['lang'])->group(function () {
+    Route::prefix('used-car')->group(function () {
+        Route::get('/', [UsedCarController::class, 'index'])->name('used-car');
+        Route::get('detail/{id_mobil}', [UsedCarController::class, 'detail'])->name('usedcar.detail');
+    });
 });
 
 // Product & SparePart
-Route::prefix('ProductsSparePart')->group(function () {
-    Route::get('/', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
-    Route::get('/detail/{type}/{id}', [ProductSparePartController::class, 'detail'])->name('Detail-ProductSparePart');
+Route::middleware(['lang'])->group(function () {
+    Route::prefix('ProductsSparePart')->group(function () {
+        Route::get('/', [ProductSparePartController::class, 'index'])->name('ProductSparePart');
+        Route::get('/detail/{type}/{id}', [ProductSparePartController::class, 'detail'])->name('Detail-ProductSparePart');
+    });
 });
 
 // Event route
-Route::prefix('event')->group(function () {
-    Route::get('/', [EventController::class, 'show'])->name('event.show');
-    Route::get('event-detail/{id}', [EventController::class, 'detail'])->name('event.detail');
-    Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
-    Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+Route::middleware(['lang'])->group(function () {
+    Route::prefix('event')->group(function () {
+        Route::get('/', [EventController::class, 'show'])->name('event.show');
+        Route::get('event-detail/{id}', [EventController::class, 'detail'])->name('event.detail');
+        Route::get('event-daftar/{id_event}', [EventController::class, 'daftar'])->name('event.daftar');
+        Route::post('event/daftar/{id}', [EventController::class, 'store'])->name('event.store');
+    });
 });
 
-Route::prefix('blog')->group(function () {
-    Route::get('/', [BlogController::class, 'index'])->name('blog');
-    Route::get('/{slug}', [BlogController::class, 'show'])->name('blog.show');
+// blog
+Route::middleware(['lang'])->group(function () {
+    Route::prefix('blog')->group(function () {
+        Route::get('/', [BlogController::class, 'index'])->name('blog');
+        Route::get('/{slug}', [BlogController::class, 'show'])->name('blog.show');
+    });
 });
+
 
 // Workshop route
-Route::prefix('workshop')->group(function () {
-    Route::get('/', [WorkshopController::class, 'show'])->name('workshop.show');
-    Route::get('workshop-detail/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
-    Route::get('{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
-    Route::get('{id_bengkel}/show-service/{id_services}', [WorkshopController::class, 'showPesananService'])->name('showPesananService');
-    Route::post('{id_bengkel}/store-service/{id_services}', [WorkshopController::class, 'storePesananServices'])->name('store.pesanan-services');
-    Route::post('/review/store', [WorkshopController::class, 'storeReview'])->name('ulasan.store');
+Route::middleware(['lang'])->group(function () {
+    Route::prefix('workshop')->group(function () {
+        Route::get('/', [WorkshopController::class, 'show'])->name('workshop.show');
+        Route::get('workshop-detail/{id_bengkel}', [WorkshopController::class, 'detail'])->name('workshop.detail');
+        Route::get('{id_bengkel}/service/{id_services}', [WorkshopController::class, 'detailService'])->name('service.detail');
+        Route::get('{id_bengkel}/show-service/{id_services}', [WorkshopController::class, 'showPesananService'])->name('showPesananService');
+        Route::post('{id_bengkel}/store-service/{id_services}', [WorkshopController::class, 'storePesananServices'])->name('store.pesanan-services');
+        Route::post('/review/store', [WorkshopController::class, 'storeReview'])->name('ulasan.store');
+    });
 });
 
 // Pages Routes
@@ -282,7 +293,7 @@ Route::prefix('POS')->group(function () {
     Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
     Route::post('management-stock/opname/store/{id_bengkel}', [PosStockOpnameController::class, 'store'])->name('pos.management-stock.opname.store');
     Route::delete('management-stock/opname/delete/{id_bengkel}/{id_opname}', [PosStockOpnameController::class, 'delete'])
-    ->name('pos.management-stock.opname.delete');
+        ->name('pos.management-stock.opname.delete');
 
 
     Route::get('report/achievement-summary/{id_bengkel}', [PosAchievementSummaryController::class, 'index'])->name('pos.achievement-summary');
