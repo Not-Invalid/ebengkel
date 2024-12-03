@@ -25,6 +25,8 @@
 
   {{-- select2 --}}
   <link href="{{ asset('template_pos/modules/select2/dist/css/select2.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('template_pos/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('template_pos/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
 
   {{-- Css libraries --}}
   <link rel="stylesheet" href="{{ asset('template_pos/modules/jqvmap/dist/jqvmap.min.css') }}" />
@@ -299,6 +301,8 @@
   <script src="{{ asset('template_pos/modules/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
   <script src="{{ asset('template_pos/modules/summernote/summernote-bs4.js') }}"></script>
   <script src="{{ asset('template_pos/modules/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+  <script src="{{ asset('template_pos/modules/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+  <script src="{{ asset('template_pos/modules/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   {{-- Template JS file --}}
@@ -308,6 +312,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <script src="{{ asset('template_pos/js/page/forms-advanced-forms.js') }}"></script>
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
