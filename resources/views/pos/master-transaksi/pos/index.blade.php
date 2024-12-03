@@ -21,22 +21,24 @@
                 <div class="col-12 col-md-8">
                     <!-- Product Section -->
                     <h4 class="judul">List Produk</h4>
-                    @foreach ($products as $product)
-                        <div class="col-12 col-md-6 mb-3">
-                            <div class="custom-card shadow">
-                                <div class="product-code d-flex justify-content-between">
-                                    <span>{{ $product->id_produk }}</span>
-                                    <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
+                    <div class="row">
+                        @foreach ($products as $product)
+                            <div class="col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
+                                <div class="custom-card shadow product-card">
+                                    <div class="product-code d-flex justify-content-between">
+                                        <span>{{ $product->id_produk }}</span>
+                                        <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
+                                    </div>
+                                    <div class="product-title mt-3">{{ $product->nama_produk }}</div>
+                                    <div class="product-price">Price : Rp
+                                        {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
+                                    <div class="product-category mb-2">{{ $product->merk_produk }}</div>
+                                    <a class="add-button w-100"><i class="fa-solid fa-bag-shopping mr-1"
+                                            style="color: "></i>TAMBAHKAN</a>
                                 </div>
-                                <div class="product-title mt-3">{{ $product->nama_produk }}</div>
-                                <div class="product-price">Price : Rp
-                                    {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
-                                <div class="product-category mb-2">{{ $product->merk_produk }}</div>
-                                <a class="add-button w-100"><i class="fa-solid fa-bag-shopping mr-1"
-                                        style="color: "></i>TAMBAHKAN</a>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
                 <div class="col-12 col-md-4">
                     <div class="cart-container shadow mt-5">
@@ -64,26 +66,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="checkoutModalLabel">Konfirmasi Checkout</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin melanjutkan checkout?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary">Lanjutkan</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let activeOrder = {
@@ -91,13 +73,9 @@
                 total: 0,
                 totalItems: 0
             };
-
-            // Event listener untuk tombol "Tambahkan"
             document.querySelectorAll('.add-button').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-
-                    // Menentukan produk berdasarkan card yang diklik
                     const productCard = this.closest('.product-card');
                     const product = {
                         id: productCard.querySelector('.product-code').textContent.trim(),
@@ -107,17 +85,14 @@
                         stock: parseInt(productCard.querySelector('.product-stock').textContent
                             .replace(/[^0-9]/g, '')),
                         brand: productCard.querySelector('.product-category')
-                            .textContent // Merk produk
+                            .textContent
                     };
-
-                    // Menambahkan produk ke order aktif
                     addToOrder(product);
                 });
             });
 
             function addToOrder(product) {
                 const existingItem = activeOrder.items.find(item => item.id === product.id);
-
                 if (existingItem) {
                     if (existingItem.quantity < product.stock) {
                         existingItem.quantity += 1;
@@ -141,7 +116,6 @@
             function updateActiveOrderDisplay() {
                 const orderItemsContainer = document.querySelector('.order-items-container');
                 orderItemsContainer.innerHTML = '';
-
                 activeOrder.items.forEach(item => {
                     const itemElement = document.createElement('div');
                     itemElement.className = 'order-item';
@@ -159,14 +133,10 @@
                     `;
                     orderItemsContainer.appendChild(itemElement);
                 });
-
-                // Update totals
                 document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
                 document.querySelector('.total-price').textContent =
                     `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
             }
-
-            // Clear cart functionality
             document.querySelector('.trash-btn').addEventListener('click', function() {
                 activeOrder = {
                     items: [],
@@ -175,20 +145,14 @@
                 };
                 updateActiveOrderDisplay();
             });
-
-            // Checkout button click event
             document.querySelector('.checkout-btn').addEventListener('click', function() {
-                // Collect order data
                 const orderData = {
                     items: activeOrder.items,
                     total_qty: activeOrder.totalItems,
                     total_harga: activeOrder.total,
-                    tanggal: new Date().toISOString().split('T')[0], // Example: "2024-11-29"
-                    // Add any additional fields here (e.g., customer info)
+                    tanggal: new Date().toISOString().split('T')[0],
                 };
-
-                // Send order data to the backend
-                fetch('/tranksaksi/pesanan/store/{id_bengkel}', { // Update the URL with the actual ID
+                fetch('/tranksaksi/pesanan/store/{id_bengkel}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -201,7 +165,6 @@
                     .then(data => {
                         if (data.success) {
                             alert('Pesanan berhasil dibuat!');
-                            // Optionally, redirect or clear the cart
                             activeOrder = {
                                 items: [],
                                 total: 0,
