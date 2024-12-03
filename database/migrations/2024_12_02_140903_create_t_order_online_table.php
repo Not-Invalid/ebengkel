@@ -39,6 +39,7 @@ class CreateTOrderOnlineTable extends Migration
             $table->dateTime('tanggal_kirim')->nullable();
             $table->dateTime('tanggal_diterima')->nullable();
             $table->string('status_order', 50)->default('TEMP');
+            $table->string('midtrans_snap_token')->nullable();
             $table->string('is_delete', 1)->default('N');
 
             $table->foreign('id_bengkel')->references('id_bengkel')->on('tb_bengkel')->onDelete('cascade');
