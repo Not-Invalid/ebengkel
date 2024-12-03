@@ -151,6 +151,14 @@
           </ul>
           <form action="{{ route('cart.place-order') }}" method="POST">
             @csrf
+            <input type="hidden" name="recipient" id="hiddenAddressRecipient">
+            <input type="hidden" name="location" id="hiddenAddressLocation">
+            <input type="hidden" name="phone" id="hiddenAddressPhone">
+            <input type="hidden" name="province" id="hiddenAddressProvince">
+            <input type="hidden" name="district" id="hiddenAddressDistrict">
+            <input type="hidden" name="sub_district" id="hiddenAddressSubDistrict">
+            <input type="hidden" name="city" id="hiddenAddressCity">
+            <input type="hidden" name="postal_code" id="hiddenAddressPostalCode">
             <button class="btn btn-success w-100">Place order</button>
           </form>
         </div>
@@ -162,7 +170,6 @@
     function formatRupiahJS(angka) {
       return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
-
 
     const selectedItemsList = document.getElementById('selected-items-list');
     const totalPriceElement = document.getElementById('total-selected-price');
@@ -189,7 +196,6 @@
         }
       });
 
-      // Clear the list and add selected items to the summary
       selectedItemsList.innerHTML = '';
       selectedItems.forEach(item => {
         const li = document.createElement('li');
@@ -202,27 +208,23 @@
       document.querySelector('.fw-semibold').innerText =
         `${selectedItemsCount} Selected Item${selectedItemsCount > 1 ? 's' : ''}`;
     }
-    // Tambahkan event listener ke input quantity untuk memanggil updatePriceDetails
+
     document.querySelectorAll('.quantity-input').forEach(input => {
       input.addEventListener('input', updatePriceDetails);
     });
 
-
-    // Menambahkan event listener untuk setiap checkbox
     document.querySelectorAll('.item-select').forEach(checkbox => {
       checkbox.addEventListener('change', updatePriceDetails);
     });
 
-    // Memperbarui Price Details ketika halaman dimuat pertama kali
     updatePriceDetails();
   </script>
   <script>
-    // Remove item from the cart when the trash icon is clicked
+
     document.querySelectorAll('.remove-item').forEach(button => {
       button.addEventListener('click', function() {
         const itemId = this.getAttribute('data-id');
 
-        // Make an AJAX request to remove the item from the cart
         fetch('{{ route('cart.remove') }}', {
             method: 'DELETE',
             headers: {
@@ -236,11 +238,9 @@
           .then(response => response.json())
           .then(data => {
             if (data.status === 'success') {
-              // Remove the item from the DOM
+
               const itemElement = this.closest('.cart-item');
               itemElement.remove();
-
-              // Optionally, update the price details after removal
               updatePriceDetails();
             } else {
               alert(data.message || 'Failed to remove item');
@@ -274,7 +274,6 @@
 
         quantityInput.value = quantity;
 
-        // Kirim pembaruan quantity ke server
         fetch('{{ route('cart.updateQuantity') }}', {
             method: 'POST',
             headers: {
@@ -289,7 +288,7 @@
           .then(response => response.json())
           .then(data => {
             if (data.status === 'success') {
-              updatePriceDetails(); // Panggil fungsi setelah perubahan kuantitas
+              updatePriceDetails();
             } else {
               alert(data.message || 'Failed to update quantity');
             }
@@ -297,37 +296,26 @@
           .catch(error => console.error('Error:', error));
       });
     });
-    function updateAddress(recipient, location, phone) {
-    // Mengonversi string lokasi menjadi array kata-kata
-    const locationWords = location.split(' ');
+    function updateAddress(recipient, location, phone, province, district, subDistrict, city, postalCode) {
+        const locationWords = location.split(' ');
+        let formattedLocation = '';
+        for (let i = 0; i < locationWords.length; i += 11) {
+            formattedLocation += locationWords.slice(i, i + 11).join(' ') + '<br>';
+        }
 
-    // Membagi lokasi menjadi beberapa baris dengan maksimal 6 kata per baris
-    let formattedLocation = '';
-    for (let i = 0; i < locationWords.length; i += 11) {
-        formattedLocation += locationWords.slice(i, i + 11).join(' ') + '<br>';
+        document.getElementById('selectedAddressName').textContent = recipient + ' | ' + phone;
+        document.getElementById('selectedAddressDetails').innerHTML = formattedLocation;
+
+        // Store additional address details in hidden fields
+        document.getElementById('hiddenAddressRecipient').value = recipient;
+        document.getElementById('hiddenAddressLocation').value = location;
+        document.getElementById('hiddenAddressPhone').value = phone;
+        document.getElementById('hiddenAddressProvince').value = province;
+        document.getElementById('hiddenAddressDistrict').value = district;
+        document.getElementById('hiddenAddressSubDistrict').value = subDistrict;
+        document.getElementById('hiddenAddressCity').value = city;
+        document.getElementById('hiddenAddressPostalCode').value = postalCode;
     }
-
-    // Menggabungkan detail alamat
-    const addressDetails = `${formattedLocation}`;
-
-    // Update nama dan detail alamat yang dipilih
-    document.getElementById('selectedAddressName').textContent = recipient + ' | ' + phone;
-    document.getElementById('selectedAddressDetails').innerHTML = addressDetails;
-
-    // Update text alamat yang dipilih
-    document.getElementById('selectedAddress').textContent = "Selected: " + recipient;
-
-    // Menampilkan detail alamat yang dipilih
-    document.getElementById('selected-address').style.display = 'block';
-    document.getElementById('selected-address').innerHTML = `
-        <h6>${recipient} | ${phone}</h6>
-        <p>${addressDetails}</p>
-    `;
-}
-
-
-
-
 
     function updateShipping(shippingName, shippingPrice, courierName, deliveryTime) {
       document.getElementById('selectedShippingName').textContent = shippingName;
