@@ -47,11 +47,11 @@
 .cart-item img {
     border-radius: 8px;
   }
-  
+
   .cart-summary h5 {
     margin-bottom: 15px;
   }
-  
+
   .cart-item-quantity input {
     max-width: 50px;
   }
@@ -60,8 +60,13 @@
     font-size: 13px;
     margin-left: 2px;
     margin-top: 5px;
-    color: var(--main-grey) !important; 
+    color: var(--main-grey) !important;
   }
   .form-check-input{
     border-color: var(--main-grey);
   }
+
+  .shipping:hover {
+    background-color: var(--main-light-grey);
+    color: var(--main-dark-blue);
+}
