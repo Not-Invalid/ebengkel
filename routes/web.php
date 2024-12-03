@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyorderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
@@ -75,7 +76,8 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::delete('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.remove');
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
-    Route::get('/order', [OrderController::class, 'index'])->name('order');
+    Route::get('payment', [PaymentController::class, 'index'])->name('payment');
+    Route::post('payment/notification', [PaymentController::class, 'notification']);
 
 });
 
