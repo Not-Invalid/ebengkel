@@ -50,6 +50,7 @@ class PelangganSeeder extends Seeder
             'close_time' => '17:00:00',
             'service_available' => null,
             'payment' => null,
+            'rekening_bank' => '4773776057051650',
             'kodepos_bengkel' => '12345',
             'gmaps' => 'https://maps.app.goo.gl/sFvLT8PosRzbmuE8A',
             'lokasi_bengkel' => null,
