@@ -102,7 +102,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4 class="title-header">Workshop Detail</h4>
+                    <h4 class="title-header">{{ __('messages.workshop.workshop_detail') }}</h4>
                 </div>
             </div>
         </div>
@@ -156,19 +156,18 @@
                             <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                                 <i class='bx bx-time fs-4 text-primary'></i>
                                 <div class="ms-3">
-                                    <span class="d-block fw-bold">Operational Hours</span>
+                                    <span class="d-block fw-bold">{{ __('messages.workshop.operational_hours') }}</span>
                                     <small>
                                         {{ $bengkel->open_day }} - {{ $bengkel->close_day }},
                                         {{ \Carbon\Carbon::parse($bengkel->open_time)->format('H:i') }} -
                                         {{ \Carbon\Carbon::parse($bengkel->close_time)->format('H:i') }} WIB
                                     </small>
                                 </div>
-
                             </div>
                             <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                                 <i class='bx bx-wrench fs-4 text-primary'></i>
                                 <div class="ms-3">
-                                    <span class="d-block fw-bold">Service Availability</span>
+                                    <span class="d-block fw-bold">{{ __('messages.workshop.service_availability') }}</span>
                                     <small>
                                         @if ($serviceAvailable && is_array($serviceAvailable))
                                             @foreach ($serviceAvailable as $service)
@@ -176,7 +175,7 @@
                                                         style="color: var(--main-green)"></i>{{ $service }}</p>
                                             @endforeach
                                         @else
-                                            <p>No services available.</p>
+                                            <p>{{ __('messages.workshop.no_services_available') }}</p>
                                         @endif
                                     </small>
                                 </div>
@@ -186,7 +185,8 @@
                             <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                                 <i class='bx bx-credit-card fs-4 text-primary'></i>
                                 <div class="ms-3">
-                                    <span class="d-block fw-bold">Accepted Payment Methods</span>
+                                    <span
+                                        class="d-block fw-bold">{{ __('messages.workshop.accepted_payment_methods') }}</span>
                                     <small>
                                         @if ($paymentMethods && is_array($paymentMethods))
                                             @foreach ($paymentMethods as $method)
@@ -194,7 +194,7 @@
                                                         style="color: var(--main-green)"></i>{{ $method }}</p>
                                             @endforeach
                                         @else
-                                            <p>No payment methods available.</p>
+                                            <p>{{ __('messages.workshop.no_payment_methods') }}</p>
                                         @endif
                                     </small>
                                 </div>
@@ -202,8 +202,9 @@
                             <div class="col-12 col-md-6 d-flex align-items-center text-start py-2">
                                 <i class='bx bx-star fs-4 text-primary'></i>
                                 <div class="ms-3">
-                                    <span class="d-block fw-bold">{{ number_format($averageRating, 1) }} Rating</span>
-                                    <small>{{ $totalReviews }} verified reviews</small>
+                                    <span class="d-block fw-bold">{{ number_format($averageRating, 1) }}
+                                        {{ __('messages.workshop.rating') }}</span>
+                                    <small>{{ $totalReviews }} {{ __('messages.workshop.verified_reviews') }}</small>
                                 </div>
                             </div>
                         </div>
@@ -212,11 +213,11 @@
                                 <div class="d-flex align-items-center">
                                     <i class='bx bx-map-pin fs-4 text-primary'></i>
                                     <div class="ms-3">
-                                        <span class="d-block fw-bold">Location</span>
+                                        <span class="d-block fw-bold">{{ __('messages.workshop.location') }}</span>
                                         <small>{{ \Illuminate\Support\Str::limit($bengkel->alamat_bengkel, 100) }} </small>
                                     </div>
                                 </div>
-                                <a href="{{ $bengkel->gmaps }}" target="_blank" class="btn btn-map ms-3 ">
+                                <a href="{{ $bengkel->gmaps }}" target="_blank" class="btn btn-map ms-3">
                                     <i class='bx bx-map'></i>
                                 </a>
                             </div>
@@ -391,12 +392,12 @@
                                     <ul class="pagination">
                                         @if ($services->onFirstPage())
                                             <li class="page-item disabled">
-                                                <a class="page-link">Previous</a>
+                                                <a class="page-link">{{ __('messages.workshop.previous') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item">
                                                 <a href="{{ $services->previousPageUrl() . '&tab=service' }}"
-                                                    class="page-link">Previous</a>
+                                                    class="page-link">{{ __('messages.workshop.previous') }}</a>
                                             </li>
                                         @endif
                                         @foreach ($services->getUrlRange(1, $services->lastPage()) as $page => $url)
@@ -408,11 +409,11 @@
                                         @if ($services->hasMorePages())
                                             <li class="page-item">
                                                 <a href="{{ $services->nextPageUrl() . '&tab=service' }}"
-                                                    class="page-link">Next</a>
+                                                    class="page-link">{{ __('messages.workshop.next') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">
-                                                <a class="page-link">Next</a>
+                                                <a class="page-link">{{ __('messages.workshop.next') }}</a>
                                             </li>
                                         @endif
                                     </ul>
@@ -455,12 +456,12 @@
                                     <ul class="pagination">
                                         @if ($products->onFirstPage())
                                             <li class="page-item disabled">
-                                                <a class="page-link">Previous</a>
+                                                <a class="page-link">{{ __('messages.workshop.previous') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item">
                                                 <a href="{{ $products->previousPageUrl() . '&tab=product' }}"
-                                                    class="page-link">Previous</a>
+                                                    class="page-link">{{ __('messages.workshop.previous') }}</a>
                                             </li>
                                         @endif
                                         @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
@@ -472,11 +473,11 @@
                                         @if ($products->hasMorePages())
                                             <li class="page-item">
                                                 <a href="{{ $products->nextPageUrl() . '&tab=product' }}"
-                                                    class="page-link">Next</a>
+                                                    class="page-link">{{ __('messages.workshop.next') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">
-                                                <a class="page-link">Next</a>
+                                                <a class="page-link">{{ __('messages.workshop.next') }}</a>
                                             </li>
                                         @endif
                                     </ul>
@@ -519,12 +520,12 @@
                                     <ul class="pagination">
                                         @if ($spareparts->onFirstPage())
                                             <li class="page-item disabled">
-                                                <a class="page-link">Previous</a>
+                                                <a class="page-link">{{ __('messages.workshop.previous') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item">
                                                 <a href="{{ $spareparts->previousPageUrl() . '&tab=spareparts' }}"
-                                                    class="page-link">Previous</a>
+                                                    class="page-link">{{ __('messages.workshop.previous') }}</a>
                                             </li>
                                         @endif
                                         @foreach ($spareparts->getUrlRange(1, $spareparts->lastPage()) as $page => $url)
@@ -537,11 +538,11 @@
                                         @if ($spareparts->hasMorePages())
                                             <li class="page-item">
                                                 <a href="{{ $spareparts->nextPageUrl() . '&tab=spareparts' }}"
-                                                    class="page-link">Next</a>
+                                                    class="page-link">{{ __('messages.workshop.next') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item disabled">
-                                                <a class="page-link">Next</a>
+                                                <a class="page-link">{{ __('messages.workshop.next') }}</a>
                                             </li>
                                         @endif
                                     </ul>
