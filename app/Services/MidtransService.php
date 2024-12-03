@@ -5,6 +5,7 @@ namespace App\Services;
 use Midtrans\Snap;
 use Midtrans\Notification;
 use Midtrans\Config;
+use App\Models\OrderOnline;
 
 class MidtransService
 {
@@ -44,22 +45,33 @@ class MidtransService
     {
         $notification = new Notification();
 
-        // Dapatkan status pembayaran
         $status = $notification->transaction_status;
         $order_id = $notification->order_id;
         $payment_type = $notification->payment_type;
 
-        // Logika untuk menghandle status pembayaran, misal update status order
-        if ($status == 'settlement') {
-            // Pembayaran berhasil, update status order menjadi "paid"
-            // Update database order di sini
-        } elseif ($status == 'pending') {
-            // Pembayaran masih pending
-        } elseif ($status == 'cancel') {
-            // Pembayaran dibatalkan
+        // Mendapatkan order berdasarkan order_id
+        $order = OrderOnline::where('id', str_replace('order-', '', $order_id))->first();
+
+        if ($order) {
+            switch ($status) {
+                case 'settlement':
+                    // Pembayaran berhasil, update status order menjadi 'PAID'
+                    $order->status_order = 'PAID';
+                    break;
+                case 'pending':
+                    // Pembayaran masih pending
+                    $order->status_order = 'PENDING';
+                    break;
+                case 'cancel':
+                    // Pembayaran dibatalkan
+                    $order->status_order = 'CANCELLED';
+                    break;
+            }
+
+            $order->save();
         }
 
-        // Kembali ke aplikasi dengan status notifikasi
-        return $status;
+        return response()->json(['status' => $status]);
     }
+
 }
