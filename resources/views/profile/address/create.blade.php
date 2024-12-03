@@ -85,8 +85,8 @@
                 <div class="did-floating-label-content">
                     <select name="status_alamat_pengiriman" id="status_alamat_pengiriman" class="did-floating-select">
                         <option value="" selected disabled hidden>Select Status</option>
-                        <option value="office">Office</option>
-                        <option value="home">Home</option>
+                        <option value="Office">Office</option>
+                        <option value="Home">Home</option>
                     </select>
                     <label class="did-floating-label">Address Status</label>
                 </div>
