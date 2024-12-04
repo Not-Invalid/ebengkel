@@ -78,6 +78,7 @@ Route::middleware('auth:pelanggan')->group(function () {
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
     Route::get('payment', [PaymentController::class, 'index'])->name('payment');
     Route::post('payment/notification', [PaymentController::class, 'notification']);
+    Route::post('/fetch-shipping-options', [CartController::class, 'fetchShippingOptions']);
 });
 
 Route::prefix('superadmin')->group(function () {
