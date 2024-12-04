@@ -30,7 +30,9 @@ class CreateTbBengkelTable extends Migration
             $table->time('close_time')->nullable();
             $table->json('service_available')->nullable();
             $table->json('payment')->nullable();
-            $table->string('rekening_bank')->nullable();
+            $table->string('nama_bank')->nullable();
+            $table->json('rekening_bank')->nullable();
+            $table->text('qris_qrcode')->nullable();
             $table->string('kodepos_bengkel')->nullable();
             $table->string('gmaps')->nullable();
             $table->string('lokasi_bengkel')->nullable();
