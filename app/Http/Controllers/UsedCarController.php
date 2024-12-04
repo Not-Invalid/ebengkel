@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\FotoMobil;
-use App\Models\UsedCar;
 use App\Models\MerkMobil;
-use Illuminate\Support\Facades\DB;
+use App\Models\UsedCar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -14,7 +13,7 @@ class UsedCarController extends Controller
 {
     public function index(Request $request)
     {
-        $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->get();
+        $mobilList = UsedCar::where('delete_mobil', 'N')->with('merkMobil')->paginate(10);
         $merks = MerkMobil::all();
         return view('usedCar.index', compact('mobilList', 'merks'));
     }
@@ -231,7 +230,7 @@ class UsedCarController extends Controller
             'file_foto_mobil_2' => null,
             'file_foto_mobil_3' => null,
             'file_foto_mobil_4' => null,
-            'file_foto_mobil_5' => null
+            'file_foto_mobil_5' => null,
         ];
 
         $fotoFields = ['file_foto_mobil_1', 'file_foto_mobil_2', 'file_foto_mobil_3', 'file_foto_mobil_4', 'file_foto_mobil_5'];
