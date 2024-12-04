@@ -121,7 +121,6 @@
   }
 
   .option-item span {
-    margin-left: 6px;
     font-size: 14px;
   }
 
@@ -279,23 +278,81 @@
         </div>
       </div>
 
-      <div class="form-group mb-4">
-        <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
-        <div class="options-group">
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Cash" id="paymentCash">
-            <span>Cash</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Credit Card" id="paymentCreditCard">
-            <span>Credit Card</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Mobile Payment" id="paymentMobile">
-            <span>Mobile Payment</span>
-          </label>
+        <!-- Bagian Payment Methods -->
+        <div class="form-group mb-4">
+            <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
+            <div class="options-group">
+                <label class="option-item">
+                    <input type="checkbox" name="payment[]" value="Cash" id="paymentCash">
+                    <span>Cash</span>
+                </label>
+                <label class="option-item">
+                    <input type="checkbox" name="payment[]" value="Manual Transfer" id="paymentManualTransfer" onchange="toggleBankFields()">
+                    <span>Manual Transfer</span>
+                </label>
+                <label class="option-item">
+                    <input type="checkbox" name="payment[]" value="QRIS" id="paymentQRIS" onchange="toggleBankFields()">
+                    <span>QRIS</span>
+                </label>
+            </div>
         </div>
-      </div>
+
+        <!-- Bank Account Input (styled like the event form) -->
+        <div class="form-group mb-3" id="bankAccountContainer" style="display: none;">
+            <div class="row">
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " id="rekening_number" name="rekening_bank[0][no_rekening]" />
+                        <label class="did-floating-label">Bank Account Number</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " id="bank_name" name="rekening_bank[0][nama_bank]" />
+                        <label class="did-floating-label">Bank Name</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " id="account_holder" name="rekening_bank[0][atas_nama]" />
+                        <label class="did-floating-label">Account Holder</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-danger remove-button" onclick="removeBankAccount(this)">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="additional-bank-account-rows"></div>
+
+        <div class="row mb-3">
+            <div class="col text-left">
+                <button type="button" class="btn btn-custom-3" id="add-bank-account">Add Bank Account</button>
+            </div>
+        </div>
+
+        <div id="additional-bank-account-rows"></div>
+
+        <div class="row mb-3">
+            <div class="col text-left">
+                <button type="button" class="btn btn-custom-3" id="add-bank-account" style="display: none;">Add Bank Account</button>
+            </div>
+        </div>
+
+        <!-- QRIS QR Code Input (will be shown if "QRIS" is selected) -->
+        <div class="form-group mb-4" id="qrisContainer" style="display: none;">
+            <div class="upload-box">
+                <label for="qris_qrcode" class="upload-label">QRIS QR Code</label>
+                <input type="file" class="file-input" name="qris_qrcode" id="qris_qrcode" onchange="previewImage('qris_qrcode', 'qrisPreview')">
+                <div class="preview-container d-flex justify-content-center">
+                    <img id="qrisPreview" src="" alt="QRIS QR Code Preview" class="image-preview" style="display: none; width: 200px; margin-top: 10px;">
+                </div>
+            </div>
+        </div>
+
 
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
@@ -323,4 +380,83 @@
     </form>
   </div>
 
+  <script>
+    function toggleBankFields() {
+        // Mendapatkan elemen checkbox metode pembayaran
+        const paymentManualTransfer = document.getElementById('paymentManualTransfer');
+        const paymentQRIS = document.getElementById('paymentQRIS');
+
+        // Mendapatkan elemen input yang akan ditampilkan
+        const bankAccountContainer = document.getElementById('bankAccountContainer');
+        const qrisContainer = document.getElementById('qrisContainer');
+        const addBankAccountButton = document.getElementById('add-bank-account');
+
+        // Menampilkan atau menyembunyikan field input berdasarkan pilihan
+        if (paymentManualTransfer.checked) {
+            bankAccountContainer.style.display = 'block'; // Menampilkan rekening bank
+            addBankAccountButton.style.display = 'block'; // Menampilkan tombol "Add Bank Account"
+        } else {
+            bankAccountContainer.style.display = 'none'; // Menyembunyikan rekening bank
+            addBankAccountButton.style.display = 'none'; // Menyembunyikan tombol "Add Bank Account"
+        }
+
+        if (paymentQRIS.checked) {
+            qrisContainer.style.display = 'block'; // Menampilkan QRIS QR Code
+        } else {
+            qrisContainer.style.display = 'none'; // Menyembunyikan QRIS QR Code
+        }
+    }
+
+    // Pastikan kondisi awal (on page load) memeriksa dan menyembunyikan field jika tidak ada pilihan
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleBankFields(); // Memanggil fungsi untuk mengatur tampilan awal
+    });
+
+    // Fungsi untuk menambah baris rekening baru
+    let bankAccountIndex = 1;
+
+    const addBankAccountButton = document.getElementById('add-bank-account');
+    if (addBankAccountButton) {
+        addBankAccountButton.addEventListener('click', function() {
+            const container = document.getElementById('additional-bank-account-rows');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row');
+
+            newRow.innerHTML = `
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" />
+                        <label class="did-floating-label">Bank Account Number</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
+                        <label class="did-floating-label">Bank Name</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][atas_nama]" />
+                        <label class="did-floating-label">Atas Nama</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-danger remove-button" onclick="removeBankAccount(this)">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(newRow);
+            bankAccountIndex++;
+        });
+    }
+
+
+        function removeBankAccount(button) {
+            const row = button.closest('.row');
+            row.remove();
+        }
+
+    </script>
 @endsection
