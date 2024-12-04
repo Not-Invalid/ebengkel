@@ -33,6 +33,7 @@ class Bengkel extends Model
         'service_available',
         'payment',
         'rekening_bank',
+        'qris_qrcode',
         'whatsapp',
         'instagram',
         'POS',
@@ -46,6 +47,7 @@ class Bengkel extends Model
     protected $casts = [
         'service_available' => 'array',
         'payment' => 'array',
+        'rekening_bank' => 'array',
     ];
 
     public function pelanggan()
