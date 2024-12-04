@@ -17,7 +17,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4 class="title-header">Product & SparePart</h4>
+                    <h4 class="title-header">{{ __('messages.ProductSparepart.title') }}</h4>
                 </div>
             </div>
         </div>
@@ -31,8 +31,8 @@
                         <form method="GET" action="" style="width: 60%;">
                             <div class="input-group">
                                 <input type="text" name="search" value="{{ request('search') }}" required
-                                    maxlength="255" placeholder="Ketik kata kunci..." class="form-control"
-                                    style="border-radius: 20px 0 0 20px;">
+                                    maxlength="255" placeholder="{{ __('messages.ProductSparepart.search') }}..."
+                                    class="form-control" style="border-radius: 20px 0 0 20px;">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-search" style="border-radius: 0 20px 20px 0;">
                                         <i class='bx bx-search-alt align-icon'></i>
@@ -48,9 +48,12 @@
         <div class="container">
             <!-- Filter Buttons -->
             <div class="filter-buttons">
-                <button onclick="filterCategory('all')" class="filter-btn">All</button>
-                <button onclick="filterCategory('product')" class="filter-btn">Product</button>
-                <button onclick="filterCategory('sparepart')" class="filter-btn">Sparepart</button>
+                <button onclick="filterCategory('all')"
+                    class="filter-btn">{{ __('messages.ProductSparepart.all') }}</button>
+                <button onclick="filterCategory('product')"
+                    class="filter-btn">{{ __('messages.ProductSparepart.product') }}</button>
+                <button onclick="filterCategory('sparepart')"
+                    class="filter-btn">{{ __('messages.ProductSparepart.spareparts') }}</button>
             </div>
 
             <div class="row">
