@@ -37,7 +37,7 @@ class WorkshopController extends Controller
             ->first();
 
         if (!$bengkel) {
-            return redirect()->route('workshop.show')->with('error_status', 'Workshop not found.');
+            return redirect()->route('workshop.show')->with('status_error', 'Workshop not found.');
         }
 
         $services = Service::where('id_bengkel', $id)
@@ -64,7 +64,7 @@ class WorkshopController extends Controller
             if ($detailData) {
                 $detailData->load('bengkel');
             } else {
-                return redirect()->back()->with('error_status', ucfirst($type) . ' not found.');
+                return redirect()->back()->with('status_error', ucfirst($type) . ' not found.');
             }
         }
 
@@ -112,7 +112,7 @@ class WorkshopController extends Controller
     public function showWorkshop()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add an address.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to add an address.');
         }
 
         $bengkels = Bengkel::with('pelanggan')
@@ -125,13 +125,14 @@ class WorkshopController extends Controller
     public function createWorkshop()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('error_status', 'You must be logged in to add an address.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to add an address.');
         }
         return view('profile.workshop.create');
     }
 
     public function storeWorkshop(Request $request)
     {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'foto_cover_bengkel' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'foto_bengkel' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -149,8 +150,14 @@ class WorkshopController extends Controller
             'payment.*' => 'string',
             'whatsapp' => 'nullable|string|max:15',
             'instagram' => 'nullable|string',
+            'rekening_bank' => 'nullable|array',
+            'rekening_bank.*.no_rekening' => 'required|string|max:100',
+            'rekening_bank.*.nama_bank' => 'required|string|max:100',
+            'rekening_bank.*.atas_nama' => 'required|string|max:100',
+            'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validation for qris_qrcode
         ]);
 
+        // Add the customer ID from the session
         $validatedData['id_pelanggan'] = Session::get('id_pelanggan');
 
         // Handle the 'service_available' and 'payment' fields (encode them as JSON)
@@ -160,6 +167,11 @@ class WorkshopController extends Controller
         // Convert the open_time and close_time to the required format (HH:mm)
         $validatedData['open_time'] = Carbon::createFromFormat('H:i', $request->open_time)->format('H:i');
         $validatedData['close_time'] = Carbon::createFromFormat('H:i', $request->close_time)->format('H:i');
+
+        // Handle the bank account information
+        if ($request->has('rekening_bank')) {
+            $validatedData['rekening_bank'] = json_encode($request->rekening_bank);
+        }
 
         // Custom image upload handling for 'foto_bengkel'
         if ($request->hasFile('foto_bengkel')) {
@@ -181,12 +193,19 @@ class WorkshopController extends Controller
             $validatedData['foto_cover_bengkel'] = url('assets/images/components/image.png');
         }
 
+        // Handle the QRIS QR code upload
+        if ($request->hasFile('qris_qrcode')) {
+            $qrisImage = $request->file('qris_qrcode');
+            $qrisImageName = 'qris_qrcode_' . now()->format('Ymd_His') . '.' . $qrisImage->getClientOriginalExtension();
+            $qrisImage->move(public_path('assets/images/workshops/qris'), $qrisImageName);
+            $validatedData['qris_qrcode'] = url('assets/images/workshops/qris/' . $qrisImageName);
+        }
+
+        // Store the workshop data in the database
         Bengkel::create($validatedData);
 
         return redirect()->route('profile.workshop')->with('status', 'Workshop created successfully.');
     }
-
-
     public function editWorkshop($id)
     {
         $customerId = Session::get('id_pelanggan');
@@ -195,7 +214,7 @@ class WorkshopController extends Controller
             ->first();
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
         // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
@@ -203,12 +222,17 @@ class WorkshopController extends Controller
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) :
             $bengkel->service_available;
 
+        // Decode the 'rekening_bank' field as well
+        $bankAccounts = is_string($bengkel->rekening_bank) ? json_decode($bengkel->rekening_bank, true) : $bengkel->rekening_bank;
+
         // Assign variables for use in the view
         $serviceAvailable = $bengkel->service_available ?? [];
         $paymentMethods = $bengkel->payment ?? [];
 
-        return view('profile.workshop.edit', compact('bengkel', 'serviceAvailable', 'paymentMethods'));
+        // Pass the bankAccounts data to the view
+        return view('profile.workshop.edit', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'bankAccounts'));
     }
+
     public function updateWorkshop(Request $request, $id)
     {
         $bengkel = Bengkel::findOrFail($id);
@@ -220,8 +244,8 @@ class WorkshopController extends Controller
 
         // Validate the input data, including the service_available and payment arrays
         $validatedData = $request->validate([
-            'foto_cover_bengkel' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'foto_bengkel' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_cover_bengkel' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto_bengkel' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'nama_bengkel' => 'required|string|max:50',
             'tagline_bengkel' => 'nullable|string|max:50',
             'alamat_bengkel' => 'required|string',
@@ -234,6 +258,11 @@ class WorkshopController extends Controller
             'service_available.*' => 'string',
             'payment' => 'nullable|array',
             'payment.*' => 'string',
+            'rekening_bank' => 'nullable|array',
+            'rekening_bank.*.no_rekening' => 'required|string|max:100',
+            'rekening_bank.*.nama_bank' => 'required|string|max:100',
+            'rekening_bank.*.atas_nama' => 'required|string|max:100',
+            'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'whatsapp' => 'nullable|string|max:15',
             'instagram' => 'nullable|string',
         ]);
@@ -242,6 +271,10 @@ class WorkshopController extends Controller
         $validatedData['service_available'] = json_encode($request->service_available ?? []);
         $validatedData['payment'] = json_encode($request->payment ?? []);
 
+
+        if ($request->has('rekening_bank')) {
+            $validatedData['rekening_bank'] = json_encode($request->rekening_bank);
+        }
 
         // Convert the open_time and close_time to the required format (HH:mm)
         $validatedData['open_time'] = Carbon::createFromFormat('H:i:s', trim($request->open_time))->format('H:i');
@@ -263,6 +296,12 @@ class WorkshopController extends Controller
             $validatedData['foto_cover_bengkel'] = url('assets/images/workshops/cover/' . $coverImageName);
         }
 
+        if ($request->hasFile('qris_qrcode')) {
+            $qrisImage = $request->file('qris_qrcode');
+            $qrisImageName = 'qris_' . now()->format('Ymd_His') . '.' . $qrisImage->getClientOriginalExtension();
+            $qrisImage->move(public_path('assets/images/workshops/qris'), $qrisImageName);
+            $validatedData['qris_qrcode'] = 'assets/images/workshops/qris/' . $qrisImageName; // Menyimpan path file
+        }
         // Update the bengkel record with validated data
         $bengkel->update($validatedData);
 
@@ -279,7 +318,7 @@ class WorkshopController extends Controller
             ]);
             return redirect()->route('profile.workshop')->with('status', 'Workshop deleted successfully.');
         } else {
-            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
     }
 
@@ -292,7 +331,7 @@ class WorkshopController extends Controller
             ->first();
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found.');
+            return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
@@ -330,7 +369,7 @@ class WorkshopController extends Controller
 
         // Check if the service exists
         if (!$service) {
-            return redirect()->back()->with('error_status', 'Service not found.');
+            return redirect()->back()->with('status_error', 'Service not found.');
         }
         // Controller
         $services = Service::with('bengkel')->find($id_bengkel);
@@ -350,7 +389,7 @@ class WorkshopController extends Controller
 
         // Check if the service exists
         if (!$service) {
-            return redirect()->back()->with('error_status', 'Service not found.');
+            return redirect()->back()->with('status_error', 'Service not found.');
         }
 
         $bookedDates = PesananService::where('id_bengkel', $id_bengkel)
