@@ -358,27 +358,75 @@
         </div>
       </div>
 
-      <!-- Payment Methods -->
+      <!-- Bagian Payment Methods -->
       <div class="form-group mb-4">
         <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
         <div class="options-group">
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Cash" id="paymentCash"
-              {{ in_array('Cash', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-            <span>Cash</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Credit Card" id="paymentCreditCard"
-              {{ in_array('Credit Card', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-            <span>Credit Card</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Mobile Payment" id="paymentMobile"
-              {{ in_array('Mobile Payment', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-            <span>Mobile Payment</span>
-          </label>
+            <label class="option-item">
+                <input type="checkbox" name="payment[]" value="Cash" id="paymentCash" {{ in_array('Cash', old('payment', $paymentMethods)) ? 'checked' : '' }}>
+                <span>Cash</span>
+            </label>
+            <label class="option-item">
+                <input type="checkbox" name="payment[]" value="Manual Transfer" id="paymentCash" {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'checked' : '' }} onchange="toggleBankFields()">
+                <span>Manual Transfer</span>
+            </label>
+            <label class="option-item">
+                <input type="checkbox" name="payment[]" value="QRIS" id="paymentCash" {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'checked' : '' }} onchange="toggleBankFields()">
+                <span>QRIS</span>
+            </label>
         </div>
-      </div>
+    </div>
+
+    <!-- Bank Account Input (styled like the event form) -->
+    <div class="form-group mb-3" id="bankAccountContainer" style="display: {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'block' : 'none' }};">
+        @foreach ($bankAccounts as $index => $bankAccount)
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][no_rekening]" value="{{ old('rekening_bank.'.$index.'.no_rekening', $bankAccount['no_rekening']) }}" />
+                        <label class="did-floating-label">Bank Account Number</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][nama_bank]" value="{{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) }}" />
+                        <label class="did-floating-label">Bank Name</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][atas_nama]" value="{{ old('rekening_bank.'.$index.'.atas_nama', $bankAccount['atas_nama']) }}" />
+                        <label class="did-floating-label">Account Holder</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-danger remove-button" onclick="removeBankAccount(this)">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <div id="additional-bank-account-rows"></div>
+
+    <!-- Add Bank Account Button -->
+    <div class="row mb-3">
+        <div class="col text-left">
+            <button type="button" class="btn btn-custom-3" id="add-bank-account" style="display: {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'block' : 'none' }};">Add Bank Account</button>
+        </div>
+    </div>
+
+    <!-- QRIS QR Code Input (will be shown if "QRIS" is selected) -->
+    <div class="form-group mb-4" id="qrisContainer" style="display: {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'block' : 'none' }};">
+        <div class="upload-box">
+            <label for="qris_qrcode" class="upload-label">QRIS QR Code</label>
+            <input type="file" class="file-input" name="qris_qrcode" id="qris_qrcode" onchange="previewImage('qris_qrcode', 'qrisPreview')">
+            <div class="preview-container d-flex justify-content-center">
+                <img id="qrisPreview" src="{{ old('qris_qrcode', $bengkel->qris_qrcode) }}" alt="QRIS QR Code Preview" class="image-preview" style="display: {{ old('qris_qrcode', $bengkel->qris_qrcode) ? 'block' : 'none' }}; width: 200px; margin-top: 10px;">
+            </div>
+        </div>
+    </div>
 
       <!-- WhatsApp -->
       <div class="form-group mb-3">
@@ -411,4 +459,83 @@
   </div>
 
 
+  <script>
+    function toggleBankFields() {
+        // Retrieve payment method checkboxes
+        const paymentManualTransfer = document.getElementById('paymentManualTransfer');
+        const paymentQRIS = document.getElementById('paymentQRIS');
+
+        // Retrieve elements to show/hide
+        const bankAccountContainer = document.getElementById('bankAccountContainer');
+        const qrisContainer = document.getElementById('qrisContainer');
+        const addBankAccountButton = document.getElementById('add-bank-account');
+
+        // Show or hide elements based on selected payment methods
+        if (paymentManualTransfer.checked) {
+            bankAccountContainer.style.display = 'block'; // Show bank accounts input
+            addBankAccountButton.style.display = 'block'; // Show "Add Bank Account" button
+        } else {
+            bankAccountContainer.style.display = 'none'; // Hide bank accounts input
+            addBankAccountButton.style.display = 'none'; // Hide "Add Bank Account" button
+        }
+
+        if (paymentQRIS.checked) {
+            qrisContainer.style.display = 'block'; // Show QRIS QR Code input
+        } else {
+            qrisContainer.style.display = 'none'; // Hide QRIS QR Code input
+        }
+    }
+
+    // Initial setup on page load to toggle correct fields based on selected methods
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleBankFields();
+    });
+
+    // Add new bank account row
+    let bankAccountIndex = {{ count($bankAccounts) }};
+    const addBankAccountButton = document.getElementById('add-bank-account');
+    if (addBankAccountButton) {
+        addBankAccountButton.addEventListener('click', function() {
+            const container = document.getElementById('additional-bank-account-rows');
+            const newRow = document.createElement('div');
+            newRow.classList.add('row');
+
+            newRow.innerHTML = `
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" />
+                        <label class="did-floating-label">Bank Account Number</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
+                        <label class="did-floating-label">Bank Name</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="did-floating-label-content">
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][atas_nama]" />
+                        <label class="did-floating-label">Atas Nama</label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-danger remove-button" onclick="removeBankAccount(this)">
+                        <i class="bx bx-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(newRow);
+            bankAccountIndex++;
+        });
+    }
+
+    // Function to remove bank account row
+    function removeBankAccount(button) {
+        const row = button.closest('.row');
+        row.remove();
+    }
+</script>
+
 @endsection
+
