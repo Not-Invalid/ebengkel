@@ -230,36 +230,36 @@
                     <ul class="custom-tabs shadow text-center">
                         <li class="custom-tab-item">
                             <a class="custom-tab-link active" data-tab="all">
-                                All
+                                {{ __('messages.workshop.all') }}
                             </a>
                         </li>
                         <li class="custom-tab-item">
                             <a class="custom-tab-link" data-tab="service">
-                                Service
+                                {{ __('messages.workshop.service') }}
                             </a>
                         </li>
                         <li class="custom-tab-item">
                             <a class="custom-tab-link" data-tab="product">
-                                Product
+                                {{ __('messages.workshop.product') }}
                             </a>
                         </li>
                         <li class="custom-tab-item">
                             <a class="custom-tab-link" data-tab="spareparts">
-                                Spareparts
+                                {{ __('messages.workshop.spareparts') }}
                             </a>
                         </li>
                         <li class="custom-tab-item">
                             <a class="custom-tab-link" data-tab="ulasan">
-                                Ulasan
+                                {{ __('messages.workshop.reviews') }}
                             </a>
                         </li>
                     </ul>
                     <select class="custom-dropdown shadow">
-                        <option value="all"selected>All</option>
-                        <option value="service">Service</option>
-                        <option value="product">Product</option>
-                        <option value="spareparts">Spareparts</option>
-                        <option value="ulasan">Ulasan</option>
+                        <option value="all" selected>{{ __('messages.workshop.all') }}</option>
+                        <option value="service">{{ __('messages.workshop.service') }}</option>
+                        <option value="product">{{ __('messages.workshop.product') }}</option>
+                        <option value="spareparts">{{ __('messages.workshop.spareparts') }}</option>
+                        <option value="ulasan">{{ __('messages.workshop.reviews') }}</option>
                     </select>
                 </div>
                 <div class="tab-content">
@@ -352,7 +352,7 @@
                                 <div class="text-center w-100">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" width="200"
                                         alt="No Data">
-                                    <p>Data saat ini tidak ditemukan.</p>
+                                    <p>{{ __('messages.workshop.no_data_items') }}.</p>
                                 </div>
                             @endif
 
@@ -384,7 +384,7 @@
                                 <div class="text-center">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" width="200"
                                         alt="No Data">
-                                    <p>Data saat ini tidak ditemukan.</p>
+                                    <p>{{ __('messages.workshop.no_data_items') }}.</p>
                                 </div>
                             @endforelse
                             <div class="d-flex justify-content-center mt-4">
@@ -448,7 +448,7 @@
                                 <div class="text-center">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" width="200"
                                         alt="No Data">
-                                    <p>Data saat ini tidak ditemukan.</p>
+                                    <p>{{ __('messages.workshop.no_data_items') }}.</p>
                                 </div>
                             @endforelse
                             <div class="d-flex justify-content-center mt-4">
@@ -512,7 +512,7 @@
                                 <div class="text-center">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" width="200"
                                         alt="No Data">
-                                    <p>Data saat ini tidak ditemukan.</p>
+                                    <p>{{ __('messages.workshop.no_data_items') }}.</p>
                                 </div>
                             @endforelse
                             <div class="d-flex justify-content-center mt-4">
@@ -554,52 +554,52 @@
                     <div class="tab-pane" id="ulasan">
 
                         <div class="reviews-header d-flex justify-content-between align-items-center py-5">
-                            <h3 class="review-title">Reviews</h3>
+                            <h3 class="review-title">{{ __('messages.workshop.header') }}</h3>
                             @if (session()->has('id_pelanggan'))
                                 <button type="button" class="btn btn-review" data-bs-toggle="modal"
-                                    data-bs-target="#reviewModal">Berikan Ulasan</button>
+                                    data-bs-target="#reviewModal">
+                                    {{ __('messages.workshop.button_review') }}
+                                </button>
                             @endif
                         </div>
                         <div class="overall-rating">
                             <div class="rating-value">{{ number_format($averageRating, 1) }}</div>
                             <span>
-                                <div class="rating-category">{{ $ratingCategory ?? 'No ratings yet' }}</div>
-                                <div class="rating-text">{{ $totalReviews }} verified reviews</div>
+                                <div class="rating-category">
+                                    {{ $ratingCategory ?? __('messages.workshop.rating_category_none') }}
+                                </div>
+                                <div class="rating-text">
+                                    {{ __('messages.workshop.total_reviews', ['count' => $totalReviews]) }}
+                                </div>
                             </span>
                         </div>
                         <hr>
                         @foreach ($ulasan as $review)
                             <div class="review-card d-flex align-items-start mb-4">
-                                <!-- Foto Pelanggan -->
                                 <div class="review-photo me-3">
                                     <img src="{{ isset($review->pelanggan) && $review->pelanggan->foto_pelanggan ? url($review->pelanggan->foto_pelanggan) : asset('assets/images/components/avatar.png') }}"
                                         alt="Profile Picture" class="rounded-circle" width="50" height="50">
                                 </div>
-
-                                <!-- Konten Ulasan -->
                                 <div class="review-content w-100">
                                     <div class="row mb-2">
                                         <div class="col text-start">
-                                            <!-- Nama Pelanggan dan Rating -->
-                                            <h6 class="fw-bold">{{ $review->pelanggan->nama_pelanggan }}
-                                                <span class="text-muted"
-                                                    style="font-size:14px;">({{ $review->rating }}/5)</span>
+                                            <h6 class="fw-bold">
+                                                {{ $review->pelanggan->nama_pelanggan }}
+                                                <span class="text-muted" style="font-size:14px;">
+                                                    ({{ __('messages.workshop.rating_format', ['rating' => $review->rating]) }})
+                                                </span>
                                             </h6>
                                         </div>
                                         <div class="col text-end">
-                                            <!-- Tanggal Ulasan -->
-                                            <small
-                                                class="text-muted">{{ \Carbon\Carbon::parse($review->created_at)->format('d M Y') }}</small>
+                                            <small class="text-muted">
+                                                {{ __('messages.workshop.review_date', ['date' => \Carbon\Carbon::parse($review->created_at)->format('d M Y')]) }}
+                                            </small>
                                         </div>
                                     </div>
-
-                                    <!-- Komentar -->
                                     <p>{{ $review->komentar }}</p>
                                 </div>
                             </div>
                         @endforeach
-
-
 
                         <!-- Modal -->
                         <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
@@ -614,8 +614,8 @@
                                                 value="{{ session('id_pelanggan') }}">
                                             <!-- Hidden field for workshop ID -->
                                             <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
-                                            <h3 class="title-rating">Berikan Ulasan Untuk Paket
-                                                Ini</h3>
+                                            <h3 class="title-rating">{{ __('messages.workshop.review_modal_title') }}
+                                            </h3>
                                             <div class="form-group py-3">
                                                 <div class="rating-form">
                                                     <i class="bx bx-star" data-value="1"></i>
@@ -624,17 +624,15 @@
                                                     <i class="bx bx-star" data-value="4"></i>
                                                     <i class="bx bx-star" data-value="5"></i>
                                                 </div>
-                                                <!-- Input hidden untuk menyimpan nilai rating -->
                                                 <input type="hidden" name="rating" id="ratingInput" required>
                                             </div>
-
-
                                             <div class="mb-3">
                                                 <textarea name="komentar" class="form-control" id="komentar" rows="3"
-                                                    placeholder="Tulis Ulasan Anda Disini..."></textarea>
+                                                    placeholder="{{ __('messages.workshop.comment_placeholder') }}"></textarea>
                                             </div>
-
-                                            <button type="submit" class="btn btn-review">Kirim Ulasan</button>
+                                            <button type="submit" class="btn btn-review">
+                                                {{ __('messages.workshop.submit_button') }}
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
