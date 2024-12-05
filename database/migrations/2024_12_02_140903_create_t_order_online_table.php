@@ -15,6 +15,7 @@ class CreateTOrderOnlineTable extends Migration
     {
         Schema::create('t_order_online', function (Blueprint $table) {
             $table->id();
+            $table->string('order_id', 20)->unique();
             $table->integer('id_bengkel')->nullable();
             $table->integer('id_pelanggan')->nullable();
             $table->unsignedInteger('id_produk')->nullable();
@@ -39,7 +40,6 @@ class CreateTOrderOnlineTable extends Migration
             $table->dateTime('tanggal_kirim')->nullable();
             $table->dateTime('tanggal_diterima')->nullable();
             $table->string('status_order', 50)->default('TEMP');
-            $table->string('midtrans_snap_token')->nullable();
             $table->string('is_delete', 1)->default('N');
 
             $table->foreign('id_bengkel')->references('id_bengkel')->on('tb_bengkel')->onDelete('cascade');
