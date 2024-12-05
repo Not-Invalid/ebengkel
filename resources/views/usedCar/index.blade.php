@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4 class="title-header">Used Car</h4>
+                    <h4 class="title-header">{{ __('messages.usedcar.title') }}</h4>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                         <form method="GET" action="" style="width: 60%;">
                             <div class="input-group">
                                 <input type="text" name="search" required maxlength="255"
-                                    placeholder="Ketik kata kunci..." class="form-control"
+                                    placeholder="{{ __('messages.usedcar.search') }}..." class="form-control"
                                     style="border-radius: 20px 0 0 20px;">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-search" style="border-radius: 0 20px 20px 0;">
@@ -57,35 +57,35 @@
                 <div class="row">
                     <div class="col-md-12">
                         @if ($mobilList->isEmpty())
+                            {{-- Tampilkan pesan dari server jika tidak ada data sama sekali --}}
                             <div class="d-flex justify-content-center pb-5">
                                 <div class="text-center">
                                     <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
-                                        width="200" alt="No workshops">
-                                    <p>No data available for usedCar.</p>
+                                        width="200" alt="No cars">
+                                    <p>{{ __('messages.usedcar.no_data') }}.</p>
                                 </div>
                             </div>
                         @else
-                            <div class="row">
+                            {{-- Data tersedia, tampilkan kartu mobil --}}
+                            <div class="row" id="car-list">
                                 @foreach ($mobilList as $car)
-                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3 car-card">
                                         <a href="{{ route('usedcar.detail', $car->id_mobil) }}" class="card-event p-3">
                                             @if ($car->fotos && $car->fotos->file_foto_mobil_1)
                                                 <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
                                                     class="card-img-top">
                                             @else
-                                                <img src="{{ asset('assets/images/components/image.png') }}"
-                                                    alt="Car Image"class="card-img-top">
+                                                <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
+                                                    class="card-img-top">
                                             @endif
                                             <div class="card-body text-start">
                                                 <div class="d-flex align-items-center location-map mt-3">
                                                     <i class='bx bx-map-pin'></i>
                                                     <p class="location ms-2">
-                                                        {{ \Illuminate\Support\Str::limit($car->lokasi_mobil, 15) }}
-                                                    </p>
+                                                        {{ \Illuminate\Support\Str::limit($car->lokasi_mobil, 15) }}</p>
                                                 </div>
                                                 <p class="card-title">
-                                                    {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}
-                                                </p>
+                                                    {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}</p>
                                                 <div class="d-flex align-items-center event-date">
                                                     <span class="jenis">{{ $car->merkMobil->nama_merk }}</span>
                                                 </div>
@@ -100,26 +100,58 @@
                                     </div>
                                 @endforeach
                             </div>
+                            {{-- Pesan filter kosong (hanya dikendalikan JavaScript) --}}
+                            <div id="no-result-message" style="display: none; text-align: center; margin-top: 30px;">
+                                <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
+                                    alt="No Result">
+                                <p>{{ __('messages.usedcar.no_filter') }}.</p>
+                            </div>
                         @endif
-                        <div id="no-result-message" style="display: none; text-align: center; margin-top: 30px;">
-                            <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                                alt="No Result">
-                            <p>Oops! Tidak ada mobil yang sesuai dengan kriteria filter Anda.</p>
+
+                        <!-- Pagination -->
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    {{-- Previous Page Link --}}
+                                    @if ($mobilList->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <a class="page-link">{{ __('messages.usedcar.previous') }}</a>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a href="{{ $mobilList->previousPageUrl() }}"
+                                                class="page-link">{{ __('messages.usedcar.previous') }}</a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Pagination Elements --}}
+                                    @foreach ($mobilList->getUrlRange(1, $mobilList->lastPage()) as $page => $url)
+                                        @if ($page == $mobilList->currentPage())
+                                            <li class="page-item active" aria-current="page">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }} <span
+                                                        class="visually-hidden">(current)</span></a>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Next Page Link --}}
+                                    @if ($mobilList->hasMorePages())
+                                        <li class="page-item">
+                                            <a href="{{ $mobilList->nextPageUrl() }}"
+                                                class="page-link">{{ __('messages.usedcar.next') }}</a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <a class="page-link">{{ __('messages.usedcar.next') }}</a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
                         </div>
-                        <!-- Static Pagination -->
-                        <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -127,16 +159,16 @@
 
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-body">
+                <!-- Brand Section -->
                 <div class="offcanvas-header">
                     <h5 class="brand-title">
                         <div class="">
                             <i class='bx bx-car icon-size'></i>
-                            Brand
+                            {{ __('messages.usedcar.filter.brand') }}
                         </div>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <!-- Brand Section -->
                 <div id="brand" class="filter-section show">
                     @foreach ($merks as $merk)
                         <div class="mt-2">
@@ -149,85 +181,74 @@
                     <div class="mt-2">
                         <span id="toggle-other-brands" onclick="toggleOtherBrands()"
                             style="color: #007bff; cursor: pointer;">
-                            Lihat Semuanya
+                            {{ __('messages.usedcar.filter.see_all') }}
                         </span>
                     </div>
                 </div>
 
+                <!-- Price Section -->
                 <div class="offcanvas-header">
                     <h5 class="brand-title">
                         <div class="">
                             <i class='bx bx-money icon-size'></i>
-                            Harga
+                            {{ __('messages.usedcar.filter.price') }}
                         </div>
                     </h5>
                 </div>
-
-                <!-- Harga Section -->
                 <div id="harga" class="filter-section show">
-                    <div class="mt-2"><input type="checkbox" name="harga" value="< 100 Juta"><label class="mx-2">
-                            < 100 Juta</label>
-                    </div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="100 - 250 Juta"><label
-                            class="mx-2">100 - 250 Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="250 - 400 Juta"><label
-                            class="mx-2">250 - 400 Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="400 - 550 Juta"><label
-                            class="mx-2">400 - 550 Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="550 - 700 Juta"><label
-                            class="mx-2">550 - 700 Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="700 - 850 Juta"><label
-                            class="mx-2">700 - 850 Juta</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="850 - 1 Miliar"><label
-                            class="mx-2">850 - 1 Miliar</label></div>
-                    <div class="mt-2"><input type="checkbox" name="harga" value="> 1 Miliar"><label
-                            class="mx-2">> 1 Miliar</label></div>
+                    @foreach (__('messages.usedcar.filter.price_range') as $key => $range)
+                        <div class="mt-2">
+                            <input type="checkbox" name="harga" value="{{ $range }}">
+                            <label class="mx-2">{{ $range }}</label>
+                        </div>
+                    @endforeach
                 </div>
 
+                <!-- Usage Section -->
                 <div class="offcanvas-header">
                     <h5 class="brand-title">
                         <div class="">
                             <i class='bx bx-time-five icon-size'></i>
-                            Pemakaian
+                            {{ __('messages.usedcar.filter.usage') }}
                         </div>
                     </h5>
                 </div>
-
-                <!-- Pemakaian Section -->
                 <div id="pemakaian" class="filter-section show">
-                    <div class="mt-2"><input type="checkbox" name="pemakaian" value="Dibawah 1 Tahun"><label
-                            class="mx-2">Dibawah 1
-                            Tahun</label></div>
-                    <div class="mt-2"><input type="checkbox" name="pemakaian" value="Dibawah 3 Tahun"><label
-                            class="mx-2">Dibawah 3
-                            Tahun</label></div>
-                    <div class="mt-2"><input type="checkbox" name="pemakaian" value="Dibawah 5 Tahun"><label
-                            class="mx-2">Dibawah 5
-                            Tahun</label></div>
-                    <div class="mt-2"><input type="checkbox" name="pemakaian" value="Dibawah 7 Tahun"><label
-                            class="mx-2">Dibawah 7
-                            Tahun</label></div>
-                    <div class="mt-2"><input type="checkbox" name="pemakaian" value="Dibawah 10 Tahun"><label
-                            class="mx-2">Dibawah
-                            10 Tahun</label></div>
+                    @foreach (__('messages.usedcar.filter.usage_range') as $key => $range)
+                        <div class="mt-2">
+                            <input type="checkbox" name="pemakaian" value="{{ $range }}">
+                            <label class="mx-2">{{ $range }}</label>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const carCards = document.querySelectorAll('.col-12'); // Select all car cards
+            const carCards = document.querySelectorAll('.car-card'); // Select all car cards
             const noResultMessage = document.getElementById('no-result-message'); // No result message element
 
             function filterCars() {
                 let anyCardVisible = false; // Flag to check if any card is visible
 
                 carCards.forEach(function(card) {
-                    const carBrand = card.querySelector('.jenis').textContent.trim();
-                    const carPriceText = card.querySelector('.price').textContent.trim();
-                    const carUsage = card.querySelector('.location').textContent.trim();
+                    const carBrandElem = card.querySelector('.jenis');
+                    const carPriceElem = card.querySelector('.price');
+                    const carUsageElem = card.querySelector('.location');
+
+                    // Ensure required elements exist
+                    if (!carBrandElem || !carPriceElem || !carUsageElem) {
+                        card.style.display = 'none';
+                        return;
+                    }
+
+                    const carBrand = carBrandElem.textContent.trim();
+                    const carPriceText = carPriceElem.textContent.trim();
+                    const carUsage = carUsageElem.textContent.trim();
 
                     const carPrice = parseInt(carPriceText.replace(/[^0-9]/g, ''));
 
@@ -235,16 +256,20 @@
 
                     // Filter by brand
                     const selectedBrands = Array.from(document.querySelectorAll(
-                        'input[name="nama_merk"]:checked')).map(input => input.value);
+                        'input[name="nama_merk"]:checked')).map(
+                        (input) => input.value
+                    );
                     if (selectedBrands.length > 0 && !selectedBrands.includes(carBrand)) {
                         showCard = false;
                     }
 
                     // Filter by price
                     const selectedPrices = Array.from(document.querySelectorAll(
-                        'input[name="harga"]:checked')).map(input => input.value);
+                        'input[name="harga"]:checked')).map(
+                        (input) => input.value
+                    );
                     if (selectedPrices.length > 0) {
-                        const priceInRange = selectedPrices.some(priceFilter => {
+                        const priceInRange = selectedPrices.some((priceFilter) => {
                             switch (priceFilter) {
                                 case '< 100 Juta':
                                     return carPrice < 100000000;
@@ -273,9 +298,11 @@
 
                     // Filter by usage
                     const selectedUsages = Array.from(document.querySelectorAll(
-                        'input[name="pemakaian"]:checked')).map(input => input.value);
+                        'input[name="pemakaian"]:checked')).map(
+                        (input) => input.value
+                    );
                     if (selectedUsages.length > 0) {
-                        const usageInRange = selectedUsages.some(usageFilter => {
+                        const usageInRange = selectedUsages.some((usageFilter) => {
                             switch (usageFilter) {
                                 case 'Dibawah 1 Tahun':
                                     return parseInt(carUsage) < 1;
@@ -306,14 +333,10 @@
                 });
 
                 // If no card is visible, show the "no result" message
-                if (anyCardVisible) {
-                    noResultMessage.style.display = 'none';
-                } else {
-                    noResultMessage.style.display = 'block';
-                }
+                noResultMessage.style.display = anyCardVisible ? 'none' : 'block';
             }
 
-            checkboxes.forEach(checkbox => checkbox.addEventListener('change', filterCars));
+            checkboxes.forEach((checkbox) => checkbox.addEventListener('change', filterCars));
             filterCars(); // Initial call to apply any pre-selected filters
         });
     </script>

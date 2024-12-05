@@ -14,64 +14,71 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4 class="title-header">Car Detail</h4>
+                    <h4 class="title-header">{{ __('messages.usedcar.title2') }}</h4>
                 </div>
             </div>
         </div>
     </section>
     <div class="container gallery">
         <section class="pt-5 image">
-    <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <!-- Main Image Carousel Item -->
-            <div class="carousel-item active">
-                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png' }}">
-                    <img src="{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}"
-                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
-                </a>
+            <div id="carImageCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- Main Image Carousel Item -->
+                    <div class="carousel-item active">
+                        <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal"
+                            data-bs-target="#carImageModal"
+                            data-bs-img="{{ $mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png' }}">
+                            <img src="{{ url($mobilList->fotos->file_foto_mobil_1 ?? 'assets/images/components/image.png') }}"
+                                alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                        </a>
+                    </div>
+                    <!-- Additional Image Carousel Items -->
+                    <div class="carousel-item">
+                        <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal"
+                            data-bs-target="#carImageModal"
+                            data-bs-img="{{ $mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png' }}">
+                            <img src="{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}"
+                                alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal"
+                            data-bs-target="#carImageModal"
+                            data-bs-img="{{ $mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png' }}">
+                            <img src="{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}"
+                                alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal"
+                            data-bs-target="#carImageModal"
+                            data-bs-img="{{ $mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png' }}">
+                            <img src="{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}"
+                                alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal"
+                            data-bs-target="#carImageModal"
+                            data-bs-img="{{ $mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png' }}">
+                            <img src="{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
+                                alt="Car Image" class="d-block w-100 main-image object-fit-cover">
+                        </a>
+                    </div>
+                </div>
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <!-- Additional Image Carousel Items -->
-            <div class="carousel-item">
-                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png' }}">
-                    <img src="{{ url($mobilList->fotos->file_foto_mobil_2 ?? 'assets/images/components/image.png') }}"
-                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
-                </a>
-            </div>
-            <div class="carousel-item">
-                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png' }}">
-                    <img src="{{ url($mobilList->fotos->file_foto_mobil_3 ?? 'assets/images/components/image.png') }}"
-                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
-                </a>
-            </div>
-            <div class="carousel-item">
-                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png' }}">
-                    <img src="{{ url($mobilList->fotos->file_foto_mobil_4 ?? 'assets/images/components/image.png') }}"
-                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
-                </a>
-            </div>
-            <div class="carousel-item">
-                <a class="img-car trigger-modal" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#carImageModal"
-                   data-bs-img="{{ $mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png' }}">
-                    <img src="{{ url($mobilList->fotos->file_foto_mobil_5 ?? 'assets/images/components/image.png') }}"
-                         alt="Car Image" class="d-block w-100 main-image object-fit-cover">
-                </a>
-            </div>
-        </div>
-        <!-- Controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#carImageCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carImageCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</section>
+        </section>
 
 
 
@@ -79,7 +86,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="carImageModalLabel">Car Image</h5>
+                        <h5 class="modal-title" id="carImageModalLabel">{{ __('messages.usedcar.car_image') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">
@@ -87,11 +94,13 @@
                         <div id="carImageModalCarousel" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner" id="carouselImages">
                             </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carImageModalCarousel" data-bs-slide="prev">
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carImageModalCarousel"
+                                data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carImageModalCarousel" data-bs-slide="next">
+                            <button class="carousel-control-next" type="button" data-bs-target="#carImageModalCarousel"
+                                data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                             </button>
@@ -145,38 +154,46 @@
                         </div>
                         <hr>
                         <div class="container">
-                            <!-- Agenda -->
-                            <h5 class="title-desc">Spesifikasi dari Mobil {{ $mobilList->nama_mobil }}</h5>
+                            <h5 class="title-desc">
+                                {{ __('messages.usedcar.specification.title', ['name' => $mobilList->nama_mobil]) }}
+                            </h5>
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <div class="text-muted small">Tahun Mobil</div>
+                                        <div class="text-muted small">{{ __('messages.usedcar.specification.year') }}
+                                        </div>
                                         <div>{{ $mobilList->tahun_mobil }}</div>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="text-muted small">Km Mobil </div>
+                                        <div class="text-muted small">{{ __('messages.usedcar.specification.km') }}</div>
                                         <div>{{ $mobilList->km_mobil }}</div>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="text-muted small">Kapasitas Mesin Mobil </div>
+                                        <div class="text-muted small">
+                                            {{ __('messages.usedcar.specification.engine_capacity') }}
+                                        </div>
                                         <div>{{ $mobilList->kapasitas_mesin_mobil }}</div>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="text-muted small">Bulan Pajak Mobil</div>
+                                        <div class="text-muted small">{{ __('messages.usedcar.specification.tax_month') }}
+                                        </div>
                                         <div>{{ $mobilList->bulan_pajak_mobil }}</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <div class="text-muted small">Tahun Pajak Mobil</div>
+                                        <div class="text-muted small">{{ __('messages.usedcar.specification.tax_year') }}
+                                        </div>
                                         <div>{{ $mobilList->tahun_pajak_mobil }}</div>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="text-muted small">Terakhir Pajak Mobil</div>
+                                        <div class="text-muted small">{{ __('messages.usedcar.specification.last_tax') }}
+                                        </div>
                                         <div>{{ $mobilList->terakhir_pajak_mobil }}</div>
                                     </div>
                                     <div class="mb-3">
-                                        <div class="text-muted small">Tahun Pemakain</div>
+                                        <div class="text-muted small">
+                                            {{ __('messages.usedcar.specification.usage_year') }}</div>
                                         <div>{{ $mobilList->pemakaian }}</div>
                                     </div>
                                 </div>
@@ -185,7 +202,8 @@
                         <hr>
                         <!-- Description -->
                         <p class="mb-4">
-                            <span class="title-desc my-2">Deskripsi Mobil</span> <br>
+                            <span class="title-desc my-2">{{ __('messages.usedcar.specification.description') }}</span>
+                            <br>
                             {{ $mobilList->keterangan_mobil }}
                         </p>
                     </div>
@@ -197,7 +215,7 @@
                 <!-- Speakers Section -->
                 <div class="card mb-4">
                     <div class="card-header title-desc">
-                        Penjual
+                        {{ __('messages.seller') }}
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
@@ -213,7 +231,7 @@
                 <!-- Ticket Section -->
                 <div class="card mb-4">
                     <div class="card-header title-desc">
-                        Harga Mobil
+                        {{ __('messages.price') }}
                     </div>
                     <div class="card-body text-center">
                         <h5 class="fw-bold">
@@ -221,7 +239,7 @@
                         </h5>
                         <a href="https://wa.me/{{ $mobilList->pelanggan->telp_pelanggan }}"
                             class="btn btn-daftar w-100 mt-2">
-                            <i class='bx bxl-whatsapp align-icon'></i> Hubungi Penjual
+                            <i class='bx bxl-whatsapp align-icon'></i> {{ __('messages.contact_seller') }}
                         </a>
                     </div>
                 </div>
@@ -231,10 +249,11 @@
         <!-- Social Share -->
         <div class="row py-5">
             <div class="col-md-12 text-center">
-                <h5 class="fw-bold py-3">Bagikan</h5>
+                <h5 class="fw-bold py-3">{{ __('messages.usedcar.share') }}</h5>
 
                 <!-- Facebook Share Button -->
-                <a href="javascript:void(0);" onclick="shareOnFacebook('{{ url()->current() }}')" class="btn btn-outline-primary my-3">
+                <a href="javascript:void(0);" onclick="shareOnFacebook('{{ url()->current() }}')"
+                    class="btn btn-outline-primary my-3">
                     <i class='bx bxl-facebook-circle'></i> Facebook
                 </a>
 
@@ -244,19 +263,21 @@
                 </a>
 
                 <!-- WhatsApp Share Button -->
-                <a href="javascript:void(0);" onclick="shareOnWhatsApp('{{ url()->current() }}')" class="btn btn-outline-success my-3">
+                <a href="javascript:void(0);" onclick="shareOnWhatsApp('{{ url()->current() }}')"
+                    class="btn btn-outline-success my-3">
                     <i class='bx bxl-whatsapp'></i> WhatsApp
                 </a>
             </div>
         </div>
 
-        </div>
+    </div>
 
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var carImageLinks = document.querySelectorAll('[data-bs-toggle="modal"][data-bs-target="#carImageModal"]');
+            var carImageLinks = document.querySelectorAll(
+                '[data-bs-toggle="modal"][data-bs-target="#carImageModal"]');
             if (carImageLinks.length > 0) {
                 carImageLinks.forEach(function(link) {
                     link.addEventListener('click', function() {
@@ -289,7 +310,7 @@
             }
         });
 
-        document.addEventListener('hidden.bs.modal', function (event) {
+        document.addEventListener('hidden.bs.modal', function(event) {
             document.body.classList.remove('modal-open');
             document.body.style.paddingRight = '';
             document.body.style.overflow = '';
@@ -310,6 +331,5 @@
             const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(url)}`;
             window.open(whatsappUrl, '_blank', 'width=600,height=400');
         }
-
     </script>
 @endsection

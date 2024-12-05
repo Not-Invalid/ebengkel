@@ -26,7 +26,7 @@
 
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
-            <div class="row gx-4 gx-lg-5 ">
+            <div class="row gx-4 gx-lg-5">
                 <!-- Product Images Section -->
                 <div class="col-md-5">
                     <div class="main-image-container mb-3">
@@ -34,7 +34,7 @@
                             class="img-fluid rounded shadow" alt="Main product image">
                     </div>
 
-                    <div class="store-info p-3 rounded  shadow">
+                    <div class="store-info p-3 rounded shadow">
                         <div class="d-flex align-items-center mb-2">
                             <div class="store-badge me-2">
                                 <img src="{{ isset($data->bengkel->foto_bengkel) ? url($data->bengkel->foto_bengkel) : asset('assets/images/default_bengkel.png') }}"
@@ -50,7 +50,7 @@
                             <span><i
                                     class="bx bx-map me-2"></i>{{ \Illuminate\Support\Str::limit($data->bengkel->alamat_bengkel, 25) }}</span>
                             <a href="{{ route('workshop.detail', $data->bengkel->id_bengkel) }}"
-                                class="btn btn-outline-primary btn-sm">VISIT STORE</a>
+                                class="btn btn-outline-primary btn-sm">{{ __('messages.ProductSparepart.visit_store') }}</a>
                         </div>
                     </div>
                 </div>
@@ -60,10 +60,10 @@
                     <h3 class="fw-semibold mb-2">{{ $data->nama_produk ?? $data->nama_spare_part }}</h3>
                     <div class="d-flex align-items-center mb-3">
                         <div class="reviews-count text-muted me-3">
-                            {{ $data->stok_produk ?? $data->stok_spare_part }} Stock
+                            {{ __('messages.ProductSparepart.stock', ['count' => $data->stok_produk ?? $data->stok_spare_part]) }}
                         </div>
                         <div class="sales-count text-muted">
-                            1,919 Sold
+                            {{ __('messages.ProductSparepart.sold', ['count' => 1919]) }}
                         </div>
                     </div>
 
@@ -73,13 +73,13 @@
                             {{ number_format($data->harga_produk ?? $data->harga_spare_part, 0, ',', '.') }}</span>
                     </div>
 
-                    <!--desc-->
-                    <span class="text-muted mb-1">Description</span>
+                    <!-- Description -->
+                    <span class="text-muted mb-1">{{ __('messages.ProductSparepart.description') }}</span>
                     <p class="m-0 mb-3">{{ $data->keterangan_produk ?? $data->keterangan_spare_part }}</p>
 
                     <!-- Quantity Section -->
                     <div class="d-flex align-items-center mb-4">
-                        <label class="fw-semibold me-3">Jumlah:</label>
+                        <label class="fw-semibold me-3">{{ __('messages.ProductSparepart.quantity') }}:</label>
                         <div class="cart-item-quantity d-flex align-items-center me-3">
                             <button class="btn btn-outline-dark btn-sm btn-decrement">−</button>
                             <input type="text" class="form-control form-control-sm text-center mx-1 quantity-input"
@@ -95,10 +95,10 @@
                         <input type="hidden" name="id_spare_part" value="{{ $data->id_spare_part ?? '' }}">
                         <input type="hidden" name="quantity" value="1" id="quantity-input">
                         <button class="btn btn-outline-dark flex-grow-1 py-2" type="submit" id="add-to-cart-btn">
-                            <i class="bx bx-cart me-1"></i> Add to Cart
+                            <i class="bx bx-cart me-1"></i> {{ __('messages.ProductSparepart.add_to_cart') }}
                         </button>
                         <button class="btn btn-primary flex-grow-1 py-2">
-                            Buy Now
+                            {{ __('messages.ProductSparepart.buy_now') }}
                         </button>
                     </form>
 
@@ -107,14 +107,15 @@
         </div>
     </section>
 
+
     <script>
-        document.querySelector('.btn-increment').addEventListener('click', function () {
+        document.querySelector('.btn-increment').addEventListener('click', function() {
             var quantityInput = document.querySelector('.quantity-input');
             quantityInput.value = parseInt(quantityInput.value) + 1;
             document.querySelector('#quantity-input').value = quantityInput.value; // Update hidden input
         });
 
-        document.querySelector('.btn-decrement').addEventListener('click', function () {
+        document.querySelector('.btn-decrement').addEventListener('click', function() {
             var quantityInput = document.querySelector('.quantity-input');
             if (parseInt(quantityInput.value) > 1) {
                 quantityInput.value = parseInt(quantityInput.value) - 1;

@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
-use App\Models\Pelanggan;
-use App\Models\Product;
-use App\Models\SpareParts;
-use App\Models\Service;
 use App\Models\PesananService;
-
+use App\Models\Product;
 use App\Models\ReviewWorkshop;
+use App\Models\Service;
+use App\Models\SpareParts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Carbon;
 
 class WorkshopController extends Controller
 {
@@ -79,19 +77,18 @@ class WorkshopController extends Controller
         $totalReviews = $ulasan->count();
 
         if ($totalReviews == 0) {
-            $ratingCategory = 'No reviews yet';
+            $ratingCategory = __('messages.workshop.rating_category_none');
         } elseif ($averageRating < 2) {
-            $ratingCategory = 'Bad';
+            $ratingCategory = __('messages.workshop.rating_bad');
         } elseif ($averageRating >= 2 && $averageRating < 3) {
-            $ratingCategory = 'Good';
+            $ratingCategory = __('messages.workshop.rating_good');
         } elseif ($averageRating >= 3 && $averageRating < 4) {
-            $ratingCategory = 'Very Good';
+            $ratingCategory = __('messages.workshop.rating_very_good');
         } elseif ($averageRating >= 4 && $averageRating < 4.5) {
-            $ratingCategory = 'Excellent';
+            $ratingCategory = __('messages.workshop.rating_excellent');
         } elseif ($averageRating >= 4.5) {
-            $ratingCategory = 'Outstanding';
+            $ratingCategory = __('messages.workshop.rating_outstanding');
         }
-
 
         return view('workshop.detail', compact(
             'bengkel',
@@ -107,7 +104,6 @@ class WorkshopController extends Controller
             'ratingCategory'
         ));
     }
-
 
     public function showWorkshop()
     {
@@ -206,6 +202,7 @@ class WorkshopController extends Controller
 
         return redirect()->route('profile.workshop')->with('status', 'Workshop created successfully.');
     }
+
     public function editWorkshop($id)
     {
         $customerId = Session::get('id_pelanggan');
@@ -220,7 +217,7 @@ class WorkshopController extends Controller
         // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) :
-            $bengkel->service_available;
+        $bengkel->service_available;
 
         // Decode the 'rekening_bank' field as well
         $bankAccounts = is_string($bengkel->rekening_bank) ? json_decode($bengkel->rekening_bank, true) : $bengkel->rekening_bank;
@@ -270,7 +267,6 @@ class WorkshopController extends Controller
         // Handle the 'service_available' and 'payment' fields (encode them as JSON)
         $validatedData['service_available'] = json_encode($request->service_available ?? []);
         $validatedData['payment'] = json_encode($request->payment ?? []);
-
 
         if ($request->has('rekening_bank')) {
             $validatedData['rekening_bank'] = json_encode($request->rekening_bank);
@@ -336,7 +332,7 @@ class WorkshopController extends Controller
 
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) :
-            $bengkel->service_available;
+        $bengkel->service_available;
 
         $serviceAvailable = $bengkel->service_available ?? [];
         $paymentMethods = $bengkel->payment ?? [];
