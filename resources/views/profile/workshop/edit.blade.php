@@ -129,7 +129,6 @@
   }
 
   .option-item span {
-    margin-left: 6px;
     font-size: 14px;
   }
 
@@ -213,6 +212,33 @@
           <label class="did-floating-label">Workshop Address<span class="text-danger">*</span></label>
         </div>
       </div>
+
+      <div class="form-group mb-3">
+        <div class="did-floating-label-content">
+            <select name="provinsi" id="provinsi" class="did-floating-select">
+                <option value="{{ $bengkel->provinsi }}" selected>{{ $bengkel->provinsi }}</option>
+            </select>
+            <label class="did-floating-label">Province</label>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="did-floating-label-content">
+            <select name="kota" id="kota" class="did-floating-select">
+                <option value="{{ $bengkel->kota }}" selected>{{ $bengkel->kota }}</option>
+            </select>
+            <label class="did-floating-label">City</label>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="did-floating-label-content">
+            <select name="kecamatan" id="kecamatan" class="did-floating-select">
+                <option value="{{ $bengkel->kecamatan }}" selected>{{ $bengkel->kecamatan }}</option>
+            </select>
+            <label class="did-floating-label">District</label>
+        </div>
+    </div>
 
       <!-- Google Maps Link -->
       <div class="form-group mb-3">
@@ -302,45 +328,6 @@
         </div>
       </div>
 
-      {{-- <!-- Service Available -->
-      <div class="form-group mb-4">
-        <label for="service_available" class="section-title">Service Available</label>
-        <div class="options-group">
-          <label class="option-item">
-            <input type="checkbox" name="service_available[]" value="Service offline di bengkel" id="serviceOffline"
-              {{ in_array('Service offline di bengkel', old('service_available', $serviceAvailable)) ? 'checked' : '' }}>
-            <span>Service at Workshop</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="service_available[]" value="Service panggilan via telepon"
-              id="servicePanggilan"
-              {{ in_array('Service panggilan via telepon', old('service_available', $serviceAvailable)) ? 'checked' : '' }}>
-            <span>Service by Call</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- Payment Methods -->
-      <div class="form-group mb-4">
-        <label for="payment" class="section-title">Payment Methods</label>
-        <div class="options-group">
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Cash" id="paymentCash"
-              {{ in_array('Cash', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-            <span>Cash</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Credit Card" id="paymentCreditCard"
-              {{ in_array('Credit Card', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-            <span>Credit Card</span>
-          </label>
-          <label class="option-item">
-            <input type="checkbox" name="payment[]" value="Mobile Payment" id="paymentMobile"
-              {{ in_array('Mobile Payment', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-            <span>Mobile Payment</span>
-          </label>
-        </div>
-      </div> --}}
       <!-- Service Available -->
       <div class="form-group mb-4">
         <label for="service_available" class="section-title">Service Available<span class="text-danger">*</span></label>
@@ -367,11 +354,11 @@
                 <span>Cash</span>
             </label>
             <label class="option-item">
-                <input type="checkbox" name="payment[]" value="Manual Transfer" id="paymentCash" {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'checked' : '' }} onchange="toggleBankFields()">
+                <input type="checkbox" name="payment[]" value="Manual Transfer" id="paymentManualTransfer" {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'checked' : '' }} onchange="toggleBankFields()">
                 <span>Manual Transfer</span>
             </label>
             <label class="option-item">
-                <input type="checkbox" name="payment[]" value="QRIS" id="paymentCash" {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'checked' : '' }} onchange="toggleBankFields()">
+                <input type="checkbox" name="payment[]" value="QRIS" id="paymentQRIS" {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'checked' : '' }} onchange="toggleBankFields()">
                 <span>QRIS</span>
             </label>
         </div>
@@ -408,14 +395,16 @@
         @endforeach
     </div>
 
+
     <div id="additional-bank-account-rows"></div>
 
-    <!-- Add Bank Account Button -->
+   <!-- Add Bank Account Button -->
     <div class="row mb-3">
         <div class="col text-left">
             <button type="button" class="btn btn-custom-3" id="add-bank-account" style="display: {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'block' : 'none' }};">Add Bank Account</button>
         </div>
     </div>
+
 
     <!-- QRIS QR Code Input (will be shown if "QRIS" is selected) -->
     <div class="form-group mb-4" id="qrisContainer" style="display: {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'block' : 'none' }};">
@@ -465,77 +454,144 @@
         const paymentManualTransfer = document.getElementById('paymentManualTransfer');
         const paymentQRIS = document.getElementById('paymentQRIS');
 
-        // Retrieve elements to show/hide
-        const bankAccountContainer = document.getElementById('bankAccountContainer');
-        const qrisContainer = document.getElementById('qrisContainer');
-        const addBankAccountButton = document.getElementById('add-bank-account');
+        // Only proceed if both elements exist
+        if (paymentManualTransfer && paymentQRIS) {
+            // Retrieve elements to show/hide
+            const bankAccountContainer = document.getElementById('bankAccountContainer');
+            const qrisContainer = document.getElementById('qrisContainer');
+            const addBankAccountButton = document.getElementById('add-bank-account');
 
-        // Show or hide elements based on selected payment methods
-        if (paymentManualTransfer.checked) {
-            bankAccountContainer.style.display = 'block'; // Show bank accounts input
-            addBankAccountButton.style.display = 'block'; // Show "Add Bank Account" button
-        } else {
-            bankAccountContainer.style.display = 'none'; // Hide bank accounts input
-            addBankAccountButton.style.display = 'none'; // Hide "Add Bank Account" button
-        }
+            // Show or hide elements based on selected payment methods
+            if (paymentManualTransfer.checked) {
+                bankAccountContainer.style.display = 'block'; // Show bank accounts input
+                addBankAccountButton.style.display = 'block'; // Show "Add Bank Account" button
+            } else {
+                bankAccountContainer.style.display = 'none'; // Hide bank accounts input
+                addBankAccountButton.style.display = 'none'; // Hide "Add Bank Account" button
+            }
 
-        if (paymentQRIS.checked) {
-            qrisContainer.style.display = 'block'; // Show QRIS QR Code input
-        } else {
-            qrisContainer.style.display = 'none'; // Hide QRIS QR Code input
+            if (paymentQRIS.checked) {
+                qrisContainer.style.display = 'block'; // Show QRIS QR Code input
+            } else {
+                qrisContainer.style.display = 'none'; // Hide QRIS QR Code input
+            }
         }
     }
+
 
     // Initial setup on page load to toggle correct fields based on selected methods
     document.addEventListener('DOMContentLoaded', function () {
         toggleBankFields();
     });
 
-    // Add new bank account row
-    let bankAccountIndex = {{ count($bankAccounts) }};
-    const addBankAccountButton = document.getElementById('add-bank-account');
-    if (addBankAccountButton) {
-        addBankAccountButton.addEventListener('click', function() {
-            const container = document.getElementById('additional-bank-account-rows');
-            const newRow = document.createElement('div');
-            newRow.classList.add('row');
+    let bankAccountIndex = {{ count($bankAccounts) }}; // Initialize with existing bank account count
+const addBankAccountButton = document.getElementById('add-bank-account');
+const bankAccountContainer = document.getElementById('additional-bank-account-rows');
 
-            newRow.innerHTML = `
-                <div class="col">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" />
-                        <label class="did-floating-label">Bank Account Number</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
-                        <label class="did-floating-label">Bank Name</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][atas_nama]" />
-                        <label class="did-floating-label">Atas Nama</label>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-danger remove-button" onclick="removeBankAccount(this)">
-                        <i class="bx bx-trash"></i>
-                    </button>
-                </div>
-            `;
-            container.appendChild(newRow);
-            bankAccountIndex++;
-        });
-    }
+if (addBankAccountButton) {
+    addBankAccountButton.addEventListener('click', function() {
+        // Creating a new row for bank account input
+        const newRow = document.createElement('div');
+        newRow.classList.add('row', 'mb-3'); // Add 'row' and 'mb-3' for spacing
 
-    // Function to remove bank account row
-    function removeBankAccount(button) {
-        const row = button.closest('.row');
-        row.remove();
-    }
+        newRow.innerHTML = `
+            <div class="col">
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" />
+                    <label class="did-floating-label">Bank Account Number</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
+                    <label class="did-floating-label">Bank Name</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="did-floating-label-content">
+                    <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][atas_nama]" />
+                    <label class="did-floating-label">Account Holder</label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-danger remove-button" onclick="removeBankAccount(this)">
+                    <i class="bx bx-trash"></i>
+                </button>
+            </div>
+        `;
+
+        // Append the new row to the bank account container
+        bankAccountContainer.appendChild(newRow);
+        bankAccountIndex++; // Increment the index to keep it unique for each new field
+    });
+}
+
+// Function to remove bank account row
+function removeBankAccount(button) {
+    const row = button.closest('.row');
+    row.remove();
+}
+
 </script>
 
+<script>
+    $(document).ready(function() {
+        // Memuat Provinsi berdasarkan ID yang disimpan
+        $.get('https://api.cahyadsn.com/provinces', function(response) {
+            let provinsiDropdown = $('#provinsi');
+            let selectedProvinsi = "{{ $bengkel->provinsi }}"; // ID provinsi yang disimpan di DB
+            if (response.data && Array.isArray(response.data)) {
+                $.each(response.data, function(index, provinsi) {
+                    let selected = (provinsi.kode == selectedProvinsi) ? 'selected' : '';
+                    provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
+                });
+            }
+        }).fail(function() {
+            console.log('Request gagal untuk data provinsi');
+        });
+
+        // Memuat Kota berdasarkan ID Provinsi yang dipilih
+        $('#provinsi').change(function() {
+            let provinsiId = $(this).val();
+            $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
+                let kotaDropdown = $('#kota');
+                kotaDropdown.empty();
+                kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
+
+                if (response.data && Array.isArray(response.data)) {
+                    $.each(response.data, function(index, kota) {
+                        let selected = (kota.kode == "{{ $bengkel->kota }}") ? 'selected' : '';
+                        kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
+                    });
+                }
+            }).fail(function() {
+                console.log('Request gagal untuk data kota');
+            });
+        });
+
+        // Memuat Kecamatan berdasarkan ID Kota yang dipilih
+        $('#kota').change(function() {
+            let kotaId = $(this).val();
+            $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
+                let kecamatanDropdown = $('#kecamatan');
+                kecamatanDropdown.empty();
+                kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
+
+                if (response.data && Array.isArray(response.data)) {
+                    $.each(response.data, function(index, kecamatan) {
+                        let selected = (kecamatan.kode == "{{ $bengkel->kecamatan }}") ? 'selected' : '';
+                        kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
+                    });
+                }
+            }).fail(function() {
+                console.log('Request gagal untuk data kecamatan');
+            });
+        });
+
+        // Inisialisasi dropdown dengan data yang sudah ada
+        $('#provinsi').trigger('change');
+        $('#kota').trigger('change');
+    });
+</script>
 @endsection
 
