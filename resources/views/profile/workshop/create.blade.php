@@ -3,6 +3,8 @@
 @section('title')
   eBengkelku | Create Workshop
 @stop
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   function previewImage(inputId, previewId) {
     const input = document.getElementById(inputId);
@@ -51,6 +53,105 @@
       input.value = number;
     }
   </script>
+
+<script>
+    $(document).ready(function() {
+        // Mengambil data provinsi
+        $.get('https://api.cahyadsn.com/provinces', function(response) {
+            let provinsiDropdown = $('#provinsi');
+            provinsiDropdown.empty();
+            provinsiDropdown.append(
+                '<option value="" selected disabled hidden>Select Province</option>');
+
+            if (response.data && Array.isArray(response.data)) {
+                $.each(response.data, function(index, provinsi) {
+                    provinsiDropdown.append('<option value="' + provinsi.kode + '">' +
+                        provinsi.nama + '</option>');
+                });
+            }
+        }).fail(function() {
+            console.log('Request gagal untuk data provinsi');
+        });
+
+        // Ketika provinsi dipilih
+        $('#provinsi').change(function() {
+            let provinsiId = $(this).val();
+            if (provinsiId) {
+                $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
+                    let kotaDropdown = $('#kota');
+                    kotaDropdown.empty();
+                    kotaDropdown.append(
+                        '<option value="" selected disabled hidden>Select City</option>'
+                    );
+
+                    if (response.data && Array.isArray(response.data)) {
+                        $.each(response.data, function(index, kota) {
+                            kotaDropdown.append('<option value="' + kota.kode + '">' +
+                                kota.nama + '</option>');
+                        });
+                    }
+                }).fail(function() {
+                    console.log('Request gagal untuk data kota');
+                });
+            } else {
+                $('#kota').empty().append(
+                    '<option value="" selected disabled hidden>Select City</option>');
+                $('#kecamatan').empty().append(
+                    '<option value="" selected disabled hidden>Select District</option>');
+            }
+        });
+
+        // Ketika kota dipilih
+        $('#kota').change(function() {
+            let kotaId = $(this).val();
+            if (kotaId) {
+                $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
+                    let kecamatanDropdown = $('#kecamatan');
+                    kecamatanDropdown.empty();
+                    kecamatanDropdown.append(
+                        '<option value="" selected disabled hidden>Select District</option>'
+                    );
+
+                    if (response.data && Array.isArray(response.data)) {
+                        $.each(response.data, function(index, kecamatan) {
+                            kecamatanDropdown.append('<option value="' + kecamatan
+                                .kode + '">' + kecamatan.nama + '</option>');
+                        });
+                    }
+                }).fail(function() {
+                    console.log('Request gagal untuk data kecamatan');
+                });
+            } else {
+                $('#kecamatan').empty().append(
+                    '<option value="" selected disabled hidden>Select District</option>');
+            }
+        });
+        $('form').submit(function(event) {
+            var provinsiId = $('#provinsi').val();
+            var kotaId = $('#kota').val();
+            var kecamatanId = $('#kecamatan').val();
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'provinsi',
+                value: provinsiId
+            }).appendTo(this);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'kota',
+                value: kotaId
+            }).appendTo(this);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'kecamatan',
+                value: kecamatanId
+            }).appendTo(this);
+        });
+
+    });
+</script>
 
 <style>
   .image-preview {
@@ -199,6 +300,33 @@
       </div>
       <div class="form-group mb-3">
         <div class="did-floating-label-content">
+            <select name="provinsi" id="provinsi" class="did-floating-select">
+                <option value="" selected disabled hidden>Select Province</option>
+            </select>
+            <label class="did-floating-label">Province</label>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="did-floating-label-content">
+            <select name="kota" id="kota" class="did-floating-select">
+                <option value="" selected disabled hidden>Select City</option>
+            </select>
+            <label class="did-floating-label">City</label>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <div class="did-floating-label-content">
+            <select name="kecamatan" id="kecamatan" class="did-floating-select">
+                <option value="" selected disabled hidden>Select District</option>
+            </select>
+            <label class="did-floating-label">District</label>
+        </div>
+    </div>
+
+      <div class="form-group mb-3">
+        <div class="did-floating-label-content">
           <input class="did-floating-input" type="text" placeholder="https://" id="gmaps" name="gmaps"
             required />
           <label class="did-floating-label">Google Maps Link<span class="text-danger">*</span></label>
@@ -297,7 +425,7 @@
             </div>
         </div>
 
-        <!-- Bank Account Input (styled like the event form) -->
+        <!-- Bank Account Input -->
         <div class="form-group mb-3" id="bankAccountContainer" style="display: none;">
             <div class="row">
                 <div class="col">
@@ -331,14 +459,6 @@
         <div class="row mb-3">
             <div class="col text-left">
                 <button type="button" class="btn btn-custom-3" id="add-bank-account">Add Bank Account</button>
-            </div>
-        </div>
-
-        <div id="additional-bank-account-rows"></div>
-
-        <div class="row mb-3">
-            <div class="col text-left">
-                <button type="button" class="btn btn-custom-3" id="add-bank-account" style="display: none;">Add Bank Account</button>
             </div>
         </div>
 
