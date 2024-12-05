@@ -9,19 +9,15 @@ use Illuminate\Http\Request;
 use App\Services\MidtransService;
 use App\Models\OrderOnline;
 use App\Models\Bengkel;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Midtrans\Snap;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
-    protected $midtransService;
-
-    public function __construct(MidtransService $midtransService)
-    {
-        $this->midtransService = $midtransService;
-    }
     public function index()
     {
         if (Auth::check()) {
@@ -186,10 +182,19 @@ public function placeOrder(Request $request)
             }
         }
 
+        // Ensure that bengkel exists
         $bengkel = Bengkel::find($bengkel_id);
         if (!$bengkel) {
             return redirect()->route('cart.index')->with('error', 'Bengkel tidak ditemukan.');
         }
+
+        // Capture shipping method details from request
+        $shipping_method = $request->shipping_method; // e.g., Reguler
+        $shipping_courier = $request->shipping_courier; // e.g., J&T Express
+        $shipping_cost = $request->shipping_cost; // e.g., 11000
+
+        // Calculate grand total (total price + shipping cost)
+        $grand_total = $total_harga + $shipping_cost;
 
         // Create order
         $order = new OrderOnline();
@@ -198,52 +203,56 @@ public function placeOrder(Request $request)
         $order->tanggal = now();
         $order->total_qty = $total_qty;
         $order->total_harga = $total_harga;
-        $order->status_order = 'TEMP';  // Initial status
+        $order->status_order = 'PENDING';  // Set status to PENDING or something appropriate
+        $order->order_id = Str::random(10); // Generate a random string for order_id
 
-        // Capture shipping address details
-        $order->atas_nama = $request->recipient;
-        $order->alamat_pengiriman = $request->location;
-        $order->provinsi = $request->province;
-        $order->kabupaten = $request->district;
-        $order->kecamatan = $request->sub_district;
-        $order->kode_pos = $request->postal_code;
-        $order->no_telp = $request->phone;
+        // Store shipping details
+        $order->jenis_pengiriman = $shipping_method;
+        $order->kurir = $shipping_courier;
+        $order->biaya_pengiriman = $shipping_cost;
+        $order->grand_total = $grand_total;
 
+        // Capture additional address details
+        $order->atas_nama = $request->recipient; // Name of the recipient
+        $order->alamat_pengiriman = $request->location; // Shipping address
+        $order->provinsi = $request->province; // Province
+        $order->kabupaten = $request->district; // District
+        $order->kecamatan = $request->city; // Sub-district
+        $order->kode_pos = $request->postal_code; // Postal code
+        $order->no_telp = $request->phone; // Recipient phone
+
+        // Save the order
         $order->save();
 
-        // Transfer cart items to order
-        foreach ($cartItems as $item) {
-            $order->id_produk = $item->id_produk ? $item->id_produk : null;  // Ensure id_produk or id_spare_part is set
-            $order->id_spare_part = $item->id_spare_part ? $item->id_spare_part : null;
-            $order->save();
-        }
+        // Link invoice to order by order_id
+        $invoice = new Invoice();
+        $invoice->id_pelanggan = $pelanggan_id;
+        $invoice->id_order = $order->order_id;  // Use order_id to link to t_invoice
+        $invoice->status_invoice = 'PENDING';
+        $invoice->tanggal_invoice = now();
+        $invoice->jatuh_tempo = now()->addDays(7);  // Example: 7 days from now
+        $invoice->save();
 
-        // Delete cart items after order is created
+        // Delete cart items after order is processed
         $cartItems->each->delete();
 
-        // Use Midtrans service to create transaction
-        $customer_details = [
-            'first_name' => Auth::user()->name,
-            'email' => Auth::user()->email,
-            'phone' => Auth::user()->no_telp,
-        ];
-
-        // Create QRIS transaction and get Snap Token
-        $snapToken = $this->midtransService->createTransaction(
-            'order-' . $order->id,
-            $total_harga,
-            $customer_details
-        );
-
-        // Save Snap Token in order
-        $order->midtrans_snap_token = $snapToken;
-        $order->save();
-
-        return redirect()->route('payment', ['snap_token' => $snapToken])
-            ->with('status', 'Pesanan berhasil diproses. Silakan lakukan pembayaran.');
+        // Redirect to a payment page or confirmation page
+        return redirect()->route('payment', ['order_id' => $order->order_id])
+            ->with('status', 'Pesanan berhasil diproses. Harap tunggu konfirmasi.');
     }
 
     return redirect()->route('login')->with('status_error', 'Anda harus login terlebih dahulu.');
+}
+
+
+public function getCartCount()
+{
+    if (Auth::check()) {
+        $pelanggan_id = Auth::user()->id_pelanggan;
+        $cartCount = Cart::where('id_pelanggan', $pelanggan_id)->sum('quantity'); // Sum of all quantities
+        return response()->json(['count' => $cartCount]);
+    }
+    return response()->json(['count' => 0]);
 }
 
 
