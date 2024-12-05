@@ -8,23 +8,27 @@
 @endpush
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
-        <h4>Add Address</h4>
-        <p class="text-danger">*indicates required fields</p>
+        <h4>{{ __('messages.profile.address.add_address') }}</h4>
+        <p class="text-danger">{{ __('messages.profile.address.required_fields') }}</p>
         <form action="{{ route('address.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="name" name="nama_penerima"
                         required />
-                    <label class="did-floating-label">Recipient Name<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">
+                        {{ __('messages.profile.address.recipient_name') }}<span class="text-danger">*</span>
+                    </label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder=" " id="name" name="telp_penerima"
+                    <input class="did-floating-input" type="text" placeholder=" " id="phone" name="telp_penerima"
                         required pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Recipient Phone<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">
+                        {{ __('messages.profile.address.recipient_phone') }}<span class="text-danger">*</span>
+                    </label>
                 </div>
             </div>
 
@@ -32,21 +36,25 @@
                 <div class="did-floating-label-content">
                     <textarea class="did-floating-input form-control" name="lokasi_alamat_pengiriman" placeholder=" " rows="4"
                         required style="height: 100px;resize: none"></textarea>
-                    <label class="did-floating-label">Address<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">
+                        {{ __('messages.profile.address.address') }}<span class="text-danger">*</span>
+                    </label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder=" " id="name"
+                    <input class="did-floating-input" type="text" placeholder=" " id="postcode"
                         name="kodepos_alamat_pengiriman" required pattern="[0-9]*"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
-                    <label class="did-floating-label">Pos Code<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">
+                        {{ __('messages.profile.address.postcode') }}<span class="text-danger">*</span>
+                    </label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
-                <label style="color: #3a6fb0">Pinpoint Address</label>
+                <label style="color: #3a6fb0">{{ __('messages.profile.address.pinpoint') }}</label>
                 <div class="map-container">
                     <div id="map" style="height: 400px; border-radius: 4px"></div>
                 </div>
@@ -57,52 +65,63 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="provinsi" id="provinsi" class="did-floating-select">
-                        <option value="" selected disabled hidden>Select Province</option>
+                        <option value="" selected disabled hidden>
+                            {{ __('messages.profile.address.select_province') }}
+                        </option>
                     </select>
-                    <label class="did-floating-label">Province</label>
+                    <label class="did-floating-label">{{ __('messages.profile.address.province') }}</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="kota" id="kota" class="did-floating-select">
-                        <option value="" selected disabled hidden>Select City</option>
+                        <option value="" selected disabled hidden>
+                            {{ __('messages.profile.address.select_city') }}
+                        </option>
                     </select>
-                    <label class="did-floating-label">City</label>
+                    <label class="did-floating-label">{{ __('messages.profile.address.city') }}</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="kecamatan" id="kecamatan" class="did-floating-select">
-                        <option value="" selected disabled hidden>Select District</option>
+                        <option value="" selected disabled hidden>
+                            {{ __('messages.profile.address.select_district') }}
+                        </option>
                     </select>
-                    <label class="did-floating-label">District</label>
+                    <label class="did-floating-label">{{ __('messages.profile.address.district') }}</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="status_alamat_pengiriman" id="status_alamat_pengiriman" class="did-floating-select">
-                        <option value="" selected disabled hidden>Select Status</option>
-                        <option value="Office">Office</option>
-                        <option value="Home">Home</option>
+                        <option value="" selected disabled hidden>
+                            {{ __('messages.profile.address.select_status') }}
+                        </option>
+                        <option value="Office">{{ __('messages.profile.address.office') }}</option>
+                        <option value="Home">{{ __('messages.profile.address.home') }}</option>
                     </select>
-                    <label class="did-floating-label">Address Status</label>
+                    <label class="did-floating-label">{{ __('messages.profile.address.address_status') }}</label>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="d-flex justify-content-end align-items-center gap-2">
-                    <a href="{{ route('profile.address') }}" class="btn btn-cancel">Cancel</a>
+                    <a href="{{ route('profile.address') }}" class="btn btn-cancel">
+                        {{ __('messages.profile.address.cancel') }}
+                    </a>
                     <button type="submit" class="btn btn-custom-icon">
-                        Submit
+                        {{ __('messages.profile.address.submit') }}
                         <i class="bx bxs-send fs-5"></i>
                     </button>
                 </div>
             </div>
         </form>
     </div>
+
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -159,7 +178,8 @@
                 let provinsiDropdown = $('#provinsi');
                 provinsiDropdown.empty();
                 provinsiDropdown.append(
-                    '<option value="" selected disabled hidden>Select Province</option>');
+                    '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_province') }}</option>'
+                );
 
                 if (response.data && Array.isArray(response.data)) {
                     $.each(response.data, function(index, provinsi) {
@@ -179,7 +199,7 @@
                         let kotaDropdown = $('#kota');
                         kotaDropdown.empty();
                         kotaDropdown.append(
-                            '<option value="" selected disabled hidden>Select City</option>'
+                            '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_city') }}</option>'
                         );
 
                         if (response.data && Array.isArray(response.data)) {
@@ -193,9 +213,11 @@
                     });
                 } else {
                     $('#kota').empty().append(
-                        '<option value="" selected disabled hidden>Select City</option>');
+                        '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_city') }}</option>'
+                    );
                     $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Select District</option>');
+                        '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_district') }}</option>'
+                    );
                 }
             });
 
@@ -207,7 +229,7 @@
                         let kecamatanDropdown = $('#kecamatan');
                         kecamatanDropdown.empty();
                         kecamatanDropdown.append(
-                            '<option value="" selected disabled hidden>Select District</option>'
+                            '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_district') }}</option>'
                         );
 
                         if (response.data && Array.isArray(response.data)) {
@@ -221,7 +243,8 @@
                     });
                 } else {
                     $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Select District</option>');
+                        '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_district') }}</option>'
+                    );
                 }
             });
             $('form').submit(function(event) {

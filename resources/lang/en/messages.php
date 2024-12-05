@@ -34,6 +34,7 @@ return [
         'more_product' => 'More Products',
         'no_data_blog' => 'No blogs available',
     ],
+
     'event' => [
         'see_our' => 'See Our Event',
         'no_data' => 'No Event available',
@@ -56,6 +57,7 @@ return [
         'phone' => 'Enter your phone',
         'regis' => 'Join',
     ],
+
     'workshop' => [
         'see_our' => 'See Our Workshop',
         'no_data' => 'No Workshop available',
@@ -96,6 +98,7 @@ return [
         'review_date' => 'on :date',
         'no_reviews' => 'No reviews yet.',
     ],
+
     'ProductSparepart' => [
         'title' => 'Product & SparePart',
         'search' => 'Enter Keyword',
@@ -110,6 +113,7 @@ return [
         'buy_now' => 'Buy Now',
         'visit_store' => 'VISIT STORE',
     ],
+
     'usedcar' => [
         'title' => 'Used Car',
         'title2' => 'Detail Used Car',
@@ -141,23 +145,185 @@ return [
                 '<10' => 'Below 10 Years',
             ],
         ],
-        'car_image' => 'Gambar Mobil',
+        'car_image' => 'Car Image',
         'specification' => [
-            'title' => 'Spesifikasi dari Mobil :name',
-            'year' => 'Tahun Mobil',
-            'km' => 'Km Mobil',
-            'engine_capacity' => 'Kapasitas Mesin Mobil',
-            'tax_month' => 'Bulan Pajak Mobil',
-            'tax_year' => 'Tahun Pajak Mobil',
-            'last_tax' => 'Terakhir Pajak Mobil',
-            'usage_year' => 'Tahun Pemakaian',
-            'description' => 'Deskripsi Mobil',
+            'title' => 'Specifications of the Car :name',
+            'year' => 'Car Year',
+            'km' => 'Car KM',
+            'engine_capacity' => 'Engine Capacity',
+            'tax_month' => 'Tax Month',
+            'tax_year' => 'Tax Year',
+            'last_tax' => 'Last Tax',
+            'usage_year' => 'Usage Year',
+            'description' => 'Car Description',
         ],
-        'seller' => 'Penjual',
-        'price' => 'Harga Mobil',
-        'contact_seller' => 'Hubungi Penjual',
-        'share' => 'Bagikan',
+        'seller' => 'Seller',
+        'price' => 'Car Price',
+        'contact_seller' => 'Contact Seller',
+        'share' => 'Share',
     ],
+
+    'profile' => [
+        'profile_info' => 'Profile Information',
+        'full_name' => 'Full Name',
+        'email' => 'Email',
+        'phone' => 'No. Telp',
+        'edit' => 'Edit',
+        'save' => 'Save',
+        'cancel' => 'Cancel',
+
+        'address' => [
+            'your_address' => 'Your Address',
+            'add_new' => 'Add New Address',
+            'no_address' => 'No Data Address.',
+            'edit' => 'Edit',
+            'delete' => 'Delete',
+            'add_address' => 'Add Address',
+            'required_fields' => '*indicates required fields',
+            'recipient_name' => 'Recipient Name',
+            'recipient_phone' => 'Recipient Phone',
+            'address' => 'Address',
+            'postcode' => 'Postcode',
+            'pinpoint' => 'Pinpoint Address',
+            'province' => 'Province',
+            'city' => 'City',
+            'district' => 'District',
+            'address_status' => 'Address Status',
+            'select_province' => 'Select Province',
+            'select_city' => 'Select City',
+            'select_district' => 'Select District',
+            'select_status' => 'Select Status',
+            'office' => 'Office',
+            'home' => 'Home',
+            'cancel' => 'Cancel',
+            'submit' => 'Submit',
+            'edit_title' => 'Edit Address',
+            'save' => 'Save',
+        ],
+    ],
+
+    'about' => [
+        'title' => 'About Us',
+        'breadcrumb' => [
+            'home' => 'Home',
+            'about' => 'About',
+        ],
+        'stats' => [
+            'workshops' => 'Registered Workshops',
+            'products' => 'Available Products',
+            'services' => 'Available Services',
+            'users' => 'Registered Users',
+        ],
+        'section_title' => 'About Us',
+        'subtitle' => 'The Best Solution for Your Workshop Management',
+        'description_1' => 'eBengkelku is a digital platform that simplifies the management of automotive workshops, helping workshop owners to record vehicle data, track service history and schedules, and optimize business operations. With advanced features, eBengkelku supports workshop entrepreneurs in managing their businesses more efficiently.',
+        'description_2' => 'This platform offers a Workshop directory to find workshops with various expertise, a marketplace for Used Cars & Spare Parts, and an Event feature for automotive event promotions. Equipped with a POS system, eBengkelku facilitates customer transactions and sales. Available on the web and mobile, the platform is developed by CNPLUS to provide the best experience for customers and workshop owners.',
+    ],
+
+    'career' => [
+        'breadcrumb_home' => 'Home',
+        'breadcrumb_career' => 'Career',
+        'hero_title' => 'Register your workshop with',
+        'hero_subtitle' => 'We offer a flexible and open work environment for all employees.',
+        'life_section_features' => [
+            [
+                'title' => 'Periodic Updates on Automotive Innovations',
+                'text' => 'We regularly provide the latest information on cutting-edge automotive technologies and innovations implemented in our workshops.',
+            ],
+            [
+                'title' => 'Transparency in Repair Processes',
+                'text' => 'We are committed to maintaining transparency in every step of vehicle repairs, offering clear information about the status and progress.',
+            ],
+            [
+                'title' => 'Community Initiatives',
+                'text' => 'Our workshops are involved in various social activities supporting communities, including training programs and outreach on vehicle maintenance.',
+            ],
+            [
+                'title' => 'Customer Education',
+                'text' => 'We provide educational resources about vehicle maintenance to help customers understand the importance of proper care.',
+            ],
+        ],
+        'positive' => 'Positive Influence on Society through',
+        'positive_desc' => 'eBengkel is a platform that connects workshop owners to open their services online. We are committed to facilitating access for every workshop that wants to join, so that customers can easily find and order quality automotive services from various trusted workshops registered with eBengkel',
+        'vision_title' => 'Our Vision',
+        'vision_text' => 'To become a leading digital workshop providing comprehensive, innovative, and sustainable vehicle care solutions, focusing on quality, safety, and customer satisfaction. We are committed to continually delivering accessible top-notch services and being a trusted partner in vehicle care across Indonesia.',
+        'stats' => [
+            'workshops' => 'Registered Workshops',
+            'products' => 'Available Products',
+            'services' => 'Available Services',
+            'users' => 'Registered Users',
+        ],
+        'mission_title' => 'Our Mission',
+        'mission_steps' => [
+            [
+                'title' => 'Integrated and Timely Services',
+                'text' => 'eBengkel provides quick access to vehicle repair and maintenance services for customer satisfaction.',
+            ],
+            [
+                'title' => 'Safety and Quality First',
+                'text' => 'Ensuring that every registered workshop meets high standards in services and vehicle safety.',
+            ],
+            [
+                'title' => 'Trusted Workshop Partners',
+                'text' => 'eBengkel connects users with workshops ready to provide the best solutions for vehicle needs.',
+            ],
+            [
+                'title' => 'Innovation and Easy Access',
+                'text' => 'A modern platform that makes it easy for users to find and book automotive services conveniently.',
+            ],
+        ],
+    ],
+
+    'contact' => [
+        'breadcrumb_home' => 'Home',
+        'breadcrumb_contact' => 'Contact',
+        'title' => 'Contact us',
+        'leave_message' => 'Leave a message',
+        'email' => 'Email',
+        'phone' => 'Phone',
+        'email_address' => 'ebengkelku@gmail.com',
+        'phone_number' => '+62 1234567898',
+        'form_full_name' => 'Full Name',
+        'form_email' => 'Email',
+        'form_phone' => 'Phone Number',
+        'form_message' => 'Message',
+        'form_full_name_placeholder' => 'Write your full name',
+        'form_email_placeholder' => 'email@example.com',
+        'form_phone_placeholder' => '+62XXXXXXXX',
+        'form_message_placeholder' => 'Write your message here...',
+        'form_submit_button' => 'Send Message',
+    ],
+
+    'supportcenter' => [
+        'breadcrumb' => [
+            'support_center' => 'Support Center',
+            'current_page' => 'eBengkelku',
+        ],
+        'title' => 'Guides and Information about :category_name',
+        'accordion' => [
+            'icon' => 'Expand or collapse the question',
+        ],
+        'title' => 'Categories',
+        'no_categories' => 'No categories available.',
+    ],
+
+    'terms' => [
+        'title' => 'Terms & Conditions',
+        'breadcrumb' => [
+            'home' => 'Home',
+            'terms' => 'Terms & Conditions',
+        ],
+        'intro' => 'Welcome to eBengkelku, the leading digital platform that simplifies automotive workshop management. These terms and conditions govern your use of our website and services. By accessing or using our website, you agree to comply with and be bound by the following terms. Please read these terms carefully before proceeding to use our services.',
+        'agreement' => 'By accessing or using the eBengkelku website, you agree to comply with all applicable terms and conditions.',
+        'services' => 'eBengkelku provides services for searching and purchasing spare parts, automotive products, and related services. We are not responsible for the quality of third-party services.',
+        'account_security' => 'Users are responsible for maintaining the confidentiality of their account and are responsible for any activities that occur through their account.',
+        'changes' => 'eBengkelku reserves the right to modify these terms and conditions without prior notice.',
+        'terms1' => 'Terms of Use',
+        'terms2' => 'eBengkelku Services',
+        'terms3' => 'Account Security',
+        'terms4' => 'Changes to Terms & Conditions',
+    ],
+
     'footer' => [
         'company' => 'Company',
         'about' => 'About',
