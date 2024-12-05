@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PesananService extends Model
 {
     use HasFactory;
-
-    protected $table = 'tb_pesanan_service'; // Nama tabel
-    protected $primaryKey = 'id_pesanan'; // Primary key
-    public $timestamps = true; // Aktifkan timestamps (created_at, updated_at)
-
-    // Kolom yang dapat diisi
+    protected $table = 'tb_pesanan_service';
+    protected $primaryKey = 'id_pesanan';
+    public $timestamps = true;
     protected $fillable = [
         'id_pelanggan',
         'id_bengkel',

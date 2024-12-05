@@ -5,7 +5,7 @@
 @stop
 
 @php
-    $header = 'Pesanan Service';
+    $header = 'Pesanan Services';
 @endphp
 
 @section('content')
@@ -67,10 +67,13 @@
                                             <td>{{ ucfirst($order->status) }}</td>
                                             <td>Rp {{ number_format($order->total_pesanan, 0, ',', '.') }}</td>
                                             <td class="d-flex justify-content-center align-items-center gap-4">
-                                                <a href="#" class="btn btn-sm btn-dark">
+                                                <a href="{{ route('pos.tranksaksi_pesanan.edit', $bengkel->id_bengkel) }}"
+                                                    class="btn btn-sm btn-primary">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </a>
-                                                <form action="#" method="POST" class="delete-form">
+                                                <form
+                                                    action="{{ route('pos.tranksaksi_pesanan.delete', $bengkel->id_bengkel) }}"
+                                                    method="POST" class="delete-form">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">

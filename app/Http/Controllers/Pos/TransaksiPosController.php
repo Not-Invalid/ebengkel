@@ -16,12 +16,13 @@ class TransaksiPosController extends Controller
         $queryProduct = Product::where('delete_produk', 'N')->with('bengkel');
 
         if (!$bengkel) {
-            return redirect()->route('profile.workshop')->with('error_status', 'Bengkel tidak ditemukan.');
+            return redirect()->route('profile.workshop')->with('error_status', 'Workshop Not Found.');
         }
         $products = $queryProduct->get();
 
         return view('pos.master-transaksi.pos.index', compact('bengkel', 'products'), ['id_bengkel' => $id_bengkel]);
     }
+
     public function checkout(Request $request, $id_bengkel)
     {
         $request->validate([

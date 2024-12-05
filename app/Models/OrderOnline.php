@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class OrderOnline extends Model
 {
     use HasFactory;
-
-    protected $table = 't_order_online'; // Nama tabel
-    protected $primaryKey = 'id'; // Primary key
-    public $timestamps = false; // Jika tidak menggunakan kolom created_at dan updated_at
-
-    // Kolom yang dapat diisi
+    protected $table = 't_order_online';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
     protected $fillable = [
         'order_id',
         'id_bengkel',
@@ -42,18 +39,14 @@ class OrderOnline extends Model
         'status_order',
         'is_delete',
     ];
-
-    // Add the necessary relationships (e.g., with products, spareparts, customers, etc.)
     public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
     }
-
     public function produk()
     {
         return $this->belongsTo(Product::class, 'id_produk');
     }
-
     public function sparepart()
     {
         return $this->belongsTo(SpareParts::class, 'id_spare_part');

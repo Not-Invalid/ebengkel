@@ -15,8 +15,8 @@ class CreateTOrderTable extends Migration
     {
         Schema::create('t_order', function (Blueprint $table) {
             $table->integer('id_order')->primary();
-            $table->integer('id_outlet');
-            $table->integer('id_customer')->nullable();
+            $table->string('nama_customer', 255)->nullable();
+            $table->integer('id_bengkel')->nullable();
             $table->integer('id_voucher')->nullable();
             $table->dateTime('tanggal')->useCurrent();
             $table->string('nama', 100)->nullable();
@@ -43,6 +43,8 @@ class CreateTOrderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_order');
+        Schema::table('t_order', function (Blueprint $table) {
+            $table->dropColumn('id_bengkel');
+        });
     }
 }

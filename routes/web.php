@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyorderController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
@@ -87,8 +88,10 @@ Route::middleware(['auth:pelanggan', 'lang'])->group(function () {
     Route::delete('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.remove');
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
+
     Route::get('/payment/{order_id}', [PaymentController::class, 'index'])->name('payment');
     Route::get('/get-shipping-options', [CartController::class, 'getShippingOptions'])->name('getShippingOptions');
+    Route::get('/order', [OrderController::class, 'index'])->name('order');
 });
 
 Route::middleware(['lang'])->group(function () {
@@ -314,8 +317,7 @@ Route::middleware(['lang'])->group(function () {
         Route::get('management-stock/opname/{id_bengkel}', [PosStockOpnameController::class, 'index'])->name('pos.management-stock.opname');
         Route::get('management-stock/opname/create/{id_bengkel}', [PosStockOpnameController::class, 'create'])->name('pos.management-stock.opname.create');
         Route::post('management-stock/opname/store/{id_bengkel}', [PosStockOpnameController::class, 'store'])->name('pos.management-stock.opname.store');
-        Route::delete('management-stock/opname/delete/{id_bengkel}/{id_opname}', [PosStockOpnameController::class, 'delete'])
-            ->name('pos.management-stock.opname.delete');
+        Route::delete('management-stock/opname/delete/{id_bengkel}/{id_opname}', [PosStockOpnameController::class, 'delete'])->name('pos.management-stock.opname.delete');
 
         Route::get('report/achievement-summary/{id_bengkel}', [PosAchievementSummaryController::class, 'index'])->name('pos.achievement-summary');
         Route::get('report/monitoring-stock/{id_bengkel}', [PosMonitoringStockController::class, 'index'])->name('pos.monitoring-stock');
@@ -327,6 +329,12 @@ Route::middleware(['lang'])->group(function () {
         Route::get('accounting/expense-record/{id_bengkel}/edit/{id_pengeluaran}', [PosExpenseRecordController::class, 'edit'])->name('pos.expense-record.edit');
         Route::put('accounting/expense-record/{id_bengkel}/update/{id_pengeluaran}', [PosExpenseRecordController::class, 'update'])->name('pos.expense-record.update');
         Route::delete('accounting/expense-record/{id_bengkel}/delete/{id_pengeluaran}', [PosExpenseRecordController::class, 'delete'])->name('pos.expense-record.delete');
+
+        Route::get('report/achievement-summary/{id_bengkel}', [PosAchievementSummaryController::class, 'index'])->name('pos.achievement-summary');
+        Route::get('report/monitoring-stock/{id_bengkel}', [PosMonitoringStockController::class, 'index'])->name('pos.monitoring-stock');
+        Route::get('report/transaction-history/{id_bengkel}', [PosTransactionHistoryController::class, 'index'])->name('pos.transaction-history');
+        Route::get('report/download/transaction-history/{id_bengkel}', [PosTransactionHistoryController::class, 'downloadPdf'])->name('pos.transaction-history.pdf');
+        Route::get('report/download-excel/transaction-history/{id_bengkel}', [PosTransactionHistoryController::class, 'downloadExcel'])->name('pos.transaction-history.excel');
 
         Route::get('management-users/{id_bengkel}', [PosPegawaiController::class, 'index'])->name('pos.management-user');
         Route::get('management-users/create/{id_bengkel}', [PosPegawaiController::class, 'create'])->name('pos.management-user.create');
@@ -340,11 +348,12 @@ Route::middleware(['lang'])->group(function () {
 
         Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
         Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
-        Route::get('tranksaksi/pesanan/create/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
+        Route::get('tranksaksi/create-pesanan/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
         Route::post('tranksaksi/pos/checkout/{id_bengkel}', [PosTransaksiController::class, 'checkout'])->name('pos.tranksaksi_pesanan.checkout');
         Route::post('tranksaksi/pos-pesanan/store/{id_bengkel}', [PosPesananController::class, 'store'])->name('pos.tranksaksi_pesanan.store');
-        Route::get('tranksaksi/pesanan/edit/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.tranksaksi_pesanan.edit');
-        Route::get('tranksaksi/pesanan/delete/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
+        Route::get('tranksaksi/edit-pesanan/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.tranksaksi_pesanan.edit');
+        Route::put('tranksaksi/update-pesanan/{id_bengkel}', [PosPesananController::class, 'update'])->name('pos.tranksaksi_pesanan.update');
+        Route::delete('tranksaksi/delete-pesanan/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
 
         Route::prefix('Master-data')->group(function () {
             Route::prefix('pos/{id_bengkel}/product')->group(function () {
