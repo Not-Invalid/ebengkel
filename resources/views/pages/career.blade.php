@@ -15,16 +15,18 @@
                     style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
                     aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Career</li>
+                        <li class="breadcrumb-item"><a class="nav-link"
+                                href="{{ route('home') }}">{{ __('messages.career.breadcrumb_home') }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ __('messages.career.breadcrumb_career') }}
+                        </li>
                     </ol>
                 </nav>
                 <div class="row align-items-center">
                     <div class="col-lg-6" data-aos="fade-right">
-                        <h1 class="hero-title">Daftarkan bengkel anda di <span class="company-name">eBengkelku</span>
+                        <h1 class="hero-title">{{ __('messages.career.hero_title') }} <span
+                                class="company-name">eBengkelku</span>
                         </h1>
-                        <p class="hero-subtitle">Kami menawarkan lingkungan kerja yang fleksibel dan terbuka untuk semua
-                            karyawan.</p>
+                        <p class="hero-subtitle">{{ __('messages.career.hero_subtitle') }}.</p>
                     </div>
                     <div class="col-lg-6" data-aos="fade-left">
                         <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Ilustrasi" class="illustration floating">
@@ -47,9 +49,8 @@
                                         <path d="M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0z" />
                                         <path d="M12 7v5l3 3" />
                                     </svg>
-                                    <h3 class="feature-title">Update Berkala tentang Inovasi Otomotif</h3>
-                                    <p class="feature-text">Kami secara rutin memberikan informasi terbaru mengenai
-                                        teknologi otomotif terkini dan inovasi yang diterapkan di bengkel kami.</p>
+                                    <h3 class="feature-title">{{ __('messages.career.life_section_features.0.title') }}</h3>
+                                    <p class="feature-text">{{ __('messages.career.life_section_features.0.text') }}.</p>
                                 </div>
                             </div>
 
@@ -64,9 +65,9 @@
                                         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                                         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                     </svg>
-                                    <h3 class="feature-title">Transparansi dalam Proses Perbaikan</h3>
-                                    <p class="feature-text">Kami berkomitmen untuk menjaga transparansi dalam setiap langkah
-                                        perbaikan kendaraan, memberikan informasi yang jelas tentang status dan kemajuan.
+                                    <h3 class="feature-title">{{ __('messages.career.life_section_features.1.title') }}.
+                                    </h3>
+                                    <p class="feature-text">{{ __('messages.career.life_section_features.1.text') }}.
                                     </p>
                                 </div>
                             </div>
@@ -80,10 +81,9 @@
                                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                                         <circle cx="12" cy="10" r="3" />
                                     </svg>
-                                    <h3 class="feature-title">Inisiatif Komunitas</h3>
-                                    <p class="feature-text">Bengkel kami terlibat dalam berbagai kegiatan sosial yang
-                                        mendukung komunitas, termasuk program pelatihan dan sosialisasi tentang perawatan
-                                        kendaraan.</p>
+                                    <h3 class="feature-title">{{ __('messages.career.life_section_features.2.title') }}.
+                                    </h3>
+                                    <p class="feature-text">{{ __('messages.career.life_section_features.2.text') }}.</p>
                                 </div>
                             </div>
 
@@ -96,21 +96,18 @@
                                         <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
                                         <path d="M6 12v5c3 3 9 3 12 0v-5" />
                                     </svg>
-                                    <h3 class="feature-title">Edukasi untuk Pelanggan</h3>
-                                    <p class="feature-text">Kami menyediakan informasi edukatif tentang perawatan kendaraan
-                                        untuk membantu pelanggan memahami pentingnya perawatan yang tepat.</p>
+                                    <h3 class="feature-title">{{ __('messages.career.life_section_features.3.title') }}.
+                                    </h3>
+                                    <p class="feature-text">{{ __('messages.career.life_section_features.3.text') }}.</p>
                                 </div>
                             </div>
 
                         </div>
                     </div>
                     <div class="col-lg-8 mx-auto mt-5" data-aos="fade-left">
-                        <h2 class="section-title">Pengaruh Positif bagi Masyarakat melalui <span
+                        <h2 class="section-title">{{ __('messages.career.positive') }}<span
                                 class="company-name">eBengkelku</span></h2>
-                        <p class="description-text">eBengkel adalah platform yang menghubungkan pemilik bengkel untuk
-                            membuka layanan mereka secara online. Kami berkomitmen untuk memfasilitasi akses bagi setiap
-                            bengkel yang ingin bergabung, sehingga pelanggan dapat dengan mudah menemukan dan memesan
-                            layanan otomotif berkualitas dari berbagai bengkel terpercaya yang terdaftar di eBengkel.</p>
+                        <p class="description-text">{{ __('messages.career.positive_desc') }}.</p>
                     </div>
                 </div>
             </div>
@@ -119,14 +116,11 @@
         {{-- Our vision --}}
         <section class="our-vision-section text-center my-5">
             <!-- Title -->
-            <h2 class="vision-title" data-aos="zoom-in">Our Vision</h2>
+            <h2 class="vision-title" data-aos="zoom-in">{{ __('messages.career.vision_title') }}</h2>
 
             <!-- Content -->
             <p class="vision-text mt-5" data-aos="fade-up">
-                Menjadi bengkel digital terkemuka yang memberikan solusi perawatan kendaraan menyeluruh, inovatif, dan
-                berkelanjutan, dengan fokus pada kualitas, keamanan, dan kepuasan pelanggan. Kami berkomitmen untuk terus
-                menghadirkan layanan terbaik yang mudah diakses serta menjadi mitra terpercaya dalam merawat kendaraan
-                pelanggan di seluruh Indonesia.
+                {{ __('messages.career.vision_text') }}.
             </p>
         </section>
 
@@ -137,22 +131,22 @@
                     <div class="col-6 col-md-3 text-center">
                         <i class="bx bx-wrench fa-2x text-white mb-3"></i>
                         <h2 class="text-white mb-2 counter" data-target="1000">10</h2>
-                        <p class="text-white mb-0">Registered Workshops</p>
+                        <p class="text-white mb-0">{{ __('messages.career.stats.workshops') }}</p>
                     </div>
                     <div class="col-6 col-md-3 text-center">
                         <i class="bx bx-box fa-2x text-white mb-3"></i>
                         <h2 class="text-white mb-2 counter" data-target="750">10</h2>
-                        <p class="text-white mb-0">Available Products</p>
+                        <p class="text-white mb-0">{{ __('messages.career.stats.products') }}</p>
                     </div>
                     <div class="col-6 col-md-3 text-center">
                         <i class="bx bx-cog fa-2x text-white mb-3"></i>
                         <h2 class="text-white mb-2 counter" data-target="500">10</h2>
-                        <p class="text-white mb-0">Available Services</p>
+                        <p class="text-white mb-0">{{ __('messages.career.stats.services') }}</p>
                     </div>
                     <div class="col-6 col-md-3 text-center">
                         <i class="bx bx-user fa-2x text-white mb-3"></i>
                         <h2 class="text-white mb-2 counter" data-target="250">10</h2>
-                        <p class="text-white mb-0">Registered Users</p>
+                        <p class="text-white mb-0">{{ __('messages.career.stats.users') }}</p>
                     </div>
                 </div>
             </div>
@@ -161,7 +155,7 @@
         <!-- Process Section -->
         <section class="process-section">
             <div class="container">
-                <h2 class="section-title">Our <span>Mission</span></h2>
+                <h2 class="section-title">{{ __('messages.career.mission_title') }}</h2>
 
                 <div class="row g-4">
                     <div class="col-md-3 col-lg-3">
@@ -171,9 +165,8 @@
                                 <div class="process-icon">
                                     <i class="bx bx-time-five"></i>
                                 </div>
-                                <h4>Layanan Terintegrasi dan Tepat Waktu</h4>
-                                <p>eBengkel menyediakan akses cepat ke layanan perbaikan dan perawatan kendaraan untuk
-                                    kepuasan pelanggan.</p>
+                                <h4>{{ __('messages.career.mission_steps.0.title') }}</h4>
+                                <p>{{ __('messages.career.mission_steps.0.text') }}.</p>
                             </div>
                         </div>
                     </div>
@@ -185,9 +178,8 @@
                                 <div class="process-icon">
                                     <i class="bx bx-check-shield"></i>
                                 </div>
-                                <h4>Keamanan dan Kualitas Utama</h4>
-                                <p>Memastikan setiap bengkel yang terdaftar memenuhi standar tinggi dalam layanan dan
-                                    keamanan kendaraan.</p>
+                                <h4>{{ __('messages.career.mission_steps.1.title') }}</h4>
+                                <p>{{ __('messages.career.mission_steps.1.text') }}.</p>
                             </div>
                         </div>
                     </div>
@@ -199,9 +191,8 @@
                                 <div class="process-icon">
                                     <i class="bx bx-wrench"></i>
                                 </div>
-                                <h4>Mitra Bengkel Terpercaya</h4>
-                                <p>eBengkel menghubungkan pengguna dengan bengkel-bengkel yang siap memberikan solusi
-                                    terbaik untuk kebutuhan kendaraan.</p>
+                                <h4>{{ __('messages.career.mission_steps.2.title') }}</h4>
+                                <p>{{ __('messages.career.mission_steps.2.text') }}.</p>
                             </div>
                         </div>
                     </div>
@@ -213,9 +204,8 @@
                                 <div class="process-icon">
                                     <i class="bx bx-rocket"></i>
                                 </div>
-                                <h4>Inovasi dan Akses Mudah</h4>
-                                <p>Platform modern yang memudahkan pengguna dalam mencari dan memesan layanan otomotif
-                                    dengan nyaman.</p>
+                                <h4>{{ __('messages.career.mission_steps.3.title') }}</h4>
+                                <p>{{ __('messages.career.mission_steps.3.text') }}.</p>
                             </div>
                         </div>
                     </div>
