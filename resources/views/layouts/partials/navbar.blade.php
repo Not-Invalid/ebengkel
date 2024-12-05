@@ -112,26 +112,19 @@
             header.classList.remove('sticky');
         }
     };
+
+    window.onload = function() {
+    // Fetch the cart count when the page loads
+    fetch('{{ route("cart.getCartCount") }}')
+        .then(response => response.json())
+        .then(data => {
+            // Update the cart count in the navbar
+            document.getElementById('countCart').textContent = data.count;
+        })
+        .catch(error => {
+            console.error('Error fetching cart count:', error);
+        });
+};
+
 </script>
 
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetchCartCount();
-    });
-
-    function fetchCartCount() {
-        fetch("{{ route('cart.total') }}", {
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}" // Token CSRF wajib
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('countCart').textContent = data.total;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('countCart').textContent = '0';
-            });
-    }
-</script> --}}
