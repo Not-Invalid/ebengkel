@@ -15,6 +15,7 @@ class OrderOnline extends Model
 
     // Kolom yang dapat diisi
     protected $fillable = [
+        'order_id',
         'id_bengkel',
         'id_pelanggan',
         'id_produk',
@@ -56,5 +57,10 @@ class OrderOnline extends Model
     public function sparepart()
     {
         return $this->belongsTo(SpareParts::class, 'id_spare_part');
+    }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'id_order', 'order_id');
     }
 }
