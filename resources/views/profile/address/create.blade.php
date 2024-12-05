@@ -225,29 +225,29 @@
                 }
             });
             $('form').submit(function(event) {
-                var provinsiNama = $('#provinsi option:selected').text();
-                var kotaNama = $('#kota option:selected').text();
-                var kecamatanNama = $('#kecamatan option:selected').text();
+                var provinsiId = $('#provinsi').val();
+                var kotaId = $('#kota').val();
+                var kecamatanId = $('#kecamatan').val();
 
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'provinsi',
-                    value: provinsiNama
+                    value: provinsiId
                 }).appendTo(this);
 
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'kota',
-                    value: kotaNama
+                    value: kotaId
                 }).appendTo(this);
 
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'kecamatan',
-                    value: kecamatanNama
+                    value: kecamatanId
                 }).appendTo(this);
-
             });
+
         });
     </script>
 @endsection
