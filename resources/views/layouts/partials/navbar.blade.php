@@ -75,19 +75,13 @@
                                         style="padding: 12px !important">
                                         <li>
                                             <a href="{{ route('change-language', 'en') }}"
-                                                onclick="changeLanguage('en')" style="padding: 8px !important"
-                                                class="{{ app()->getLocale() === 'en' ? 'active' : '' }}"
-                                                id="lang-en">
-                                                EN
-                                            </a>
+                                                class="{{ session('locale') === 'en' ? 'active' : '' }}"
+                                                style="padding: 8px !important">EN</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('change-language', 'id') }}"
-                                                onclick="changeLanguage('id')" style="padding: 8px !important"
-                                                class="{{ app()->getLocale() === 'id' ? 'active' : '' }}"
-                                                id="lang-id">
-                                                ID
-                                            </a>
+                                                class="{{ session('locale') === 'id' ? 'active' : '' }}"
+                                                style="padding: 8px !important">ID</a>
                                         </li>
                                     </ul>
                                 </li>
