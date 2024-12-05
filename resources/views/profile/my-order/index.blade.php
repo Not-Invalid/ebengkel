@@ -39,7 +39,7 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link text-center" id="selesai-tab" data-bs-toggle="pill" data-bs-target="#selesai"
             type="button" role="tab" aria-controls="selesai" aria-selected="false">
-            <i class="bx bx-check-circle bx-md  "></i><br>Selesai
+            <i class="bx bx-check-circle bx-md"></i><br>Selesai
           </button>
         </li>
       </ul>
@@ -47,33 +47,54 @@
       <!-- Konten Tab -->
       <div class="tab-content" id="orderTabsContent">
         <div class="tab-pane fade show active" id="dikemas" role="tabpanel" aria-labelledby="dikemas-tab">
-          <div class="cart-item d-flex align-items-center mb-3 p-3" data-id="12345" data-stock="10" data-price="50000"
-            style="position: relative;">
-            <div class="cart-item-image me-3">
-              <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image"
-                style="width: 100px; height: 100px; object-fit: cover;" />
-            </div>
-            <div class="cart-item-details flex-grow-1">
-              <h6>Product Name</h6>
-              <p class="text-muted mb-1">Workshop Name</p>
-              <p class="text-primary fw-bold mb-1"><span class="text-muted fw-light">Total 2 Pesanan: </span>Rp 50,000</p>
-            </div>
+          <!-- Accordion Container -->
+          <div id="cartAccordion">
+            <!-- Product 1 (Always visible) -->
+            <div class="cart-item d-flex flex-column flex-md-row align-items-center mb-3 p-3 border rounded shadow-sm">
+              <div class="cart-item-image me-3 mb-3 mb-md-0">
+                <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image" class="img-fluid rounded"
+                  style="width: 100px; height: 100px; object-fit: cover;" />
+              </div>
+              <div class="cart-item-details flex-grow-1">
+                <h6 class="mb-1">Product Name 1</h6>
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="text-muted mb-1">Workshop Name 1</p>
+                  <span class="product-quantity ms-3">x1</span> <!-- Added margin to separate quantity -->
+                </div>
+                <div class="d-flex flex-column flex-md-row justify-content-between">
+                  <p class="text-primary fw-bold mb-1">Rp 50.000</p>
+                  <p class="fw-bold mb-1">Total: Rp 50.000</p> <!-- Total price -->
+                </div>
 
-            <!-- Button Detail Order at the center-right -->
-            <a href="{{ route('my-order.detail') }}" class="btn btn-primary btn-sm"
-              style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">Detail Order</a>
-          </div>
-
-
-          {{-- <div class="card border-1 rounded-2 mt-4">
-            <div class="card-body d-flex justify-content-center">
-              <div class="text-center">
-                <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
-                  alt="No Address">
-                <p>Nothing is being packaged.</p>
+                <!-- Toggle Button (Lihat Semua / Lihat Lebih Sedikit) -->
+                <button class="btn btn-link p-0 mt-3 toggle-overlay-btn" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapseCart" aria-expanded="false" aria-controls="collapseCart" id="toggleButton"
+                  style="text-decoration:none;">
+                  Lihat Semua
+                </button>
               </div>
             </div>
-          </div> --}}
+            <!-- Collapsible Content (Product 2) -->
+            <div id="collapseCart" class="collapse">
+              <div class="cart-item d-flex flex-column flex-md-row align-items-center mb-3 p-3 border rounded shadow-sm">
+                <div class="cart-item-image me-3 mb-3 mb-md-0">
+                  <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image"
+                    class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;" />
+                </div>
+                <div class="cart-item-details flex-grow-1">
+                  <h6 class="mb-1">Product Name 2</h6>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p class="text-muted mb-1">Workshop Name 1</p>
+                    <span class="product-quantity ms-3">x1</span> <!-- Quantity with added margin -->
+                  </div>
+                  <div class="d-flex flex-column flex-md-row justify-content-between">
+                    <p class="text-primary fw-bold mb-1">Rp 25.000</p>
+                    <p class="fw-bold mb-1">Total: Rp 25.000</p> <!-- Total price for Product 2 -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="tab-pane fade" id="dikirim" role="tabpanel" aria-labelledby="dikirim-tab">
           <div class="card border-1 rounded-2 mt-4">
@@ -100,6 +121,18 @@
       </div>
     </div>
   </div>
+  <script>
+    const toggleButton = document.getElementById('toggleButton');
+    const collapseCart = document.getElementById('collapseCart');
+
+    collapseCart.addEventListener('show.bs.collapse', function() {
+      toggleButton.textContent = 'Lihat Lebih Sedikit';
+    });
+
+    collapseCart.addEventListener('hide.bs.collapse', function() {
+      toggleButton.textContent = 'Lihat Semua';
+    });
+  </script>
 @endsection
 
 <style>
@@ -184,6 +217,60 @@
   .shipping:hover {
     background-color: var(--main-light-grey);
     color: var(--main-dark-blue);
+  }
+
+  /* Style for the overlay button */
+  .toggle-overlay-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Semi-transparent background */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 14px;
+    z-index: 10;
+  }
+
+  /* Style for collapsible content (to ensure it stays hidden initially) */
+  .collapse {
+    display: none;
+  }
+
+  /* Additional styling for the collapsed content */
+  .collapse.show {
+    display: block;
+  }
+
+  /* Ensure the toggle button is visible on mobile */
+  @media (max-width: 767px) {
+    .toggle-overlay-btn {
+      display: block;
+      position: relative;
+      /* Position it relative to the parent container */
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.3);
+      /* Semi-transparent background */
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      z-index: 10;
+      margin-top: 10px;
+      /* Add margin for better spacing */
+    }
+  }
+
+  /* Hide the toggle button on larger screens */
+  @media (min-width: 768px) {
+    .toggle-overlay-btn {
+      display: none;
+    }
   }
 </style>
 
