@@ -21,6 +21,9 @@ class CreateTbBengkelTable extends Migration
             $table->text('foto_bengkel')->nullable();
             $table->text('foto_cover_bengkel')->nullable();
             $table->text('alamat_bengkel')->nullable();
+            $table->string('kota')->nullable();
+            $table->string('provinsi')->nullable();
+            $table->string('kecamatan')->nullable();
             $table->string('whatsapp', 15)->nullable();
             $table->string('tiktok')->nullable();
             $table->string('instagram')->nullable();
@@ -30,7 +33,6 @@ class CreateTbBengkelTable extends Migration
             $table->time('close_time')->nullable();
             $table->json('service_available')->nullable();
             $table->json('payment')->nullable();
-            $table->string('nama_bank')->nullable();
             $table->json('rekening_bank')->nullable();
             $table->text('qris_qrcode')->nullable();
             $table->string('kodepos_bengkel')->nullable();
