@@ -8,159 +8,6 @@
 @endpush
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const tabLinks = document.querySelectorAll(".custom-tab-link");
-        const dropdown = document.querySelector(".custom-dropdown");
-
-        tabLinks.forEach((link) => {
-            link.addEventListener("click", function(e) {
-                e.preventDefault();
-                tabLinks.forEach((tab) => tab.classList.remove("active"));
-                document
-                    .querySelectorAll(".tab-pane")
-                    .forEach((pane) => pane.classList.remove("active"));
-                this.classList.add("active");
-                document
-                    .getElementById(this.getAttribute("data-tab"))
-                    .classList.add("active");
-            });
-        });
-
-        dropdown.addEventListener("change", function() {
-            const selectedTab = this.value;
-            tabLinks.forEach((tab) => tab.classList.remove("active"));
-            document
-                .querySelectorAll(".tab-pane")
-                .forEach((pane) => pane.classList.remove("active"));
-            document
-                .querySelector(`[data-tab="${selectedTab}"]`)
-                .classList.add("active");
-            document.getElementById(selectedTab).classList.add("active");
-        });
-    });
-</script>
-
-
-<script>
-    function toggleCurrentPasswordVisibility() {
-        const passwordInput = document.getElementById("currentPassword");
-        const toggleIcon = document.getElementById("toggle-current-icon");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.replace("bx-hide", "bx-show");
-        } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.replace("bx-show", "bx-hide");
-        }
-    }
-
-    function toggleNewPasswordVisibility() {
-        const passwordInput = document.getElementById("newPassword");
-        const toggleIcon = document.getElementById("toggle-new-icon");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.replace("bx-hide", "bx-show");
-        } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.replace("bx-show", "bx-hide");
-        }
-    }
-
-    function toggleNewPasswordConfirmationVisibility() {
-        const passwordInput = document.getElementById("newPassword_confirmation");
-        const toggleIcon = document.getElementById("toggle-confirm-icon");
-
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            toggleIcon.classList.replace("bx-hide", "bx-show");
-        } else {
-            passwordInput.type = "password";
-            toggleIcon.classList.replace("bx-show", "bx-hide");
-        }
-    }
-</script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const tabLinks = document.querySelectorAll(".custom-tab-link");
-        const dropdown = document.querySelector(".custom-dropdown");
-        let myBarChart; // Define the chart variable here for global scope
-
-        function initializeChart() {
-            const ctx = document.getElementById("myBarChart").getContext("2d");
-
-            if (myBarChart) {
-                myBarChart.destroy(); // Destroy any existing instance of the chart to avoid duplication
-            }
-
-            myBarChart = new Chart(ctx, {
-                type: "bar",
-                data: {
-                    labels: {!! json_encode($days) !!},
-                    datasets: [{
-                        label: "Number of Login",
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1,
-                        data: {!! json_encode(array_values($logCounts)) !!},
-                        barThickness: 20, // Set the desired width here
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    aspectRatio: 2,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            precision: 0
-                        }
-                    }
-                }
-            });
-        }
-
-
-        tabLinks.forEach((link) => {
-            link.addEventListener("click", function(e) {
-                e.preventDefault();
-                tabLinks.forEach((tab) => tab.classList.remove("active"));
-                document
-                    .querySelectorAll(".tab-pane")
-                    .forEach((pane) => pane.classList.remove("active"));
-                this.classList.add("active");
-                const selectedTabId = this.getAttribute("data-tab");
-                document.getElementById(selectedTabId).classList.add("active");
-
-                if (selectedTabId === "log") {
-                    initializeChart(); // Initialize the chart when the "Log" tab is clicked
-                }
-            });
-        });
-
-        dropdown.addEventListener("change", function() {
-            const selectedTab = this.value;
-            tabLinks.forEach((tab) => tab.classList.remove("active"));
-            document
-                .querySelectorAll(".tab-pane")
-                .forEach((pane) => pane.classList.remove("active"));
-            document
-                .querySelector(`[data-tab="${selectedTab}"]`)
-                .classList.add("active");
-            document.getElementById(selectedTab).classList.add("active");
-
-            if (selectedTab === "log") {
-                initializeChart(); // Initialize the chart when "Log" is selected from the dropdown
-            }
-        });
-    });
-</script>
-
 @section('content')
     <section class="mb-4">
         <div class="custom-tabs-container">
@@ -243,19 +90,22 @@
                     </div>
                 </div>
             </div>
-
-
-
+            {{ dd(app()->getLocale()) }}
             <div class="tab-pane" id="bahasa">
                 <div class="pt-3">
                     <h5>Language Settings</h5>
                     <hr>
-                    <form id="languageForm">
+                    <form id="languageForm" action="{{ route('change-language') }}" method="POST">
+                        @csrf
                         <div class="mb-3">
                             <label for="languageSelect" class="form-label">Select Language</label>
-                            <select class="form-select" id="languageSelect"></select>
+                            <select class="form-select" id="languageSelect" name="language">
+                                <option value="" selected disabled hidden>Change Language</option>
+                                <option value="id" {{ session('locale') === 'id' ? 'selected' : '' }}>ID</option>
+                                <option value="en" {{ session('locale') === 'en' ? 'selected' : '' }}>EN</option>
+                            </select>
                         </div>
-                        <button type="button" class="btn btn-primary" id="saveLanguage">Save</button>
+                        <button type="submit" class="btn btn-primary" id="saveLanguage">Save</button>
                     </form>
                 </div>
             </div>
@@ -270,58 +120,156 @@
             </div>
         </div>
     </div>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const languageSelect = document.getElementById("languageSelect");
-            const saveButton = document.getElementById("saveLanguage");
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabLinks = document.querySelectorAll(".custom-tab-link");
+            const dropdown = document.querySelector(".custom-dropdown");
 
-            // Ambil daftar bahasa dari API LibreTranslate
-            fetch("https://libretranslate.com/languages")
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(language => {
-                        const option = document.createElement("option");
-                        option.value = language.code; // Kode bahasa, contoh: 'en'
-                        option.textContent = language.name; // Nama bahasa, contoh: 'English'
-                        languageSelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error("Error fetching languages:", error));
+            tabLinks.forEach((link) => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    tabLinks.forEach((tab) => tab.classList.remove("active"));
+                    document
+                        .querySelectorAll(".tab-pane")
+                        .forEach((pane) => pane.classList.remove("active"));
+                    this.classList.add("active");
+                    document
+                        .getElementById(this.getAttribute("data-tab"))
+                        .classList.add("active");
+                });
+            });
 
-            // Event listener untuk tombol Save
-            saveButton.addEventListener("click", () => {
-                const selectedLanguage = languageSelect.value;
+            dropdown.addEventListener("change", function() {
+                const selectedTab = this.value;
+                tabLinks.forEach((tab) => tab.classList.remove("active"));
+                document
+                    .querySelectorAll(".tab-pane")
+                    .forEach((pane) => pane.classList.remove("active"));
+                document
+                    .querySelector(`[data-tab="${selectedTab}"]`)
+                    .classList.add("active");
+                document.getElementById(selectedTab).classList.add("active");
+            });
+        });
+    </script>
 
-                // Ambil semua elemen teks (kecuali input, textarea, dll.)
-                const elements = document.body.querySelectorAll("*:not(script):not(style)");
 
-                elements.forEach(element => {
-                    // Pastikan elemen memiliki teks
-                    if (element.childNodes.length === 1 && element.childNodes[0].nodeType === Node
-                        .TEXT_NODE) {
-                        const originalText = element.textContent.trim();
-                        if (originalText) {
-                            // Kirim teks ke LibreTranslate untuk diterjemahkan
-                            fetch("https://libretranslate.com/translate", {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify({
-                                        q: originalText,
-                                        source: "en", // Ganti ke bahasa sumber default
-                                        target: selectedLanguage,
-                                    }),
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    element.textContent = data
-                                        .translatedText; // Ganti teks dengan hasil terjemahan
-                                })
-                                .catch(error => console.error("Error translating text:", error));
+    <script>
+        function toggleCurrentPasswordVisibility() {
+            const passwordInput = document.getElementById("currentPassword");
+            const toggleIcon = document.getElementById("toggle-current-icon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.replace("bx-hide", "bx-show");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.replace("bx-show", "bx-hide");
+            }
+        }
+
+        function toggleNewPasswordVisibility() {
+            const passwordInput = document.getElementById("newPassword");
+            const toggleIcon = document.getElementById("toggle-new-icon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.replace("bx-hide", "bx-show");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.replace("bx-show", "bx-hide");
+            }
+        }
+
+        function toggleNewPasswordConfirmationVisibility() {
+            const passwordInput = document.getElementById("newPassword_confirmation");
+            const toggleIcon = document.getElementById("toggle-confirm-icon");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.replace("bx-hide", "bx-show");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.replace("bx-show", "bx-hide");
+            }
+        }
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tabLinks = document.querySelectorAll(".custom-tab-link");
+            const dropdown = document.querySelector(".custom-dropdown");
+            let myBarChart; // Define the chart variable here for global scope
+
+            function initializeChart() {
+                const ctx = document.getElementById("myBarChart").getContext("2d");
+
+                if (myBarChart) {
+                    myBarChart.destroy(); // Destroy any existing instance of the chart to avoid duplication
+                }
+
+                myBarChart = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: {!! json_encode($days) !!},
+                        datasets: [{
+                            label: "Number of Login",
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1,
+                            data: {!! json_encode(array_values($logCounts)) !!},
+                            barThickness: 20, // Set the desired width here
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 2,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                precision: 0
+                            }
                         }
                     }
                 });
+            }
+
+
+            tabLinks.forEach((link) => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    tabLinks.forEach((tab) => tab.classList.remove("active"));
+                    document
+                        .querySelectorAll(".tab-pane")
+                        .forEach((pane) => pane.classList.remove("active"));
+                    this.classList.add("active");
+                    const selectedTabId = this.getAttribute("data-tab");
+                    document.getElementById(selectedTabId).classList.add("active");
+
+                    if (selectedTabId === "log") {
+                        initializeChart(); // Initialize the chart when the "Log" tab is clicked
+                    }
+                });
+            });
+
+            dropdown.addEventListener("change", function() {
+                const selectedTab = this.value;
+                tabLinks.forEach((tab) => tab.classList.remove("active"));
+                document
+                    .querySelectorAll(".tab-pane")
+                    .forEach((pane) => pane.classList.remove("active"));
+                document
+                    .querySelector(`[data-tab="${selectedTab}"]`)
+                    .classList.add("active");
+                document.getElementById(selectedTab).classList.add("active");
+
+                if (selectedTab === "log") {
+                    initializeChart(); // Initialize the chart when "Log" is selected from the dropdown
+                }
             });
         });
     </script>

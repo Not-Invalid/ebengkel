@@ -7,8 +7,10 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <div class="d-flex justify-content-between align-items-center">
-            <h4 class="fs-5">Your Address</h4>
-            <a href="{{ route('profile.address.create') }}" class="btn btn-custom-2">+ Add New Address</a>
+            <h4 class="fs-5">{{ __('messages.profile.address.your_address') }}</h4>
+            <a href="{{ route('profile.address.create') }}" class="btn btn-custom-2">
+                + {{ __('messages.profile.address.add_new') }}
+            </a>
         </div>
 
         @if ($address->isEmpty())
@@ -16,8 +18,8 @@
                 <div class="card-body d-flex justify-content-center">
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
-                            alt="No Address">
-                        <p>No data address delivery.</p>
+                            alt="{{ __('messages.profile.address.no_address') }}">
+                        <p>{{ __('messages.profile.address.no_address') }}</p>
                     </div>
                 </div>
             </div>
@@ -44,17 +46,20 @@
                                     <h5 class="card-title mt-3">{{ $addr->nama_penerima }}</h5>
                                     <h6 class="card-title mt-3">{{ $addr->telp_penerima }}</h6>
                                     <p class="card-text text-secondary" style="font-size: 14px">
-                                        {{ $addr->lokasi_alamat_pengiriman }}</p>
+                                        {{ $addr->lokasi_alamat_pengiriman }}
+                                    </p>
                                     <div class="d-flex justify-content-start">
                                         <a href="{{ route('address.edit', $addr->id_alamat_pengiriman) }}"
                                             class="btn btn-custom-3 me-2">
-                                            Edit
+                                            {{ __('messages.profile.address.edit') }}
                                         </a>
                                         <form action="{{ route('address.delete', $addr->id_alamat_pengiriman) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button class="btn btn-delete" type="submit">Delete</button>
+                                            <button class="btn btn-delete" type="submit">
+                                                {{ __('messages.profile.address.delete') }}
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
