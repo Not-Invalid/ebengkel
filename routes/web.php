@@ -71,14 +71,14 @@ Route::prefix('pelanggan')->group(function () {
 
 Route::middleware('auth:pelanggan')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.getCartCount');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
     Route::delete('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.remove');
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
-    Route::get('payment', [PaymentController::class, 'index'])->name('payment');
-    Route::post('payment/notification', [PaymentController::class, 'notification']);
-    Route::post('/fetch-shipping-options', [CartController::class, 'fetchShippingOptions']);
+    Route::get('/payment/{order_id}', [PaymentController::class, 'index'])->name('payment');
+    Route::get('/get-shipping-options', [CartController::class, 'getShippingOptions'])->name('getShippingOptions');
 });
 
 Route::prefix('superadmin')->group(function () {
