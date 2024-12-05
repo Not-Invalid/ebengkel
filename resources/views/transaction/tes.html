@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .payment-method {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            transition: border-color 0.3s ease;
+        }
+
+        .payment-method input[type="radio"]:checked + img {
+            border-color: transparent;
+        }
+
+        .payment-method input[type="radio"]:checked + img + .form-check-label {
+            border: 2px solid blue;
+        }
+
+        .payment-method input[type="radio"]:checked + img + .form-check-label + div {
+            border: 2px solid blue;
+        }
+        .order-summary {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .btn-payment {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .btn-payment:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container my-5">
+        <div class="row">
+            <!-- Left Column: Checkout Form -->
+            <div class="col-md-8">
+                <h3>Checkout</h3>
+                <p>All plans include 40+ advanced tools and features to boost your product. Choose the best plan to fit your needs.</p>
+
+                <!-- Payment Method -->
+                <div class="payment-container row">
+                    <div class="col-md-6">
+                        <div class="payment-method d-flex align-items-center justify-content-between border p-3 mb-2">
+                            <label class="form-check-label d-flex align-items-center w-100" for="manualtransfer">
+                                <input class="form-check-input me-2" type="radio" name="paymentMethod" id="manualtransfer">
+                                <i class="fas fa-university me-2"></i> Manual Transfer
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="payment-method d-flex align-items-center justify-content-between border p-3 mb-2">
+                            <label class="form-check-label d-flex align-items-center w-100" for="qris">
+                                <input class="form-check-input me-2" type="radio" name="paymentMethod" id="qris">
+                                <i class="fas fa-qrcode me-2"></i> QRIS
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-3 p-3">
+                    <!-- Left Column: Payment Method Dropdown -->
+                    <div class="col-md-6">
+                        <label for="paymentMethod" class="form-label">Select Bank</label>
+                        <select class="form-select" id="paymentMethod" name="paymentMethod">
+                            <option value="BCA">
+                                <i class="fas fa-university me-2"></i> BCA
+                            </option>
+                            <option value="BRI">
+                                <i class="fas fa-qrcode me-2"></i> BRI
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Right Column: Bank Account Number Input -->
+                    <div class="col-md-6">
+                        <label for="accountNumber" class="form-label">Account Number</label>
+                        <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="Enter your account number">
+                    </div>
+                </div>
+
+
+                <!-- Billing Details -->
+                <h4>Billing Details</h4>
+                <form>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label">Country</label>
+                            <select class="form-select" id="country">
+                                <option selected>Billing Country</option>
+                                <option value="1">USA</option>
+                                <option value="2">UK</option>
+                                <option value="3">Canada</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="zip" class="form-label">Billing Zip / Postal Code</label>
+                            <input type="text" class="form-control" id="zip" placeholder="Enter your zip code">
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Info -->
+                    <h4>Credit Card Info</h4>
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber" placeholder="Card number">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cardHolder" class="form-label">Card Holder</label>
+                            <input type="text" class="form-control" id="cardHolder" placeholder="Card holder">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="expDate" class="form-label">EXP. Date</label>
+                            <input type="text" class="form-control" id="expDate" placeholder="MM/YY">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Column: Order Summary -->
+            <div class="col-md-4">
+                <div class="order-summary">
+                    <h4>Order Summary</h4>
+                    <p>A simple start for everyone</p>
+                    <h5>$59.99/month</h5>
+                    <button class="btn btn-outline-primary w-100 mb-3">Change Plan</button>
+                    <div class="d-flex justify-content-between">
+                        <span>Subtotal</span>
+                        <span>$85.99</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Tax</span>
+                        <span>$4.99</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total</span>
+                        <span>$90.98</span>
+                    </div>
+                    <button class="btn btn-payment w-100 mt-3">Proceed With Payment</button>
+                    <p class="text-muted mt-3 text-center">
+                        By continuing, you accept our <a href="#">Terms of Services</a> and <a href="#">Privacy Policy</a>. <br>
+                        Please note that payments are non-refundable.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
