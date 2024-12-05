@@ -152,105 +152,61 @@
 
     <script>
         $(document).ready(function() {
-            let provinsiLoaded = false;
-
-            $('#provinsi').one('click', function() {
-                if (!provinsiLoaded) {
-                    $.get('https://api.cahyadsn.com/provinces', function(response) {
-                        let provinsiDropdown = $('#provinsi');
-                        provinsiDropdown.empty();
-                        provinsiDropdown.append(
-                            '<option value="" selected disabled hidden>Select Province</option>'
-                            );
-
-                        if (response.data && Array.isArray(response.data)) {
-                            $.each(response.data, function(index, provinsi) {
-                                provinsiDropdown.append('<option value="' + provinsi.kode +
-                                    '">' + provinsi.nama + '</option>');
-                            });
-                            provinsiLoaded = true;
-                        }
-                    }).fail(function() {
-                        console.log('Request gagal untuk data provinsi');
+            // Memuat Provinsi berdasarkan ID yang disimpan
+            $.get('https://api.cahyadsn.com/provinces', function(response) {
+                let provinsiDropdown = $('#provinsi');
+                let selectedProvinsi = "{{ $address->provinsi }}"; // ID provinsi yang disimpan di DB
+                if (response.data && Array.isArray(response.data)) {
+                    $.each(response.data, function(index, provinsi) {
+                        let selected = (provinsi.kode == selectedProvinsi) ? 'selected' : '';
+                        provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
                     });
                 }
+            }).fail(function() {
+                console.log('Request gagal untuk data provinsi');
             });
 
+            // Memuat Kota berdasarkan ID Provinsi yang dipilih
             $('#provinsi').change(function() {
                 let provinsiId = $(this).val();
-                if (provinsiId) {
-                    $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
-                        let kotaDropdown = $('#kota');
-                        kotaDropdown.empty();
-                        kotaDropdown.append(
-                            '<option value="" selected disabled hidden>Select City</option>'
-                        );
+                $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
+                    let kotaDropdown = $('#kota');
+                    kotaDropdown.empty();
+                    kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
 
-                        if (response.data && Array.isArray(response.data)) {
-                            $.each(response.data, function(index, kota) {
-                                kotaDropdown.append('<option value="' + kota.kode + '">' +
-                                    kota.nama + '</option>');
-                            });
-                        }
-                    }).fail(function() {
-                        console.log('Request gagal untuk data kota');
-                    });
-                } else {
-                    $('#kota').empty().append(
-                        '<option value="" selected disabled hidden>Select City</option>');
-                    $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Select District</option>');
-                }
+                    if (response.data && Array.isArray(response.data)) {
+                        $.each(response.data, function(index, kota) {
+                            let selected = (kota.kode == "{{ $address->kota }}") ? 'selected' : '';
+                            kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
+                        });
+                    }
+                }).fail(function() {
+                    console.log('Request gagal untuk data kota');
+                });
             });
 
+            // Memuat Kecamatan berdasarkan ID Kota yang dipilih
             $('#kota').change(function() {
                 let kotaId = $(this).val();
-                if (kotaId) {
-                    $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
-                        let kecamatanDropdown = $('#kecamatan');
-                        kecamatanDropdown.empty();
-                        kecamatanDropdown.append(
-                            '<option value="" selected disabled hidden>Select District</option>'
-                        );
+                $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
+                    let kecamatanDropdown = $('#kecamatan');
+                    kecamatanDropdown.empty();
+                    kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
 
-                        if (response.data && Array.isArray(response.data)) {
-                            $.each(response.data, function(index, kecamatan) {
-                                kecamatanDropdown.append('<option value="' + kecamatan
-                                    .kode + '">' + kecamatan.nama + '</option>');
-                            });
-                        }
-                    }).fail(function() {
-                        console.log('Request gagal untuk data kecamatan');
-                    });
-                } else {
-                    $('#kecamatan').empty().append(
-                        '<option value="" selected disabled hidden>Select District</option>');
-                }
+                    if (response.data && Array.isArray(response.data)) {
+                        $.each(response.data, function(index, kecamatan) {
+                            let selected = (kecamatan.kode == "{{ $address->kecamatan }}") ? 'selected' : '';
+                            kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
+                        });
+                    }
+                }).fail(function() {
+                    console.log('Request gagal untuk data kecamatan');
+                });
             });
 
-            $('form').submit(function(event) {
-                var provinsiNama = $('#provinsi option:selected').text();
-                var kotaNama = $('#kota option:selected').text();
-                var kecamatanNama = $('#kecamatan option:selected').text();
-
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'provinsi',
-                    value: provinsiNama
-                }).appendTo(this);
-
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'kota',
-                    value: kotaNama
-                }).appendTo(this);
-
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'kecamatan',
-                    value: kecamatanNama
-                }).appendTo(this);
-            });
+            // Inisialisasi dropdown dengan data yang sudah ada
+            $('#provinsi').trigger('change');
+            $('#kota').trigger('change');
         });
     </script>
 
