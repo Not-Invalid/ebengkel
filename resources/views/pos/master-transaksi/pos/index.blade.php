@@ -13,7 +13,8 @@
         <div class="search-container">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Scan atau Cari ...">
-                <button class="btn btn-info text-white mx-3"><i class="fa-solid fa-print"></i></button>
+                <button class="btn btn-info text-white mx-3" data-toggle="tooltip" title="Print"><i
+                        class="fa-solid fa-print"></i></button>
             </div>
         </div>
         <div class="main-layout">
@@ -52,7 +53,7 @@
                             <span class="total-price">0</span>
                         </div>
                         <div class="d-flex">
-                            <a class="trash-btn">
+                            <a class="trash-btn" data-toggle="tooltip" title="Delete Order">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                             <a href="{{ route('pos.tranksaksi_pesanan.checkout', ['id_bengkel' => $id_bengkel]) }}"
