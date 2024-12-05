@@ -1,9 +1,9 @@
 @extends('pos.layouts.app')
 @section('title')
-    eBengkelku | Master POS
+    eBengkelku | Create Pesanan Pos
 @stop
 @php
-    $header = 'Master POS';
+    $header = 'Create Pesanan Services';
 @endphp
 @section('content')
     <div class="card">
@@ -53,12 +53,9 @@
     </div>
 
     <script>
-        // Validasi Nomor Telepon
         function validatePhoneNumber(input) {
-            // Hapus karakter selain angka
             input.value = input.value.replace(/[^0-9]/g, '');
 
-            // Batasi panjang hingga 15 digit
             if (input.value.length > 15) {
                 input.value = input.value.slice(0, 15);
             }
