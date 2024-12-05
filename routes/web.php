@@ -275,6 +275,7 @@ Route::prefix('profile')->group(function () {
     //payment
     Route::prefix('my-order')->group(function () {
         Route::get('/', [MyorderController::class, 'index'])->name('my-order.index');
+        Route::get('/detail', [MyorderController::class, 'detailOrder'])->name('my-order.detail');
     });
 });
 
