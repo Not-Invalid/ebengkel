@@ -14,9 +14,9 @@ class CreateTInvoiceTable extends Migration
     public function up()
     {
         Schema::create('t_invoice', function (Blueprint $table) {
-            $table->integer('id')->primary();
-            $table->integer('id_customer');
-            $table->integer('id_order');
+            $table->increments('id')->primary();
+            $table->integer('id_pelanggan');
+            $table->string('id_order');
             $table->string('status_invoice', 50)->default('PENDING');
             $table->date('jatuh_tempo');
             $table->dateTime('tanggal_invoice');
@@ -28,6 +28,7 @@ class CreateTInvoiceTable extends Migration
             $table->string('nominal_transfer', 20)->nullable();
             $table->string('bukti_bayar', 250)->nullable();
             $table->enum('is_delete', ['Y', 'N'])->default('N');
+            $table->timestamps();
         });
     }
 
