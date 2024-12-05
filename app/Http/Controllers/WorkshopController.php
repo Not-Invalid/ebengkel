@@ -138,8 +138,8 @@ class WorkshopController extends Controller
             'gmaps' => 'nullable|string',
             'open_day' => 'required|string',
             'close_day' => 'nullable|string',
-            'open_time' => 'required|string', // Expecting a time string
-            'close_time' => 'required|string', // Expecting a time string
+            'open_time' => 'required|string',
+            'close_time' => 'required|string',
             'service_available' => 'nullable|array',
             'service_available.*' => 'string',
             'payment' => 'nullable|array',
@@ -150,7 +150,10 @@ class WorkshopController extends Controller
             'rekening_bank.*.no_rekening' => 'required|string|max:100',
             'rekening_bank.*.nama_bank' => 'required|string|max:100',
             'rekening_bank.*.atas_nama' => 'required|string|max:100',
-            'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validation for qris_qrcode
+            'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'provinsi' => 'required|string',
+            'kota' => 'required|string',
+            'kecamatan' => 'required|string',
         ]);
 
         // Add the customer ID from the session
@@ -163,6 +166,11 @@ class WorkshopController extends Controller
         // Convert the open_time and close_time to the required format (HH:mm)
         $validatedData['open_time'] = Carbon::createFromFormat('H:i', $request->open_time)->format('H:i');
         $validatedData['close_time'] = Carbon::createFromFormat('H:i', $request->close_time)->format('H:i');
+
+        // Store the province, city, and district
+        $validatedData['provinsi'] = $request->provinsi;
+        $validatedData['kota'] = $request->kota;
+        $validatedData['kecamatan'] = $request->kecamatan;
 
         // Handle the bank account information
         if ($request->has('rekening_bank')) {
@@ -192,7 +200,7 @@ class WorkshopController extends Controller
         // Handle the QRIS QR code upload
         if ($request->hasFile('qris_qrcode')) {
             $qrisImage = $request->file('qris_qrcode');
-            $qrisImageName = 'qris_qrcode_' . now()->format('Ymd_His') . '.' . $qrisImage->getClientOriginalExtension();
+            $qrisImageName = 'qris_qrcode_' . now()->format('Y md_His') . '.' . $qrisImage->getClientOriginalExtension();
             $qrisImage->move(public_path('assets/images/workshops/qris'), $qrisImageName);
             $validatedData['qris_qrcode'] = url('assets/images/workshops/qris/' . $qrisImageName);
         }
@@ -202,7 +210,6 @@ class WorkshopController extends Controller
 
         return redirect()->route('profile.workshop')->with('status', 'Workshop created successfully.');
     }
-
     public function editWorkshop($id)
     {
         $customerId = Session::get('id_pelanggan');
@@ -221,6 +228,7 @@ class WorkshopController extends Controller
 
         // Decode the 'rekening_bank' field as well
         $bankAccounts = is_string($bengkel->rekening_bank) ? json_decode($bengkel->rekening_bank, true) : $bengkel->rekening_bank;
+        $bankAccounts = is_array($bankAccounts) ? $bankAccounts : [];
 
         // Assign variables for use in the view
         $serviceAvailable = $bengkel->service_available ?? [];
