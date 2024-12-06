@@ -4,6 +4,16 @@
 @stop
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/POS/transaksi_pos.css') }}">
+    <style>
+        .remove-item-btn {
+            display: flex;
+            background: none;
+            border: none;
+            color: red;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
 @endpush
 @php
     $header = 'Master POS';
@@ -130,14 +140,44 @@
                             <div class="order-item-price">
                                 Rp ${item.price.toLocaleString('id-ID')}
                             </div>
+                            <button class="remove-item-btn" data-id="${item.id}">
+                                <i class="fa fa-times"></i> <!-- Ikon X -->
+                            </button>
                         </div>
                     `;
                     orderItemsContainer.appendChild(itemElement);
                 });
+
+                // Update total harga dan jumlah item
                 document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
-                document.querySelector('.total-price').textContent =
-                    `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
+                document.querySelector('.total-price').textContent = `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
+
+                // Menambahkan event listener untuk tombol hapus (X)
+                document.querySelectorAll('.remove-item-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const itemId = this.getAttribute('data-id');
+                        removeFromOrder(itemId);
+                    });
+                });
             }
+
+            function removeFromOrder(itemId) {
+                // Mencari item di activeOrder berdasarkan id
+                const itemIndex = activeOrder.items.findIndex(item => item.id === itemId);
+                if (itemIndex !== -1) {
+                    // Mengurangi total harga dan jumlah item
+                    const item = activeOrder.items[itemIndex];
+                    activeOrder.total -= item.price * item.quantity;
+                    activeOrder.totalItems -= item.quantity;
+
+                    // Menghapus item dari array activeOrder
+                    activeOrder.items.splice(itemIndex, 1);
+
+                    // Memperbarui tampilan
+                    updateActiveOrderDisplay();
+                }
+            }
+
             document.querySelector('.trash-btn').addEventListener('click', function() {
                 activeOrder = {
                     items: [],
