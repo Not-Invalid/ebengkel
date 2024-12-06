@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pos;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\FotoSparepart;
 use App\Models\KategoriSparePart;
 use App\Models\SpareParts;
 use Illuminate\Http\Request;
@@ -37,16 +38,15 @@ class SparePartController extends Controller
         return view('pos.masterdata-sparepart.index', compact('bengkel', 'sparepart', 'totalEntries', 'start', 'end'));
     }
 
-    public function create($id_bengkel)
+    public function create($id_bengkel, $id_spare_part)
     {
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found!.');
         }
-
         $categories = KategoriSparePart::all();
-        return view('pos.masterdata-sparepart.create', compact('bengkel', 'categories'));
+        return view('pos.masterdata-sparepart.create', compact('bengkel', 'categories', 'sparepart'));
     }
     public function store(Request $request, $id_bengkel)
     {
@@ -58,9 +58,12 @@ class SparePartController extends Controller
             'harga_spare_part' => 'required|integer',
             'keterangan_spare_part' => 'nullable|string',
             'stok_spare_part' => 'required|integer',
-            'foto_spare_part' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         $sparePart = new SpareParts();
         $sparePart->id_bengkel = $id_bengkel;
         $sparePart->id_kategori_spare_part = $request->id_kategori_spare_part;
@@ -70,14 +73,24 @@ class SparePartController extends Controller
         $sparePart->harga_spare_part = $request->harga_spare_part;
         $sparePart->keterangan_spare_part = $request->keterangan_spare_part;
         $sparePart->stok_spare_part = $request->stok_spare_part;
+        $sparePart->save();
 
-        if ($request->hasFile('foto_spare_part')) {
-            $imageName = 'foto_spare_part_' . now()->format('Ymd_His') . '.' . $request->foto_spare_part->extension();
-            $request->foto_spare_part->move(public_path('assets/images/spareparts'), $imageName);
-            $sparePart->foto_spare_part = 'assets/images/spareparts/' . $imageName;
+        // Handle file uploads for product photos
+        $fotoSparepart = new FotoSparepart();
+        $fotoSparepart->id_spare_part = $sparePart->id_spare_part;
+
+        // Check each photo input and upload if present
+        for ($i = 1; $i <= 5; $i++) {
+            $fotoKey = 'foto_spare_part_' . $i;
+            if ($request->hasFile($fotoKey)) {
+                $imageName = 'foto_spare_part_' . $sparePart->id_spare_part . '_' . $i . '.' . $request->file($fotoKey)->extension();
+                $request->file($fotoKey)->move(public_path('assets/images/spareparts'), $imageName);
+                $fotoSparepart->{'file_foto_spare_part_' . $i} = 'assets/images/spareparts/' . $imageName;
+            }
         }
 
-        $sparePart->save();
+        $fotoSparepart->create_file_foto_spare_part = now();
+        $fotoSparepart->save();
 
         return redirect()->route('pos.sparepart.index', $id_bengkel)->with('status', 'Spare Part successfully added!.');
     }
@@ -105,7 +118,9 @@ class SparePartController extends Controller
 
         $sparepart = SpareParts::findOrFail($id_spare_part);
         $categories = KategoriSparePart::all();
-        return view('pos.masterdata-sparepart.edit', compact('bengkel', 'sparepart', 'categories'));
+        // Ambil data foto produk terkait
+        $fotoSparepart = FotoSparepart::where('id_spare_part', $id_spare_part)->first();
+        return view('pos.masterdata-sparepart.edit', compact('bengkel', 'sparepart', 'categories', 'fotoSparepart'));
     }
     public function update(Request $request, $id_bengkel, $id_spare_part)
     {
@@ -117,7 +132,11 @@ class SparePartController extends Controller
             'harga_spare_part' => 'required|integer',
             'keterangan_spare_part' => 'nullable|string',
             'stok_spare_part' => 'required|integer',
-            'foto_spare_part' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_spare_part_5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $sparepart = SpareParts::findOrFail($id_spare_part);
@@ -129,16 +148,34 @@ class SparePartController extends Controller
         $sparepart->keterangan_spare_part = $request->keterangan_spare_part;
         $sparepart->stok_spare_part = $request->stok_spare_part;
 
-        if ($request->hasFile('foto_spare_part')) {
-            if ($sparepart->foto_spare_part && file_exists(public_path($sparepart->foto_spare_part))) {
-                unlink(public_path($sparepart->foto_spare_part));
-            }
-            $imageName = 'foto_spare_part_' . now()->format('Ymd_His') . '.' . $request->foto_spare_part->extension();
-            $request->foto_spare_part->move(public_path('assets/images/spareparts'), $imageName);
-            $sparepart->foto_spare_part = 'assets/images/spareparts/' . $imageName;
+        $fotoSparepart = FotoSparepart::where('id_spare_part', $id_spare_part)->first();
+
+        if (!$fotoSparepart) {
+            // If no FotoProduk exists, create a new one
+            $fotoSparepart = new FotoSparepart();
+            $fotoSparepart->id_spare_part = $id_spare_part;
         }
 
-        $sparepart->save();
+        // Handle the image file uploads
+        for ($i = 1; $i <= 5; $i++) {
+            $fotoKey = 'foto_spare_part_' . $i;
+
+            if ($request->hasFile($fotoKey)) {
+                // Delete the old image file if it exists
+                if ($fotoSparepart->{'file_foto_spare_part_' . $i} && file_exists(public_path($fotoSparepart->{'file_foto_spare_part_' . $i}))) {
+                    unlink(public_path($fotoSparepart->{'file_foto_spare_part_' . $i}));
+                }
+
+                // Upload the new image
+                $imageName = 'foto_spare_part_' . $id_spare_part . '_' . $i . '.' . $request->file($fotoKey)->extension();
+                $request->file($fotoKey)->move(public_path('assets/images/spareparts'), $imageName);
+                $fotoSparepart->{'file_foto_spare_part_' . $i} = 'assets/images/spareparts/' . $imageName;
+            }
+        }
+
+        // Update or create file_foto_produk record
+        $fotoSparepart->create_file_foto_spare_part = now();
+        $fotoSparepart->save();
 
         return redirect()->route('pos.sparepart.index', ['id_bengkel' => $id_bengkel])->with('status', 'Spare Part successfully updated!');
     }
