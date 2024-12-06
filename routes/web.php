@@ -6,14 +6,15 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MyorderController;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Pos\AchievementSummaryController as PosAchievementSummaryController;
 use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\ExpenseRecordController as PosExpenseRecordController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\JenisPengeluaranController as PosExpenseTypeController;
+use App\Http\Controllers\Pos\OrderOnlineController as PosOrderOnlineController;
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
 use App\Http\Controllers\Pos\ProductController as PosProductController;
 use App\Http\Controllers\Pos\ProfileController as PosProfileController;
@@ -354,6 +355,8 @@ Route::middleware(['lang'])->group(function () {
         Route::get('tranksaksi/edit-pesanan/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.tranksaksi_pesanan.edit');
         Route::put('tranksaksi/update-pesanan/{id_bengkel}', [PosPesananController::class, 'update'])->name('pos.tranksaksi_pesanan.update');
         Route::delete('tranksaksi/delete-pesanan/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
+
+        Route::get('order-online/{id_bengkel}', [PosOrderOnlineController::class, 'index'])->name('pos.order-online');
 
         Route::prefix('Master-data')->group(function () {
             Route::prefix('pos/{id_bengkel}/product')->group(function () {
