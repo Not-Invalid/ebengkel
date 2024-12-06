@@ -22,7 +22,6 @@ class SpareParts extends Model
         'nama_spare_part',
         'harga_spare_part',
         'keterangan_spare_part',
-        'foto_spare_part',
         'stok_spare_part',
         'delete_spare_part',
     ];
@@ -35,7 +34,7 @@ class SpareParts extends Model
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');
     }
-    
+
     public function stocks()
     {
         return $this->hasMany(StockInbound::class, 'id_spare_part');
@@ -43,5 +42,9 @@ class SpareParts extends Model
     public function stocksOpname()
     {
         return $this->hasMany(StockOpname::class, 'id_spare_part', 'id_spare_part');
+    }
+    public function fotoSparepart()
+    {
+        return $this->hasOne(FotoSparepart::class, 'id_spare_part', 'id_spare_part');
     }
 }
