@@ -1,0 +1,91 @@
+:root {
+    --main-dark: #121212;
+    --main-blue: #007bff;
+    --main-grey-light: #9f9f9f;
+    --main-blue-dark: #0067f4;
+    --main-grey: #6c6c6c;
+    --main-red: #dc3545;
+    --main-light-grey: #f4f6f7;
+    --main-dark-blue: #2b354f;
+    --main-cyan: #17a2b8;
+    --main-white: #ffffff;
+    --main-light-blue: #3a6fb0;
+    --main-black: #000000;
+    --main-green: #28a745;
+    --bg-transparent: rgba(0, 0, 0, 0);
+}
+
+.title-header {
+    color: var(--main-blue);
+    position: relative;
+    z-index: 10;
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+[type="text"].form-control:focus,
+[type="password"].form-control:focus,
+[type="email"].form-control:focus,
+[type="tel"].form-control:focus,
+[contenteditable].form-control:focus {
+    box-shadow: inset 0 -1px 0 #ddd;
+}
+
+/* content */
+.payment-method {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-method {
+    transition: border-color 0.3s ease;
+}
+
+.payment-method input[type="radio"]:checked+img {
+    border-color: transparent;
+}
+
+.payment-method input[type="radio"]:checked+img+.form-check-label {
+    border: 2px solid blue;
+}
+
+.payment-method input[type="radio"]:checked+img+.form-check-label+div {
+    border: 2px solid blue;
+}
+
+.order-summary {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: var(--main-white);
+}
+
+.btn-payment {
+    background-color: var(--main-green);
+    color: #fff;
+}
+
+.btn-payment:hover {
+    background-color: var(--main-green);
+}
+
+.img-fluid {
+    width: 50%;
+    height: auto;
+}
+
+.form-label-qris {
+    text-align: center;
+    display: block;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+/* end */
