@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/payment.css') }}">
+@endpush
 
 @section('title')
     eBengkelku | Payment
@@ -9,104 +12,174 @@
     <section class="section section-white"
         style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom: 20px;">
         <div
-        style="background-image: url('{{ asset('assets/images/bg/wallpaper.png') }}'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; position: absolute; width: 100%; top: 0; bottom: 0; left: 0; right: 0;">
+            style="background-image: url('{{ asset('assets/images/bg/wallpaper.png') }}'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; position: absolute; width: 100%; top: 0; bottom: 0; left: 0; right: 0;">
         </div>
         <div class="bg-white" style="position: absolute; width: 100%; top: 0; bottom: 0; left: 0; right: 0; opacity: 0.7;">
         </div>
         <div class="container">
-        <div class="row">
-            <div class="col-md-12 text-center">
-            <h4 class="title-header">What's In The Cart</h4>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h4 class="title-header">What's In The Cart</h4>
+                </div>
             </div>
-        </div>
         </div>
     </section>
 
     <section>
-        <!-- Kontainer untuk Payment -->
-        <div class="container py-5" style="position: relative; z-index: 2;">
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <!-- Header -->
-                            <div class="text-center mb-4">
-                                <div class="col-auto">
-                                    <img src="{{ asset('assets/images/logo/icon.png') }}" alt="Produk" class="img-fluid rounded" style="width: 80px; height: 80px;">
-                                </div>
-                                <h3>Pembayaran eBengkelku</h3>
+        <div class="container my-5">
+            <div class="row">
+                <!-- Left Column: Checkout Form -->
+                <div class="col-md-8">
+                    <h3>Checkout</h3>
+                    <p>
+                        All plans include 40+ advanced tools and features to
+                        boost your product. Choose the best plan to fit your
+                        needs.
+                    </p>
+
+                    <!-- Payment Method -->
+                    <div class="payment-container row">
+                        <div class="col-md-6">
+                            <div class="payment-method d-flex align-items-center justify-content-between border p-3 mb-2">
+                                <label class="form-check-label d-flex align-items-center w-100" for="manualtransfer">
+                                    <input class="form-check-input me-2" type="radio" name="paymentMethod"
+                                        id="manualtransfer" />
+                                    <i class="fas fa-university me-2"></i>
+                                    Manual Transfer
+                                </label>
                             </div>
-                            <div class="card-body">
-                                <!-- Shipping Address Section -->
-                                <div class="checkout-section">
-                                    <h6 class="d-flex justify-content-between align-items-center">
-                                        <span>Informasi Pengiriman</span>
-                                    </h6>
-                                    <p class="mt-2">
-                                        <strong>{{ $order->atas_nama }}</strong> {{ $order->no_telp }}
-                                    </p>
-                                    <p class="mb-0">{{ $order->alamat_pengiriman }}</p>
-                                </div>
-                                <hr>
-
-                                <!-- Order Details Section -->
-                                <div class="checkout-section">
-                                    @foreach ($orderItems as $item)
-                                    <div class="row align-items-center bg-light p-2 rounded">
-                                        <h6 class="text-start mb-1">
-                                            <i class="bi bi-shop me-2"></i>{{ $item->nama_produk ?? $item->nama_spare_part }}
-                                        </h6>
-                                        <div class="col-auto">
-                                            @if ($item->produk)
-                                                <img src="{{ optional($item->produk)->foto_produk ? url($item->produk->foto_produk) : asset('assets/images/components/image.png') }}" alt="Gambar Produk" class="img-fluid rounded" style="width: 60px; height: 65px; object-fit: cover;">
-                                            @elseif($item->spare_part)
-                                                <img src="{{ optional($item->spare_part)->foto_spare_part ? url($item->spare_part->foto_spare_part) : asset('assets/images/components/image.png') }}" alt="Gambar SparePart" class="img-fluid rounded" style="width: 60px; height: 65px; object-fit: cover;">
-                                            @endif
-                                            </div>
-                                        <div class="col">
-                                            <p class="mb-0 fw-bold">{{ $item->nama_produk ?? $item->nama_spare_part }}</p>
-                                            <p class="mb-0 text-danger">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
-                                        </div>
-                                        <div class="col-auto">
-                                            <p class="mb-0 text-muted">{{ $item->total_qty }}x</p>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                                <hr>
-
-                                <!-- Shipping Method Section -->
-                                <div class="checkout-section">
-                                    <h6 class="mb-3">Opsi Pengiriman</h6>
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-border dropdown-toggle w-100 text-start d-flex justify-content-between align-items-center" type="button" id="shippingOptionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <div>
-                                                <p class="mb-0 fw-bold" id="selectedShippingName">{{ $order->jenis_pengiriman }}</p>
-                                                <p class="mb-0 text-muted" id="selectedShippingCourier">{{ $order->kurir }}</p>
-                                                <p class="mb-0 text-muted" style="font-size: 12px;" id="deliveryDate">Akan diterima pada {{ \Carbon\Carbon::parse($order->tanggal_kirim)->format('d M Y') }}</p>
-                                            </div>
-                                            <div class="text-end">
-                                                <p class="mb-0 fw-bold" id="selectedShippingPrice">Rp {{ number_format($order->biaya_pengiriman, 0, ',', '.') }}</p>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <hr>
-
-                                <!-- Ringkasan Total Biaya -->
-                                <div class="checkout-section">
-                                    <h6>Ringkasan Total Biaya</h6>
-                                    <p><strong>Subtotal:</strong> <span id="subtotal">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</span></p>
-                                    <p><strong>Biaya Pengiriman:</strong> <span id="shippingFee">Rp {{ number_format($order->biaya_pengiriman, 0, ',', '.') }}</span></p>
-                                    <p><strong>Diskon:</strong> <span id="discount">Rp 0</span></p>
-                                    <p><strong>Total:</strong> <span id="total">Rp {{ number_format($order->grand_total, 0, ',', '.') }}</span></p>
-                                </div>
-                            </div>
-
-                            <!-- Tombol Bayar -->
-                            <button id="payButton" class="btn btn-dark btn-block btn-lg mt-4">Bayar Sekarang</button>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="payment-method d-flex align-items-center justify-content-between border p-3 mb-2">
+                                <label class="form-check-label d-flex align-items-center w-100" for="qris">
+                                    <input class="form-check-input me-2" type="radio" name="paymentMethod"
+                                        id="qris" />
+                                    <i class="fas fa-qrcode me-2"></i> QRIS
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <!-- Manual Transfer: Select Bank Row -->
+                        <div class="row" id="selectBankRow" style="display: none">
+                            <div class="col-md-6">
+                                <label for="paymentMethod" class="form-label">Select Bank</label>
+                                <select class="form-select" id="paymentMethod" name="paymentMethod">
+                                    <option value="BCA">BCA</option>
+                                    <option value="BRI">BRI</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="accountNumber" class="form-label">Account Number</label>
+                                <input type="text" class="form-control" id="accountNumber" name="accountNumber"
+                                    placeholder="Enter your account number" />
+                            </div>
+                        </div>
+
+                        <!-- QRIS: QR Code Image Row -->
+                        <div class="row" id="qrisImageRow" style="display: none">
+                            <div class="col-md-12 text-center">
+                                <label for="qrisImage" class="form-label-qris">Scan QRIS</label>
+                                <img src="https://cdn.pixabay.com/photo/2013/07/12/14/45/qr-code-148732_1280.png"
+                                    alt="QRIS Code" class="img-fluid" id="qrisImage" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Billing Details -->
+                    <h4>Billing Details</h4>
+                    <form>
+                        <div class="mb-3 mt-3">
+                            <label for="status_invoice" class="form-label">Status Invoice</label>
+                            <input type="text" class="form-control" id="status_invoice" name="status_invoice"
+                                placeholder="Enter invoice status" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jatuh_tempo" class="form-label">Jatuh Tempo</label>
+                            <input type="date" class="form-control" id="jatuh_tempo" name="jatuh_tempo" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tanggal_invoice" class="form-label">Tanggal Invoice</label>
+                            <input type="date" class="form-control" id="tanggal_invoice" name="tanggal_invoice" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tanggal_bayar" class="form-label">Tanggal Bayar</label>
+                            <input type="date" class="form-control" id="tanggal_bayar" name="tanggal_bayar">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nama_rekening" class="form-label">Nama Rekening</label>
+                            <input type="text" class="form-control" id="nama_rekening" name="nama_rekening"
+                                placeholder="Enter account name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="no_rekening" class="form-label">No Rekening</label>
+                            <input type="text" class="form-control" id="no_rekening" name="no_rekening"
+                                placeholder="Enter account number">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="note" class="form-label">Note</label>
+                            <textarea class="form-control" id="note" name="note" rows="3" placeholder="Enter any notes"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tanggal_transfer" class="form-label">Tanggal Transfer</label>
+                            <input type="date" class="form-control" id="tanggal_transfer" name="tanggal_transfer">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nominal_transfer" class="form-label">Nominal Transfer</label>
+                            <input type="number" class="form-control" id="nominal_transfer" name="nominal_transfer"
+                                placeholder="Enter transfer amount">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="bukti_bayar" class="form-label">Bukti Bayar</label>
+                            <input type="file" class="form-control" id="bukti_bayar" name="bukti_bayar">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+
+                <!-- Right Column: Order Summary -->
+                <div class="col-md-4">
+                    <div class="order-summary">
+                        <h4>Order Summary</h4>
+                        <p>A simple start for everyone</p>
+                        <h5>$59.99/month</h5>
+                        <button class="btn btn-outline-primary w-100 mb-3">
+                            Change Plan
+                        </button>
+                        <div class="d-flex justify-content-between">
+                            <span>Subtotal</span>
+                            <span>$85.99</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Tax</span>
+                            <span>$4.99</span>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between fw-bold">
+                            <span>Total</span>
+                            <span>$90.98</span>
+                        </div>
+                        <button class="btn btn-payment w-100 mt-3">
+                            Proceed With Payment
+                        </button>
+                        <p class="text-muted mt-3 text-center">
+                            By continuing, you accept our
+                            <a href="#">Terms of Services</a> and
+                            <a href="#">Privacy Policy</a>. <br />
+                            Please note that payments are non-refundable.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -114,7 +187,31 @@
     </section>
 
     <script>
-        // Script untuk menghitung ulang total jika ada perubahan pada opsi pengiriman atau diskon (jika diperlukan)
-        // Sudah dijelaskan di atas
+        document.addEventListener("DOMContentLoaded", function() {
+            const manualTransferRadio =
+                document.getElementById("manualtransfer");
+            const qrisRadio = document.getElementById("qris");
+
+            const selectBankRow = document.querySelector("#selectBankRow");
+            const qrisImageRow = document.querySelector("#qrisImageRow");
+
+            function togglePaymentMethod() {
+                if (manualTransferRadio.checked) {
+                    selectBankRow.style.display = "flex";
+                    qrisImageRow.style.display = "none";
+                } else if (qrisRadio.checked) {
+                    selectBankRow.style.display = "none";
+                    qrisImageRow.style.display = "flex";
+                }
+            }
+
+            manualTransferRadio.addEventListener(
+                "change",
+                togglePaymentMethod
+            );
+            qrisRadio.addEventListener("change", togglePaymentMethod);
+
+            togglePaymentMethod();
+        });
     </script>
 @endsection
