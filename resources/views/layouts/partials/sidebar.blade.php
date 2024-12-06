@@ -45,7 +45,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <span class="menu-text">Profile</span>
+                    <span class="menu-text">{{ __('messages.sidebar.profile') }}</span>
                 </div>
                 <button class="toggle-btn">
                     <i class="bx bx-menu"></i>
@@ -53,37 +53,37 @@
             </div>
             <a href="{{ route('profile') }}" class="menu-item {{ request()->is('profile') ? 'active' : '' }}">
                 <i class="bx bx-user"></i>
-                <span class="menu-text">Account</span>
+                <span class="menu-text">{{ __('messages.sidebar.account') }}</span>
             </a>
             <a href="{{ route('profile.address') }}"
                 class="menu-item {{ request()->is('profile/address*') ? 'active' : '' }}">
                 <i class='bx bxs-map'></i>
-                <span class="menu-text">Address</span>
+                <span class="menu-text">{{ __('messages.sidebar.address') }}</span>
             </a>
             <a href="{{ route('profile.workshop') }}"
                 class="menu-item {{ request()->is('profile/workshop*') ? 'active' : '' }}">
                 <i class='bx bx-building-house'></i>
-                <span class="menu-text">Workshop</span>
+                <span class="menu-text">{{ __('messages.sidebar.workshop') }}</span>
             </a>
             <a href="{{ route('profile-used-car') }}"
                 class="menu-item {{ request()->is('profile/used-car*') ? 'active' : '' }}">
                 <i class='bx bx-car'></i>
-                <span class="menu-text">Used Car</span>
+                <span class="menu-text">{{ __('messages.sidebar.usedcar') }}</span>
             </a>
             <a href="{{ route('my-order.index') }}"
                 class="menu-item {{ request()->is('my-order*') ? 'active' : '' }}">
                 <i class='bx bx-package'></i>
-                <span class="menu-text">My Order</span>
+                <span class="menu-text">{{ __('messages.sidebar.order') }}</span>
             </a>
 
             <a href="{{ route('profile.setting') }}"
                 class="menu-item {{ request()->is('profile/settings*') ? 'active' : '' }}">
                 <i class="bx bx-cog"></i>
-                <span class="menu-text">Settings</span>
+                <span class="menu-text">{{ __('messages.sidebar.setting') }}</span>
             </a>
             <a href="{{ route('home') }}" class="menu-item">
                 <i class="bx bx-chevron-left"></i>
-                <span class="menu-text">Back To Home</span>
+                <span class="menu-text">{{ __('messages.sidebar.back') }}</span>
             </a>
         </div>
 
@@ -99,7 +99,7 @@
                         <a href="#"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit()">
                             <div class="d-flex align-items-center">
-                                <i class='bx bx-log-out mx-2'></i> Logout
+                                <i class='bx bx-log-out mx-2'></i> {{ __('messages.sidebar.logout') }}
                             </div>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;"
                                 id="logout-form">
