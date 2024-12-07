@@ -200,6 +200,8 @@ public function placeOrder(Request $request)
         $order = new OrderOnline();
         $order->id_pelanggan = $pelanggan_id;
         $order->id_bengkel = $bengkel_id;
+        $order->id_produk = $item->id_produk;
+        $order->id_spare_part = $item->id_spare_part;
         $order->tanggal = now();
         $order->total_qty = $total_qty;
         $order->total_harga = $total_harga;
@@ -230,7 +232,7 @@ public function placeOrder(Request $request)
         $invoice->id_order = $order->order_id;  // Use order_id to link to t_invoice
         $invoice->status_invoice = 'PENDING';
         $invoice->tanggal_invoice = now();
-        $invoice->jatuh_tempo = now()->addDays(7);  // Example: 7 days from now
+        $invoice->jatuh_tempo = now()->addDays(1);  // Example: 7 days from now
         $invoice->save();
 
         // Delete cart items after order is processed
