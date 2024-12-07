@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\FotoProduk;
+use App\Models\FotoSparepart;
 use App\Models\KategoriSparePart;
 use App\Models\Product;
 use App\Models\SpareParts;
@@ -35,15 +37,34 @@ class ProductSparePartController extends Controller
     {
         if ($type == 'product') {
             $data = Product::where('id_produk', $id)->first();
+            $photos = FotoProduk::where('id_produk', $id)->first();
         } elseif ($type == 'sparepart') {
             $data = SpareParts::where('id_spare_part', $id)->first();
+            $photos = FotoSparepart::where('id_spare_part', $id)->first();
         } else {
             abort(404);
         }
 
+        if (!$data || !$photos) {
+            abort(404);
+        }
+
+        // Proses foto menjadi array dinamis
+        $photoArray = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $column = $type === 'product' ? "file_foto_produk_$i" : "file_foto_spare_part_$i";
+            if (!empty($photos->$column)) {
+                $photoArray[] = url($photos->$column);
+            }
+        }
+
+        // Tentukan foto utama dan foto kecil
+        $mainPhoto = $photoArray[0] ?? asset('assets/images/default.png');
+        $thumbnailPhotos = array_slice($photoArray, 1);
+
         $data->load('bengkel');
 
-        return view('ProductSparepart.detail-ProductSparePart', compact('data'));
+        return view('ProductSparepart.detail-ProductSparePart', compact('data', 'mainPhoto', 'thumbnailPhotos'));
     }
 
     public function createSparepart()
