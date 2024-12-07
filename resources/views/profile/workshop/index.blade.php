@@ -9,8 +9,9 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <div class="d-flex justify-content-between align-items-center">
-            <h4 class="fs-5">Your Workshops</h4>
-            <a href="{{ route('profile.workshop.create') }}" class="btn btn-custom-2">+ Add New Workshop</a>
+            <h4 class="fs-5">{{ __('messages.profile.workshop.title') }}</h4>
+            <a href="{{ route('profile.workshop.create') }}" class="btn btn-custom-2">+
+                {{ __('messages.profile.workshop.add_workshop') }}</a>
         </div>
         @if ($bengkels->isEmpty())
             <div class="card border-1 rounded-2 mt-4">
@@ -18,7 +19,7 @@
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
                             alt="No workshops">
-                        <p>No data available for workshops.</p>
+                        <p>{{ __('messages.profile.workshop.no_data') }}.</p>
                     </div>
                 </div>
             </div>

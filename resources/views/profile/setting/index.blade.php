@@ -14,24 +14,24 @@
             <ul class="custom-tabs shadow text-center">
                 <li class="custom-tab-item">
                     <a class="custom-tab-link active" data-tab="keamanan">
-                        Security & Account
+                        {{ __('messages.profile.settings.tabs.security_account') }}
                     </a>
                 </li>
                 <li class="custom-tab-item">
                     <a class="custom-tab-link" data-tab="bahasa">
-                        Language Settings
+                        {{ __('messages.profile.settings.tabs.language_settings') }}
                     </a>
                 </li>
                 <li class="custom-tab-item">
                     <a class="custom-tab-link" data-tab="log">
-                        Login History
+                        {{ __('messages.profile.settings.tabs.login_history') }}
                     </a>
                 </li>
             </ul>
             <select class="custom-dropdown shadow">
-                <option value="keamanan" selected>Security & Account</option>
-                <option value="bahasa">Languange Settings</option>
-                <option value="log">Login History</option>
+                <option value="keamanan" selected> {{ __('messages.profile.settings.tabs.security_account') }}</option>
+                <option value="bahasa"> {{ __('messages.profile.settings.tabs.language_settings') }}</option>
+                <option value="log"> {{ __('messages.profile.settings.tabs.login_history') }}</option>
             </select>
         </div>
     </section>
@@ -39,17 +39,18 @@
         <div class="tab-content">
             <div class="tab-pane active" id="keamanan">
                 <div class="pt-3">
-                    <h5>Security & Account</h5>
+                    <h5> {{ __('messages.profile.settings.tabs.security_account') }}</h5>
                     <hr>
                     <!-- Ganti Password -->
                     <div class="mb-4">
-                        <h6>Change Password</h6>
+                        <h6> {{ __('messages.profile.settings.security.change_password.heading') }}</h6>
                         <form method="POST" action="{{ route('profile.resetPassword') }}">
                             @csrf
                             <div class="mb-3">
                                 <div class="input-box">
                                     <input type="password" class="form-control" id="currentPassword" name="currentPassword"
-                                        placeholder="Enter Old Password" required>
+                                        placeholder="{{ __('messages.profile.settings.security.change_password.fields.current_password') }}"
+                                        required>
                                     <span class="toggle-password" onclick="toggleCurrentPasswordVisibility()">
                                         <i class="bx bx-hide" id="toggle-current-icon"></i>
                                     </span>
@@ -62,7 +63,8 @@
                             <div class="mb-3">
                                 <div class="input-box">
                                     <input type="password" class="form-control" id="newPassword" name="newPassword"
-                                        placeholder="Enter New Password" required>
+                                        placeholder="{{ __('messages.profile.settings.security.change_password.fields.new_password') }}"
+                                        required>
                                     <span class="toggle-password" onclick="toggleNewPasswordVisibility()">
                                         <i class="bx bx-hide" id="toggle-new-icon"></i>
                                     </span>
@@ -75,7 +77,9 @@
                             <div class="mb-3">
                                 <div class="input-box">
                                     <input type="password" class="form-control" id="newPassword_confirmation"
-                                        name="newPassword_confirmation" placeholder="Confirm New Password" required>
+                                        name="newPassword_confirmation"
+                                        placeholder="{{ __('messages.profile.settings.security.change_password.fields.confirm_password') }}"
+                                        required>
                                     <span class="toggle-password" onclick="toggleNewPasswordConfirmationVisibility()">
                                         <i class="bx bx-hide" id="toggle-confirm-icon"></i>
                                     </span>
@@ -85,34 +89,37 @@
                                 @enderror
                             </div>
 
-                            <button type="submit" class="btn btn-save">Save</button>
+                            <button type="submit"
+                                class="btn btn-save">{{ __('messages.profile.settings.security.change_password.save_button') }}</button>
                         </form>
                     </div>
                 </div>
             </div>
-            {{ dd(app()->getLocale()) }}
             <div class="tab-pane" id="bahasa">
                 <div class="pt-3">
-                    <h5>Language Settings</h5>
+                    <h5>{{ __('messages.profile.settings.language.title') }}</h5>
                     <hr>
                     <form id="languageForm" action="{{ route('change-language') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="languageSelect" class="form-label">Select Language</label>
+                            <label for="languageSelect"
+                                class="form-label">{{ __('messages.profile.settings.language.select_language') }}</label>
                             <select class="form-select" id="languageSelect" name="language">
-                                <option value="" selected disabled hidden>Change Language</option>
+                                <option value="" selected disabled hidden>
+                                    {{ __('messages.profile.settings.language.select_language') }}</option>
                                 <option value="id" {{ session('locale') === 'id' ? 'selected' : '' }}>ID</option>
                                 <option value="en" {{ session('locale') === 'en' ? 'selected' : '' }}>EN</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="saveLanguage">Save</button>
+                        <button type="submit" class="btn btn-primary"
+                            id="saveLanguage">{{ __('messages.profile.settings.language.save_button') }}</button>
                     </form>
                 </div>
             </div>
             <div class="tab-pane" id="log">
                 {{-- isi card --}}
                 <div class="pt-3 w-75">
-                    <h5>Login History</h5>
+                    <h5>{{ __('messages.profile.settings.log.title') }}</h5>
                     <hr>
                     <canvas id="myBarChart" class="bar-log" style="width: 900px; height: 400px;"></canvas>
 

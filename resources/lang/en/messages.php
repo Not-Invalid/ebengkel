@@ -200,6 +200,72 @@ return [
             'edit_title' => 'Edit Address',
             'save' => 'Save',
         ],
+
+        'workshop' => [
+            'title' => 'Your Workshops',
+            'add_workshop' => 'Add New Workshop',
+            'no_data' => 'No data workshop alvailable',
+            'fields' => [
+                'cover_photo' => 'Cover Workshop Photo',
+                'workshop_photo' => 'Workshop Photo',
+                'workshop_name' => 'Workshop Name',
+                'workshop_tagline' => 'Workshop Tagline',
+                'workshop_address' => 'Workshop Address',
+                'province' => 'Province',
+                'city' => 'City',
+                'district' => 'District',
+                'gmaps_link' => 'Google Maps Link',
+                'open_day' => 'Open Day',
+                'close_day' => 'Close Day',
+                'open_hour' => 'Open Hour',
+                'close_hour' => 'Close Hour',
+                'services' => 'Service Available',
+                'payment_methods' => 'Payment Methods',
+                'bank_account' => 'Bank Account',
+                'qris_code' => 'QRIS QR Code',
+                'whatsapp' => 'WhatsApp Number',
+            ],
+            'labels' => [
+                'add_bank_account' => 'Add Bank Account',
+                'remove_bank_account' => 'Remove Bank Account',
+                'required' => '*indicates required fields',
+            ],
+            'cancel' => 'Batal',
+            'submit' => 'Submit',
+        ],
+
+        'settings' => [
+            'tabs' => [
+                'security_account' => 'Security & Account',
+                'language_settings' => 'Language Settings',
+                'login_history' => 'Login History',
+            ],
+            'security' => [
+                'title' => 'Security & Account',
+                'change_password' => [
+                    'heading' => 'Change Password',
+                    'fields' => [
+                        'current_password' => 'Enter Old Password',
+                        'new_password' => 'Enter New Password',
+                        'confirm_password' => 'Confirm New Password',
+                    ],
+                    'save_button' => 'Save',
+                ],
+            ],
+            'language' => [
+                'title' => 'Language Settings',
+                'select_language' => 'Select Language',
+                'options' => [
+                    'placeholder' => 'Change Language',
+                    'id' => 'ID',
+                    'en' => 'EN',
+                ],
+                'save_button' => 'Save',
+            ],
+            'log' => [
+                'title' => 'Login History',
+            ],
+        ],
     ],
 
     'about' => [
@@ -322,6 +388,18 @@ return [
         'terms2' => 'eBengkelku Services',
         'terms3' => 'Account Security',
         'terms4' => 'Changes to Terms & Conditions',
+    ],
+
+    'sidebar' => [
+        'profile' => 'Profile',
+        'account' => 'Account',
+        'address' => 'Address',
+        'workshop' => 'Workshop',
+        'usedcar' => 'Used Car',
+        'order' => 'My Order',
+        'setting' => 'Settings',
+        'back' => 'Back To Home',
+        'logout' => 'Logout',
     ],
 
     'footer' => [

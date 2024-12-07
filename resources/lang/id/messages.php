@@ -200,6 +200,72 @@ return [
             'edit_title' => 'Edit Alamat',
             'save' => 'Simpan',
         ],
+
+        'workshop' => [
+            'title' => 'Bengkel Kamu',
+            'add_workshop' => 'Tambah Bengkel Baru',
+            'no_data' => 'Tidak ada data bengkel',
+            'fields' => [
+                'cover_photo' => 'Foto Cover Bengkel',
+                'workshop_photo' => 'Foto Bengkel',
+                'workshop_name' => 'Nama Bengkel',
+                'workshop_tagline' => 'Tagline Bengkel',
+                'workshop_address' => 'Alamat Bengkel',
+                'province' => 'Provinsi',
+                'city' => 'Kota',
+                'district' => 'Kecamatan',
+                'gmaps_link' => 'Link Google Maps',
+                'open_day' => 'Hari Buka',
+                'close_day' => 'Hari Tutup',
+                'open_hour' => 'Jam Buka',
+                'close_hour' => 'Jam Tutup',
+                'services' => 'Layanan Tersedia',
+                'payment_methods' => 'Metode Pembayaran',
+                'bank_account' => 'Rekening Bank',
+                'qris_code' => 'Kode QR QRIS',
+                'whatsapp' => 'Nomor WhatsApp',
+            ],
+            'labels' => [
+                'add_bank_account' => 'Tambah Rekening Bank',
+                'remove_bank_account' => 'Hapus Rekening',
+                'required' => '*menandakan bidang wajib diisi',
+            ],
+            'cancel' => 'Cancel',
+            'submit' => 'Kirim',
+        ],
+
+        'settings' => [
+            'tabs' => [
+                'security_account' => 'Keamanan & Akun',
+                'language_settings' => 'Pengaturan Bahasa',
+                'login_history' => 'Riwayat Login',
+            ],
+            'security' => [
+                'title' => 'Keamanan & Akun',
+                'change_password' => [
+                    'heading' => 'Ganti Kata Sandi',
+                    'fields' => [
+                        'current_password' => 'Masukkan Kata Sandi Lama',
+                        'new_password' => 'Masukkan Kata Sandi Baru',
+                        'confirm_password' => 'Konfirmasi Kata Sandi Baru',
+                    ],
+                    'save_button' => 'Simpan',
+                ],
+            ],
+            'language' => [
+                'title' => 'Pengaturan Bahasa',
+                'select_language' => 'Pilih Bahasa',
+                'options' => [
+                    'placeholder' => 'Ubah Bahasa',
+                    'id' => 'ID',
+                    'en' => 'EN',
+                ],
+                'save_button' => 'Simpan',
+            ],
+            'log' => [
+                'title' => 'Riwayat Login',
+            ],
+        ],
     ],
 
     'about' => [
@@ -322,6 +388,18 @@ return [
         'terms2' => 'Layanan eBengkelku',
         'terms3' => 'Keamanan Akun',
         'terms4' => 'Perubahan Syarat & Ketentuan',
+    ],
+
+    'sidebar' => [
+        'profile' => 'Profil',
+        'account' => 'Akun',
+        'address' => 'Alamat',
+        'workshop' => 'Bengkel',
+        'usedcar' => 'Mobil Bekas',
+        'order' => 'Order Saya',
+        'setting' => 'Pengaturan',
+        'back' => 'Kembali Ke Beranda',
+        'logout' => 'Keluar',
     ],
 
     'footer' => [
