@@ -15,8 +15,6 @@ class OrderOnline extends Model
         'order_id',
         'id_bengkel',
         'id_pelanggan',
-        'id_produk',
-        'id_spare_part',
         'tanggal',
         'total_qty',
         'total_harga',
@@ -43,15 +41,14 @@ class OrderOnline extends Model
     {
         return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
     }
-    public function produk()
+    public function orderItems()
     {
-        return $this->belongsTo(Product::class, 'id_produk');
+        return $this->hasMany(OrderItemOnline::class, 'id_order_online');
     }
-    public function sparepart()
+    public function bengkel()
     {
-        return $this->belongsTo(SpareParts::class, 'id_spare_part');
+        return $this->belongsTo(Bengkel::class, 'id_bengkel');
     }
-
     public function invoice()
     {
         return $this->hasOne(Invoice::class, 'id_order', 'order_id');
