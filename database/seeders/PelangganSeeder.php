@@ -75,7 +75,6 @@ class PelangganSeeder extends Seeder
                 'nama_produk' => 'Oli 15W-40',
                 'harga_produk' => 150000,
                 'keterangan_produk' => 'Kualitas original dan bagus',
-                'foto_produk' => 'https://media.istockphoto.com/id/1046550104/id/foto/tabung-oli-motor-plastik-dengan-berbagai-jenis-oli-motor-pada-latar-belakang-terisolasi-putih.jpg?s=612x612&w=0&k=20&c=cfVhAi13q8COlpX0VikWSxqGZ-6Wf0lbSk5HFPgjWPI=',
                 'stok_produk' => 100,
                 'create_produk' => Carbon::now(),
                 'delete_produk' => 'N',
@@ -89,11 +88,32 @@ class PelangganSeeder extends Seeder
                 'nama_produk' => 'Oli 20W-50',
                 'harga_produk' => 170000,
                 'keterangan_produk' => 'Oli dengan performa tinggi untuk mesin motor',
-                'foto_produk' => 'https://cdn2.louis.de/dynamic/articles/o_resize,w_1800,h_1800,m_limit,c_fff/ec.b3.fe.H1Motul71004T20W5010037630.JPG',
                 'stok_produk' => 80,
                 'create_produk' => Carbon::now(),
                 'delete_produk' => 'N',
             ],
+        ]);
+        DB::table('tb_foto_produk')->insert([
+            [
+                'id_produk' => 1,
+                'file_foto_produk_1' => 'https://d23zpyj32c5wn3.cloudfront.net/images/distributions/picture_2s/36199/big/Motul_106944_2100_PERFORMANCE_15W-40_4L.png?1602575024',
+                'file_foto_produk_2' => 'https://d23zpyj32c5wn3.cloudfront.net/pim/packshots/pictures/18/main/open-uri20211026-26319-fsfrpe?1635261829',
+                'file_foto_produk_3' => 'https://d23zpyj32c5wn3.cloudfront.net/images/distributions/picture_2s/36199/big/Motul_106944_2100_PERFORMANCE_15W-40_4L.png?1602575024',
+                'file_foto_produk_4' => null,
+                'file_foto_produk_5' => null,
+                'create_file_foto_produk' => Carbon::now(),
+                'delete_file_foto_produk' => 'N',
+            ],
+            [
+                'id_produk' => 2,
+                'file_foto_produk_1' => 'https://d23zpyj32c5wn3.cloudfront.net/images/distributions/picture_2s/36199/big/Motul_106944_2100_PERFORMANCE_15W-40_4L.png?1602575024',
+                'file_foto_produk_2' => 'https://www.motul.com/_next/image?url=https%3A%2F%2Fazupim01.motul.com%2Fmedia%2FmotulData%2FIM%2Fbigweb%2FMOTUL_110205_5000%252020W-50%25204T-1L%2520AL_NEW_png.png&w=1080&q=75',
+                'file_foto_produk_3' => 'https://cdn2.louis.de/dynamic/articles/o_resize,w_1800,h_1800,m_limit,c_fff/c8.70.ee.10037638Motul30004T20W501l970DET0118.JPG',
+                'file_foto_produk_4' => null,
+                'file_foto_produk_5' => null,
+                'create_file_foto_produk' => Carbon::now(),
+                'delete_file_foto_produk' => 'N',
+            ]
         ]);
         DB::table('tb_spare_part')->insert([
             [
@@ -106,7 +126,6 @@ class PelangganSeeder extends Seeder
                 'nama_spare_part' => 'Air Filter',
                 'harga_spare_part' => 75000,
                 'keterangan_spare_part' => 'Kualitas original dan bagus',
-                'foto_spare_part' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3AFyyrkXYAFKackbG85WAqAQt94dUeHQnyA&s',
                 'stok_spare_part' => 150,
                 'create_spare_part' => Carbon::now(),
                 'delete_spare_part' => 'N',
@@ -121,11 +140,32 @@ class PelangganSeeder extends Seeder
                 'nama_spare_part' => 'Spark Plug',
                 'harga_spare_part' => 50000,
                 'keterangan_spare_part' => 'Spark plug kualitas tinggi untuk performa mesin optimal',
-                'foto_spare_part' => 'https://cdn2.louis.de/dynamic/articles/o_resize,w_1800,h_1800,m_limit,c_fff/ec.b3.fe.H1Motul71004T20W5010037630.JPG',
                 'stok_spare_part' => 120,
                 'create_spare_part' => Carbon::now(),
                 'delete_spare_part' => 'N',
             ],
+        ]);
+        DB::table('tb_foto_spare_part')->insert([
+            [
+                'id_spare_part' => 1,
+                'file_foto_spare_part_1' => 'https://www.fleet.boschautoparts.com/o/commerce-media/products/660569/workshop-air-filters/2228122/WorkshopAir_Category.png?download=true',
+                'file_foto_spare_part_2' => 'https://tse2.mm.bing.net/th?id=OIP.5waTuDa8ew3WUGApVSCThQHaE6&pid=Api&P=0&h=180',
+                'file_foto_spare_part_3' => 'https://tse2.mm.bing.net/th?id=OIP.5waTuDa8ew3WUGApVSCThQHaE6&pid=Api&P=0&h=180',
+                'file_foto_spare_part_4' => null,
+                'file_foto_spare_part_5' => null,
+                'create_file_foto_spare_part' => Carbon::now(),
+                'delete_file_foto_spare_part' => 'N',
+            ],
+            [
+                'id_spare_part' => 2,
+                'file_foto_spare_part_1' => 'https://tse3.mm.bing.net/th?id=OIP.f-Sxeiwjxd472kTMogXu9gHaIG&pid=Api&P=0&h=180',
+                'file_foto_spare_part_2' => 'https://www.racingplanetusa.com/images/gross/dsw24frl_zuendkerze_denso_shop.jpg',
+                'file_foto_spare_part_3' => 'https://tse3.mm.bing.net/th?id=OIP.iNLWpIVr2E9L5OpQSE06CwHaHa&pid=Api&P=0&h=180',
+                'file_foto_spare_part_4' => null,
+                'file_foto_spare_part_5' => null,
+                'create_file_foto_spare_part' => Carbon::now(),
+                'delete_file_foto_spare_part' => 'N',
+            ]
         ]);
         DB::table('tb_services')->insert([
             [
