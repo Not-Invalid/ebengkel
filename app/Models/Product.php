@@ -21,7 +21,6 @@ class Product extends Model
         'nama_produk',
         'harga_produk',
         'keterangan_produk',
-        'foto_produk',
         'stok_produk',
         'create_produk',
         'delete_produk',
@@ -56,4 +55,9 @@ class Product extends Model
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel', 'id_bengkel');
     }
+    public function fotoProduk()
+    {
+        return $this->hasOne(FotoProduk::class, 'id_produk', 'id_produk');
+    }
+
 }

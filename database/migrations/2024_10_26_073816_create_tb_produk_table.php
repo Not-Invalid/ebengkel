@@ -22,7 +22,6 @@ class CreateTbProdukTable extends Migration
             $table->string('nama_produk')->nullable();
             $table->integer('harga_produk')->nullable();
             $table->text('keterangan_produk')->nullable();
-            $table->text('foto_produk')->nullable();
             $table->integer('stok_produk')->nullable();
             $table->dateTime('create_produk')->nullable();
             $table->string('delete_produk', 1)->default('N');
