@@ -218,7 +218,7 @@
             <select name="provinsi" id="provinsi" class="did-floating-select">
                 <option value="{{ $bengkel->provinsi }}" selected>{{ $bengkel->provinsi }}</option>
             </select>
-            <label class="did-floating-label">Province</label>
+            <label class="did-floating-label">Province<span class="text-danger">*</span></label>
         </div>
     </div>
 
@@ -227,7 +227,7 @@
             <select name="kota" id="kota" class="did-floating-select">
                 <option value="{{ $bengkel->kota }}" selected>{{ $bengkel->kota }}</option>
             </select>
-            <label class="did-floating-label">City</label>
+            <label class="did-floating-label">City<span class="text-danger">*</span></label>
         </div>
     </div>
 
@@ -236,7 +236,7 @@
             <select name="kecamatan" id="kecamatan" class="did-floating-select">
                 <option value="{{ $bengkel->kecamatan }}" selected>{{ $bengkel->kecamatan }}</option>
             </select>
-            <label class="did-floating-label">District</label>
+            <label class="did-floating-label">District<span class="text-danger">*</span></label>
         </div>
     </div>
 
@@ -371,19 +371,19 @@
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][no_rekening]" value="{{ old('rekening_bank.'.$index.'.no_rekening', $bankAccount['no_rekening']) }}" />
-                        <label class="did-floating-label">Bank Account Number</label>
+                        <label class="did-floating-label">Bank Account Number<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][nama_bank]" value="{{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) }}" />
-                        <label class="did-floating-label">Bank Name</label>
+                        <label class="did-floating-label">Bank Name<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][atas_nama]" value="{{ old('rekening_bank.'.$index.'.atas_nama', $bankAccount['atas_nama']) }}" />
-                        <label class="did-floating-label">Account Holder</label>
+                        <label class="did-floating-label">Account Holder<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-auto">
