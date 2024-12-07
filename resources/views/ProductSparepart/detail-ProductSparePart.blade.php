@@ -34,21 +34,47 @@
               <!-- Foto Besar -->
               <div class="mb-3 text-center">
                 <img id="mainPhoto" src="{{ $mainPhoto }}" alt="Main Photo"
-                  style="width: 100%; height: 400px; object-fit: cover; border-radius: 8px;" class="shadow">
+                  style="width: 100%; height: 400px; object-fit: cover; border-radius: 8px; cursor: pointer;"
+                  class="shadow" data-bs-toggle="modal" data-bs-target="#photoModal">
               </div>
+
               <!-- Foto Kecil -->
               <div class="d-flex justify-content-start gap-2 mb-3">
-                @foreach ($thumbnailPhotos as $thumbnail)
+                @foreach ($thumbnailPhotos as $index => $thumbnail)
                   <img class="thumbnail-photo shadow" src="{{ $thumbnail }}" alt="Thumbnail"
                     style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer;"
-                    onclick="changeMainPhoto(this)">
+                    onclick="changeMainPhoto(this, {{ $index }})">
                 @endforeach
+              </div>
+            </div>
+          </div>
+          <!-- Modal untuk Foto Besar -->
+          <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered"
+              style="max-width: 500px;max-height: 500px; /* Ukuran modal */">
+              <div class="modal-content border-0">
+                <div class="modal-body p-0">
+                  <!-- Chevron Kiri -->
+                  <button type="button" class="btn btn-link position-absolute top-50 start-0 translate-middle-y"
+                    style="z-index: 1; left: 5%;" onclick="navigatePhoto('prev')">
+                    <i class="bx bx-chevron-left" style="font-size: 2rem;"></i>
+                  </button>
+                  <!-- Gambar Besar -->
+                  <img id="modalMainPhoto" src="{{ $mainPhoto }}" alt="Main Photo"
+                    style="width: 500px; height: 500px; object-fit: cover;" class="shadow">
+
+                  <!-- Chevron Kanan -->
+                  <button type="button" class="btn btn-link position-absolute top-50 end-0 translate-middle-y"
+                    style="z-index: 1; right: 5%;" onclick="navigatePhoto('next')">
+                    <i class="bx bx-chevron-right" style="font-size: 2rem;"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
 
-          <div class="store-info p-3 rounded shadow">
+          <div class="store-info p-3 mb-3 rounded shadow">
             <div class="d-flex align-items-center mb-2">
               <div class="store-badge me-2">
                 <img
@@ -139,19 +165,48 @@
     });
   </script>
   <script>
-    function changeMainPhoto(thumbnail) {
-      // Simpan elemen foto utama
+    let photoArray = @json($thumbnailPhotos); // Menyimpan array foto
+
+    // Fungsi untuk mengganti foto utama
+    function changeMainPhoto(thumbnail, index) {
       let mainPhoto = document.getElementById('mainPhoto');
+      let modalMainPhoto = document.getElementById('modalMainPhoto');
 
-      // Simpan URL foto besar saat ini
+      // Simpan URL foto utama saat ini dan ubah dengan foto yang diklik
       let currentMainPhotoSrc = mainPhoto.src;
-
-      // Ganti foto utama dengan foto kecil yang diklik
       mainPhoto.src = thumbnail.src;
 
       // Ganti foto kecil yang diklik dengan foto besar sebelumnya
       thumbnail.src = currentMainPhotoSrc;
+
+      // Mengatur gambar modal sesuai dengan thumbnail yang dipilih
+      modalMainPhoto.src = thumbnail.src;
+
+      // Simpan index foto yang sedang ditampilkan di modal
+      modalMainPhoto.dataset.index = index;
+    }
+
+    // Fungsi untuk navigasi foto (prev/next)
+    function navigatePhoto(direction) {
+      let modalMainPhoto = document.getElementById('modalMainPhoto');
+      let currentIndex = parseInt(modalMainPhoto.dataset.index || 0);
+
+      if (direction === 'prev') {
+        currentIndex = currentIndex === 0 ? photoArray.length - 1 : currentIndex - 1;
+      } else {
+        currentIndex = currentIndex === photoArray.length - 1 ? 0 : currentIndex + 1;
+      }
+
+      // Perbarui gambar modal sesuai dengan navigasi
+      modalMainPhoto.src = photoArray[currentIndex];
+      modalMainPhoto.dataset.index = currentIndex;
+
+      // Perbarui foto utama di halaman jika perlu
+      let mainPhoto = document.getElementById('mainPhoto');
+      mainPhoto.src = photoArray[currentIndex];
     }
   </script>
+
+
 
 @endsection
