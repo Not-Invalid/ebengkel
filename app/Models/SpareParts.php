@@ -47,4 +47,9 @@ class SpareParts extends Model
     {
         return $this->hasOne(FotoSparepart::class, 'id_spare_part', 'id_spare_part');
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItemOnline::class, 'id_barang');
+    }
 }
