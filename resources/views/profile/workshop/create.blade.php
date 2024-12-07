@@ -303,7 +303,7 @@
             <select name="provinsi" id="provinsi" class="did-floating-select">
                 <option value="" selected disabled hidden>Select Province</option>
             </select>
-            <label class="did-floating-label">Province</label>
+            <label class="did-floating-label">Province<span class="text-danger">*</span></label>
         </div>
     </div>
 
@@ -312,7 +312,7 @@
             <select name="kota" id="kota" class="did-floating-select">
                 <option value="" selected disabled hidden>Select City</option>
             </select>
-            <label class="did-floating-label">City</label>
+            <label class="did-floating-label">City<span class="text-danger">*</span></label>
         </div>
     </div>
 
@@ -321,7 +321,7 @@
             <select name="kecamatan" id="kecamatan" class="did-floating-select">
                 <option value="" selected disabled hidden>Select District</option>
             </select>
-            <label class="did-floating-label">District</label>
+            <label class="did-floating-label">District<span class="text-danger">*</span></label>
         </div>
     </div>
 
@@ -431,19 +431,19 @@
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="rekening_number" name="rekening_bank[0][no_rekening]" />
-                        <label class="did-floating-label">Bank Account Number</label>
+                        <label class="did-floating-label">Bank Account Number<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="bank_name" name="rekening_bank[0][nama_bank]" />
-                        <label class="did-floating-label">Bank Name</label>
+                        <label class="did-floating-label">Bank Name<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " id="account_holder" name="rekening_bank[0][atas_nama]" />
-                        <label class="did-floating-label">Account Holder</label>
+                        <label class="did-floating-label">Account Holder<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-auto">
