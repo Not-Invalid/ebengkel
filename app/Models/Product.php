@@ -59,5 +59,9 @@ class Product extends Model
     {
         return $this->hasOne(FotoProduk::class, 'id_produk', 'id_produk');
     }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItemOnline::class, 'id_barang');
+    }
 
 }
