@@ -18,8 +18,8 @@ class ProductSparePartController extends Controller
 
     public function index(Request $request)
     {
-        $querySparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel');
-        $queryProduct = Product::where('delete_produk', 'N')->with('bengkel');
+        $querySparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel', 'fotoSparepart');
+        $queryProduct = Product::where('delete_produk', 'N')->with('bengkel', 'fotoProduk');
 
         if ($request->has('search')) {
             $search = $request->input('search');
