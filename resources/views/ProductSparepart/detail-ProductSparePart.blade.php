@@ -97,7 +97,7 @@
                         <button class="btn btn-outline-dark flex-grow-1 py-2" type="submit" id="add-to-cart-btn">
                             <i class="bx bx-cart me-1"></i> {{ __('messages.ProductSparepart.add_to_cart') }}
                         </button>
-                        <button class="btn btn-primary flex-grow-1 py-2">
+                        <button class="btn btn-primary flex-grow-1 py-2" type="button" id="buy-now-btn">
                             {{ __('messages.ProductSparepart.buy_now') }}
                         </button>
                     </form>
@@ -109,6 +109,21 @@
 
 
     <script>
+        document.getElementById('buy-now-btn').addEventListener('click', function() {
+            // Menambahkan parameter buy_now ke form
+            var form = this.closest('form');
+            var buyNowInput = document.createElement('input');
+            buyNowInput.type = 'hidden';
+            buyNowInput.name = 'buy_now';
+            buyNowInput.value = 'true';
+            form.appendChild(buyNowInput);
+
+            // Set the quantity input value
+            document.getElementById('quantity-input').value = document.querySelector('.quantity-input').value;
+
+            // Submit the form
+            form.submit();
+        });
         document.querySelector('.btn-increment').addEventListener('click', function() {
             var quantityInput = document.querySelector('.quantity-input');
             quantityInput.value = parseInt(quantityInput.value) + 1;
