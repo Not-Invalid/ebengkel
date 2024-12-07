@@ -87,5 +87,10 @@ input[type="number"]:focus,
     margin-bottom: 16px;
     font-weight: 600;
 }
+.order-list-unstyled{
+    color: var(--main-dark);
+    font-weight: 600;
+    font-size: 14px;
+}
 
 /* end */
