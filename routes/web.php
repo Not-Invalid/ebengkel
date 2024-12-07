@@ -89,8 +89,9 @@ Route::middleware(['auth:pelanggan', 'lang'])->group(function () {
     Route::delete('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.remove');
     Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::post('/place-order', [CartController::class, 'placeOrder'])->name('cart.place-order');
+    Route::get('/payment/{order_id}/{id}', [PaymentController::class, 'index'])->name('payment');
+    Route::post('/payment/{order_id}/{id}/store', [PaymentController::class, 'store'])->name('payment.store');
 
-    Route::get('/payment/{order_id}', [PaymentController::class, 'index'])->name('payment');
     Route::get('/get-shipping-options', [CartController::class, 'getShippingOptions'])->name('getShippingOptions');
     Route::get('/order', [OrderController::class, 'index'])->name('order');
 });
