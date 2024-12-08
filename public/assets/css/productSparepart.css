@@ -97,11 +97,13 @@ input[type="number"]:focus,
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-.workshop {
+.card-body {
+    padding-top: 15px;
+  }
+.workshop-name {
     font-size: 14px;
-    font-weight: 500;
-}
+    color: var(--main-grey);
+  }
 
 .footer-card {
     position: absolute;
