@@ -44,31 +44,63 @@
                                 </tr>
                             </thead>
                             <tbody id="sparepart-table-body">
+                                @if ($orderonline->isEmpty())
+                                    <tr>
+                                        <td colspan="8" class="text-center">Data Not Found</td>
+                                    </tr>
+                                @else
+                                    @foreach ($orderonline as $index => $order)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>
+                                                @if ($order->produk)
+                                                    {{ $order->produk->nama_produk }}
+                                                @elseif ($order->sparepart)
+                                                    {{ $order->sparepart->nama_spare_part }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>{{ $order->order_id }}</td>
+                                            <td>{{ $order->pelanggan->nama_pelanggan ?? 'N/A' }}</td>
+                                            <td>Rp{{ number_format($order->total_harga, 0, ',', '.') }}</td>
+                                            <td>{{ $order->total_qty }}</td>
+                                            <td>Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
+                                            <td class="d-flex justify-content-center align-items-center gap-4">
+                                                <a href="{{ route('pos.order-online.edit', ['id_bengkel' => $bengkel->id_bengkel, 'id_order' => $order->id]) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
 
-                    {{-- <div class="d-flex justify-content-between mt-4">
+
+                    <div class="d-flex justify-content-between mt-4">
                         <div>
-                            <span>Showing {{  }} to {{  }} of {{  }}
+                            <span>Showing {{ $start }} to {{ $end }} of {{ $totalEntries }}
                                 entries</span>
                         </div>
                         <div class="d-flex">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
-                                    @if ($sparepart->onFirstPage())
+                                    @if ($orderonline->onFirstPage())
                                         <li class="page-item disabled">
                                             <span class="page-link"><i class="fa-solid fa-chevron-left"></i></span>
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a href="{{ $sparepart->previousPageUrl() }}" class="page-link"><i
+                                            <a href="{{ $orderonline->previousPageUrl() }}" class="page-link"><i
                                                     class="fa-solid fa-chevron-left"></i></a>
                                         </li>
                                     @endif
 
-                                    @foreach ($sparepart->getUrlRange(1, $sparepart->lastPage()) as $page => $url)
-                                        @if ($page == $sparepart->currentPage())
+                                    @foreach ($orderonline->getUrlRange(1, $orderonline->lastPage()) as $page => $url)
+                                        @if ($page == $orderonline->currentPage())
                                             <li class="page-item active"><span class="page-link">{{ $page }}</span>
                                             </li>
                                         @else
@@ -77,9 +109,9 @@
                                         @endif
                                     @endforeach
 
-                                    @if ($sparepart->hasMorePages())
+                                    @if ($orderonline->hasMorePages())
                                         <li class="page-item">
-                                            <a href="{{ $sparepart->nextPageUrl() }}" class="page-link"><i
+                                            <a href="{{ $orderonline->nextPageUrl() }}" class="page-link"><i
                                                     class="fa-solid fa-chevron-right"></i></a>
                                         </li>
                                     @else
@@ -90,7 +122,7 @@
                                 </ul>
                             </nav>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
