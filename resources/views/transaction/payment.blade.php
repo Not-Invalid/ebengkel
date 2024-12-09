@@ -196,6 +196,7 @@
                             @csrf
 
                             <input type="hidden" name="id" value="{{ $invoice->id }}">
+                            <input type="hidden" name="jenis_pembayaran" id="jenis_pembayaran">
 
                             <div class="form-group my-3">
                                 <div class="did-floating-label-content">
@@ -235,6 +236,14 @@
                                 </div>
                             </div>
 
+                            <div class="form-group mb-3">
+                                <div class="did-floating-label-content">
+                                  <textarea class="did-floating-input form-control" name="note" placeholder=" " rows="4"
+                                    style="height: 100px;resize: none"></textarea>
+                                  <label class="did-floating-label">Note</label>
+                                </div>
+                            </div>
+
                             <div class="form-group mb-4">
                                 <div class="upload-box">
                                     <label for="bukti_bayar" class="upload-label">Bukti Bayar<span class="text-danger">*</span></label>
@@ -247,7 +256,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-payment w-100 mt-3">
+                            <button type="submit" class="btn btn-payment w-100 mt-3" {{ $isDueDatePassed ? 'disabled' : '' }}>
                                 Proceed With Payment
                             </button>
                         </form>
@@ -297,24 +306,27 @@
         document.addEventListener("DOMContentLoaded", function() {
             const manualTransferRadio = document.getElementById("manualTransfer");
             const qrisRadio = document.getElementById("qris");
+            const jenisPembayaranInput = document.getElementById("jenis_pembayaran");
 
             const selectBankRow = document.querySelector("#selectBankRow");
             const qrisImageRow = document.querySelector("#qrisImageRow");
 
             function togglePaymentMethod() {
-                // Check if the elements exist before trying to modify them
+                // Hide Bank selection and QRIS image by default
                 if (selectBankRow) {
-                    selectBankRow.style.display = "none"; // Hide Bank selection by default
+                    selectBankRow.style.display = "none";
                 }
                 if (qrisImageRow) {
-                    qrisImageRow.style.display = "none"; // Hide QRIS image by default
+                    qrisImageRow.style.display = "none";
                 }
 
                 // Show or hide based on which radio button is selected
                 if (manualTransferRadio && manualTransferRadio.checked && selectBankRow) {
                     selectBankRow.style.display = "flex";
+                    jenisPembayaranInput.value = 'Manual Transfer'; // Set value for jenis_pembayaran
                 } else if (qrisRadio && qrisRadio.checked && qrisImageRow) {
                     qrisImageRow.style.display = "flex";
+                    jenisPembayaranInput.value = 'QRIS'; // Set value for jenis_pembayaran
                 }
             }
 
