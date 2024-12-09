@@ -11,26 +11,28 @@
 @section('content')
     <div class="auth-container login">
         <div class="wrapper">
-            <h2>Login</h2>
+            <h2>{{ __('messages.auth.login') }}</h2>
             <form action="{{ route('login-send') }}" method="POST">
                 @csrf
                 <div class="input-box">
-                    <input type="text" name="email" placeholder="Enter your email" required>
+                    <input type="text" name="email" placeholder="{{ __('messages.auth.email') }}" required>
                 </div>
                 <div class="input-box">
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <input type="password" id="password" name="password" placeholder="{{ __('messages.auth.password') }}"
+                        required>
                     <span class="toggle-password" onclick="togglePasswordVisibility()">
                         <i class="bx bx-hide" id="toggle-icon"></i>
                     </span>
                 </div>
                 <div class="forgot">
-                    <h3><a href="{{ route('forgot-password') }}">Forgot Password</a></h3>
+                    <h3><a href="{{ route('forgot-password') }}">{{ __('messages.auth.forgot') }}</a></h3>
                 </div>
                 <div class="input-box button">
                     <input type="submit" value="Login">
                 </div>
                 <div class="text">
-                    <h3>Don't have an account? <a href="{{ route('register') }}">Register now</a></h3>
+                    <h3>{{ __('messages.auth.have account') }} <a
+                            href="{{ route('register') }}">{{ __('messages.auth.regis') }}</a></h3>
                 </div>
             </form>
         </div>
