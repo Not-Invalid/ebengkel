@@ -69,23 +69,44 @@
         <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
 
         <div class="form-group">
-          <label for="nama_sparepart">Sparepart Name <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" name="nama_sparepart"
-            value="{{ old('nama_sparepart', $sparepart->nama_spare_part) }}" required>
+          <label for="nama_spare_part">Sparepart Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="nama_spare_part"
+            value="{{ old('nama_spare_part', $sparepart->nama_spare_part) }}" required>
+        </div>
+
+        <!-- Product Quality -->
+        <div class="form-group">
+          <label for="kualitas_spare_part">Sparepart Quality <span class="text-danger">*</span></label>
+          <select name="kualitas_spare_part" class="form-control" required>
+            <option value="original" @if ($sparepart->kualitas_spare_part == 'original') selected @endif>Original</option>
+            <option value="aftermarket" @if ($sparepart->kualitas_spare_part == 'aftermarket') selected @endif>Aftermarket</option>
+          </select>
+        </div>
+        <!-- Other fields -->
+        <div class="form-group">
+          <label for="merk_spare_part">Sparepart Merk <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="merk_spare_part"
+            value="{{ old('merk_spare_part', $sparepart->merk_spare_part) }}" required>
+        </div>
+        <div class="form-group">
+          <label for="stok_spare_part">Sparepart Stock <span class="text-danger">*</span></label>
+          <input type="number" class="form-control" name="stok_spare_part"
+            value="{{ old('stok_spare_part', $sparepart->stok_spare_part) }}" readonly>
         </div>
 
         <div class="form-group">
-          <label for="harga_sparepart">Sparepart Price <span class="text-danger">*</span></label>
-          <input type="number" class="form-control" name="harga_sparepart"
-            value="{{ old('harga_sparepart', $sparepart->harga_spare_part) }}" required>
+          <label for="harga_spare_part">Sparepart Price <span class="text-danger">*</span></label>
+          <input type="number" class="form-control" name="harga_spare_part"
+            value="{{ old('harga_spare_part', $sparepart->harga_spare_part) }}" required>
         </div>
 
         <div class="form-group">
-          <label for="keterangan_sparepart">Description </label>
-          <textarea class="form-control" style="resize: none; height: 100px !important;" name="keterangan_sparepart">{{ old('keterangan_sparepart', $sparepart->keterangan_spare_part) }}</textarea>
+          <label for="keterangan_spare_part">Description</label>
+          <textarea class="form-control" style="resize: none; height: 100px !important;" name="keterangan_spare_part">{{ old('keterangan_spare_part', $sparepart->keterangan_spare_part) }}</textarea>
         </div>
 
-        <!-- Product Photos -->
+
+        <!-- sparepart Photos -->
         <div class="form-group">
           <div class="upload-box">
             <label for="foto_spare_part_1" class="upload-label">Sparepart Photo 1</label>
