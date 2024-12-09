@@ -64,7 +64,7 @@
                                         {{ number_format($product->harga_produk, 0, ',', '.') }}
                                     </div>
                                     <!-- Tambahkan atribut data-harga untuk harga produk -->
-                                    <a href="javascript:void(0)" class="add-button w-100" data-id="{{ $product->id }}"
+                                    <a class="add-button w-100" data-id="{{ $product->id }}"
                                         data-nama="{{ $product->nama_produk }}" data-harga="{{ $product->harga_produk }}">
                                         <i class="fa-solid fa-bag-shopping mr-1"></i> TAMBAHKAN
                                     </a>
