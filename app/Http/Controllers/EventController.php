@@ -63,11 +63,19 @@ class EventController extends Controller
         $peserta->email = $request->input('email');
         $peserta->no_telepon = $request->input('no_telepon');
         $peserta->amount_paid = $event->harga;
-        $peserta->payment_status = 'N';
-        $peserta->payment_date = null;
+
+        if ($event->harga == 0) {
+            $peserta->payment_status = 'Y';
+            $peserta->payment_date = now();
+        } else {
+            $peserta->payment_status = 'N';
+            $peserta->payment_date = null;
+        }
+
         $peserta->save();
 
         return redirect()->route('event.detail', ['id' => $event->id_event])
-            ->with('success', 'Registration successful. Please proceed with payment.');
+            ->with('status', 'Registration successful. Please proceed with payment.');
     }
+
 }
