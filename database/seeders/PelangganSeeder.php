@@ -29,6 +29,38 @@ class PelangganSeeder extends Seeder
                 'updated_pelanggan' => Carbon::now(),
                 'delete_pelanggan' => 'N',
             ],
+            [
+                'nama_pelanggan' => 'Miska',
+                'telp_pelanggan' => '081234567890',
+                'email_pelanggan' => 'user@test.com',
+                'password_pelanggan' => Hash::make('password'),
+                'password_reset_token' => null,
+                'foto_pelanggan' => 'assets/images/components/avatar.png',
+                'role_pelanggan' => 'pembeli',
+                'status_pelanggan' => 'Aktif',
+                'created_pelanggan' => Carbon::now(),
+                'updated_pelanggan' => Carbon::now(),
+                'delete_pelanggan' => 'N',
+            ],
+        ]);
+        DB::table('tb_alamat_pengiriman')->insert([
+            [
+                'id_alamat_pengiriman' => 1,
+                'id_pelanggan' => 2,
+                'nama_penerima' => 'Miska',
+                'telp_penerima' => '08123456780',
+                'lokasi_alamat_pengiriman' => 'Merdeka Square, Jalan Lapangan Monas, Gambir, Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10110',
+                'kodepos_alamat_pengiriman' => '10110',
+                'lat_alamat_pengiriman' => '-6.175687372353113',
+                'long_alamat_pengiriman' => '106.82715243677141',
+                'status_alamat_pengiriman' => 'Office',
+                'kota' => '31.71',
+                'provinsi' => '31',
+                'kecamatan' =>'31.71.01',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'delete_alamat_pengiriman' => 'N',
+            ],
         ]);
         DB::table('tb_kategori_spare_part')->insert([
             'nama_kategori_spare_part' => 'Kaki-kaki',
