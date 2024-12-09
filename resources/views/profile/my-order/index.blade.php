@@ -7,121 +7,114 @@
 @section('content')
   <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
     <div class="container my-4">
-      <!-- Tambahkan Dropdown untuk Mobile -->
-      <div class="d-md-none mb-3">
-        <select class="form-select" id="mobileOrderDropdown">
-          <option value="dikemas">Dikemas</option>
-          <option value="dikirim">Dikirim</option>
-          <option value="selesai">Selesai</option>
-        </select>
-      </div>
-
-      <!-- Tabs untuk perangkat desktop -->
-      <ul class="nav nav-pills justify-content-center mb-3 d-none d-md-flex mb-5" id="orderTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active text-center" id="dikemas-tab" data-bs-toggle="pill" data-bs-target="#dikemas"
-            type="button" role="tab" aria-controls="dikemas" aria-selected="true">
-            <i class="bx bx-package bx-md"></i><br>Dikemas
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <hr class="horizontal-line">
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link text-center" id="dikirim-tab" data-bs-toggle="pill" data-bs-target="#dikirim"
-            type="button" role="tab" aria-controls="dikirim" aria-selected="false">
-            <i class="bx bxs-truck bx-md"></i><br>Dikirim
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <hr class="horizontal-line">
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link text-center" id="selesai-tab" data-bs-toggle="pill" data-bs-target="#selesai"
-            type="button" role="tab" aria-controls="selesai" aria-selected="false">
-            <i class="bx bx-check-circle bx-md"></i><br>Selesai
-          </button>
-        </li>
-      </ul>
-
-      <!-- Konten Tab -->
-      <div class="tab-content" id="orderTabsContent">
-        <div class="tab-pane fade show active" id="dikemas" role="tabpanel" aria-labelledby="dikemas-tab">
-          <!-- Accordion Container -->
-          <div id="cartAccordion">
-            <!-- Product 1 (Always visible) -->
-            <div class="cart-item d-flex flex-column flex-md-row align-items-center mb-3 p-3 border rounded shadow-sm">
-              <div class="cart-item-image me-3 mb-3 mb-md-0">
-                <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image" class="img-fluid rounded"
-                  style="width: 100px; height: 100px; object-fit: cover;" />
-              </div>
-              <div class="cart-item-details flex-grow-1">
-                <h6 class="mb-1">Product Name 1</h6>
-                <div class="d-flex justify-content-between align-items-center">
-                  <p class="text-muted mb-1">Workshop Name 1</p>
-                  <span class="product-quantity ms-3">x1</span> <!-- Added margin to separate quantity -->
-                </div>
-                <div class="d-flex flex-column flex-md-row justify-content-between">
-                  <p class="text-primary fw-bold mb-1">Rp 50.000</p>
-                  <p class="fw-bold mb-1">Total: Rp 50.000</p> <!-- Total price -->
-                </div>
-
-                <!-- Toggle Button (Lihat Semua / Lihat Lebih Sedikit) -->
-                <button class="btn btn-link p-0 mt-3 toggle-overlay-btn" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#collapseCart" aria-expanded="false" aria-controls="collapseCart" id="toggleButton"
-                  style="text-decoration:none;">
-                  Lihat Semua
-                </button>
-              </div>
-            </div>
-            <!-- Collapsible Content (Product 2) -->
-            <div id="collapseCart" class="collapse">
-              <div class="cart-item d-flex flex-column flex-md-row align-items-center mb-3 p-3 border rounded shadow-sm">
-                <div class="cart-item-image me-3 mb-3 mb-md-0">
-                  <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image"
-                    class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;" />
-                </div>
-                <div class="cart-item-details flex-grow-1">
-                  <h6 class="mb-1">Product Name 2</h6>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="text-muted mb-1">Workshop Name 1</p>
-                    <span class="product-quantity ms-3">x1</span> <!-- Quantity with added margin -->
-                  </div>
-                  <div class="d-flex flex-column flex-md-row justify-content-between">
-                    <p class="text-primary fw-bold mb-1">Rp 25.000</p>
-                    <p class="fw-bold mb-1">Total: Rp 25.000</p> <!-- Total price for Product 2 -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- Tambahkan Dropdown untuk Mobile -->
+        <div class="d-md-none mb-3">
+            <select class="form-select" id="mobileOrderDropdown" onchange="window.location.href=this.value">
+                @foreach($statusNames as $key => $name)
+                    <option value="{{ route('my-order.index', ['status' => $key]) }}"
+                            {{ $status == $key ? 'selected' : '' }}>
+                        {{ $name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
-        <div class="tab-pane fade" id="dikirim" role="tabpanel" aria-labelledby="dikirim-tab">
-          <div class="card border-1 rounded-2 mt-4">
-            <div class="card-body d-flex justify-content-center">
-              <div class="text-center">
-                <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
-                  alt="No Address">
-                <p>Nothing is being sent.</p>
-              </div>
-            </div>
-          </div>
+
+        <!-- Tabs untuk perangkat desktop -->
+        <ul class="nav nav-pills justify-content-center mb-3 d-none d-md-flex mb-5" id="orderTabs" role="tablist">
+            @foreach($statusNames as $key => $name)
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-center {{ $status == $key ? 'active' : '' }}"
+                            id="{{ $key }}-tab" data-bs-toggle="pill" data-bs-target="#{{ $key }}"
+                            type="button" role="tab" aria-controls="{{ $key }}" aria-selected="{{ $status == $key ? 'true' : 'false' }}">
+                        <i class="fas fa-{{ $key == 'PENDING' ? 'credit-card' :
+                                        ($key == 'Waiting_Confirmation' ? 'hourglass' :
+                                        ($key == 'DIKEMAS' ? 'box-open' :
+                                        ($key == 'DIKIRIM' ? 'truck-fast' : 'circle-check'))) }} fas-md"></i><br>
+                        {{ $name }}
+                    </button>
+                </li>
+
+                @if(!$loop->last)  <!-- Jangan tampilkan horizontal line di tab terakhir -->
+                    <li class="nav-item" role="presentation">
+                        <hr class="horizontal-line">
+                    </li>
+                @endif
+            @endforeach
+        </ul>
+
+        <!-- Konten Tab -->
+        <div class="tab-content" id="orderTabsContent">
+            @foreach($statusNames as $key => $name)
+                <div class="tab-pane fade {{ $status == $key ? 'show active' : '' }}" id="{{ $key }}" role="tabpanel" aria-labelledby="{{ $key }}-tab">
+                    @php
+                        // Filter orders sesuai status
+                        $filteredOrders = $orders->where('status_order', $key);
+                    @endphp
+
+                    @if($filteredOrders->isEmpty())
+                        <div class="card border-1 rounded-2 mt-4">
+                            <div class="card-body d-flex justify-content-center">
+                                <div class="text-center">
+                                    <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130" alt="No Address">
+                                    <p>Nothing is {{ $name }}.</p>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <!-- Accordion Container -->
+                        @foreach ($filteredOrders as $order)
+                            <a href="{{ route('my-order.detail', $order->order_id) }}" class="cart-item d-flex flex-column flex-md-row align-items-center mb-3 p-3 border rounded shadow-sm">
+                                <div class="cart-item-image me-3 mb-3 mb-md-0">
+                                    <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image" class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;" />
+                                </div>
+                                <div class="cart-item-details flex-grow-1">
+                                    <h6 class="mb-1">
+                                        @foreach ($order->orderItems as $orderItem)
+                                            @if ($orderItem->produk)
+                                                {{ $orderItem->produk->nama_produk }}
+                                            @elseif ($orderItem->sparepart)
+                                                {{ $orderItem->sparepart->nama_spare_part }}
+                                            @else
+                                                Produk / Spare Part Tidak Ditemukan
+                                            @endif
+                                        @endforeach
+                                    </h6>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
+                                        <span class="product-quantity fw-semibold ms-3 mt-3">Total {{ $order->orderItems->sum('qty') }} Product: {{ number_format($order->grand_total) }}</span>
+                                    </div>
+                                    <div class="d-flex flex-column flex-md-row justify-content-between">
+                                        <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga) }}</p>
+                                    </div>
+                                    <div class="d-flex flex-column flex-md-row justify-content-end">
+                                        @if($order->status_order == 'PENDING')
+                                        <!-- Tombol Bayar Sekarang menggunakan <a href> -->
+                                        <button href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}" class="btn btn-custom-2">
+                                            Bayar Sekarang
+                                        </button>
+                                    @elseif($order->status_order == 'SELESAI')
+                                        <button href="{{ route('order.buy-again', $order->order_id) }}" class="btn btn-success">
+                                            Beli Lagi
+                                        </button>
+                                    @endif
+                                    </div>
+
+
+                                    <!-- Toggle Button (Lihat Semua / Lihat Lebih Sedikit) -->
+                                    <button class="btn btn-link p-0 mt-3 toggle-overlay-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCart" aria-expanded="false" aria-controls="collapseCart" id="toggleButton" style="text-decoration:none;">
+                                        Lihat Semua
+                                    </button>
+                                </div>
+                            </a>
+                        @endforeach
+                    @endif
+                </div>
+            @endforeach
         </div>
-        <div class="tab-pane fade" id="selesai" role="tabpanel" aria-labelledby="selesai-tab">
-          <div class="card border-1 rounded-2 mt-4">
-            <div class="card-body d-flex justify-content-center">
-              <div class="text-center">
-                <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
-                  alt="No Address">
-                <p>Nothing was ever purchased.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-  <script>
+</div>
+
+<script>
     const toggleButton = document.getElementById('toggleButton');
     const collapseCart = document.getElementById('collapseCart');
 
@@ -133,7 +126,6 @@
       toggleButton.textContent = 'Lihat Semua';
     });
   </script>
-@endsection
 
 <style>
   /* Gaya default untuk ikon dan teks */
@@ -295,3 +287,6 @@
     });
   });
 </script>
+
+@endsection
+
