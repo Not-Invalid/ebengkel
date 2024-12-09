@@ -347,9 +347,10 @@ Route::middleware(['lang'])->group(function () {
         Route::post('profile/update/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'update'])->name('profile-pegawai.update');
 
         Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
+        Route::get('tranksaksi/pos/show-checkout/{id_bengkel}', [PosTransaksiController::class, 'showCheckout'])->name('pos.tranksaksi_pos.showcheckoutpos');
+        Route::post('tranksaksi/pos/store-checkout/{id_bengkel}', [PosTransaksiController::class, 'storeCheckout'])->name('pos.tranksaksi_pos.storecheckout');
         Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
         Route::get('tranksaksi/create-pesanan/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
-        Route::post('tranksaksi/pos/checkout/{id_bengkel}', [PosTransaksiController::class, 'checkout'])->name('pos.tranksaksi_pesanan.checkout');
         Route::post('tranksaksi/pos-pesanan/store/{id_bengkel}', [PosPesananController::class, 'store'])->name('pos.tranksaksi_pesanan.store');
         Route::get('tranksaksi/edit-pesanan/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.tranksaksi_pesanan.edit');
         Route::put('tranksaksi/update-pesanan/{id_bengkel}', [PosPesananController::class, 'update'])->name('pos.tranksaksi_pesanan.update');
