@@ -179,10 +179,10 @@ public function placeOrder(Request $request)
         // Capture shipping method details from request
         $shipping_method = $request->shipping_method;
         $shipping_courier = $request->shipping_courier;
-        $shipping_cost = $request->shipping_cost;
+        $shipping_cost = $request->shipping_cost ?? 0;
 
         // Initialize total price
-        $grandTotal = 0;
+        $totalPrice = 0;
 
         // Create an order
         $order = new OrderOnline();
@@ -193,7 +193,6 @@ public function placeOrder(Request $request)
         $order->jenis_pengiriman = $shipping_method;
         $order->kurir = $shipping_courier;
         $order->biaya_pengiriman = $shipping_cost;
-        $order->grand_total = $grandTotal + $shipping_cost;
         $order->atas_nama = $request->recipient;
         $order->alamat_pengiriman = $request->location;
         $order->provinsi = $request->province;
@@ -202,21 +201,42 @@ public function placeOrder(Request $request)
         $order->kode_pos = $request->postal_code;
         $order->no_telp = $request->phone;
 
-        // Tentukan id_bengkel, bisa diambil dari produk pertama atau spare part pertama di cart
+        // Determine id_bengkel from the first item
         $firstItem = $cartItems->first();
         $product = Product::find($firstItem->id_produk);
         $sparepart = SpareParts::find($firstItem->id_spare_part);
 
         if ($product) {
-            $order->id_bengkel = $product->id_bengkel;  // Set id_bengkel berdasarkan produk
+            $order->id_bengkel = $product->id_bengkel;
         } elseif ($sparepart) {
-            $order->id_bengkel = $sparepart->id_bengkel;  // Set id_bengkel berdasarkan spare part
+            $order->id_bengkel = $sparepart->id_bengkel;
         }
 
-        // Simpan order
+        // Preliminary calculation of total price and grand total
+        foreach ($cartItems as $item) {
+            $product = Product::find($item->id_produk);
+            $sparepart = SpareParts::find($item->id_spare_part);
+
+            // Determine item price
+            $itemPrice = 0;
+            if ($product) {
+                $itemPrice = $product->harga_produk;
+            } elseif ($sparepart) {
+                $itemPrice = $sparepart->harga_spare_part;
+            }
+
+            // Calculate total price
+            $totalPrice += $itemPrice * $item->quantity;
+        }
+
+        // Set total_harga and grand_total before saving
+        $order->total_harga = $totalPrice;
+        $order->grand_total = $totalPrice + $shipping_cost;
+
+        // Save order
         $order->save();
 
-        // Loop through each cart item and save to t_order_item_online
+        // Process order items
         foreach ($cartItems as $item) {
             $product = Product::find($item->id_produk);
             $sparepart = SpareParts::find($item->id_spare_part);
@@ -224,7 +244,6 @@ public function placeOrder(Request $request)
             // Determine the type of item (product or spare part)
             $itemPrice = 0;
             $itemId = null;
-            $itemType = null;
 
             // Check if it's a product or spare part
             if ($product) {
@@ -237,7 +256,7 @@ public function placeOrder(Request $request)
 
             // Save to t_order_item_online
             $orderItem = new OrderItemOnline();
-            $orderItem->id_order_online = $order->id; // Relating this item to the order
+            $orderItem->id_order_online = $order->id;
             $orderItem->id_bengkel = $product ? $product->id_bengkel : $sparepart->id_bengkel;
             $orderItem->id_produk = $product ? $itemId : null;
             $orderItem->id_spare_part = $sparepart ? $itemId : null;
@@ -247,14 +266,7 @@ public function placeOrder(Request $request)
             $orderItem->harga = $itemPrice;
             $orderItem->subtotal = $itemPrice * $item->quantity;
             $orderItem->save();
-
-            // Calculate the grand total
-            $grandTotal += $orderItem->subtotal;
         }
-
-        // Update the order's grand total
-        $order->grand_total = $grandTotal + $shipping_cost;
-        $order->save();
 
         // Create an invoice for the total order
         $invoice = new Invoice();
@@ -270,8 +282,7 @@ public function placeOrder(Request $request)
         $cartItems->each->delete();
 
         return redirect()->route('payment', ['order_id' => $order->order_id, 'id' => $invoice->id])
-                            ->with('status', 'Pesanan Anda berhasil diproses. Segera lakukan pembayaran untuk melanjutkan.');
-
+                         ->with('status', 'Pesanan Anda berhasil diproses. Segera lakukan pembayaran untuk melanjutkan.');
     }
 
     return redirect()->route('login')->with('status_error', 'Anda harus login terlebih dahulu.');
