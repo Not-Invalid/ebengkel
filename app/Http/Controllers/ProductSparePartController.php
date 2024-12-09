@@ -18,19 +18,31 @@ class ProductSparePartController extends Controller
 
     public function index(Request $request)
     {
+        $category = $request->input('category', 'all');
+
         $querySparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel', 'fotoSparepart');
         $queryProduct = Product::where('delete_produk', 'N')->with('bengkel', 'fotoProduk');
 
+        // Jika ada pencarian
         if ($request->has('search')) {
             $search = $request->input('search');
             $querySparepart->where('nama_spare_part', 'LIKE', '%' . $search . '%');
             $queryProduct->where('nama_produk', 'LIKE', '%' . $search . '%');
         }
 
-        $sparepart = $querySparepart->get();
-        $product = $queryProduct->get();
+        // Filter berdasarkan kategori
+        if ($category === 'product') {
+            $product = $queryProduct->paginate(12);
+            $sparepart = null;
+        } elseif ($category === 'sparepart') {
+            $sparepart = $querySparepart->paginate(12);
+            $product = null;
+        } else {
+            $product = $queryProduct->orderBy('id_produk', 'DESC')->take(6)->get();
+            $sparepart = $querySparepart->orderBy('id_spare_part', 'DESC')->take(6)->get();
+        }
 
-        return view('ProductSparepart.index', compact('sparepart', 'product'));
+        return view('ProductSparepart.index', compact('sparepart', 'product', 'category'));
     }
 
     public function detail($type, $id)
