@@ -198,49 +198,55 @@
         const totalPriceElement = document.getElementById('total-selected-price');
 
         function updatePriceDetails() {
-            let totalPrice = 0;
-            let selectedItemsCount = 0;
-            let selectedItems = [];
+    let totalPrice = 0;
+    let selectedItemsCount = 0;
+    let selectedItems = [];
 
-            document.querySelectorAll('.cart-item').forEach(item => {
-                let checkbox = item.querySelector('.item-select');
-                if (checkbox.checked) {
-                let price = parseFloat(item.getAttribute('data-price'));
-                let quantity = parseInt(item.querySelector('.quantity-input').value);
-                let name = item.querySelector('h6').innerText;
+    // Menghitung total harga item yang dipilih
+    document.querySelectorAll('.cart-item').forEach(item => {
+        let checkbox = item.querySelector('.item-select');
+        if (checkbox.checked) {
+            let price = parseFloat(item.getAttribute('data-price'));
+            let quantity = parseInt(item.querySelector('.quantity-input').value);
+            let name = item.querySelector('h6').innerText;
 
-                selectedItems.push({
-                    name,
-                    price,
-                    quantity
-                });
-                totalPrice += price * quantity;
-                selectedItemsCount++;
-                }
+            selectedItems.push({
+                name,
+                price,
+                quantity
             });
+            totalPrice += price * quantity;
+            selectedItemsCount++;
+        }
+    });
 
-            selectedItemsList.innerHTML = '';
-            selectedItems.forEach(item => {
-                const li = document.createElement('li');
-                li.classList.add('d-flex', 'justify-content-between');
-                li.innerHTML = `${item.quantity}x ${item.name} <span>${formatRupiahJS(item.price * item.quantity)}</span>`;
-                selectedItemsList.appendChild(li);
-            });
+    // Menampilkan item yang dipilih
+    selectedItemsList.innerHTML = '';
+    selectedItems.forEach(item => {
+        const li = document.createElement('li');
+        li.classList.add('d-flex', 'justify-content-between');
+        li.innerHTML = `${item.quantity}x ${item.name} <span>${formatRupiahJS(item.price * item.quantity)}</span>`;
+        selectedItemsList.appendChild(li);
+    });
 
-            // Update the total price for selected items
-            document.getElementById('total-selected-price-items').innerText = formatRupiahJS(totalPrice);
+    // Update total harga untuk item yang dipilih
+    document.getElementById('total-selected-price-items').innerText = formatRupiahJS(totalPrice);
 
-            // If a shipping method is selected, include it in the grand total
-            const shippingPrice = parseFloat(document.getElementById('shipping_cost').value) || 0;
-            const grandTotal = totalPrice + shippingPrice;
+    // Mengambil biaya pengiriman yang dipilih
+    const shippingPrice = parseFloat(document.getElementById('shipping_cost').value) || 0;
 
-            // Update the shipping price and grand total
-            document.getElementById('total-shipping-price').innerText = formatRupiahJS(shippingPrice);
-            document.getElementById('grand-total').innerText = formatRupiahJS(grandTotal);
+    // Menghitung Grand Total
+    const grandTotal = totalPrice + shippingPrice;
 
-            document.querySelector('.fw-semibold').innerText =
-                `${selectedItemsCount} Selected Item${selectedItemsCount > 1 ? 's' : ''}`;
-            }
+    // Menampilkan biaya pengiriman dan grand total
+    document.getElementById('total-shipping-price').innerText = formatRupiahJS(shippingPrice);
+    document.getElementById('grand-total').innerText = formatRupiahJS(grandTotal);
+
+    // Update jumlah item yang dipilih
+    document.querySelector('.fw-semibold').innerText =
+        `${selectedItemsCount} Selected Item${selectedItemsCount > 1 ? 's' : ''}`;
+}
+
 
             // Recalculate the price details whenever an item is selected or deselected
             document.querySelectorAll('.item-select').forEach(checkbox => {
@@ -359,17 +365,18 @@
             document.getElementById('selectedShippingCourier').innerText = courier;
             document.getElementById('selectedShippingPrice').innerText = `Rp ${cost.toLocaleString()}`;
 
-            // Store the selected shipping details in hidden form fields
+            // Menyimpan detail pengiriman dalam hidden field
             document.getElementById('shipping_method').value = method;
             document.getElementById('shipping_courier').value = courier;
             document.getElementById('shipping_cost').value = cost;
 
-            // Optionally, update delivery date
+            // Mengupdate estimasi waktu pengiriman
             document.getElementById('deliveryDate').innerText = `Akan diterima dalam ${time}`;
 
-            // After updating shipping, recalculate total
+            // Setelah memilih pengiriman, perbarui total harga dan grand total
             updatePriceDetails();
         }
+
 
     </script>
 
