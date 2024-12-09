@@ -37,7 +37,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 150vh;
+  min-height: 120vh;
   padding: 20px;
   background-color: var(--bg-transparent);
 }
