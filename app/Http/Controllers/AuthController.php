@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -20,36 +20,33 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|min:8',
-    ]);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
 
-    $user = Pelanggan::where('email_pelanggan', $request->email)->first();
+        $user = Pelanggan::where('email_pelanggan', $request->email)->first();
 
-    if ($user && Hash::check($request->password, $user->password_pelanggan)) {
-        Auth::guard('pelanggan')->login($user);
-        $request->session()->regenerate();
+        if ($user && Hash::check($request->password, $user->password_pelanggan)) {
+            Auth::guard('pelanggan')->login($user);
+            $request->session()->regenerate();
 
-        Session::put('id_pelanggan', $user->id_pelanggan);
+            Session::put('id_pelanggan', $user->id_pelanggan);
 
-        $logData = [
-            'id_pelanggan' => $user->id_pelanggan,
-            'tgl_log_pelanggan' => now(),
-        ];
-        DB::table('tb_log_pelanggan')->insert($logData);
+            $logData = [
+                'id_pelanggan' => $user->id_pelanggan,
+                'tgl_log_pelanggan' => now(),
+            ];
+            DB::table('tb_log_pelanggan')->insert($logData);
 
-        return redirect()->route('home')->with('status', 'Login successful!');
+            return redirect()->route('home')->with('status', __('messages.toast.login_success'));
+        }
+
+        return back()->withErrors([
+            'email' => __('messages.toast.credential'),
+        ])->with('status_error', __('messages.toast.login_failed'));
     }
-
-    return back()->withErrors([
-        'email' => 'The provided credentials do not match our records.',
-    ])->with('status_error', 'Login failed. Please check your credentials.');
-}
-
-
-
 
     public function showRegisterForm()
     {
@@ -73,7 +70,7 @@ class AuthController extends Controller
             'foto_pelanggan' => asset('assets/images/components/avatar.png'),
         ]);
 
-        return redirect()->route('login')->with('status', 'Registration successful!');
+        return redirect()->route('login')->with('status', __('messages.toast.regis_success'));
     }
 
     public function logout()
@@ -81,7 +78,7 @@ class AuthController extends Controller
         Auth::guard('pelanggan')->logout();
         session()->invalidate();
         session()->regenerateToken();
-        return redirect()->route('home')->with('status', 'Logout successful!');
+        return redirect()->route('home')->with('status', __('messages.toast.logout_success'));
     }
 
     public function showForgotPasswordForm()
@@ -95,7 +92,7 @@ class AuthController extends Controller
 
         $pelanggan = Pelanggan::where('email_pelanggan', $request->email)->first();
         if (!$pelanggan) {
-            return back()->with('status_error', 'Email not found');
+            return back()->with('status_error', __('messages.toast.notfound_email'));
         }
 
         $token = Str::random(60);
@@ -103,7 +100,7 @@ class AuthController extends Controller
 
         Mail::to($pelanggan->email_pelanggan)->send(new PasswordResetMail($token));
 
-        return redirect()->route('login')->with('status', 'Reset link sent! Please check your email.');
+        return redirect()->route('login')->with('status', __('messages.toast.reset_link'));
     }
 
     public function showResetPasswordForm($token)
@@ -120,7 +117,7 @@ class AuthController extends Controller
 
         $pelanggan = Pelanggan::where('password_reset_token', $request->token)->first();
         if (!$pelanggan) {
-            return back()->withErrors(['token' => 'Invalid token'])->with('status_error', 'Invalid token');
+            return back()->withErrors(['token' => 'Invalid token'])->with('status_error', __('messages.toast.invalid'));
         }
 
         $pelanggan->update([
@@ -128,6 +125,6 @@ class AuthController extends Controller
             'password_reset_token' => null,
         ]);
 
-        return redirect()->route('login')->with('status', 'Password successfully reset!');
+        return redirect()->route('login')->with('status', __('messages.toast.reset_success'));
     }
 }
