@@ -1,0 +1,115 @@
+.tagline {
+    font-size: 16px;
+}
+
+.total {
+    border-right: 1px solid #121212;
+}
+
+/* Card container */
+.card-event {
+    border-radius: 8px;
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-event:hover {
+    transform: translateY(-2px);
+}
+
+/* Product card styling */
+.product-card {
+    background-color: #ffffff;
+    overflow: hidden;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 200px;
+    padding: 10px;
+}
+
+/* Image styling */
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Product info styling */
+.product-info {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+/* Location styling */
+.location {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #121212;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.location i {
+    margin-right: 4px;
+    color: #121212;
+}
+
+/* Product title styling */
+.product-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #121212;
+    margin-bottom: 4px;
+}
+
+/* Price styling */
+.price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #121212;
+    margin-top: auto;
+}
+
+@media (min-width: 768px) {
+    .total {
+        border-right: 1px solid #121212;
+    }
+}
+
+@media (max-width: 575px) {
+    .total {
+        border-right: none;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .product-card {
+        background-color: #ffffff;
+        overflow: hidden;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: auto;
+        padding: 10px;
+    }
+}
+
+.sold-info {
+    font-size: 14px;
+    font-weight: 600;
+    color: #121212;
+}
