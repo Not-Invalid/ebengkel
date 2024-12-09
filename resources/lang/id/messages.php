@@ -396,10 +396,41 @@ return [
         'address' => 'Alamat',
         'workshop' => 'Bengkel',
         'usedcar' => 'Mobil Bekas',
-        'order' => 'Order Saya',
+        'order' => 'Pesanan Saya',
         'setting' => 'Pengaturan',
         'back' => 'Kembali Ke Beranda',
         'logout' => 'Keluar',
+    ],
+
+    'auth' => [
+        'login' => 'Masuk',
+        'email' => 'Masukkan email',
+        'password' => 'Masukkan password',
+        'forgot' => 'Lupa Password',
+        'have account' => "Belum punya akun?",
+        'regis' => 'Daftar sekarang',
+        'register' => 'Daftar',
+        'username' => 'Masukkan username',
+        'phone' => 'Masukkan nomor telepon',
+        'confirm' => 'Konfirmasi password',
+        'already' => 'Sudah punya akun?',
+        'now' => 'Masuk sekarang',
+        'forgot_password' => 'Lupa Password',
+        'reset_link' => 'Kirim Tautan Reset',
+        'reset_password' => 'Reset password',
+
+    ],
+
+    'toast' => [
+        'login_success' => 'Login berhasil!',
+        'credential' => 'Data yang diberikan tidak sesuai dengan catatan kami',
+        'login_failed' => 'Login gagal. Silakan periksa data Anda',
+        'regis_success' => 'Registrasi berhasil!',
+        'logout_success' => 'Keluar berhasil!',
+        'notfound_email' => 'Email tidak ditemukan.',
+        'reset_link' => 'Tautan reset telah terkirim! Silakan periksa email Anda.',
+        'invalid' => 'Token tidak valid!',
+        'reset_success' => 'Password berhasil direset!',
     ],
 
     'footer' => [
