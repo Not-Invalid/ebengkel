@@ -31,8 +31,7 @@
                         <div class="d-flex justify-end mb-4">
                             <form action="{{ route('pos.tranksaksi_pesanan.create', $bengkel->id_bengkel) }}">
                                 @csrf
-                                <button type="submit" class="btn btn-info text-white px-4 py-2 mx-2">Tambah
-                                    Pesanan</button>
+                                <button type="submit" class="btn btn-info text-white px-4 py-2 mx-2">Add Order</button>
                             </form>
                         </div>
                     </div>
@@ -42,12 +41,12 @@
                             <thead class="bg-light-grey text-white">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th class="text-center">Tanggal Pesanan</th>
-                                    <th class="text-center">Nama Pelanggan</th>
-                                    <th class="text-center">No Telp</th>
-                                    <th class="text-center">Nama Service</th>
-                                    <th class="text-center">Status Pesanan</th>
-                                    <th class="text-center">Total Pesanan</th>
+                                    <th class="text-center">Order Date</th>
+                                    <th class="text-center">Customer Name</th>
+                                    <th class="text-center">Phone Number</th>
+                                    <th class="text-center">Service Name</th>
+                                    <th class="text-center">Order Status</th>
+                                    <th class="text-center">Order Price</th>
                                     <th class="text-center">Tools</th>
                                 </tr>
                             </thead>
@@ -65,7 +64,7 @@
                                             <td>{{ $order->telp_pelanggan }}</td>
                                             <td>{{ $order->nama_service }}</td>
                                             <td>{{ ucfirst($order->status) }}</td>
-                                            <td>Rp {{ number_format($order->total_pesanan, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($order->total_pesanan, 2, ',', '.') }}</td>
                                             <td class="d-flex justify-content-center align-items-center gap-4">
                                                 <a href="{{ route('pos.tranksaksi_pesanan.edit', $bengkel->id_bengkel) }}"
                                                     class="btn btn-sm btn-primary">
