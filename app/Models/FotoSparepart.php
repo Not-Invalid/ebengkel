@@ -10,7 +10,8 @@ class FotoSparepart extends Model
     use HasFactory;
 
     protected $table = 'tb_foto_spare_part';
-
+    protected $primaryKey = 'id_foto_spare_part';
+    public $timestamps = true;
     protected $fillable = [
         'id_spare_part',
         'file_foto_spare_part_1',
