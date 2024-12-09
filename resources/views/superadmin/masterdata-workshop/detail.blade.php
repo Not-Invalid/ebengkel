@@ -1,127 +1,11 @@
  @extends('superadmin.layouts.app')
- <style>
-     .tagline {
-         font-size: 16px;
-     }
 
-     .total {
-         border-right: 1px solid #121212;
-     }
-
-     /* Card container */
-     .card-event {
-         border-radius: 8px;
-         display: block;
-         text-decoration: none;
-         transition: transform 0.3s ease, box-shadow 0.3s ease;
-         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-     }
-
-     .card-event:hover {
-         transform: translateY(-2px);
-         box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-     }
-
-     /* Product card styling */
-     .product-card {
-         background-color: #ffffff;
-         overflow: hidden;
-         border-radius: 8px;
-         display: flex;
-         flex-direction: column;
-         height: 100%;
-         width: 200px;
-         padding: 10px;
-     }
-
-     /* Image styling */
-     .product-image {
-         width: 100%;
-         height: 100%;
-         object-fit: cover;
-         border-radius: 8px 8px 0 0;
-     }
-
-     /* Product info styling */
-     .product-info {
-         padding: 12px;
-         display: flex;
-         flex-direction: column;
-         flex-grow: 1;
-         justify-content: space-between;
-     }
-
-     /* Location styling */
-     .location {
-         display: flex;
-         align-items: center;
-         font-size: 14px;
-         color: #121212;
-         font-weight: 500;
-         margin-bottom: 8px;
-     }
-
-     .location i {
-         margin-right: 4px;
-         color: #121212;
-     }
-
-     /* Product title styling */
-     .product-title {
-         font-size: 18px;
-         font-weight: 700;
-         color: #121212;
-         margin-bottom: 4px;
-     }
-
-     /* Price styling */
-     .price {
-         font-size: 16px;
-         font-weight: 700;
-         color: #121212;
-         margin-top: auto;
-     }
-
-     @media (min-width: 768px) {
-         .total {
-             border-right: 1px solid #121212;
-         }
-     }
-
-     @media (max-width: 575px) {
-         .total {
-             border-right: none;
-         }
-
-         .product-image {
-             width: 100%;
-             height: 100%;
-             object-fit: cover;
-             border-radius: 8px 8px 0 0;
-         }
-
-         .product-card {
-             background-color: #ffffff;
-             overflow: hidden;
-             border-radius: 8px;
-             display: flex;
-             flex-direction: column;
-             height: 100%;
-             width: auto;
-             padding: 10px;
-         }
-     }
-
-     .sold-info {
-         font-size: 14px;
-         font-weight: 600;
-         color: #121212;
-     }
- </style>
  @section('title')
      eBengkelku | Detail Workshop
  @stop
 
+
+    <link rel="stylesheet" href="{{ asset('assets/css/superadmin/detail-workshop.css') }}">
  @section('content')
      <div class="container">
          <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
@@ -156,12 +40,19 @@
              </div>
              <div class="container-fluid bg-white text-black my-5 py-5">
                 <div class="container">
-                    <div class="row g-4 justify-content-center">
+                    <div class="row g-4 justify-content-center align-items-center">
                         <div class="col-12 col-md-3 text-center total">
                             <h2 class="text-black mb-2 counter" data-target="{{ $totalProducts }}">{{ $totalProducts }}</h2>
                             <div class="d-flex align-items-center justify-content-center">
                                 <i class="fas fa-box-open fa-2x fs-5 text-black me-2"></i>
-                                <p class="text-black mb-0">Total Product</p>
+                                <p class="text-black mb-0">Total Products</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 text-center total">
+                            <h2 class="text-black mb-2 counter" data-target="{{ $totalSpareParts }}">{{ $totalSpareParts }}</h2>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-cogs fa-2x fs-5 text-black me-2"></i>
+                                <p class="text-black mb-0">Total Spareparts</p>
                             </div>
                         </div>
                         <div class="col-12 col-md-3 text-center total">
@@ -193,135 +84,106 @@
      </div>
 
      <div class="container mt-5">
-         <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
-             <!-- Filter dropdown -->
-             <div class="filter-section mb-3">
-                 <select id="filterSelect" class="form-select" aria-label="Filter Products">
-                     <option value="all">All</option>
-                     <option value="product">Product</option>
-                     <option value="service">Service</option>
-                 </select>
-             </div>
-             <div class="row row-cols-1 row-cols-lg-4 row-cols-md-4 gap-5" id="productList">
-                 <!-- Product 1 - Product -->
-                 <div class=" col" data-type="product">
-                     <a href="" class="card-event">
-                         <div class="product-card shadow">
-                             <!-- Product image -->
-                             <img src="{{ asset('assets/images/components/image.png') }}" alt="Mercedes-Benz"
-                                 class="product-image">
-                             <div class="product-info text-start">
-                                 <p class="product-title mt-2">LAMP ERTIGA</p>
-                                 <div class="location d-flex align-items-center">
-                                     <i class="fas fa-box-open"></i>
-                                     <span>Cimone Racing Team</span>
-                                 </div>
-                                 <div class="d-flex justify-content-start mt-5 align-items-center">
-                                     <span class="price">Rp 150.000</span>
-                                 </div>
-                                 <div class="sold-info mt-2">
-                                     <span>5 Terjual</span>
-                                 </div>
-                             </div>
-                         </div>
-                     </a>
-                 </div>
+        <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
+            <!-- Filter dropdown -->
+            <div class="filter-section mb-3">
+                <select id="filterSelect" class="form-select" aria-label="Filter Products">
+                    <option value="all">All</option>
+                    <option value="product">Product</option>
+                    <option value="sparepart">Sparepart</option>
+                    <option value="service">Service</option>
+                </select>
+            </div>
 
-                 <!-- Product 2 - Service -->
-                 <div class="col" data-type="service">
-                     <a href="" class="card-event">
-                         <div class="product-card shadow">
-                             <!-- Product image -->
-                             <img src="{{ asset('assets/images/components/image.png') }}" alt="Mercedes-Benz"
-                                 class="product-image">
-                             <div class="product-info text-start">
-                                 <p class="product-title mt-2">LAMP ERTIGA</p>
-                                 <div class="location d-flex align-items-center">
-                                     <i class="fas fa-box-open"></i>
-                                     <span>Cimone Racing Team</span>
-                                 </div>
-                                 <div class="d-flex justify-content-start mt-5 align-items-center">
-                                     <span class="price">Rp 150.000</span>
-                                 </div>
-                                 <div class="sold-info mt-2">
-                                     <span>5 Terjual</span>
-                                 </div>
-                             </div>
-                         </div>
-                     </a>
-                 </div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 mx-2" id="productList">
+                <!-- Loop untuk menampilkan produk -->
+                @foreach($products as $product)
+                    <div class="col my-3" data-type="product">
+                        <a href="" class="card-event">
+                            <div class="product-card shadow">
+                                <img src="{{ isset($product->fotoProduk) && $product->fotoProduk->file_foto_produk_1
+                                ? url($product->fotoProduk->file_foto_produk_1)
+                                : asset('assets/images/components/image.png') }}" class="product-image">
+                                <div class="product-info text-start">
+                                    <p class="product-title mt-2">{{ $product->nama_produk }}</p>
+                                    <div class="location d-flex align-items-center">
+                                        <span class="text-primary">{{ $product->merk_produk }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-start mt-5 align-items-center">
+                                        <span class="price">Rp {{ number_format($product->harga_produk, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
 
-                 <!-- Product 3 - Product -->
-                 <div class="col" data-type="product">
-                     <a href="" class="card-event">
-                         <div class="product-card shadow">
-                             <!-- Product image -->
-                             <img src="{{ asset('assets/images/components/image.png') }}" alt="Mercedes-Benz"
-                                 class="product-image">
-                             <div class="product-info text-start">
-                                 <p class="product-title mt-2">LAMP ERTIGA</p>
-                                 <div class="location d-flex align-items-center">
-                                     <i class="fas fa-box-open"></i>
-                                     <span>Cimone Racing Team</span>
-                                 </div>
-                                 <div class="d-flex justify-content-start mt-5 align-items-center">
-                                     <span class="price">Rp 150.000</span>
-                                 </div>
-                                 <div class="sold-info mt-2">
-                                     <span>5 Terjual</span>
-                                 </div>
-                             </div>
-                         </div>
-                     </a>
-                 </div>
+                <!-- Loop untuk menampilkan sparepart -->
+                @foreach($spareParts as $sparePart)
+                    <div class="col my-3" data-type="sparepart">
+                        <a href="" class="card-event">
+                            <div class="product-card shadow">
+                                <img src="{{ isset($sparePart->fotoSparepart) && $sparePart->fotoSparepart->file_foto_spare_part_1
+                                ? url($sparePart->fotoSparepart->file_foto_spare_part_1)
+                                : asset('assets/images/components/image.png') }}" class="product-image">
+                                <div class="product-info text-start">
+                                    <p class="product-title mt-2">{{ $sparePart->nama_spare_part }}</p>
+                                    <div class="location d-flex align-items-center">
+                                        <span class="text-primary">{{ $sparePart->merk_spare_part }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-start mt-5 align-items-center">
+                                        <span class="price">Rp {{ number_format($sparePart->harga_spare_part, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
 
-                 <!-- Product 4 - Service -->
-                 <div class="col" data-type="service">
-                     <a href="" class="card-event">
-                         <div class="product-card shadow">
-                             <!-- Product image -->
-                             <img src="{{ asset('assets/images/components/image.png') }}" alt="Mercedes-Benz"
-                                 class="product-image">
-                             <div class="product-info text-start">
-                                 <p class="product-title mt-2">LAMP ERTIGA</p>
-                                 <div class="location d-flex align-items-center">
-                                     <i class="fas fa-box-open"></i>
-                                     <span>Cimone Racing Team</span>
-                                 </div>
-                                 <div class="d-flex justify-content-start mt-5 align-items-center">
-                                     <span class="price">Rp 150.000</span>
-                                 </div>
-                                 <div class="sold-info mt-2">
-                                     <span>5 Terjual</span>
-                                 </div>
-                             </div>
-                         </div>
-                     </a>
-                 </div>
-             </div>
-         </div>
+                <!-- Loop untuk menampilkan layanan -->
+                @foreach($services as $service)
+                    <div class="col my-3" data-type="service">
+                        <a href="" class="card-event">
+                            <div class="product-card shadow">
+                                <img src="{{ isset($service) && $service->foto_services ? url($service->foto_services) : asset('assets/images/components/image.png') }}" class="product-image">
+                                <div class="product-info text-start">
+                                    <p class="product-title mt-2">{{ $service->nama_services }}</p>
+                                    <div class="location d-flex align-items-center">
+                                        <span>{{ $service->jumlah_services }} Layanan per Hari</span>
+                                    </div>
+                                    <div class="d-flex justify-content-start mt-5 align-items-center">
+                                        <span class="price">Rp {{ number_format($service->harga_services, 0, ',', '.') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+
+        </div>
+    </div>
+
      </div>
 
      <script src="{{ asset('template/assets/extensions/chart.js/chart.umd.js') }}"></script>
 
      <script>
-         // Function to filter products based on selected filter
          document.getElementById("filterSelect").addEventListener("change", function() {
-             let filterValue = this.value; // Get the selected filter value
-             let products = document.querySelectorAll("#productList .col-12");
+            let filterValue = this.value; // Get the selected filter value
+            let products = document.querySelectorAll("#productList .col");
 
-             products.forEach(function(product) {
-                 // Get the data-type attribute
-                 let productType = product.getAttribute("data-type");
+            products.forEach(function(product) {
+                let productType = product.getAttribute("data-type");
 
-                 // Show or hide based on the filter
-                 if (filterValue === "all" || productType === filterValue) {
-                     product.style.display = "block"; // Show product
-                 } else {
-                     product.style.display = "none"; // Hide product
-                 }
-             });
-         });
+                if (filterValue === "all" || productType === filterValue) {
+                    product.style.display = "block"; // Show product
+                } else {
+                    product.style.display = "none"; // Hide product
+                }
+            });
+        });
+
      </script>
 
 <script>
