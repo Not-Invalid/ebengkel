@@ -10,11 +10,13 @@ class Order extends Model
     use HasFactory;
     protected $table = 't_order';
     protected $fillable = [
-        'id_outlet',
-        'id_customer',
+        'id_order',
+        'nama_customer',
+        'id_bengkel',
         'id_voucher',
         'tanggal',
-        'nama',
+        'id_produk',
+        'id_spare_part',
         'tipe',
         'jenis_pembayaran',
         'no_kartu',
