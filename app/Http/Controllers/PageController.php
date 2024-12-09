@@ -3,36 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bengkel;
+use App\Models\Blog;
 use App\Models\Event;
-use App\Models\Product;
-use App\Models\UsedCar;
 use App\Models\MerkMobil;
+use App\Models\Product;
 use App\Models\SpareParts;
 use App\Models\SupportCategory;
-use App\Models\Blog;
-use App\Models\KategoriBlog;
+use App\Models\UsedCar;
 use Illuminate\Routing\Controller;
 
 class PageController extends Controller
 {
     public function index()
     {
-        $bengkels = Bengkel::where('delete_bengkel', 'N')->get();
-        $events = Event::all();
-        $products = Product::where('delete_produk', 'N')->get();
-        $sparepart = SpareParts::where('delete_spare_part', 'N')->get();
+        $bengkels = Bengkel::where('delete_bengkel', 'N')->orderBy('id_bengkel', 'DESC')->take(4)->get();
+        $events = Event::latest()->take(4)->get();
+        $products = Product::where('delete_produk', 'N')->orderBy('id_produk', 'DESC')->take(4)->get();
+        $sparepart = SpareParts::where('delete_spare_part', 'N')->orderBy('id_spare_part', 'DESC')->take(4)->get();
         $mobilList = UsedCar::where('delete_mobil', 'N')
-        ->with('merkMobil')
-        ->orderBy('create_date', 'asc')
-        ->take(9)
-        ->get();
+            ->with('merkMobil')
+            ->orderBy('create_date', 'asc')
+            ->take(9)
+            ->get();
         $merks = MerkMobil::all();
 
         $latestBlogs = Blog::latest()->take(6)->get();
 
         return view('index', compact('bengkels', 'events', 'products', 'sparepart', 'mobilList', 'merks', 'latestBlogs'));
     }
-
 
     public function contact()
     {
