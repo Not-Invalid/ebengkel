@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Midtrans\Snap;
+use App\Models\OrderItemOnline;
 use Illuminate\Support\Str;
 
 class CartController extends Controller
@@ -52,8 +53,12 @@ class CartController extends Controller
                 // Check if the item is already in the cart
                 $cartItem = Cart::where('id_pelanggan', $pelanggan_id)
                     ->where(function($query) use ($id_produk, $id_spare_part) {
-                        $query->where('id_produk', $id_produk)
-                            ->orWhere('id_spare_part', $id_spare_part);
+                        if ($id_produk) {
+                            $query->where('id_produk', $id_produk);
+                        }
+                        if ($id_spare_part) {
+                            $query->where('id_spare_part', $id_spare_part);
+                        }
                     })
                     ->first();
 
@@ -73,7 +78,14 @@ class CartController extends Controller
                     $cart->save();
                 }
 
-                return redirect()->route('cart.index')->with('status', 'Product added to cart');
+                // Simpan ID item terakhir yang ditambahkan ke session
+                session(['last_added_item_id' => $cart->id]);
+
+                // Cek apakah tombol "Buy Now" diklik
+                $buyNow = $request->has('buy_now');
+
+                // Redirect ke halaman cart dengan parameter buy_now
+                return redirect()->route('cart.index', ['buy_now' => $buyNow])->with('status', 'Product added to cart');
             } else {
                 return redirect()->back()->with('status_error', 'Product or spare part not found');
             }
@@ -164,90 +176,109 @@ public function placeOrder(Request $request)
             return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
         }
 
-        // Calculate total quantity and price
-        $total_qty = 0;
-        $total_harga = 0;
-        $bengkel_id = null;
-
-        foreach ($cartItems as $item) {
-            $total_qty += $item->quantity;
-            $total_harga += $item->total_price;
-
-            $produk = Product::find($item->id_produk);
-            $sparepart = SpareParts::find($item->id_spare_part);
-            if ($produk) {
-                $bengkel_id = $produk->id_bengkel;
-            } elseif ($sparepart) {
-                $bengkel_id = $sparepart->id_bengkel;
-            }
-        }
-
-        // Ensure that bengkel exists
-        $bengkel = Bengkel::find($bengkel_id);
-        if (!$bengkel) {
-            return redirect()->route('cart.index')->with('error', 'Bengkel tidak ditemukan.');
-        }
-
         // Capture shipping method details from request
-        $shipping_method = $request->shipping_method; // e.g., Reguler
-        $shipping_courier = $request->shipping_courier; // e.g., J&T Express
-        $shipping_cost = $request->shipping_cost; // e.g., 11000
+        $shipping_method = $request->shipping_method;
+        $shipping_courier = $request->shipping_courier;
+        $shipping_cost = $request->shipping_cost;
 
-        // Calculate grand total (total price + shipping cost)
-        $grand_total = $total_harga + $shipping_cost;
+        // Initialize total price
+        $grandTotal = 0;
 
-        // Create order
+        // Create an order
         $order = new OrderOnline();
         $order->id_pelanggan = $pelanggan_id;
-        $order->id_bengkel = $bengkel_id;
-        $order->id_produk = $item->id_produk;
-        $order->id_spare_part = $item->id_spare_part;
+        $order->order_id = Str::random(10); // Generate a random order_id
+        $order->status_order = 'PENDING';
         $order->tanggal = now();
-        $order->total_qty = $total_qty;
-        $order->total_harga = $total_harga;
-        $order->status_order = 'PENDING';  // Set status to PENDING or something appropriate
-        $order->order_id = Str::random(10); // Generate a random string for order_id
-
-        // Store shipping details
         $order->jenis_pengiriman = $shipping_method;
         $order->kurir = $shipping_courier;
         $order->biaya_pengiriman = $shipping_cost;
-        $order->grand_total = $grand_total;
+        $order->grand_total = $grandTotal + $shipping_cost;
+        $order->atas_nama = $request->recipient;
+        $order->alamat_pengiriman = $request->location;
+        $order->provinsi = $request->province;
+        $order->kabupaten = $request->city;
+        $order->kecamatan = $request->district;
+        $order->kode_pos = $request->postal_code;
+        $order->no_telp = $request->phone;
 
-        // Capture additional address details
-        $order->atas_nama = $request->recipient; // Name of the recipient
-        $order->alamat_pengiriman = $request->location; // Shipping address
-        $order->provinsi = $request->province; // Province
-        $order->kabupaten = $request->district; // District
-        $order->kecamatan = $request->city; // Sub-district
-        $order->kode_pos = $request->postal_code; // Postal code
-        $order->no_telp = $request->phone; // Recipient phone
+        // Tentukan id_bengkel, bisa diambil dari produk pertama atau spare part pertama di cart
+        $firstItem = $cartItems->first();
+        $product = Product::find($firstItem->id_produk);
+        $sparepart = SpareParts::find($firstItem->id_spare_part);
 
-        // Save the order
+        if ($product) {
+            $order->id_bengkel = $product->id_bengkel;  // Set id_bengkel berdasarkan produk
+        } elseif ($sparepart) {
+            $order->id_bengkel = $sparepart->id_bengkel;  // Set id_bengkel berdasarkan spare part
+        }
+
+        // Simpan order
         $order->save();
 
-        // Link invoice to order by order_id
+        // Loop through each cart item and save to t_order_item_online
+        foreach ($cartItems as $item) {
+            $product = Product::find($item->id_produk);
+            $sparepart = SpareParts::find($item->id_spare_part);
+
+            // Determine the type of item (product or spare part)
+            $itemPrice = 0;
+            $itemId = null;
+            $itemType = null;
+
+            // Check if it's a product or spare part
+            if ($product) {
+                $itemId = $product->id_produk;
+                $itemPrice = $product->harga_produk;
+            } elseif ($sparepart) {
+                $itemId = $sparepart->id_spare_part;
+                $itemPrice = $sparepart->harga_spare_part;
+            }
+
+            // Save to t_order_item_online
+            $orderItem = new OrderItemOnline();
+            $orderItem->id_order_online = $order->id; // Relating this item to the order
+            $orderItem->id_bengkel = $product ? $product->id_bengkel : $sparepart->id_bengkel;
+            $orderItem->id_produk = $product ? $itemId : null;
+            $orderItem->id_spare_part = $sparepart ? $itemId : null;
+            $orderItem->tanggal = now();
+            $orderItem->qty = $item->quantity;
+            $orderItem->harga_beli = $itemPrice;
+            $orderItem->harga = $itemPrice;
+            $orderItem->subtotal = $itemPrice * $item->quantity;
+            $orderItem->save();
+
+            // Calculate the grand total
+            $grandTotal += $orderItem->subtotal;
+        }
+
+        // Update the order's grand total
+        $order->grand_total = $grandTotal + $shipping_cost;
+        $order->save();
+
+        // Create an invoice for the total order
         $invoice = new Invoice();
         $invoice->id_pelanggan = $pelanggan_id;
-        $invoice->id_order = $order->order_id;  // Use order_id to link to t_invoice
+        $invoice->id_order = $order->order_id;
         $invoice->status_invoice = 'PENDING';
         $invoice->tanggal_invoice = now();
-        $invoice->jatuh_tempo = now()->addDays(1);  // Example: 7 days from now
+        $invoice->jatuh_tempo = now()->addDays(1);
+        $invoice->nominal_transfer = $order->grand_total;
         $invoice->save();
 
         // Delete cart items after order is processed
         $cartItems->each->delete();
 
-        // Redirect to a payment page or confirmation page
-        return redirect()->route('payment', ['order_id' => $order->order_id])
-            ->with('status', 'Pesanan berhasil diproses. Harap tunggu konfirmasi.');
+        return redirect()->route('payment', ['order_id' => $order->order_id, 'id' => $invoice->id])
+                            ->with('status', 'Pesanan Anda berhasil diproses. Segera lakukan pembayaran untuk melanjutkan.');
+
     }
 
     return redirect()->route('login')->with('status_error', 'Anda harus login terlebih dahulu.');
 }
 
 
-public function getCartCount()
+    public function getCartCount()
 {
     if (Auth::check()) {
         $pelanggan_id = Auth::user()->id_pelanggan;

@@ -192,8 +192,12 @@
 
                     <div class="form my-3">
                         <h4>Billing Details</h4>
-                        <form class="my-3">
-                            <div class="form-group mb-3">
+                        <form method="POST" action="{{ route('payment.store', ['order_id' => $order->order_id, 'id' => $invoice->id]) }}" enctype="multipart/form-data">
+                            @csrf
+
+                            <input type="hidden" name="id" value="{{ $invoice->id }}">
+
+                            <div class="form-group my-3">
                                 <div class="did-floating-label-content">
                                     <input class="did-floating-input" type="text" placeholder=" " id="status_invoice" name="status_invoice"
                                         value="{{ old('status_invoice', $invoice->status_invoice ?? 'PENDING') }}" readonly />
@@ -211,40 +215,44 @@
 
                             <div class="form-group mb-3">
                                 <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="text" placeholder=" " id="nama_rekening" name="nama_rekening" />
+                                    <input class="did-floating-input" type="text" placeholder=" " id="nama_rekening" name="nama_rekening" required/>
                                     <label class="did-floating-label">Nama Rekening<span class="text-danger">*</span></label>
                                 </div>
                             </div>
 
                             <div class="form-group mb-3">
                                 <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="text" placeholder=" " id="no_rekening" name="no_rekening" />
+                                    <input class="did-floating-input" type="text" placeholder=" " id="no_rekening" name="no_rekening" required />
                                     <label class="did-floating-label">No Rekening<span class="text-danger">*</span></label>
                                 </div>
                             </div>
 
                             <div class="form-group mb-3">
                                 <div class="did-floating-label-content">
-                                    <input class="did-floating-input" type="text" placeholder=" " id="nominal_transfer" name="nominal_transfer" 
+                                    <input class="did-floating-input" type="text" placeholder=" " id="nominal_transfer" name="nominal_transfer"
                                         value="{{ old('grand_total', formatRupiah($order->grand_total)) }}" readonly />
                                     <label class="did-floating-label">Nominal Transfer</label>
                                 </div>
-                            </div>                            
-                            
+                            </div>
+
                             <div class="form-group mb-4">
                                 <div class="upload-box">
                                     <label for="bukti_bayar" class="upload-label">Bukti Bayar<span class="text-danger">*</span></label>
                                     <input type="file" class="file-input" name="bukti_bayar" id="bukti_bayar"
-                                        onchange="previewImage('bukti_bayar', 'buktiBayarPreview')">
+                                        onchange="previewImage('bukti_bayar', 'buktiBayarPreview')" required>
                                     <div class="preview-container d-flex justify-content-center">
                                         <img id="buktiBayarPreview" src="" alt="Bukti Bayar Preview" class="image-preview"
                                             style="display: none; width: 200px; margin-top: 10px;">
                                     </div>
                                 </div>
                             </div>
+
+                            <button type="submit" class="btn btn-payment w-100 mt-3">
+                                Proceed With Payment
+                            </button>
                         </form>
                     </div>
-                    
+
                 </div>
 
 
@@ -252,20 +260,22 @@
                 <div class="col-md-4">
                     <div class="order-summary">
                         <h4>Order Summary</h4>
-                        <ul class="list-unstyled">
-                            @if ($produkItem)
-                                <li class="d-flex justify-content-between my-3">
-                                    <span>{{ $produkItem->nama_produk }}</span>
-                                    <span>{{ formatRupiah($order->total_harga) }}</span>
-                                </li>
-                            @elseif ($sparepartItem)
-                                <li class="d-flex justify-content-between my-3">
-                                    <span>{{ $sparepartItem->nama_spare_part }}</span>
-                                    <span>{{ formatRupiah($order->total_harga) }}</span>
-                                </li>
-                            @endif
-
+                        <ul class="order-list-unstyled">
+                            @foreach($order->orderItems as $item)
+                                @if($item->id_produk)
+                                    <li class="d-flex justify-content-between my-3">
+                                        <span>{{ $item->qty }}x {{ $item->produk ? $item->produk->nama_produk : 'Produk tidak ditemukan' }}</span>
+                                        <span>{{ formatRupiah($item->harga) }}</span>
+                                    </li>
+                                @elseif($item->id_spare_part)
+                                    <li class="d-flex justify-content-between my-3">
+                                        <span>{{ $item->qty }}x {{ $item->sparepart ? $item->sparepart->nama_spare_part : 'Sparepart tidak ditemukan' }}</span>
+                                        <span>{{ formatRupiah($item->harga) }}</span>
+                                    </li>
+                                @endif
+                            @endforeach
                         </ul>
+
                         <hr>
                         <div class="d-flex justify-content-between">
                             <span>Shipping Price</span>
@@ -276,15 +286,6 @@
                             <span><strong>Total</strong></span>
                             <span><strong>{{ formatRupiah($order->grand_total) }}</strong></span> <!-- Tampilkan total harga order -->
                         </li>
-                        <button class="btn btn-payment w-100 mt-3">
-                            Proceed With Payment
-                        </button>
-                        <p class="text-muted mt-3 text-center">
-                            By continuing, you accept our
-                            <a href="#">Terms of Services</a> and
-                            <a href="#">Privacy Policy</a>. <br />
-                            Please note that payments are non-refundable.
-                        </p>
                     </div>
                 </div>
 

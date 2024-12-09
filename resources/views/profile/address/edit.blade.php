@@ -60,7 +60,8 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="provinsi" id="provinsi" class="did-floating-select">
-                        <option value="{{ $address->provinsi }}" selected>{{ $address->provinsi }}</option>
+                        <option value="" selected disabled hidden>Select Province</option>
+                        <!-- Options will be populated by JavaScript -->
                     </select>
                     <label class="did-floating-label">Province</label>
                 </div>
@@ -69,7 +70,8 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="kota" id="kota" class="did-floating-select">
-                        <option value="{{ $address->kota }}" selected>{{ $address->kota }}</option>
+                        <option value="" selected disabled hidden>Select City</option>
+                        <!-- Options will be populated by JavaScript -->
                     </select>
                     <label class="did-floating-label">City</label>
                 </div>
@@ -78,7 +80,8 @@
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <select name="kecamatan" id="kecamatan" class="did-floating-select">
-                        <option value="{{ $address->kecamatan }}" selected>{{ $address->kecamatan }}</option>
+                        <option value="" selected disabled hidden>Select District</option>
+                        <!-- Options will be populated by JavaScript -->
                     </select>
                     <label class="did-floating-label">District</label>
                 </div>
@@ -89,8 +92,8 @@
                     <select name="status_alamat_pengiriman" id="status_alamat_pengiriman" class="did-floating-select">
                         <option value="{{ $address->status_alamat_pengiriman }}" selected disabled hidden>
                             {{ $address->status_alamat_pengiriman }}</option>
-                        <option value="office">Office</option>
-                        <option value="home">Home</option>
+                        <option value="Office">Office</option>
+                        <option value="Home">Home</option>
                     </select>
                     <label class="did-floating-label">Address Status</label>
                 </div>
@@ -152,62 +155,65 @@
 
     <script>
         $(document).ready(function() {
-            // Memuat Provinsi berdasarkan ID yang disimpan
-            $.get('https://api.cahyadsn.com/provinces', function(response) {
-                let provinsiDropdown = $('#provinsi');
-                let selectedProvinsi = "{{ $address->provinsi }}"; // ID provinsi yang disimpan di DB
-                if (response.data && Array.isArray(response.data)) {
-                    $.each(response.data, function(index, provinsi) {
-                        let selected = (provinsi.kode == selectedProvinsi) ? 'selected' : '';
-                        provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
-                    });
-                }
-            }).fail(function() {
-                console.log('Request gagal untuk data provinsi');
+    // Load Provinces
+    $.get('https://api.cahyadsn.com/provinces', function(response) {
+        let provinsiDropdown = $('#provinsi');
+        let selectedProvinsi = "{{ $address->provinsi }}"; // ID of the province stored in DB
+        if (response.data && Array.isArray(response.data)) {
+            $.each(response.data, function(index, provinsi) {
+                let selected = (provinsi.kode == selectedProvinsi) ? 'selected' : '';
+                provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
             });
+        }
+        // Trigger change to load cities
+        provinsiDropdown.trigger('change');
+    }).fail(function() {
+        console.log('Failed to load provinces');
+    });
 
-            // Memuat Kota berdasarkan ID Provinsi yang dipilih
-            $('#provinsi').change(function() {
-                let provinsiId = $(this).val();
-                $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
-                    let kotaDropdown = $('#kota');
-                    kotaDropdown.empty();
-                    kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
+    // Load Cities based on selected Province
+    $('#provinsi').change(function() {
+        let provinsiId = $(this).val();
+        $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
+            let kotaDropdown = $('#kota');
+            kotaDropdown.empty();
+            kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
 
-                    if (response.data && Array.isArray(response.data)) {
-                        $.each(response.data, function(index, kota) {
-                            let selected = (kota.kode == "{{ $address->kota }}") ? 'selected' : '';
-                            kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
-                        });
-                    }
-                }).fail(function() {
-                    console.log('Request gagal untuk data kota');
+            if (response.data && Array.isArray(response.data)) {
+                $.each(response.data, function(index, kota) {
+                    let selected = (kota.kode == "{{ $address->kota }}") ? 'selected' : '';
+                    kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
                 });
-            });
-
-            // Memuat Kecamatan berdasarkan ID Kota yang dipilih
-            $('#kota').change(function() {
-                let kotaId = $(this).val();
-                $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
-                    let kecamatanDropdown = $('#kecamatan');
-                    kecamatanDropdown.empty();
-                    kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
-
-                    if (response.data && Array.isArray(response.data)) {
-                        $.each(response.data, function(index, kecamatan) {
-                            let selected = (kecamatan.kode == "{{ $address->kecamatan }}") ? 'selected' : '';
-                            kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
-                        });
-                    }
-                }).fail(function() {
-                    console.log('Request gagal untuk data kecamatan');
-                });
-            });
-
-            // Inisialisasi dropdown dengan data yang sudah ada
-            $('#provinsi').trigger('change');
-            $('#kota').trigger('change');
+            }
+            // Trigger change to load districts
+            kotaDropdown.trigger('change');
+        }).fail(function() {
+            console.log('Failed to load cities');
         });
+    });
+
+    // Load Districts based on selected City
+    $('#kota').change(function() {
+        let kotaId = $(this).val();
+        $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
+            let kecamatanDropdown = $('#kecamatan');
+            kecamatanDropdown.empty();
+            kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
+
+            if (response.data && Array.isArray(response.data)) {
+                $.each(response.data, function(index, kecamatan) {
+                    let selected = (kecamatan.kode == "{{ $address->kecamatan }}") ? 'selected' : '';
+                    kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
+                });
+            }
+        }).fail(function() {
+            console.log('Failed to load districts');
+        });
+    });
+
+    // Initialize dropdowns with existing data
+    $('#provinsi').trigger('change'); // Load cities based on the selected province
+});
     </script>
 
 @endsection

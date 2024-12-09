@@ -15,17 +15,27 @@ class CreateTOrderItemOnlineTable extends Migration
     {
         Schema::create('t_order_item_online', function (Blueprint $table) {
             $table->integer('id_order_item_online')->primary()->autoIncrement();
-            $table->integer('id_order_online');
-            $table->integer('id_outlet');
-            $table->integer('id_barang');
+            $table->unsignedBigInteger('id_order_online');
+            $table->integer('id_bengkel');
+            $table->unsignedInteger('id_produk')->nullable();
+            $table->integer('id_spare_part')->nullable();
             $table->dateTime('tanggal');
-            $table->string('warna', 50)->nullable();
-            $table->string('size', 50)->nullable();
             $table->integer('qty');
             $table->integer('harga_beli');
             $table->integer('harga');
             $table->integer('subtotal');
+            $table->timestamps();
+            // Foreign keys
+
+            $table->foreign('id_order_online')->references('id')->on('t_order_online')->onDelete('cascade');
+            $table->foreign('id_bengkel')->references('id_bengkel')->on('tb_bengkel')->onDelete('cascade');
+            $table->foreign('id_produk')->references('id_produk')->on('tb_produk')->onDelete('cascade');
+            $table->foreign('id_spare_part')->references('id_spare_part')->on('tb_spare_part')->onDelete('cascade');
         });
+
+
+
+
     }
 
     /**

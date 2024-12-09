@@ -4,6 +4,74 @@
   eBengkelku | Edit bengkel
 @stop
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+    // Load Provinces
+    $.get('https://api.cahyadsn.com/provinces', function(response) {
+        console.log('Provinces Response:', response);
+        let provinsiDropdown = $('#provinsi');
+        provinsiDropdown.empty();
+        provinsiDropdown.append('<option value="" selected disabled hidden>Select Province</option>');
+
+        if (response.data && Array.isArray(response.data)) {
+            $.each(response.data, function(index, provinsi) {
+                let selected = (provinsi.kode == "{{ $bengkel->provinsi }}") ? 'selected' : '';
+                provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
+            });
+        }
+        // Trigger change to load cities
+        provinsiDropdown .trigger('change');
+    }).fail(function() {
+        console.log('Failed to load provinces');
+    });
+
+    // Load Cities based on selected Province
+    $('#provinsi').change(function() {
+        let provinsiId = $(this).val();
+        let kotaDropdown = $('#kota');
+        kotaDropdown.empty();
+        kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
+
+        $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
+            console.log('Cities Response:', response);
+            if (response.data && Array.isArray(response.data)) {
+                $.each(response.data, function(index, kota) {
+                    let selected = (kota.kode == "{{ $bengkel->kota }}") ? 'selected' : '';
+                    kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
+                });
+            }
+            // Trigger change to load districts
+            kotaDropdown.trigger('change');
+        }).fail(function() {
+            console.log('Failed to load cities');
+        });
+    });
+
+    // Load Districts based on selected City
+    $('#kota').change(function() {
+        let kotaId = $(this).val();
+        let kecamatanDropdown = $('#kecamatan');
+        kecamatanDropdown.empty();
+        kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
+
+        $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
+            console.log('Districts Response:', response);
+            if (response.data && Array.isArray(response.data)) {
+                $.each(response.data, function(index, kecamatan) {
+                    let selected = (kecamatan.kode == "{{ $bengkel->kecamatan }}") ? 'selected' : '';
+                    kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
+                });
+            }
+        }).fail(function() {
+            console.log('Failed to load districts');
+        });
+    });
+
+    // Initialize dropdowns with existing data
+    $('#provinsi').trigger('change'); // Load cities based on the selected province
+});
+</script>
 <script>
   function previewImage(inputId, previewId) {
     const input = document.getElementById(inputId);
@@ -59,6 +127,7 @@
       }
     });
 </script>
+
 
 <style>
   .image-preview {
@@ -213,32 +282,35 @@
         </div>
       </div>
 
-      <div class="form-group mb-3">
-        <div class="did-floating-label-content">
-            <select name="provinsi" id="provinsi" class="did-floating-select">
-                <option value="{{ $bengkel->provinsi }}" selected>{{ $bengkel->provinsi }}</option>
-            </select>
-            <label class="did-floating-label">Province<span class="text-danger">*</span></label>
+        <div class="form-group mb-3">
+            <div class="did-floating-label-content">
+                <select name="provinsi" id="provinsi" class="did-floating-select">
+                    <option value="" selected disabled hidden>Select Province</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <label class="did-floating-label">Province<span class="text-danger">*</span></label>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group mb-3">
-        <div class="did-floating-label-content">
-            <select name="kota" id="kota" class="did-floating-select">
-                <option value="{{ $bengkel->kota }}" selected>{{ $bengkel->kota }}</option>
-            </select>
-            <label class="did-floating-label">City<span class="text-danger">*</span></label>
+        <div class="form-group mb-3">
+            <div class="did-floating-label-content">
+                <select name="kota" id="kota" class="did-floating-select">
+                    <option value="" selected disabled hidden>Select City</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <label class="did-floating-label">City<span class="text-danger">*</span></label>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group mb-3">
-        <div class="did-floating-label-content">
-            <select name="kecamatan" id="kecamatan" class="did-floating-select">
-                <option value="{{ $bengkel->kecamatan }}" selected>{{ $bengkel->kecamatan }}</option>
-            </select>
-            <label class="did-floating-label">District<span class="text-danger">*</span></label>
+        <div class="form-group mb-3">
+            <div class="did-floating-label-content">
+                <select name="kecamatan" id="kecamatan" class="did-floating-select">
+                    <option value="" selected disabled hidden>Select District</option>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <label class="did-floating-label">District<span class="text-danger">*</span></label>
+            </div>
         </div>
-    </div>
 
       <!-- Google Maps Link -->
       <div class="form-group mb-3">
@@ -534,64 +606,5 @@ function removeBankAccount(button) {
 
 </script>
 
-<script>
-    $(document).ready(function() {
-        // Memuat Provinsi berdasarkan ID yang disimpan
-        $.get('https://api.cahyadsn.com/provinces', function(response) {
-            let provinsiDropdown = $('#provinsi');
-            let selectedProvinsi = "{{ $bengkel->provinsi }}"; // ID provinsi yang disimpan di DB
-            if (response.data && Array.isArray(response.data)) {
-                $.each(response.data, function(index, provinsi) {
-                    let selected = (provinsi.kode == selectedProvinsi) ? 'selected' : '';
-                    provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
-                });
-            }
-        }).fail(function() {
-            console.log('Request gagal untuk data provinsi');
-        });
-
-        // Memuat Kota berdasarkan ID Provinsi yang dipilih
-        $('#provinsi').change(function() {
-            let provinsiId = $(this).val();
-            $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
-                let kotaDropdown = $('#kota');
-                kotaDropdown.empty();
-                kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
-
-                if (response.data && Array.isArray(response.data)) {
-                    $.each(response.data, function(index, kota) {
-                        let selected = (kota.kode == "{{ $bengkel->kota }}") ? 'selected' : '';
-                        kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
-                    });
-                }
-            }).fail(function() {
-                console.log('Request gagal untuk data kota');
-            });
-        });
-
-        // Memuat Kecamatan berdasarkan ID Kota yang dipilih
-        $('#kota').change(function() {
-            let kotaId = $(this).val();
-            $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
-                let kecamatanDropdown = $('#kecamatan');
-                kecamatanDropdown.empty();
-                kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
-
-                if (response.data && Array.isArray(response.data)) {
-                    $.each(response.data, function(index, kecamatan) {
-                        let selected = (kecamatan.kode == "{{ $bengkel->kecamatan }}") ? 'selected' : '';
-                        kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
-                    });
-                }
-            }).fail(function() {
-                console.log('Request gagal untuk data kecamatan');
-            });
-        });
-
-        // Inisialisasi dropdown dengan data yang sudah ada
-        $('#provinsi').trigger('change');
-        $('#kota').trigger('change');
-    });
-</script>
 @endsection
 

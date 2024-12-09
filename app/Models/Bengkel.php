@@ -59,4 +59,8 @@ class Bengkel extends Model
         return $this->hasMany(Pegawai::class, 'id_bengkel', 'id_bengkel');
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItemOnline::class, 'id_bengkel');
+    }
 }
