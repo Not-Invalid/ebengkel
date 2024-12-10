@@ -430,13 +430,22 @@
             <div class="row">
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="rekening_number" name="rekening_bank[0][no_rekening]" />
+                        <input class="did-floating-input" type="text" placeholder=" " id="rekening_number" name="rekening_bank[0][no_rekening]" oninput="validateRekeningNumber(this)" />
                         <label class="did-floating-label">Bank Account Number<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " id="bank_name" name="rekening_bank[0][nama_bank]" />
+                        <select class="did-floating-input" id="bank_name" name="rekening_bank[0][nama_bank]">
+                            <option value="" disabled selected>Select Bank</option>
+                            <option value="Bank BCA">Bank BCA</option>
+                            <option value="Bank BRI">Bank BRI</option>
+                            <option value="Bank BNI">Bank BNI</option>
+                            <option value="Bank Mandiri">Bank Mandiri</option>
+                            <option value="Bank Syariah Indonesia">Bank Syariah Indonesia</option>
+                            <option value="Bank CIMB Niaga">Bank CIMB Niaga</option>
+                            <option value="Panin Bank">Panin Bank</option>
+                        </select>
                         <label class="did-floating-label">Bank Name<span class="text-danger">*</span></label>
                     </div>
                 </div>
@@ -501,6 +510,10 @@
   </div>
 
   <script>
+    function validateRekeningNumber(input) {
+        // Menyaring input hanya untuk angka
+        input.value = input.value.replace(/\D/g, ''); // Menghapus karakter yang bukan angka
+    }
     function toggleBankFields() {
         // Mendapatkan elemen checkbox metode pembayaran
         const paymentManualTransfer = document.getElementById('paymentManualTransfer');
@@ -545,20 +558,29 @@
             newRow.innerHTML = `
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" />
-                        <label class="did-floating-label">Bank Account Number</label>
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" oninput="validateRekeningNumber(this)"/>
+                        <label class="did-floating-label">Bank Account Number<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
-                        <label class="did-floating-label">Bank Name</label>
+                        <select class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
+                            <option value="" disabled selected>Select Bank</option>
+                            <option value="Bank BCA">Bank BCA</option>
+                            <option value="Bank BRI">Bank BRI</option>
+                            <option value="Bank BNI">Bank BNI</option>
+                            <option value="Bank Mandiri">Bank Mandiri</option>
+                            <option value="Bank Syariah Indonesia">Bank Syariah Indonesia</option>
+                            <option value="Bank CIMB Niaga">Bank CIMB Niaga</option>
+                            <option value="Panin Bank">Panin Bank</option>
+                        </select>
+                        <label class="did-floating-label">Bank Name<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
                         <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][atas_nama]" />
-                        <label class="did-floating-label">Atas Nama</label>
+                        <label class="did-floating-label">Account Holder<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col-auto">
