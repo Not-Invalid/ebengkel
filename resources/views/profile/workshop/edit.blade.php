@@ -442,13 +442,22 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][no_rekening]" value="{{ old('rekening_bank.'.$index.'.no_rekening', $bankAccount['no_rekening']) }}" />
+                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][no_rekening]" value="{{ old('rekening_bank.'.$index.'.no_rekening', $bankAccount['no_rekening']) }}" oninput="validateRekeningNumber(this)" />
                         <label class="did-floating-label">Bank Account Number<span class="text-danger">*</span></label>
                     </div>
                 </div>
                 <div class="col">
                     <div class="did-floating-label-content">
-                        <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[{{ $index }}][nama_bank]" value="{{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) }}" />
+                        <select class="did-floating-input" name="rekening_bank[{{ $index }}][nama_bank]">
+                            <option value="" disabled selected>Select Bank</option>
+                            <option value="Bank BCA" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Bank BCA' ? 'selected' : '' }}>Bank BCA</option>
+                            <option value="Bank BRI" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Bank BRI' ? 'selected' : '' }}>Bank BRI</option>
+                            <option value="Bank BNI" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Bank BNI' ? 'selected' : '' }}>Bank BNI</option>
+                            <option value="Bank Mandiri" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Bank Mandiri' ? 'selected' : '' }}>Bank Mandiri</option>
+                            <option value="Bank Syariah Indonesia" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Bank Syariah Indonesia' ? 'selected' : '' }}>Bank Syariah Indonesia</option>
+                            <option value="Bank CIMB Niaga" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Bank CIMB Niaga' ? 'selected' : '' }}>Bank CIMB Niaga</option>
+                            <option value="Panin Bank" {{ old('rekening_bank.'.$index.'.nama_bank', $bankAccount['nama_bank']) == 'Panin Bank' ? 'selected' : '' }}>Panin Bank</option>
+                        </select>
                         <label class="did-floating-label">Bank Name<span class="text-danger">*</span></label>
                     </div>
                 </div>
@@ -521,6 +530,9 @@
 
 
   <script>
+    function validateRekeningNumber(input) {
+        input.value = input.value.replace(/\D/g, '');
+    }
     function toggleBankFields() {
         // Retrieve payment method checkboxes
         const paymentManualTransfer = document.getElementById('paymentManualTransfer');
@@ -569,20 +581,29 @@ if (addBankAccountButton) {
         newRow.innerHTML = `
             <div class="col">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" />
-                    <label class="did-floating-label">Bank Account Number</label>
+                    <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][no_rekening]" oninput="validateRekeningNumber(this)" />
+                    <label class="did-floating-label">Bank Account Number<span class="text-danger">*</span></label>
                 </div>
             </div>
             <div class="col">
                 <div class="did-floating-label-content">
-                    <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][nama_bank]" />
-                    <label class="did-floating-label">Bank Name</label>
+                    <select class="did-floating-input" name="rekening_bank[${bankAccountIndex}][nama_bank]">
+                        <option value="" disabled selected>Select Bank</option>
+                        <option value="Bank BCA">Bank BCA</option>
+                        <option value="Bank BRI">Bank BRI</option>
+                        <option value="Bank BNI">Bank BNI</option>
+                        <option value="Bank Mandiri">Bank Mandiri</option>
+                        <option value="Bank Syariah Indonesia">Bank Syariah Indonesia</option>
+                        <option value="Bank CIMB Niaga">Bank CIMB Niaga</option>
+                        <option value="Panin Bank">Panin Bank</option>
+                    </select>
+                    <label class="did-floating-label">Bank Name<span class="text-danger">*</span></label>
                 </div>
             </div>
             <div class="col">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " name="rekening_bank[${bankAccountIndex}][atas_nama]" />
-                    <label class="did-floating-label">Account Holder</label>
+                    <label class="did-floating-label">Account Holder<span class="text-danger">*</label>
                 </div>
             </div>
             <div class="col-auto">
