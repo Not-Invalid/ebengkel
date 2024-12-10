@@ -402,6 +402,36 @@ return [
         'logout' => 'Logout',
     ],
 
+    'auth' => [
+        'login' => 'Login',
+        'email' => 'Enter your email',
+        'password' => 'Enter your password',
+        'forgot' => 'Forgot Password',
+        'have account' => "Don't have an account?",
+        'regis' => 'Register now',
+        'register' => 'Register',
+        'username' => 'Enter your username',
+        'phone' => 'Enter your phone number',
+        'confirm' => 'Confirm your password',
+        'already' => 'Already have an account?',
+        'now' => 'Login now',
+        'forgot_password' => 'Forgot Password',
+        'reset_link' => 'Send reset link',
+        'reset_password' => 'Reset password',
+    ],
+
+    'toast' => [
+        'login_success' => 'Login successful!',
+        'credential' => 'The provided credentials do not match our records',
+        'login_failed' => 'Login failed. Please check your credentials',
+        'regis_success' => 'Registration successfull!',
+        'logout_success' => 'Logout successfull!',
+        'notfound_email' => 'Email not found.',
+        'reset_link' => 'Reset link sent! Please check your email.',
+        'invalid' => 'Invalid token!',
+        'reset_success' => 'Password successfully reset!',
+    ],
+
     'footer' => [
         'company' => 'Company',
         'about' => 'About',

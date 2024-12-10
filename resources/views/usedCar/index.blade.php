@@ -52,112 +52,116 @@
             Filter
         </button>
 
-        <div class="container">
+        <section class="section bg-white" style="padding-bottom: 50px;">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        @if ($mobilList->isEmpty())
-                            {{-- Tampilkan pesan dari server jika tidak ada data sama sekali --}}
-                            <div class="d-flex justify-content-center pb-5">
-                                <div class="text-center">
-                                    <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
-                                        width="200" alt="No cars">
-                                    <p>{{ __('messages.usedcar.no_data') }}.</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if ($mobilList->isEmpty())
+                                {{-- Tampilkan pesan dari server jika tidak ada data sama sekali --}}
+                                <div class="d-flex justify-content-center pb-5">
+                                    <div class="text-center">
+                                        <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
+                                            width="200" alt="No cars">
+                                        <p>{{ __('messages.usedcar.no_data') }}.</p>
+                                    </div>
                                 </div>
-                            </div>
-                        @else
-                            {{-- Data tersedia, tampilkan kartu mobil --}}
-                            <div class="row" id="car-list">
-                                @foreach ($mobilList as $car)
-                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3 car-card">
-                                        <a href="{{ route('usedcar.detail', $car->id_mobil) }}" class="card-event p-3">
-                                            @if ($car->fotos && $car->fotos->file_foto_mobil_1)
-                                                <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
-                                                    class="card-img-top">
-                                            @else
-                                                <img src="{{ asset('assets/images/components/image.png') }}" alt="Car Image"
-                                                    class="card-img-top">
-                                            @endif
-                                            <div class="card-body text-start">
-                                                <div class="d-flex align-items-center location-map mt-3">
-                                                    <i class='bx bx-map-pin'></i>
-                                                    <p class="location ms-2">
-                                                        {{ \Illuminate\Support\Str::limit($car->lokasi_mobil, 15) }}</p>
-                                                </div>
-                                                <p class="card-title">
-                                                    {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}</p>
-                                                <div class="d-flex align-items-center event-date">
-                                                    <span class="jenis">{{ $car->merkMobil->nama_merk }}</span>
-                                                </div>
-                                                <div class="footer-card">
-                                                    <div class="price d-flex justify-content-start">
-                                                        <span
-                                                            class="price">Rp{{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
+                            @else
+                                {{-- Data tersedia, tampilkan kartu mobil --}}
+                                <div class="row" id="car-list">
+                                    @foreach ($mobilList as $car)
+                                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3 car-card">
+                                            <a href="{{ route('usedcar.detail', $car->id_mobil) }}" class="card-event p-3">
+                                                @if ($car->fotos && $car->fotos->file_foto_mobil_1)
+                                                    <img src="{{ url($car->fotos->file_foto_mobil_1) }}" alt="Car Image"
+                                                        class="card-img-top">
+                                                @else
+                                                    <img src="{{ asset('assets/images/components/image.png') }}"
+                                                        alt="Car Image" class="card-img-top">
+                                                @endif
+                                                <div class="card-body text-start">
+                                                    <div class="d-flex align-items-center location-map mt-3">
+                                                        <i class='bx bx-map-pin'></i>
+                                                        <p class="location ms-2">
+                                                            {{ \Illuminate\Support\Str::limit($car->lokasi_mobil, 15) }}</p>
+                                                    </div>
+                                                    <p class="card-title">
+                                                        {{ \Illuminate\Support\Str::limit($car->nama_mobil, 15) }}</p>
+                                                    <div class="d-flex align-items-center event-date">
+                                                        <span class="jenis">{{ $car->merkMobil->nama_merk }}</span>
+                                                    </div>
+                                                    <div class="footer-card">
+                                                        <div class="price d-flex justify-content-start">
+                                                            <span
+                                                                class="price">Rp{{ number_format($car->harga_mobil, 0, ',', '.') }}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
-                            {{-- Pesan filter kosong (hanya dikendalikan JavaScript) --}}
-                            <div id="no-result-message" style="display: none; text-align: center; margin-top: 30px;">
-                                <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200"
-                                    alt="No Result">
-                                <p>{{ __('messages.usedcar.no_filter') }}.</p>
-                            </div>
-                        @endif
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                {{-- Pesan filter kosong (hanya dikendalikan JavaScript) --}}
+                                <div id="no-result-message" style="display: none; text-align: center; margin-top: 30px;">
+                                    <img src="{{ asset('assets/images/components/empty.png') }}" height="200"
+                                        width="200" alt="No Result">
+                                    <p>{{ __('messages.usedcar.no_filter') }}.</p>
+                                </div>
+                            @endif
 
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-center mt-4">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    {{-- Previous Page Link --}}
-                                    @if ($mobilList->onFirstPage())
-                                        <li class="page-item disabled">
-                                            <a class="page-link">{{ __('messages.usedcar.previous') }}</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a href="{{ $mobilList->previousPageUrl() }}"
-                                                class="page-link">{{ __('messages.usedcar.previous') }}</a>
-                                        </li>
-                                    @endif
-
-                                    {{-- Pagination Elements --}}
-                                    @foreach ($mobilList->getUrlRange(1, $mobilList->lastPage()) as $page => $url)
-                                        @if ($page == $mobilList->currentPage())
-                                            <li class="page-item active" aria-current="page">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }} <span
-                                                        class="visually-hidden">(current)</span></a>
+                            <!-- Pagination -->
+                            <div class="d-flex justify-content-center mt-4">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        {{-- Previous Page Link --}}
+                                        @if ($mobilList->onFirstPage())
+                                            <li class="page-item disabled">
+                                                <a class="page-link">{{ __('messages.usedcar.previous') }}</a>
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                                <a href="{{ $mobilList->previousPageUrl() }}"
+                                                    class="page-link">{{ __('messages.usedcar.previous') }}</a>
                                             </li>
                                         @endif
-                                    @endforeach
 
-                                    {{-- Next Page Link --}}
-                                    @if ($mobilList->hasMorePages())
-                                        <li class="page-item">
-                                            <a href="{{ $mobilList->nextPageUrl() }}"
-                                                class="page-link">{{ __('messages.usedcar.next') }}</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled">
-                                            <a class="page-link">{{ __('messages.usedcar.next') }}</a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </nav>
+                                        {{-- Pagination Elements --}}
+                                        @foreach ($mobilList->getUrlRange(1, $mobilList->lastPage()) as $page => $url)
+                                            @if ($page == $mobilList->currentPage())
+                                                <li class="page-item active" aria-current="page">
+                                                    <a class="page-link" href="{{ $url }}">{{ $page }}
+                                                        <span class="visually-hidden">(current)</span></a>
+                                                </li>
+                                            @else
+                                                <li class="page-item">
+                                                    <a class="page-link"
+                                                        href="{{ $url }}">{{ $page }}</a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+
+                                        {{-- Next Page Link --}}
+                                        @if ($mobilList->hasMorePages())
+                                            <li class="page-item">
+                                                <a href="{{ $mobilList->nextPageUrl() }}"
+                                                    class="page-link">{{ __('messages.usedcar.next') }}</a>
+                                            </li>
+                                        @else
+                                            <li class="page-item disabled">
+                                                <a class="page-link">{{ __('messages.usedcar.next') }}</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-body">
                 <!-- Brand Section -->
                 <div class="offcanvas-header">
