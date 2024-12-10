@@ -1,6 +1,6 @@
 @extends('pos.layouts.app')
 @section('title')
-    eBengkelku | Master POS
+    eBengkelku | Transaksi Pos
 @stop
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/css/POS/transaksi_pos.css') }}">
@@ -13,10 +13,28 @@
             font-size: 14px;
             cursor: pointer;
         }
+
+        .increase-btn {
+            display: flex;
+            background: none;
+            border: none;
+            color: red;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .decrease-btn {
+            display: flex;
+            background: none;
+            border: none;
+            color: red;
+            font-size: 14px;
+            cursor: pointer;
+        }
     </style>
 @endpush
 @php
-    $header = 'Master POS';
+    $header = 'Transaksi Pos';
 @endphp
 @section('content')
     <div class="container-fluid py-4">
@@ -34,23 +52,28 @@
                     <h4 class="judul">List Produk</h4>
                     <div class="row">
                         @foreach ($products as $product)
-                            <div class="col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
+                            <div class="col-md-4 col-sm-6 mb-3 d-flex align-items-center">
                                 <div class="custom-card shadow product-card">
-                                    <div class="product-code d-flex justify-content-between">
-                                        <span>{{ $product->id_produk }}</span>
-                                        <span class="product-stock">Stock: {{ $product->stok_produk }}</span>
+                                    <div class="product-code d-flex justify-content-end">
+                                        <span class="product-stock mb-2">Stock: {{ $product->stok_produk }}</span>
                                     </div>
+                                    <img src="{{ $product->foto_produk }}" alt="Product Image" class="product-image">
                                     <div class="product-title mt-3">{{ $product->nama_produk }}</div>
-                                    <div class="product-price">Price : Rp
-                                        {{ number_format($product->harga_produk, 0, ',', '.') }}</div>
-                                    <div class="product-category mb-2">{{ $product->merk_produk }}</div>
-                                    <a class="add-button w-100"><i class="fa-solid fa-bag-shopping mr-1"
-                                            style="color: "></i>TAMBAHKAN</a>
+                                    <div class="product-category">{{ $product->merk_produk }}</div>
+                                    <div class="product-price mb-2 mt-2">Rp
+                                        {{ number_format($product->harga_produk, 0, ',', '.') }}
+                                    </div>
+                                    <!-- Tambahkan atribut data-harga untuk harga produk -->
+                                    <a class="add-button w-100" data-id="{{ $product->id }}"
+                                        data-nama="{{ $product->nama_produk }}" data-harga="{{ $product->harga_produk }}">
+                                        <i class="fa-solid fa-bag-shopping mr-1"></i> TAMBAHKAN
+                                    </a>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+
                 <div class="col-12 col-md-4">
                     <div class="cart-container shadow mt-5">
                         <h5 class="order">Active Order</h5>
@@ -66,7 +89,7 @@
                             <a class="trash-btn" data-toggle="tooltip" title="Delete Order">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                            <a href="{{ route('pos.tranksaksi_pesanan.checkout', ['id_bengkel' => $id_bengkel]) }}"
+                            <a href="{{ route('pos.tranksaksi_pos.showcheckoutpos', ['id_bengkel' => $id_bengkel]) }}"
                                 class="checkout-btn text-center" id="checkoutBtn">
                                 <i class="fa-solid fa-cart-shopping"></i> CHECKOUT
                             </a>
@@ -95,8 +118,7 @@
                             .replace(/[^0-9]/g, '')),
                         stock: parseInt(productCard.querySelector('.product-stock').textContent
                             .replace(/[^0-9]/g, '')),
-                        brand: productCard.querySelector('.product-category')
-                            .textContent
+                        brand: productCard.querySelector('.product-category').textContent
                     };
                     addToOrder(product);
                 });
@@ -131,28 +153,70 @@
                     const itemElement = document.createElement('div');
                     itemElement.className = 'order-item';
                     itemElement.innerHTML = `
-                        <div class="order-item-details">
-                            <div class="order-item-name">
-                                ${item.name}
-                                <div class="order-item-brand">${item.brand}</div>
+                            <div class="order-item-details d-flex justify-content-between align-items-center">
+                                <div class="order-item-name">
+                                    ${item.name}
+                                    <div class="order-item-brand">${item.brand}</div>
+                                </div>
+                                <div class="order-item-quantity d-flex align-items-center">
+                                    <button class="decrease-btn btn btn-sm mb-3" data-id="${item.id}">-</button>
+                                    <span class="mx-2 mb-3">${item.quantity}</span>
+                                    <button class="increase-btn btn btn-sm mb-3" data-id="${item.id}">+</button>
+                                </div>
+                                <div class="order-item-price">
+                                    Rp ${(item.price * item.quantity).toLocaleString('id-ID')}
+                                </div>
+                                <button class="remove-item-btn btn btn-sm btn-danger mb-4" data-id="${item.id}">
+                                    <i class="fa fa-times"></i>
+                                </button>
                             </div>
-                            <div class="order-item-total">${item.quantity}</div>
-                            <div class="order-item-price">
-                                Rp ${item.price.toLocaleString('id-ID')}
-                            </div>
-                            <button class="remove-item-btn" data-id="${item.id}">
-                                <i class="fa fa-times"></i> <!-- Ikon X -->
-                            </button>
-                        </div>
-                    `;
+                        `;
                     orderItemsContainer.appendChild(itemElement);
                 });
 
-                // Update total harga dan jumlah item
-                document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
-                document.querySelector('.total-price').textContent = `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
+                function changeItemQuantity(itemId, change) {
+                    const item = activeOrder.items.find(item => item.id === itemId);
+                    if (item) {
+                        if (change === -1 && item.quantity === 1) {
+                            // Remove item if quantity becomes 0
+                            removeFromOrder(itemId);
+                        } else if (change === 1 && item.quantity < item.stock) {
+                            item.quantity += change;
+                            activeOrder.total += item.price * change;
+                            activeOrder.totalItems += change;
+                            updateActiveOrderDisplay();
+                        } else if (change === 1 && item.quantity >= item.stock) {
+                            alert('Stok produk tidak mencukupi!');
+                        } else {
+                            item.quantity += change;
+                            activeOrder.total += item.price * change;
+                            activeOrder.totalItems += change;
+                            updateActiveOrderDisplay();
+                        }
+                    }
+                }
 
-                // Menambahkan event listener untuk tombol hapus (X)
+                // Update total items and price
+                document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
+                document.querySelector('.total-price').textContent =
+                    `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
+
+                // Add event listeners for increase and decrease buttons
+                document.querySelectorAll('.increase-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const itemId = this.getAttribute('data-id');
+                        changeItemQuantity(itemId, 1);
+                    });
+                });
+
+                document.querySelectorAll('.decrease-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const itemId = this.getAttribute('data-id');
+                        changeItemQuantity(itemId, -1);
+                    });
+                });
+
+                // Add event listeners for remove buttons
                 document.querySelectorAll('.remove-item-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const itemId = this.getAttribute('data-id');
@@ -162,22 +226,15 @@
             }
 
             function removeFromOrder(itemId) {
-                // Mencari item di activeOrder berdasarkan id
                 const itemIndex = activeOrder.items.findIndex(item => item.id === itemId);
                 if (itemIndex !== -1) {
-                    // Mengurangi total harga dan jumlah item
                     const item = activeOrder.items[itemIndex];
                     activeOrder.total -= item.price * item.quantity;
                     activeOrder.totalItems -= item.quantity;
-
-                    // Menghapus item dari array activeOrder
                     activeOrder.items.splice(itemIndex, 1);
-
-                    // Memperbarui tampilan
                     updateActiveOrderDisplay();
                 }
             }
-
             document.querySelector('.trash-btn').addEventListener('click', function() {
                 activeOrder = {
                     items: [],
@@ -186,40 +243,14 @@
                 };
                 updateActiveOrderDisplay();
             });
-            document.querySelector('.checkout-btn').addEventListener('click', function() {
-                const orderData = {
-                    items: activeOrder.items,
-                    total_qty: activeOrder.totalItems,
-                    total_harga: activeOrder.total,
-                    tanggal: new Date().toISOString().split('T')[0],
-                };
-                fetch('/tranksaksi/pesanan/store/{id_bengkel}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content')
-                        },
-                        body: JSON.stringify(orderData)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Pesanan berhasil dibuat!');
-                            activeOrder = {
-                                items: [],
-                                total: 0,
-                                totalItems: 0
-                            };
-                            updateActiveOrderDisplay();
-                        } else {
-                            alert('Terjadi kesalahan saat membuat pesanan.');
-                        }
-                    })
-                    .catch(error => {
-                        alert('Terjadi kesalahan.');
-                        console.error('Error:', error);
-                    });
+            const checkoutBtn = document.querySelector('.checkout-btn');
+            checkoutBtn.addEventListener('click', function(e) {
+                if (activeOrder.items.length === 0) {
+                    e.preventDefault();
+                    alert('Keranjang Anda kosong! Tambahkan produk terlebih dahulu.');
+                }
+                document.querySelector('input[name="orderData"]').value = JSON.stringify(activeOrder);
+                document.querySelector('form').submit();
             });
         });
     </script>

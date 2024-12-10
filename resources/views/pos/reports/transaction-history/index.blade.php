@@ -65,7 +65,7 @@
                                         <td>{{ $transaction['customer_name'] }}</td>
                                         <td>{{ $transaction['transaction_type'] }}</td>
                                         <td>{{ $transaction['payment_method'] }}</td>
-                                        <td>{{ number_format($transaction['total_price'], 2) }}</td>
+                                        <td>Rp {{ number_format($transaction['total_price'], 2, ',', '.') }}</td>
                                         <td>{{ $transaction['cashier'] }}</td>
                                         <td>
                                             <a role="button" class="btn btn-danger text-white" data-toggle="tooltip"

@@ -19,28 +19,28 @@
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
 
                 <div class="form-group">
-                    <label for="tgl_pesanan">Tanggal Pesanan <span class="text-danger">*</span></label>
+                    <label for="tgl_pesanan">Order Date<span class="text-danger">*</span></label>
                     <input type="date" class="form-control" name="tgl_pesanan" required>
                 </div>
                 <div class="form-group">
-                    <label for="nama_pemesan">Nama Pemesan <span class="text-danger">*</span></label>
+                    <label for="nama_pemesan">Order Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="nama_pemesan" required>
                 </div>
                 <div class="form-group">
-                    <label for="telp_pelanggan">No Telp <span class="text-danger">*</span></label>
+                    <label for="telp_pelanggan">Customer Phone Number <span class="text-danger">*</span></label>
                     <input type="tel" class="form-control" name="telp_pelanggan" required
                         oninput="validatePhoneNumber(this)" maxlength="15">
                 </div>
                 <div class="form-group">
-                    <label for="nama_service">Nama Service <span class="text-danger">*</span></label>
+                    <label for="nama_service">Service Name<span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="nama_service" required>
                 </div>
                 <div class="form-group">
-                    <label for="status">Status Pesanan <span class="text-danger">*</span></label>
+                    <label for="status">Order Status <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" name="status" required>
                 </div>
                 <div class="form-group">
-                    <label for="total_pesanan">Total Pesanan <span class="text-danger">*</span></label>
+                    <label for="total_pesanan">Order Price<span class="text-danger">*</span></label>
                     <input type="number" class="form-control" name="total_pesanan" required>
                 </div>
                 <div class="d-flex gap-2 justify-content-end">

@@ -75,7 +75,7 @@ class TransaksiPesananController extends Controller
 
         if (!$pesanan) {
             return redirect()->route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $id_bengkel])
-                ->with('status_error', 'No orders found for this workshop.');
+                ->with('status', 'No orders found for this workshop.');
         }
 
         return view('pos.master-transaksi.pesanan.edit', compact('bengkel', 'pesanan'));
@@ -87,7 +87,7 @@ class TransaksiPesananController extends Controller
 
         if (!$pesanan) {
             return redirect()->route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $id_bengkel])
-                ->with('status_error', 'Pesanan tidak ditemukan.');
+                ->with('status', 'Order Not Found.');
         }
 
         $request->validate([
@@ -109,7 +109,7 @@ class TransaksiPesananController extends Controller
         ]);
 
         return redirect()->route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $id_bengkel])
-            ->with('status_success', 'Order Updated Successfully.');
+            ->with('status', 'Order Updated Successfully.');
     }
 
     public function delete($id_bengkel)
@@ -118,12 +118,12 @@ class TransaksiPesananController extends Controller
 
         if (!$pesanan) {
             return redirect()->route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $id_bengkel])
-                ->with('status_error', 'No orders found for this workshop.');
+                ->with('status', 'No orders found for this workshop.');
         }
 
         $pesanan->delete();
 
         return redirect()->route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $id_bengkel])
-            ->with('status_success', 'Order deleted successfully.');
+            ->with('status', 'Order deleted successfully.');
     }
 }

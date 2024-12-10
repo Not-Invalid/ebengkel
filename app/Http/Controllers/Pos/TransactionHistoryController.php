@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bengkel;
 use App\Models\PesananService;
-use App\Models\Pesanan;
+use App\Models\Order;
 use App\Models\OrderOnline;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
@@ -27,9 +27,9 @@ class TransactionHistoryController extends Controller
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
-        $pesanan = Pesanan::where('id_outlet', $id_bengkel)
+        $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
-            ->get(['id_customer', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get(['id_order', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
@@ -69,9 +69,9 @@ class TransactionHistoryController extends Controller
     }
     public function downloadPdf($id_bengkel)
     {
-        $pesanan = Pesanan::where('id_outlet', $id_bengkel)
+        $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
-            ->get(['id_customer', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get(['id_order', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
@@ -117,9 +117,9 @@ class TransactionHistoryController extends Controller
     }
     public function downloadExcel($id_bengkel)
     {
-        $pesanan = Pesanan::where('id_outlet', $id_bengkel)
+        $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
-            ->get(['id_customer', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get(['id_order', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
