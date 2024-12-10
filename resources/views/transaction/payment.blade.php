@@ -161,24 +161,29 @@
                     <!-- Select Bank for Manual Transfer (if applicable) -->
                     @if(!empty($rekeningBank) && $hasManualTransfer)
                         <div class="row my-1" id="selectBankRow" style="display: none;">
-                            <div class="col-md-6">
-                                <label for="paymentMethod" class="form-label">Select Bank</label>
-                                <select class="form-select" id="paymentMethod" name="paymentMethod">
-                                    @foreach($rekeningBank as $rekening)
-                                        <option value="{{ $rekening['nama_bank'] }}">
-                                            {{ $rekening['nama_bank'] }} - {{ $rekening['atas_nama'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="col my-3">
+                                <div class="did-floating-label-content">
+                                    <select class="did-floating-input" id="bank_tujuan" name="bank_tujuan">
+                                        <option value="" disabled selected>Select Destination Bank</option>
+                                        @foreach($rekeningBank as $rekening)
+                                            <option value="{{ $rekening['nama_bank'] }}" data-rekening="{{ $rekening['no_rekening'] }}">
+                                                {{ $rekening['nama_bank'] }} - {{ $rekening['atas_nama'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label class="did-floating-label">Destination Bank<span class="text-danger">*</span></label>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="accountNumber" class="form-label">Account Number</label>
-                                <input type="text" class="form-control" id="accountNumber" name="accountNumber" value="{{ $rekening['no_rekening'] }}" readonly />
+                            <div class="col my-3">
+                                <div class="did-floating-label-content">
+                                    <input class="did-floating-input" type="text" class="form-control" id="accountNumber" name="accountNumber" value="" readonly  />
+                                    <label class="did-floating-label">Bank Account Number</label>
+                                </div>
                             </div>
                         </div>
-                    @else
-                        <p>No bank details available.</p>
                     @endif
+
+
 
                     <!-- QRIS: QR Code Image Row (if applicable) -->
                     @if($hasQRIS)
@@ -196,6 +201,7 @@
                             @csrf
 
                             <input type="hidden" name="id" value="{{ $invoice->id }}">
+                            <input type="hidden" name="bank_tujuan" id="hiddenBankTujuan">
                             <input type="hidden" name="jenis_pembayaran" id="jenis_pembayaran">
 
                             <div class="form-group my-3">
@@ -307,12 +313,15 @@
             const manualTransferRadio = document.getElementById("manualTransfer");
             const qrisRadio = document.getElementById("qris");
             const jenisPembayaranInput = document.getElementById("jenis_pembayaran");
-
+            const hiddenBankTujuan = document.getElementById("hiddenBankTujuan"); // Menangkap input hidden bank tujuan
             const selectBankRow = document.querySelector("#selectBankRow");
             const qrisImageRow = document.querySelector("#qrisImageRow");
+            const bankTujuanSelect = document.getElementById("bank_tujuan");
+            const accountNumberInput = document.getElementById("accountNumber"); // Menangkap input Bank Account Number
 
+            // Fungsi untuk menangani perubahan metode pembayaran
             function togglePaymentMethod() {
-                // Hide Bank selection and QRIS image by default
+                // Menyembunyikan elemen berdasarkan metode pembayaran yang dipilih
                 if (selectBankRow) {
                     selectBankRow.style.display = "none";
                 }
@@ -320,17 +329,17 @@
                     qrisImageRow.style.display = "none";
                 }
 
-                // Show or hide based on which radio button is selected
+                // Menampilkan elemen yang sesuai berdasarkan pilihan radio
                 if (manualTransferRadio && manualTransferRadio.checked && selectBankRow) {
                     selectBankRow.style.display = "flex";
-                    jenisPembayaranInput.value = 'Manual Transfer'; // Set value for jenis_pembayaran
+                    jenisPembayaranInput.value = 'Manual Transfer'; // Menyimpan nilai 'Manual Transfer' ke input hidden
                 } else if (qrisRadio && qrisRadio.checked && qrisImageRow) {
                     qrisImageRow.style.display = "flex";
-                    jenisPembayaranInput.value = 'QRIS'; // Set value for jenis_pembayaran
+                    jenisPembayaranInput.value = 'QRIS'; // Menyimpan nilai 'QRIS' ke input hidden
                 }
             }
 
-            // Listen to the changes on radio buttons
+            // Event listener untuk menangani perubahan pilihan radio
             if (manualTransferRadio) {
                 manualTransferRadio.addEventListener("change", togglePaymentMethod);
             }
@@ -339,9 +348,29 @@
                 qrisRadio.addEventListener("change", togglePaymentMethod);
             }
 
-            // Ensure it's correctly displayed when page loads
+            // Memastikan tampilan sesuai dengan status ketika halaman pertama kali dimuat
             togglePaymentMethod();
+
+            // Event listener untuk menangkap pilihan bank tujuan
+            if (bankTujuanSelect) {
+                bankTujuanSelect.addEventListener("change", function() {
+                    const selectedOption = bankTujuanSelect.options[bankTujuanSelect.selectedIndex];
+                    const rekening = selectedOption.getAttribute("data-rekening"); // Ambil data-rekening dari opsi yang dipilih
+
+                    // Simpan bank tujuan yang dipilih ke input hidden
+                    hiddenBankTujuan.value = bankTujuanSelect.value;
+
+                    // Jika ada nomor rekening, tampilkan di input Bank Account Number
+                    if (rekening) {
+                        accountNumberInput.value = rekening; // Set nomor rekening ke input
+                    } else {
+                        accountNumberInput.value = ''; // Kosongkan nomor rekening jika tidak ada pilihan
+                    }
+                });
+            }
         });
+
+
     </script>
 
 <script>
