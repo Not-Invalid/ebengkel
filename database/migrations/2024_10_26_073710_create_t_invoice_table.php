@@ -18,13 +18,14 @@ class CreateTInvoiceTable extends Migration
             $table->integer('id_pelanggan');
             $table->string('id_order');
             $table->string('status_invoice', 50)->default('PENDING');
-            $table->date('jatuh_tempo');
+            $table->dateTime('jatuh_tempo');
             $table->dateTime('tanggal_invoice');
             $table->dateTime('tanggal_bayar')->nullable();
             $table->string('nama_rekening', 100)->nullable();
             $table->string('no_rekening', 50)->nullable();
             $table->string('note', 500)->nullable();
             $table->string('jenis_pembayaran')->nullable();
+            $table->string('bank_tujuan', 100)->nullable();
             $table->string('tanggal_transfer', 10)->nullable();
             $table->string('nominal_transfer', 20)->nullable();
             $table->string('bukti_bayar', 250)->nullable();
