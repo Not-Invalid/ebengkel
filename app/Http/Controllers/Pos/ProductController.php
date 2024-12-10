@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
 use App\Models\FotoProduk;
 use App\Models\KategoriSparePart;
-use App\Models\Product; // Import FotoProduk model
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -146,50 +146,38 @@ class ProductController extends Controller
             'foto_produk_5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Find the product to update
         $product = Product::findOrFail($id_produk);
 
-        // Update the product details
-        $product->id_kategori_spare_part = $request->id_kategori_spare_part;
-        $product->kualitas_produk = $request->kualitas_produk;
-        $product->merk_produk = $request->merk_produk;
-        $product->nama_produk = $request->nama_produk;
-        $product->harga_produk = $request->harga_produk;
-        $product->keterangan_produk = $request->keterangan_produk;
-        $product->stok_produk = $request->stok_produk;
-        $product->save();
+        $product->update($request->only([
+            'id_kategori_spare_part',
+            'kualitas_produk',
+            'merk_produk',
+            'nama_produk',
+            'harga_produk',
+            'keterangan_produk',
+            'stok_produk',
+        ]));
 
-        // Find or create FotoProduk instance
-        $fotoProduk = FotoProduk::where('id_produk', $id_produk)->first();
+        $fotoProduk = FotoProduk::where('id_produk', $id_produk)->first() ?? new FotoProduk(['id_produk' => $id_produk]);
 
-        if (!$fotoProduk) {
-            // If no FotoProduk exists, create a new one
-            $fotoProduk = new FotoProduk();
-            $fotoProduk->id_produk = $id_produk;
-        }
-
-        // Handle the image file uploads
+        // Handle image uploads
         for ($i = 1; $i <= 5; $i++) {
             $fotoKey = 'foto_produk_' . $i;
 
             if ($request->hasFile($fotoKey)) {
-                // Delete the old image file if it exists
-                if ($fotoProduk->{'file_foto_produk_' . $i} && file_exists(public_path($fotoProduk->{'file_foto_produk_' . $i}))) {
+                if ($fotoProduk->{'file_foto_produk_' . $i}) {
                     unlink(public_path($fotoProduk->{'file_foto_produk_' . $i}));
                 }
 
-                // Upload the new image
                 $imageName = 'foto_produk_' . $id_produk . '_' . $i . '.' . $request->file($fotoKey)->extension();
                 $request->file($fotoKey)->move(public_path('assets/images/products'), $imageName);
                 $fotoProduk->{'file_foto_produk_' . $i} = 'assets/images/products/' . $imageName;
             }
         }
 
-        // Update or create file_foto_produk record
         $fotoProduk->create_file_foto_produk = now();
         $fotoProduk->save();
 
-        // Redirect back with success message
         return redirect()->route('pos.product.index', ['id_bengkel' => $id_bengkel])->with('status', 'Product successfully updated!');
     }
 

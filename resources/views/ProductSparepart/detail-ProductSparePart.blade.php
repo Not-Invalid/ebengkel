@@ -18,7 +18,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12 text-center">
-          <h4 class="title-header">Product & SparePart</h4>
+          <h4 class="title-header">Detail Product & SparePart</h4>
         </div>
       </div>
     </div>
@@ -130,18 +130,18 @@
           </div>
 
           <!-- Action Buttons -->
-            <form action="{{ route('cart.add') }}" method="POST" class="d-flex gap-3 mb-4">
-                @csrf
-                <input type="hidden" name="id_produk" value="{{ $data->id_produk ?? '' }}">
-                <input type="hidden" name="id_spare_part" value="{{ $data->id_spare_part ?? '' }}">
-                <input type="hidden" name="quantity" value="1" id="quantity-input">
-                <button class="btn btn-outline-dark flex-grow-1 py-2" type="submit" id="add-to-cart-btn">
-                    <i class="bx bx-cart me-1"></i> {{ __('messages.ProductSparepart.add_to_cart') }}
-                </button>
-                <button class="btn btn-primary flex-grow-1 py-2" type="button" id="buy-now-btn">
-                    {{ __('messages.ProductSparepart.buy_now') }}
-                </button>
-            </form>
+          <form action="{{ route('cart.add') }}" method="POST" class="d-flex gap-3 mb-4">
+            @csrf
+            <input type="hidden" name="id_produk" value="{{ $data->id_produk ?? '' }}">
+            <input type="hidden" name="id_spare_part" value="{{ $data->id_spare_part ?? '' }}">
+            <input type="hidden" name="quantity" value="1" id="quantity-input">
+            <button class="btn btn-outline-dark flex-grow-1 py-2" type="submit" id="add-to-cart-btn">
+              <i class="bx bx-cart me-1"></i> {{ __('messages.ProductSparepart.add_to_cart') }}
+            </button>
+            <button class="btn btn-primary flex-grow-1 py-2" type="button" id="buy-now-btn">
+              {{ __('messages.ProductSparepart.buy_now') }}
+            </button>
+          </form>
 
         </div>
       </div>
@@ -151,16 +151,16 @@
 
   <script>
     document.getElementById('buy-now-btn').addEventListener('click', function() {
-        var form = this.closest('form');
-        var buyNowInput = document.createElement('input');
-        buyNowInput.type = 'hidden';
-        buyNowInput.name = 'buy_now';
-        buyNowInput.value = 'true';
-        form.appendChild(buyNowInput);
+      var form = this.closest('form');
+      var buyNowInput = document.createElement('input');
+      buyNowInput.type = 'hidden';
+      buyNowInput.name = 'buy_now';
+      buyNowInput.value = 'true';
+      form.appendChild(buyNowInput);
 
-        document.getElementById('quantity-input').value = document.querySelector('.quantity-input').value;
+      document.getElementById('quantity-input').value = document.querySelector('.quantity-input').value;
 
-        form.submit();
+      form.submit();
     });
     document.querySelector('.btn-increment').addEventListener('click', function() {
       var quantityInput = document.querySelector('.quantity-input');

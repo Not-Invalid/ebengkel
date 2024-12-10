@@ -252,8 +252,10 @@
                   <a href="{{ route('Detail-ProductSparePart', ['type' => 'product', 'id' => $item->id_produk]) }}"
                     class="card-product p-3">
                     <img
-                      src="{{ isset($item) && $item->foto_produk ? url($item->foto_produk) : asset('assets/images/components/image.png') }}"
-                      class="card-img-top" alt="Workshop Image">
+                      src="{{ $item->fotoProduk && file_exists(public_path($item->fotoProduk->file_foto_produk_1))
+                          ? asset($item->fotoProduk->file_foto_produk_1)
+                          : asset('assets/images/components/image.png') }}"
+                      class="card-img-top" alt="{{ $item->nama_produk ?? 'Default Image' }}">
                     <div class="card-body text-start">
                       <p class="workshop-name">{{ $item->bengkel->nama_bengkel }}</p>
                       <h5 class="card-title">
@@ -301,8 +303,10 @@
                   <a href="{{ route('Detail-ProductSparePart', ['type' => 'sparepart', 'id' => $item->id_spare_part]) }}"
                     class="card-product p-3">
                     <img
-                      src="{{ isset($item) && $item->foto_spare_part ? url($item->foto_spare_part) : asset('assets/images/components/image.png') }}"
-                      class="card-img-top" alt="Workshop Image">
+                      src="{{ $item->fotoSparepart && file_exists(public_path($item->fotoSparepart->file_foto_spare_part_1))
+                          ? asset($item->fotoSparepart->file_foto_spare_part_1)
+                          : asset('assets/images/components/image.png') }}"
+                      class="card-img-top" alt="{{ $item->nama_spare_part ?? 'Default Image' }}">
                     <div class="card-body text-start">
                       <p class="workshop-name">{{ $item->bengkel->nama_bengkel }}</p>
                       <h5 class="card-title">

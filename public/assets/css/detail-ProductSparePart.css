@@ -22,3 +22,8 @@
 .bullet-list li {
     margin-bottom: 5px; /* Tambahkan jarak antar item */
 }
+.title-header {
+    color: var(--main-blue);
+    position: relative;
+    z-index: 10;
+}

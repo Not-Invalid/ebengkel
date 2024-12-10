@@ -10,6 +10,8 @@ class FotoProduk extends Model
     use HasFactory;
 
     protected $table = 'tb_foto_produk';
+    protected $primaryKey = 'id_foto_produk';
+    public $timestamps = true;
 
     protected $fillable = [
         'id_produk',

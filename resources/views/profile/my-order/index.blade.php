@@ -3,6 +3,7 @@
 @section('title')
   eBengkelku | My Order
 @stop
+<<<<<<< HEAD
 
 @section('content')
   <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
@@ -127,6 +128,8 @@
     });
   </script>
 
+=======
+>>>>>>> daw
 <style>
   /* Gaya default untuk ikon dan teks */
   .nav-pills .nav-link {
@@ -191,102 +194,160 @@
     border-radius: 8px;
   }
 
-  .cart-summary h5 {
-    margin-bottom: 15px;
-  }
-
-  .cart-item-quantity input {
-    max-width: 50px;
-  }
-
-  .list-unstyled li {
-    font-size: 13px;
-    margin-left: 2px;
-    margin-top: 5px;
-    color: var(--main-grey) !important;
-  }
-
   .shipping:hover {
     background-color: var(--main-light-grey);
     color: var(--main-dark-blue);
   }
-
-  /* Style for the overlay button */
-  .toggle-overlay-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.3);
-    /* Semi-transparent background */
-    color: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    text-align: center;
-    font-size: 14px;
-    z-index: 10;
-  }
-
-  /* Style for collapsible content (to ensure it stays hidden initially) */
-  .collapse {
-    display: none;
-  }
-
-  /* Additional styling for the collapsed content */
-  .collapse.show {
-    display: block;
-  }
-
-  /* Ensure the toggle button is visible on mobile */
-  @media (max-width: 767px) {
-    .toggle-overlay-btn {
-      display: block;
-      position: relative;
-      /* Position it relative to the parent container */
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0, 0, 0, 0.3);
-      /* Semi-transparent background */
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 14px;
-      z-index: 10;
-      margin-top: 10px;
-      /* Add margin for better spacing */
-    }
-  }
-
-  /* Hide the toggle button on larger screens */
-  @media (min-width: 768px) {
-    .toggle-overlay-btn {
-      display: none;
-    }
-  }
 </style>
+@section('content')
+  <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
+    <div class="container my-4">
+      <!-- Tambahkan Dropdown untuk Mobile -->
+      <div class="d-md-none mb-3">
+        <select class="form-select" id="mobileOrderDropdown" onchange="window.location.href=this.value">
+          @foreach ($statusNames as $key => $name)
+            <option value="{{ route('my-order.index', ['status' => $key]) }}" {{ $status == $key ? 'selected' : '' }}>
+              {{ $name }}
+            </option>
+          @endforeach
+        </select>
+      </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const mobileDropdown = document.getElementById('mobileOrderDropdown');
-    const tabs = document.querySelectorAll('.tab-pane');
+      <!-- Tabs untuk perangkat desktop -->
+      <ul class="nav nav-pills justify-content-center mb-3 d-none d-md-flex mb-5" id="orderTabs" role="tablist">
+        @foreach ($statusNames as $key => $name)
+          <li class="nav-item" role="presentation">
+            <button class="nav-link text-center {{ $status == $key ? 'active' : '' }}" id="{{ $key }}-tab"
+              data-bs-toggle="pill" data-bs-target="#{{ $key }}" type="button" role="tab"
+              aria-controls="{{ $key }}" aria-selected="{{ $status == $key ? 'true' : 'false' }}">
+              <i
+                class="fas fa-{{ $key == 'PENDING'
+                    ? 'credit-card'
+                    : ($key == 'Waiting_Confirmation'
+                        ? 'hourglass'
+                        : ($key == 'DIKEMAS'
+                            ? 'box-open'
+                            : ($key == 'DIKIRIM'
+                                ? 'truck-fast'
+                                : 'circle-check'))) }} fas-md"></i><br>
+              {{ $name }}
+            </button>
+          </li>
 
-    mobileDropdown.addEventListener('change', function() {
-      const selectedTab = mobileDropdown.value;
+          @if (!$loop->last)
+            <!-- Jangan tampilkan horizontal line di tab terakhir -->
+            <li class="nav-item" role="presentation">
+              <hr class="horizontal-line">
+            </li>
+          @endif
+        @endforeach
+      </ul>
 
-      // Hide all tab panes
-      tabs.forEach((tab) => {
-        tab.classList.remove('show', 'active');
+      <!-- Konten Tab -->
+      <div class="tab-content" id="orderTabsContent">
+        @foreach ($statusNames as $key => $name)
+          <div class="tab-pane fade {{ $status == $key ? 'show active' : '' }}" id="{{ $key }}" role="tabpanel"
+            aria-labelledby="{{ $key }}-tab">
+            @php
+              // Filter orders sesuai status
+              $filteredOrders = $orders->where('status_order', $key);
+            @endphp
+
+            @if ($filteredOrders->isEmpty())
+              <div class="card border-1 rounded-2 mt-4">
+                <div class="card-body d-flex justify-content-center">
+                  <div class="text-center">
+                    <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
+                      alt="No Address">
+                    <p>Nothing is {{ $name }}.</p>
+                  </div>
+                </div>
+              </div>
+            @else
+              @foreach ($filteredOrders as $order)
+                <div class="cart-item d-flex flex-column flex-sm-row align-items-center mb-3 p-3 border rounded shadow-sm"
+                  data-id="{{ $order->order_id }}" data-stock="{{ $order->orderItems->sum('qty') }}"
+                  data-price="{{ $order->grand_total }}">
+
+                  <!-- Product Image -->
+                  <div class="cart-item-image me-3 mb-3 mb-sm-0">
+                    <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image" class="img-fluid"
+                      style="width: 100px; height: 100px; object-fit: cover;" />
+                  </div>
+
+                  <!-- Order Details -->
+                  <div class="cart-item-details flex-grow-1">
+                    <h6>
+                      @foreach ($order->orderItems as $orderItem)
+                        @if ($orderItem->produk)
+                          {{ $orderItem->produk->nama_produk }}
+                        @elseif ($orderItem->sparepart)
+                          {{ $orderItem->sparepart->nama_spare_part }}
+                        @else
+                          Produk / Spare Part Tidak Ditemukan
+                        @endif
+                      @endforeach
+                    </h6>
+                    <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
+                    <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga) }}</p>
+                  </div>
+
+                  <!-- Order Quantity -->
+                  <div class="cart-item-quantity d-flex align-items-center me-3 mb-3 mb-sm-0">
+                    <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }} Produk</p>
+                  </div>
+
+                  <!-- Action Buttons (Moved Below Quantity) -->
+                  <div class="d-flex flex-column mt-2">
+                    @if ($order->status_order == 'PENDING')
+                      <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
+                        class="btn btn-custom-2 mb-2">
+                        Bayar Sekarang
+                      </a>
+                    @elseif($order->status_order == 'SELESAI')
+                      <a href="{{ route('order.buy-again', $order->order_id) }}" class="btn btn-success mb-2">
+                        Beli Lagi
+                      </a>
+                    @endif
+                  </div>
+
+                </div>
+              @endforeach
+            @endif
+          </div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileDropdown = document.getElementById('mobileOrderDropdown');
+      const tabs = document.querySelectorAll('.tab-pane');
+
+      mobileDropdown.addEventListener('change', function() {
+        const selectedTab = mobileDropdown.value;
+
+        // Hide all tab panes
+        tabs.forEach((tab) => {
+          tab.classList.remove('show', 'active');
+        });
+
+        // Show the selected tab pane
+        const activeTab = document.getElementById(selectedTab);
+        if (activeTab) {
+          activeTab.classList.add('show', 'active');
+        }
       });
-
-      // Show the selected tab pane
-      const activeTab = document.getElementById(selectedTab);
-      if (activeTab) {
-        activeTab.classList.add('show', 'active');
-      }
     });
+<<<<<<< HEAD
   });
 </script>
 
 @endsection
 
+=======
+  </script>
+
+@endsection
+>>>>>>> daw
