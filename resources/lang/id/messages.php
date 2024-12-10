@@ -33,6 +33,7 @@ return [
         'latest_blog' => 'Blog Terbaru',
         'more_product' => 'Lihat semua',
         'no_data_blog' => 'Tidak ada data untuk Blog',
+        'no_data_cart' => 'Tidak ada item di cart',
     ],
 
     'event' => [
@@ -204,6 +205,7 @@ return [
         'workshop' => [
             'title' => 'Bengkel Kamu',
             'add_workshop' => 'Tambah Bengkel Baru',
+            'edit_workshop' => 'Edit Bengkel',
             'no_data' => 'Tidak ada data bengkel',
             'fields' => [
                 'cover_photo' => 'Foto Cover Bengkel',
@@ -219,18 +221,53 @@ return [
                 'close_day' => 'Hari Tutup',
                 'open_hour' => 'Jam Buka',
                 'close_hour' => 'Jam Tutup',
-                'services' => 'Layanan Tersedia',
+                'services' => 'Service Tersedia',
                 'payment_methods' => 'Metode Pembayaran',
                 'bank_account' => 'Rekening Bank',
                 'qris_code' => 'Kode QR QRIS',
                 'whatsapp' => 'Nomor WhatsApp',
+                'day' => [
+                    'Monday' => 'Senin',
+                    'Tuesday' => 'Selasa',
+                    'Wednesday' => 'Rabu',
+                    'Thursday' => 'Kamis',
+                    'Friday' => 'Jumat',
+                    'Saturday' => 'Sabtu',
+                    'Sunday' => 'Minggu',
+                    'Every Day' => 'Setiap Hari',
+                ],
+                'service_method' => [
+                    'service_workshop' => 'Service di tempat',
+                    'service_call' => 'Service melalui Panggilan',
+                ],
+                'cash' => 'Tunai',
+                'bank_account_number' => 'Nomor Rekening Bank',
+                'bank_name' => 'Nama Bank',
+                'account_holder' => 'Nama Pemegang Rekening',
             ],
             'labels' => [
                 'add_bank_account' => 'Tambah Rekening Bank',
                 'remove_bank_account' => 'Hapus Rekening',
                 'required' => '*menandakan bidang wajib diisi',
+                'click' => 'Klik untuk upload'
             ],
-            'cancel' => 'Cancel',
+            'detail' => [
+                'open' => 'Hari Buka',
+                'time' => 'Jam Buka',
+                'address' => 'Alamat',
+                'services' => 'Service Tersedia',
+                'payment_methods' => 'Metode Pembayaran',
+                'contact' => 'Kontak Kami',
+                'connect' => 'Hubungkan ke POS',
+                'service' => 'Service',
+                'product' => 'Produk',
+                'sparepart' => 'Suku Cadang',
+                'your_service' => 'Service Kamu',
+                'your_product' => 'Produk Kamu',
+                'your_sparepart' => 'Suku Cadang Kamu',
+                'no_data' => 'Tidak ada data tersedia'
+            ],
+            'cancel' => 'Batal',
             'submit' => 'Kirim',
         ],
 
