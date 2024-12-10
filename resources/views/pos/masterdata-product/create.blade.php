@@ -111,7 +111,7 @@
 
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_produk_2" class="upload-label">Product Photo 2</label>
+            <label for="foto_produk_2" class="upload-label">Product Photo 2 <span class="text-danger">*</span></label>
             <input type="file" class="file-input" name="foto_produk_2" id="foto_produk_2"
               onchange="previewImage('foto_produk_2', 'preview_2')">
             <div class="preview-container d-flex justify-content-center">
@@ -123,7 +123,7 @@
 
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_produk_3" class="upload-label">Product Photo 3</label>
+            <label for="foto_produk_3" class="upload-label">Product Photo 3 <span class="text-danger">*</span></label>
             <input type="file" class="file-input" name="foto_produk_3" id="foto_produk_3"
               onchange="previewImage('foto_produk_3', 'preview_3')">
             <div class="preview-container d-flex justify-content-center">
