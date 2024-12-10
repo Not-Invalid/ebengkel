@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\OrderOnline;
 use Illuminate\Http\Request;
 
@@ -19,14 +18,19 @@ class MyorderController extends Controller
             'Waiting_Confirmation' => 'Menunggu Konfirmasi',
             'DIKEMAS' => 'Dikemas',
             'DIKIRIM' => 'Dikirim',
-            'SELESAI' => 'Selesai'
+            'SELESAI' => 'Selesai',
         ];
 
         // Ambil semua order berdasarkan pelanggan
-        $orders = OrderOnline::with(['orderItems', 'invoice', 'bengkel'])
+        $ordersQuery = OrderOnline::with(['orderItems', 'invoice', 'bengkel'])
             ->where('id_pelanggan', auth('pelanggan')->id())
-            ->where('is_delete', 'N')
-            ->get();
+            ->where('is_delete', 'N');
+
+        // Filter berdasarkan status jika ada
+        $ordersQuery->where('status_order', $status);
+
+        // Ambil data order yang sudah difilter
+        $orders = $ordersQuery->get();
 
         // Kirim data order dan status ke view
         return view('profile.my-order.index', compact('orders', 'status', 'statusNames'));
@@ -43,5 +47,4 @@ class MyorderController extends Controller
         // Pass the order data to the view
         return view('profile.my-order.order_detail', compact('order'));
     }
-
 }
