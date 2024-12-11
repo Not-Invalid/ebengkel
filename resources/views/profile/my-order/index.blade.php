@@ -217,22 +217,18 @@
                     data-href="{{ route('my-order.detail', ['order_id' => $order->order_id]) }}"
                     onclick="window.location.href=this.dataset.href;">
 
-                    <!-- Product Image -->
                     <div class="cart-item-image me-3 mb-3 mb-sm-0">
-                      <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image" class="img-fluid"
-                        style="width: 100px; height: 100px; object-fit: cover;" />
+                      @foreach ($order->orderItems as $orderItem)
+                        <!-- Tampilkan gambar produk atau sparepart -->
+                        <img src="{{ $orderItem->imageUrl }}" class="card-img-top"
+                          alt="{{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Default Image') }}">
+                      @endforeach
                     </div>
 
                     <div class="cart-item-details flex-grow-1">
                       <h6>
                         @foreach ($order->orderItems as $orderItem)
-                          @if ($orderItem->produk)
-                            {{ $orderItem->produk->nama_produk }}
-                          @elseif ($orderItem->sparepart)
-                            {{ $orderItem->sparepart->nama_spare_part }}
-                          @else
-                            Produk / Spare Part Tidak Ditemukan
-                          @endif
+                          {{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Produk / Spare Part Tidak Ditemukan') }}
                         @endforeach
                       </h6>
                       <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
@@ -244,7 +240,7 @@
                       <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }} Produk</p>
                     </div>
 
-                    <!-- Action Buttons (Moved Below Quantity) -->
+                    <!-- Action Buttons -->
                     <div class="d-flex flex-column mt-2">
                       @if ($order->status_order == 'PENDING')
                         <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
@@ -257,13 +253,11 @@
 
                   </div>
                 @endforeach
-
-
-
-
               </div>
             </div>
           @endforeach
+
+
         </div>
 
 
