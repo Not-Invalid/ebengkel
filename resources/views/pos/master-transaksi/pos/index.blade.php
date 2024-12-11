@@ -40,32 +40,43 @@
     <div class="container-fluid py-4">
         <div class="search-container">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Scan atau Cari ...">
-                <button class="btn btn-info text-white mx-3" data-toggle="tooltip" title="Print"><i
-                        class="fa-solid fa-print"></i></button>
+                <input type="text" class="form-control" placeholder="Cari Produk ...">
+                <button class="btn btn-info text-white mx-3"><i class="fa-solid fa-search"></i></button>
             </div>
         </div>
         <div class="main-layout">
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <!-- Product Section -->
-                    <h4 class="judul">List Produk</h4>
+                    <h4 class="judul">List Item</h4>
                     <div class="row">
-                        @foreach ($products as $product)
-                            <div class="col-md-4 col-sm-6 mb-3 d-flex align-items-center">
-                                <div class="custom-card shadow product-card">
+                        @foreach ($items as $item)
+                            <div class="col-md-4 col-sm-6 mb-3 d-flex justify-content-center align-items-center">
+                                <div
+                                    class="custom-card shadow {{ $item->type === 'produk' ? 'product-card' : 'sparepart-card' }}">
                                     <div class="product-code d-flex justify-content-end">
-                                        <span class="product-stock mb-2">Stock: {{ $product->stok_produk }}</span>
+                                        <span class="product-stock mb-2">Stock:
+                                            {{ $item->type === 'produk' ? $item->stok_produk : $item->stok_spare_part }}
+                                        </span>
                                     </div>
-                                    <img src="{{ $product->foto_produk }}" alt="Product Image" class="product-image">
-                                    <div class="product-title mt-3">{{ $product->nama_produk }}</div>
-                                    <div class="product-category">{{ $product->merk_produk }}</div>
-                                    <div class="product-price mb-2 mt-2">Rp
-                                        {{ number_format($product->harga_produk, 0, ',', '.') }}
+                                    <img src="{{ isset($item->fotoProduk) && $item->type === 'produk'
+                                        ? ($item->fotoProduk->file_foto_produk_1
+                                            ? url($item->fotoProduk->file_foto_produk_1)
+                                            : asset('assets/images/components/image.png'))
+                                        : (isset($item->fotoSparepart) && $item->fotoSparepart->file_foto_sparepart_1
+                                            ? url($item->fotoSparepart->file_foto_sparepart_1)
+                                            : asset('assets/images/components/image.png')) }}"
+                                        alt="Item Image" class="product-image">
+                                    <div class="product-title mt-3">
+                                        {{ $item->type === 'produk' ? $item->nama_produk : $item->nama_spare_part }}</div>
+                                    <div class="product-category">
+                                        {{ $item->type === 'produk' ? $item->merk_produk : $item->merk_spare_part }}</div>
+                                    <div class="product-price mb-2 mt-2">
+                                        {{ $item->type === 'produk' ? formatRupiah($item->harga_produk) : formatRupiah($item->harga_spare_part) }}
                                     </div>
-                                    <!-- Tambahkan atribut data-harga untuk harga produk -->
-                                    <a class="add-button w-100" data-id="{{ $product->id }}"
-                                        data-nama="{{ $product->nama_produk }}" data-harga="{{ $product->harga_produk }}">
+                                    <a class="add-button w-100" data-id="{{ $item->id }}"
+                                        data-harga="{{ $item->type === 'produk' ? $item->harga_produk : $item->harga_spare_part }}"
+                                        data-tipe="{{ $item->type }}"
+                                        data-stock="{{ $item->type === 'produk' ? $item->stok_produk : $item->stok_spare_part }}">
                                         <i class="fa-solid fa-bag-shopping mr-1"></i> TAMBAHKAN
                                     </a>
                                 </div>
@@ -101,158 +112,128 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let activeOrder = {
-                items: [],
-                total: 0,
-                totalItems: 0
-            };
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartContainer = document.querySelector('.order-items-container');
+            const totalItemsElement = document.querySelector('.total-items');
+            const totalPriceElement = document.querySelector('.total-price');
+            const trashBtn = document.querySelector('.trash-btn');
+            let cart = [];
             document.querySelectorAll('.add-button').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const productCard = this.closest('.product-card');
-                    const product = {
-                        id: productCard.querySelector('.product-code').textContent.trim(),
-                        name: productCard.querySelector('.product-title').textContent,
-                        price: parseInt(productCard.querySelector('.product-price').textContent
-                            .replace(/[^0-9]/g, '')),
-                        stock: parseInt(productCard.querySelector('.product-stock').textContent
-                            .replace(/[^0-9]/g, '')),
-                        brand: productCard.querySelector('.product-category').textContent
-                    };
-                    addToOrder(product);
-                });
-            });
-
-            function addToOrder(product) {
-                const existingItem = activeOrder.items.find(item => item.id === product.id);
-                if (existingItem) {
-                    if (existingItem.quantity < product.stock) {
-                        existingItem.quantity += 1;
-                        activeOrder.total += product.price;
-                        activeOrder.totalItems += 1;
-                        updateActiveOrderDisplay();
-                    } else {
-                        alert('Stok produk tidak mencukupi!');
+                button.addEventListener('click', () => {
+                    const id = button.getAttribute('data-id');
+                    const harga = parseFloat(button.getAttribute('data-harga'));
+                    const stok = parseInt(button.getAttribute('data-stock'));
+                    const tipe = button.getAttribute('data-tipe');
+                    const nama = button.closest('.custom-card').querySelector('.product-title')
+                        .textContent;
+                    const merk = button.closest('.custom-card').querySelector('.product-category')
+                        .textContent;
+                    const uniqueKey = `${id}-${tipe}-${nama}-${merk}`;
+                    if (stok <= 0) {
+                        alert('Stok habis, tidak dapat menambahkan item ini.');
+                        return;
                     }
-                } else {
-                    activeOrder.items.push({
-                        ...product,
-                        quantity: 1
-                    });
-                    activeOrder.total += product.price;
-                    activeOrder.totalItems += 1;
-                    updateActiveOrderDisplay();
-                }
-            }
-
-            function updateActiveOrderDisplay() {
-                const orderItemsContainer = document.querySelector('.order-items-container');
-                orderItemsContainer.innerHTML = '';
-                activeOrder.items.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'order-item';
-                    itemElement.innerHTML = `
-                            <div class="order-item-details d-flex justify-content-between align-items-center">
-                                <div class="order-item-name">
-                                    ${item.name}
-                                    <div class="order-item-brand">${item.brand}</div>
-                                </div>
-                                <div class="order-item-quantity d-flex align-items-center">
-                                    <button class="decrease-btn btn btn-sm mb-3" data-id="${item.id}">-</button>
-                                    <span class="mx-2 mb-3">${item.quantity}</span>
-                                    <button class="increase-btn btn btn-sm mb-3" data-id="${item.id}">+</button>
-                                </div>
-                                <div class="order-item-price">
-                                    Rp ${(item.price * item.quantity).toLocaleString('id-ID')}
-                                </div>
-                                <button class="remove-item-btn btn btn-sm btn-danger mb-4" data-id="${item.id}">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </div>
-                        `;
-                    orderItemsContainer.appendChild(itemElement);
-                });
-
-                function changeItemQuantity(itemId, change) {
-                    const item = activeOrder.items.find(item => item.id === itemId);
-                    if (item) {
-                        if (change === -1 && item.quantity === 1) {
-                            // Remove item if quantity becomes 0
-                            removeFromOrder(itemId);
-                        } else if (change === 1 && item.quantity < item.stock) {
-                            item.quantity += change;
-                            activeOrder.total += item.price * change;
-                            activeOrder.totalItems += change;
-                            updateActiveOrderDisplay();
-                        } else if (change === 1 && item.quantity >= item.stock) {
-                            alert('Stok produk tidak mencukupi!');
+                    const existingItemIndex = cart.findIndex(item =>
+                        `${item.id}-${item.tipe}-${item.nama}-${item.merk}` === uniqueKey
+                    );
+                    if (existingItemIndex !== -1) {
+                        if (cart[existingItemIndex].quantity < stok) {
+                            cart[existingItemIndex].quantity++;
                         } else {
-                            item.quantity += change;
-                            activeOrder.total += item.price * change;
-                            activeOrder.totalItems += change;
-                            updateActiveOrderDisplay();
+                            alert('Jumlah item melebihi stok yang tersedia.');
                         }
+                    } else {
+                        cart.push({
+                            id,
+                            nama,
+                            harga,
+                            stok,
+                            tipe,
+                            merk,
+                            quantity: 1,
+                            uniqueKey
+                        });
                     }
-                }
-
-                // Update total items and price
-                document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
-                document.querySelector('.total-price').textContent =
-                    `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
-
-                // Add event listeners for increase and decrease buttons
-                document.querySelectorAll('.increase-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.getAttribute('data-id');
-                        changeItemQuantity(itemId, 1);
-                    });
+                    renderCart();
                 });
+            });
 
-                document.querySelectorAll('.decrease-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.getAttribute('data-id');
-                        changeItemQuantity(itemId, -1);
-                    });
+            function renderCart() {
+                cartContainer.innerHTML = '';
+                let totalItems = 0;
+                let totalPrice = 0;
+                cart.forEach((item, index) => {
+                    totalItems += item.quantity;
+                    totalPrice += item.quantity * item.harga;
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item', 'd-flex', 'justify-content-between',
+                        'align-items-center', 'mb-2');
+                    cartItem.innerHTML = `
+                        <div>
+                            <div>${item.nama} (${item.merk})</div>
+                            <small>${item.quantity} x ${item.harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="decrease-btn" data-index="${index}">-</button>
+                            <span class="mx-2">${item.quantity}</span>
+                            <button class="increase-btn" data-index="${index}">+</button>
+                            <button class="remove-item-btn ml-2 text-danger" data-index="${index}"><i
+                                class="fa-solid fa-x"></i></button>
+                        </div>
+                    `;
+                    cartContainer.appendChild(cartItem);
                 });
+                totalItemsElement.textContent = `${totalItems} Pcs`;
+                totalPriceElement.textContent = totalPrice.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                });
+                attachCartEventListeners();
+            }
 
-                // Add event listeners for remove buttons
+            function attachCartEventListeners() {
                 document.querySelectorAll('.remove-item-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.getAttribute('data-id');
-                        removeFromOrder(itemId);
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        cart.splice(index, 1);
+                        renderCart();
+                    });
+                });
+                document.querySelectorAll('.increase-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        if (cart[index].quantity < cart[index].stok) {
+                            cart[index].quantity++;
+                            renderCart();
+                        } else {
+                            alert('Jumlah item melebihi stok yang tersedia.');
+                        }
+                    });
+                });
+                document.querySelectorAll('.decrease-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity--;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                        renderCart();
                     });
                 });
             }
-
-            function removeFromOrder(itemId) {
-                const itemIndex = activeOrder.items.findIndex(item => item.id === itemId);
-                if (itemIndex !== -1) {
-                    const item = activeOrder.items[itemIndex];
-                    activeOrder.total -= item.price * item.quantity;
-                    activeOrder.totalItems -= item.quantity;
-                    activeOrder.items.splice(itemIndex, 1);
-                    updateActiveOrderDisplay();
-                }
+            if (trashBtn) {
+                trashBtn.addEventListener('click', () => {
+                    if (confirm('Anda yakin ingin menghapus semua item?')) {
+                        cart.length = 0;
+                        cart = [];
+                        renderCart();
+                        cartContainer.innerHTML = '';
+                        totalItemsElement.textContent = '0 Pcs';
+                        totalPriceElement.textContent = '0';
+                    }
+                });
             }
-            document.querySelector('.trash-btn').addEventListener('click', function() {
-                activeOrder = {
-                    items: [],
-                    total: 0,
-                    totalItems: 0
-                };
-                updateActiveOrderDisplay();
-            });
-            const checkoutBtn = document.querySelector('.checkout-btn');
-            checkoutBtn.addEventListener('click', function(e) {
-                if (activeOrder.items.length === 0) {
-                    e.preventDefault();
-                    alert('Keranjang Anda kosong! Tambahkan produk terlebih dahulu.');
-                }
-                document.querySelector('input[name="orderData"]').value = JSON.stringify(activeOrder);
-                document.querySelector('form').submit();
-            });
         });
     </script>
-
 @endsection
