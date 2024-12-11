@@ -96,7 +96,7 @@
                                 <li>
                                     <a class="dropdown-item shipping"
                                         onclick="updateAddress('{{ $address->nama_penerima }}', '{{ $address->lokasi_alamat_pengiriman }}', '{{ $address->telp_penerima }}', '{{ $address->provinsi }}', '{{ $address->kecamatan }}', '{{ $address->kecamatan }}', '{{ $address->kota }}', '{{ $address->kodepos_alamat_pengiriman }}')">
-                                        <span class="badge {{ $address->status_alamat_pengiriman == 'Active' ? 'bg-primary' : 'bg-secondary' }}">
+                                        <span class="badge badge-custom {{ $address->status_alamat_pengiriman == 'Active' ? 'bg-primary' : 'bg-secondary' }}">
                                             {{ $address->status_alamat_pengiriman }}
                                         </span> | {{ $address->nama_penerima }} | {{ $address->telp_penerima }}<br>
                                     </a>
