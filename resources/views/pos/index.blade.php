@@ -1,12 +1,16 @@
 @extends('pos.layouts.app')
+
 @section('title')
     eBengkelku | POS
 @stop
+
 @php
-    $header = 'Dashboard';
+     $header = 'Dashboard';
 @endphp
+
 @section('content')
     <div class="row">
+        <!-- Stat cards for Total Services, Products, Spareparts -->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1 shadow-sm">
                 <div class="card-icon bg-primary">
@@ -22,7 +26,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1 shadow-sm">
                 <div class="card-icon bg-danger">
@@ -30,7 +33,7 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Total Product</h4>
+                        <h4>Total Products</h4>
                     </div>
                     <div class="card-body">
                         {{ $totalProducts }}
@@ -38,7 +41,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1 shadow-sm">
                 <div class="card-icon bg-warning">
@@ -46,7 +48,7 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Total SpareParts</h4>
+                        <h4>Total Spareparts</h4>
                     </div>
                     <div class="card-body">
                         {{ $totalSpareParts }}
@@ -54,7 +56,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1 shadow-sm">
                 <div class="card-icon bg-success">
@@ -62,11 +63,104 @@
                 </div>
                 <div class="card-wrap">
                     <div class="card-header">
-                        <h4>Total Orders</h4>
+                        <h4>Orders This Month</h4>
                     </div>
                     <div class="card-body">
-                        800
+                        {{ $totalOrderOnline }}
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Online Orders</h4>
+                    <div class="card-header-action">
+                        <a href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-primary">View More <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive table-invoice">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Order ID</th>
+                                    <th class="text-center">Customer</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Order Date</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($orders && $orders->isNotEmpty())
+                                    @foreach ($orders as $order)
+                                        <tr>
+                                            <td class="text-center">{{ $order->order_id }}</td>
+                                            <td class="font-weight-600 text-center">{{ $order->atas_nama }}</td>
+                                            <td class="d-flex align-items-center justify-content-center">
+                                                @php
+                                                    $statusNames = [
+                                                        'PENDING' => 'Belum Dibayar',
+                                                        'Waiting_Confirmation' => 'Menunggu Konfirmasi',
+                                                        'DIKEMAS' => 'Dikemas',
+                                                        'DIKIRIM' => 'Dikirim',
+                                                        'SELESAI' => 'Selesai'
+                                                    ];
+                                                @endphp
+
+                                                @if (array_key_exists($order->status_order, $statusNames))
+                                                    <div class="badge
+                                                        @if ($order->status_order == 'PENDING') badge-secondary
+                                                        @elseif ($order->status_order == 'Waiting_Confirmation') badge-warning
+                                                        @elseif ($order->status_order == 'DIKEMAS') badge-primary
+                                                        @elseif ($order->status_order == 'DIKIRIM') badge-info
+                                                        @elseif ($order->status_order == 'SELESAI') badge-success
+                                                        @else badge-secondary
+                                                        @endif">
+                                                        {{ $statusNames[$order->status_order] }}
+                                                    </div>
+                                                @else
+                                                    <div class="badge badge-secondary">Unknown</div>
+                                                @endif
+                                            </td>
+
+                                            <td class="text-center">{{ \Carbon\Carbon::parse($order->tanggal)->format('d-m-Y') }}</td>
+                                            <td class="d-flex align-items-center justify-content-center">
+                                                <a href="{{ route('pos.order-online.edit', ['id_bengkel' => $order->id_bengkel, 'order_id' => $order->order_id]) }}" class="btn btn-primary">Detail</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5">No orders found.</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card gradient-bottom">
+                <div class="card-header">
+                    <h4>Top 5 Products</h4>
+                    <div class="card-header-action dropdown">
+                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">Month</a>
+                        <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <li class="dropdown-title">Select Period</li>
+                            <li><a href="#" class="dropdown-item">Today</a></li>
+                            <li><a href="#" class="dropdown-item">Week</a></li>
+                            <li><a href="#" class="dropdown-item active">Month</a></li>
+                            <li><a href="#" class="dropdown-item">This Year</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body" id="top-5-scroll">
+                    <!-- Top Products List -->
                 </div>
             </div>
         </div>

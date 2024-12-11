@@ -33,6 +33,7 @@ return [
         'latest_blog' => 'Latest Blog',
         'more_product' => 'More Products',
         'no_data_blog' => 'No blogs available',
+        'no_data_cart' => 'No item in cart',
     ],
 
     'event' => [
@@ -204,6 +205,7 @@ return [
         'workshop' => [
             'title' => 'Your Workshops',
             'add_workshop' => 'Add New Workshop',
+            'edit_workshop' => 'Edit Workshop',
             'no_data' => 'No data workshop alvailable',
             'fields' => [
                 'cover_photo' => 'Cover Workshop Photo',
@@ -224,13 +226,48 @@ return [
                 'bank_account' => 'Bank Account',
                 'qris_code' => 'QRIS QR Code',
                 'whatsapp' => 'WhatsApp Number',
+                'day' => [
+                    'Monday' => 'Monday',
+                    'Tuesday' => 'TUesday',
+                    'Wednesday' => 'Wednesday',
+                    'Thursday' => 'Thursday',
+                    'Friday' => 'Friday',
+                    'Saturday' => 'Saturday',
+                    'Sunday' => 'Sunday',
+                    'Every Day' => 'Every Day',
+                ],
+                'service_method' => [
+                    'service_workshop' => 'Service at Workshop',
+                    'service_call' => 'Service by Call',
+                ],
+                'cash' => 'Cash',
+                'bank_account_number' => 'Bank Account Number',
+                'bank_name' => 'Bank Name',
+                'account_holder' => 'Account Holder',
             ],
             'labels' => [
                 'add_bank_account' => 'Add Bank Account',
                 'remove_bank_account' => 'Remove Bank Account',
                 'required' => '*indicates required fields',
+                'click' => 'Click to upload',
             ],
-            'cancel' => 'Batal',
+            'detail' => [
+                'open' => 'Open Workshop',
+                'time' => 'Open Time',
+                'address' => 'Address',
+                'services' => 'Service Available',
+                'payment_methods' => 'Payment Methods',
+                'contact' => 'Contact Us',
+                'connect' => 'Connect to POS',
+                'service' => 'Service',
+                'product' => 'Product',
+                'sparepart' => 'Spareparts',
+                'your_service' => 'Your Service',
+                'your_product' => 'Your Product',
+                'your_sparepart' => 'Your Sparepart',
+                'no_data' => 'No Data Available'
+            ],
+            'cancel' => 'Cancel',
             'submit' => 'Submit',
         ],
 

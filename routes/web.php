@@ -359,8 +359,8 @@ Route::middleware(['lang'])->group(function () {
         Route::delete('tranksaksi/delete-pesanan/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
 
         Route::get('order-online/{id_bengkel}', [PosOrderOnlineController::class, 'index'])->name('pos.order-online');
-        Route::get('/order-online/{id_bengkel}/edit/{id_order}', [PosOrderOnlineController::class, 'edit'])->name('pos.order-online.edit');
-        Route::post('/order-online/{id_bengkel}/update/{id_order}', [PosOrderOnlineController::class, 'update'])->name('pos.order-online.update');
+        Route::get('/order-online/{id_bengkel}/edit/{order_id}', [PosOrderOnlineController::class, 'edit'])->name('pos.order-online.edit');
+        Route::post('/order-online/{id_bengkel}/update/{order_id}', [PosOrderOnlineController::class, 'update'])->name('pos.order-online.update');
 
         Route::prefix('Master-data')->group(function () {
             Route::prefix('pos/{id_bengkel}/product')->group(function () {

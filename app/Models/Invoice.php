@@ -20,6 +20,8 @@ class Invoice extends Model
         'tanggal_bayar',
         'nama_rekening',
         'no_rekening',
+        'jenis_pembayaran',
+        'bank_tujuan',
         'note',
         'tanggal_transfer',
         'nominal_transfer',
