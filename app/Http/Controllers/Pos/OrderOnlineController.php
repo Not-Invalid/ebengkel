@@ -23,52 +23,80 @@ class OrderOnlineController extends Controller
             return redirect()->route('pos.login');
         }
 
+        // Ambil nilai per page dan status filter dari request
         $perPage = $request->get('per_page', 10);
+        $statusOrder = $request->get('status_order', ''); // Ambil status order dari parameter
 
-        $orderonline = OrderOnline::where('id_bengkel', $id_bengkel)
-            ->where('is_delete', 'N')
-            ->with('produk', 'sparepart', 'pelanggan')
-            ->paginate($perPage);
+        $query = OrderOnline::where('id_bengkel', $id_bengkel)
+                            ->where('is_delete', 'N')
+                            ->with('pelanggan', 'orderItems', 'invoice');
+
+        // Tambahkan filter berdasarkan status_order jika ada
+        if ($statusOrder) {
+            $query->where('status_order', $statusOrder);
+        }
+
+        $orderonline = $query->paginate($perPage);
 
         $totalEntries = $orderonline->total();
         $start = ($orderonline->currentPage() - 1) * $perPage + 1;
         $end = min($orderonline->currentPage() * $perPage, $totalEntries);
 
-        return view('pos.order-online.index', compact('bengkel', 'orderonline', 'start', 'end', 'totalEntries'));
+        return view('pos.order.order-online.index', compact('bengkel', 'orderonline', 'start', 'end', 'totalEntries'));
     }
-    public function edit($id_bengkel, $id_order)
+
+
+    public function edit($id_bengkel, $order_id)
     {
+        // Menemukan bengkel berdasarkan ID
         $bengkel = Bengkel::findOrFail($id_bengkel);
-        $order = OrderOnline::where('id', $id_order)
+
+        // Memastikan user sudah login
+        if (!Auth::guard('pegawai')->check()) {
+            return redirect()->route('pos.login');
+        }
+
+        // Menemukan order berdasarkan ID order dan ID bengkel, serta memuat relasi yang dibutuhkan
+        $order = OrderOnline::where('order_id', $order_id)
             ->where('id_bengkel', $id_bengkel)
-            ->with(['invoice', 'produk', 'sparepart', 'pelanggan'])
+            ->with([
+                'invoice',         // Menarik data invoice terkait order
+                'orderItems',      // Menarik data order items (produk/sparepart)
+                'pelanggan'        // Menarik data pelanggan yang terkait
+            ])
             ->firstOrFail();
 
-        return view('pos.order-online.edit', compact('bengkel', 'order'));
+        // Mengembalikan tampilan 'edit' dengan data yang dibutuhkan
+        return view('pos.order.order-online.edit', compact('bengkel', 'order'));
     }
 
-    public function update(Request $request, $id_bengkel, $id_order)
+    public function update(Request $request, $id_bengkel, $order_id)
     {
+        // Validasi inputan dari form
         $request->validate([
             'status_order' => 'required|string',
             'status_invoice' => 'required|string',
         ]);
 
-        $order = OrderOnline::where('id', $id_order)
+        // Menemukan order berdasarkan ID order dan ID bengkel
+        $order = OrderOnline::where('order_id', $order_id)
             ->where('id_bengkel', $id_bengkel)
             ->firstOrFail();
 
+        // Menemukan invoice yang terkait dengan order
         $invoice = Invoice::where('id_order', $order->order_id)->firstOrFail();
 
+        // Memperbarui status order pada tabel t_order_online
         $order->update([
             'status_order' => $request->status_order,
         ]);
 
-        // Update Invoice
+        // Memperbarui status invoice pada tabel t_invoice
         $invoice->update([
             'status_invoice' => $request->status_invoice,
         ]);
 
+        // Redirect kembali dengan pesan status berhasil
         return redirect()->route('pos.order-online', $id_bengkel)
             ->with('status', 'Order and Invoice updated successfully.');
     }

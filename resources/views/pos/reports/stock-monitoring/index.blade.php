@@ -25,7 +25,7 @@
                     <div class="d-flex justify-center w-100 mx-2 mb-4">
                         <input type="text" id="search" class="form-control w-60" placeholder="Search">
                     </div>
-                    <div class="d-flex justify-start mb-4">
+                    <div class="d-flex justify-end mb-4">
                         <select name="type" id="type" class="form-control w-auto mx-2" onchange="filterType()">
                             <option value="10" {{ $type == '10' ? 'selected' : '' }}>Product</option>
                             <option value="25" {{ $type == '25' ? 'selected' : '' }}>Sparepart</option>

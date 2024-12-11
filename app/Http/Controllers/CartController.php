@@ -274,7 +274,7 @@ public function placeOrder(Request $request)
         $invoice->id_order = $order->order_id;
         $invoice->status_invoice = 'PENDING';
         $invoice->tanggal_invoice = now();
-        $invoice->jatuh_tempo = now()->addDays(1);
+        $invoice->jatuh_tempo = now()->addDays(1)->setTime(now()->hour, now()->minute, now()->second);
         $invoice->nominal_transfer = $order->grand_total;
         $invoice->save();
 

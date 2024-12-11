@@ -71,15 +71,17 @@ class PaymentController extends Controller
 }
 
 
-    public function store(Request $request)
+public function store(Request $request)
 {
-    // Validate form input
+    // Validasi form input dengan kondisi
     $validated = $request->validate([
-        'nama_rekening' => 'required|string|max:100',
-        'no_rekening' => 'required|string|max:50',
+        'jenis_pembayaran' => 'required|string|max:50', // Jenis Pembayaran harus ada
+        'nama_rekening' => 'required_if:jenis_pembayaran,Manual Transfer|string|max:100', // Hanya required jika metode pembayaran adalah Manual Transfer
+        'no_rekening' => 'required_if:jenis_pembayaran,Manual Transfer|string|max:50', // Hanya required jika metode pembayaran adalah Manual Transfer
+        'bank_tujuan' => 'required_if:jenis_pembayaran,Manual Transfer|string|max:100', // Hanya required jika metode pembayaran adalah Manual Transfer
         'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'note' => 'string',
         'id' => 'required|integer', // Validasi id invoice
-        'jenis_pembayaran' => 'required|string|max:50', // Validate jenis_pembayaran
     ]);
 
     // Retrieve the order using the order_id
@@ -118,7 +120,9 @@ class PaymentController extends Controller
     $invoice->nama_rekening = $request->nama_rekening;
     $invoice->no_rekening = $request->no_rekening;
     $invoice->jenis_pembayaran = $request->jenis_pembayaran; // Save the payment type
+    $invoice->bank_tujuan = $request->bank_tujuan; // Save the selected bank
     $invoice->bukti_bayar = $buktiBayarPath;
+    $invoice->note = $request->note;
     $invoice->status_invoice = 'Waiting_Confirmation'; // Payment is waiting for confirmation
     $invoice->save();
 

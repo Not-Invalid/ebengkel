@@ -252,10 +252,10 @@
                   <a href="{{ route('Detail-ProductSparePart', ['type' => 'product', 'id' => $item->id_produk]) }}"
                     class="card-product p-3">
                     <img
-                      src="{{ $item->fotoProduk && file_exists(public_path($item->fotoProduk->file_foto_produk_1))
-                          ? asset($item->fotoProduk->file_foto_produk_1)
-                          : asset('assets/images/components/image.png') }}"
-                      class="card-img-top" alt="{{ $item->nama_produk ?? 'Default Image' }}">
+                    src="{{ $item->fotoProduk && file_exists(public_path($item->fotoProduk->file_foto_produk_1))
+                        ? asset($item->fotoProduk->file_foto_produk_1)
+                        : asset('assets/images/components/image.png') }}"
+                    class="card-img-top" alt="{{ $item->nama_produk ?? 'Default Image' }}">
                     <div class="card-body text-start">
                       <p class="workshop-name">{{ $item->bengkel->nama_bengkel }}</p>
                       <h5 class="card-title">
