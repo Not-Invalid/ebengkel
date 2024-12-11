@@ -1,6 +1,5 @@
 "use strict";
 
-
 $(".daterange-cus").daterangepicker({
     locale: { format: "YYYY-MM-DD" },
     drops: "down",
@@ -35,9 +34,3 @@ $(".daterange-btn").daterangepicker(
         );
     }
 );
-
-$(".colorpickerinput").colorpicker({
-    format: "hex",
-    component: ".input-group-append",
-});
-$(".inputtags").tagsinput("items");
