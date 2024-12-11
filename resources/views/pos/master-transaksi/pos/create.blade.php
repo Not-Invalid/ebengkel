@@ -119,12 +119,14 @@
             const kembaliInput = document.getElementById('kembali');
             const noKartuGroup = document.getElementById('no_kartu_group');
             const jenisPembayaranSelect = document.getElementById('jenis_pembayaran');
+            const form = document.querySelector('form');
 
             function hitungTotalHarga() {
                 const harga = parseFloat(hargaInput.value) || 0;
                 const diskon = parseFloat(diskonInput.value) || 0;
                 const ppn = parseFloat(ppnInput.value) || 0;
                 const qty = parseInt(totalQtyInput.value) || 1;
+
                 let total = harga * qty;
                 total -= total * (diskon / 100);
                 total += total * (ppn / 100);
@@ -137,6 +139,17 @@
                 const kembali = nominalBayar - totalHarga;
                 kembaliInput.value = kembali >= 0 ? kembali.toFixed(2) : 0;
             }
+
+            function validateForm(event) {
+                const totalHarga = parseFloat(totalHargaInput.value) || 0;
+                const nominalBayar = parseFloat(nominalBayarInput.value) || 0;
+
+                if (nominalBayar < totalHarga) {
+                    event.preventDefault();
+                    alert('Nominal bayar tidak cukup!');
+                }
+            }
+
             hargaInput.addEventListener('input', hitungTotalHarga);
             diskonInput.addEventListener('input', hitungTotalHarga);
             ppnInput.addEventListener('input', hitungTotalHarga);
@@ -149,6 +162,9 @@
                     noKartuGroup.style.display = 'none';
                 }
             });
+
+            form.addEventListener('submit', validateForm);
+
             hitungTotalHarga();
             hitungKembali();
         });
