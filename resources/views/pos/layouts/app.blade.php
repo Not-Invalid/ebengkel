@@ -158,7 +158,8 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
-                        <li class="dropdown ">
+                        <li
+                            class="dropdown {{ request()->routeIs('pos.tranksaksi_pos.*') || request()->routeIs('pos.tranksaksi_pesanan.*') ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-cart"></i>
                                 <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
@@ -225,7 +226,8 @@
                                 <span>Orders</span></a>
                             <ul class="dropdown-menu">
                                 <li class="{{ request()->routeIs('pos.order-online') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}">
                                         Online Orders
                                     </a>
                                 </li>
