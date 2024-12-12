@@ -40,59 +40,60 @@ class CartController extends Controller
 
 
     public function addToCart(Request $request)
-    {
-        if (Auth::check()) {
-            $pelanggan_id = Auth::user()->id_pelanggan;
-            $produk = Product::find($request->id_produk);
-            $sparepart = SpareParts::find($request->id_spare_part);
+{
+    if (Auth::check()) {
+        $pelanggan_id = Auth::user()->id_pelanggan;
+        $produk = Product::find($request->id_produk);
+        $sparepart = SpareParts::find($request->id_spare_part);
 
-            if ($produk || $sparepart) {
-                $id_produk = $produk ? $produk->id_produk : null;
-                $id_spare_part = $sparepart ? $sparepart->id_spare_part : null;
+        // Check if either product or spare part exists
+        if ($produk || $sparepart) {
+            $id_produk = $produk ? $produk->id_produk : null;
+            $id_spare_part = $sparepart ? $sparepart->id_spare_part : null;
 
-                // Check if the item is already in the cart
-                $cartItem = Cart::where('id_pelanggan', $pelanggan_id)
-                    ->where(function($query) use ($id_produk, $id_spare_part) {
-                        if ($id_produk) {
-                            $query->where('id_produk', $id_produk);
-                        }
-                        if ($id_spare_part) {
-                            $query->where('id_spare_part', $id_spare_part);
-                        }
-                    })
-                    ->first();
+            // Check if the item is already in the cart
+            $cartItem = Cart::where('id_pelanggan', $pelanggan_id)
+                ->where(function($query) use ($id_produk, $id_spare_part) {
+                    if ($id_produk) {
+                        $query->where('id_produk', $id_produk);
+                    }
+                    if ($id_spare_part) {
+                        $query->where('id_spare_part', $id_spare_part);
+                    }
+                })
+                ->first();
 
-                if ($cartItem) {
-                    // If it exists, update the quantity
-                    $cartItem->quantity += $request->quantity;
-                    $cartItem->total_price = $cartItem->quantity * ($produk ? $produk->harga_produk : $sparepart->harga_spare_part);
-                    $cartItem->save();
-                } else {
-                    // Create a new cart item
-                    $cart = new Cart();
-                    $cart->id_pelanggan = $pelanggan_id;
-                    $cart->id_produk = $id_produk;
-                    $cart->id_spare_part = $id_spare_part;
-                    $cart->quantity = $request->quantity;
-                    $cart->total_price = ($produk ? $produk->harga_produk : $sparepart->harga_spare_part) * $request->quantity;
-                    $cart->save();
-                }
-
-                // Simpan ID item terakhir yang ditambahkan ke session
-                session(['last_added_item_id' => $cart->id]);
-
-                // Cek apakah tombol "Buy Now" diklik
-                $buyNow = $request->has('buy_now');
-
-                // Redirect ke halaman cart dengan parameter buy_now
-                return redirect()->route('cart.index', ['buy_now' => $buyNow])->with('status', 'Product added to cart');
+            if ($cartItem) {
+                // If it exists, update the quantity
+                $cartItem->quantity += $request->quantity;
+                $cartItem->total_price = $cartItem->quantity * ($produk ? $produk->harga_produk : $sparepart->harga_spare_part);
+                $cartItem->save();
             } else {
-                return redirect()->back()->with('status_error', 'Product or spare part not found');
+                // Create a new cart item
+                $cart = new Cart();
+                $cart->id_pelanggan = $pelanggan_id;
+                $cart->id_produk = $id_produk;
+                $cart->id_spare_part = $id_spare_part;
+                $cart->quantity = $request->quantity;
+                $cart->total_price = ($produk ? $produk->harga_produk : $sparepart->harga_spare_part) * $request->quantity;
+                $cart->save();
             }
+
+            // Save the ID of the last added item to the session
+            session(['last_added_item_id' => $cart->id ?? $cartItem->id]); // Use $cartItem if it exists
+
+            // Check if the "Buy Now" button was clicked
+            $buyNow = $request->has('buy_now');
+
+            // Redirect to the cart page with the buy_now parameter
+            return redirect()->route('cart.index', ['buy_now' => $buyNow])->with('status', 'Product added to cart');
         } else {
-            return redirect()->route('login')->with('status_error', 'Please log in to add to cart');
+            return redirect()->back()->with('status_error', 'Product or spare part not found');
         }
+    } else {
+        return redirect()->route('login')->with('status_error', 'Please log in to add to cart');
     }
+}
 
     public function removeItem(Request $request)
     {
@@ -176,11 +177,6 @@ public function placeOrder(Request $request)
             return redirect()->route('cart.index')->with('error', 'Keranjang Anda kosong.');
         }
 
-        // Capture shipping method details from request
-        $shipping_method = $request->shipping_method;
-        $shipping_courier = $request->shipping_courier;
-        $shipping_cost = $request->shipping_cost ?? 0;
-
         // Initialize total price
         $totalPrice = 0;
 
@@ -190,16 +186,6 @@ public function placeOrder(Request $request)
         $order->order_id = Str::random(10); // Generate a random order_id
         $order->status_order = 'PENDING';
         $order->tanggal = now();
-        $order->jenis_pengiriman = $shipping_method;
-        $order->kurir = $shipping_courier;
-        $order->biaya_pengiriman = $shipping_cost;
-        $order->atas_nama = $request->recipient;
-        $order->alamat_pengiriman = $request->location;
-        $order->provinsi = $request->province;
-        $order->kabupaten = $request->city;
-        $order->kecamatan = $request->district;
-        $order->kode_pos = $request->postal_code;
-        $order->no_telp = $request->phone;
 
         // Determine id_bengkel from the first item
         $firstItem = $cartItems->first();
@@ -231,7 +217,7 @@ public function placeOrder(Request $request)
 
         // Set total_harga and grand_total before saving
         $order->total_harga = $totalPrice;
-        $order->grand_total = $totalPrice + $shipping_cost;
+        $order->grand_total = $totalPrice; // No shipping cost
 
         // Save order
         $order->save();
@@ -284,7 +270,6 @@ public function placeOrder(Request $request)
         return redirect()->route('payment', ['order_id' => $order->order_id, 'id' => $invoice->id])
                          ->with('status', 'Pesanan Anda berhasil diproses. Segera lakukan pembayaran untuk melanjutkan.');
     }
-
     return redirect()->route('login')->with('status_error', 'Anda harus login terlebih dahulu.');
 }
 
