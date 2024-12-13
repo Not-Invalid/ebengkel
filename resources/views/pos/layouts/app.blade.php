@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Bengkel Service, Spare Part & Smart Tools.">
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/icon.png') }}" type="image/x-icon" />
     <title>@yield('title')</title>
@@ -163,7 +164,7 @@
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-shopping-cart"></i>
                                 <span>Transaksi</span></a>
                             <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.tranksaksi_pos.index') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.tranksaksi_pos.*') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
                                 </li>
