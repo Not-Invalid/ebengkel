@@ -17,12 +17,12 @@ class CreateTOrderItemTable extends Migration
             $table->integer('id_order_item')->primary()->autoIncrement();
             $table->integer('id_order');
             $table->integer('id_bengkel');
-            $table->integer('id_barang');
+            $table->unsignedInteger('id_produk')->nullable();
+            $table->integer('id_spare_part')->nullable();
             $table->dateTime('tanggal')->useCurrent();
             $table->string('warna', 50)->nullable();
             $table->string('size', 50)->nullable();
             $table->integer('qty');
-            $table->integer('harga_beli');
             $table->integer('harga');
             $table->integer('subtotal');
         });
