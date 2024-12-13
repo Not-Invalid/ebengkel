@@ -108,73 +108,7 @@ class SparePartController extends Controller
 
         return view('pos.masterdata-sparepart.show', compact('bengkel', 'sparepart', 'categories'));
     }
-    // public function edit($id_bengkel, $id_spare_part)
-    // {
-    //     $bengkel = Bengkel::find($id_bengkel);
 
-    //     if (!$bengkel) {
-    //         return redirect()->route('profile.workshop')->with('error_status', 'Workshop not found!.');
-    //     }
-
-    //     $sparepart = SpareParts::findOrFail($id_spare_part);
-    //     $categories = KategoriSparePart::all();
-    //     // Ambil data foto produk terkait
-    //     $fotoSparepart = FotoSparepart::where('id_spare_part', $id_spare_part)->first();
-    //     return view('pos.masterdata-sparepart.edit', compact('bengkel', 'sparepart', 'categories', 'fotoSparepart'));
-    // }
-    // public function update(Request $request, $id_bengkel, $id_spare_part)
-    // {
-    //     $request->validate([
-    //         'id_kategori_spare_part' => 'required|integer',
-    //         'kualitas_spare_part' => 'nullable|string',
-    //         'merk_spare_part' => 'nullable|string',
-    //         'nama_spare_part' => 'required|string',
-    //         'harga_spare_part' => 'required|integer',
-    //         'keterangan_spare_part' => 'nullable|string',
-    //         'stok_spare_part' => 'required|integer',
-    //         'foto_spare_part_1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'foto_spare_part_2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'foto_spare_part_3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'foto_spare_part_4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'foto_spare_part_5' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
-
-    //     $sparepart = SpareParts::findOrFail($id_spare_part);
-
-    //     $sparepart->update($request->only([
-    //         'id_kategori_spare_part',
-    //         'kualitas_spare_part',
-    //         'merk_spare_part',
-    //         'nama_spare_part',
-    //         'harga_spare_part',
-    //         'keterangan_spare_part',
-    //         'stok_spare_part',
-    //     ]));
-
-    //     $fotoSparepart = FotoSparepart::where('id_spare_part', $id_spare_part)->first() ?? new FotoSparepart(['id_spare_part' => $id_spare_part]);
-
-    //     // Handle the image file uploads
-    //     for ($i = 1; $i <= 5; $i++) {
-    //         $fotoKey = 'foto_spare_part_' . $i;
-
-    //         if ($request->hasFile($fotoKey)) {
-    //             if ($fotoSparepart->{'file_foto_spare_part' . $i}) {
-    //                 unlink(public_path($fotoSparepart->{'file_foto_spare_part' . $i}));
-    //             }
-
-    //             // Upload the new image
-    //             $imageName = 'foto_spare_part_' . $id_spare_part . '_' . $i . '.' . $request->file($fotoKey)->extension();
-    //             $request->file($fotoKey)->move(public_path('assets/images/spareparts'), $imageName);
-    //             $fotoSparepart->{'file_foto_spare_part_' . $i} = 'assets/images/spareparts/' . $imageName;
-    //         }
-    //     }
-
-    //     // Update or create file_foto_produk record
-    //     $fotoSparepart->create_file_foto_spare_part = now();
-    //     $fotoSparepart->save();
-
-    //     return redirect()->route('pos.sparepart.index', ['id_bengkel' => $id_bengkel])->with('status', 'Spare Part successfully updated!');
-    // }
     public function edit($id_bengkel, $id_spare_part)
     {
         $bengkel = Bengkel::find($id_bengkel);
