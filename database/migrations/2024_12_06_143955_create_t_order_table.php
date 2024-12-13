@@ -14,13 +14,12 @@ class CreateTOrderTable extends Migration
     public function up()
     {
         Schema::create('t_order', function (Blueprint $table) {
-            $table->integer('id_order')->primary();
+            $table->integer('id_order')->primary()->autoIncrement();
+            $table->string('kode_order', 20)->unique();
             $table->string('nama_customer', 255)->nullable();
             $table->integer('id_bengkel')->nullable();
             $table->integer('id_voucher')->nullable();
             $table->dateTime('tanggal')->useCurrent();
-            $table->unsignedInteger('id_produk')->nullable();
-            $table->integer('id_spare_part')->nullable();
             $table->string('tipe', 50)->nullable();
             $table->string('jenis_pembayaran', 50)->nullable();
             $table->string('no_kartu', 50)->nullable();
@@ -34,9 +33,6 @@ class CreateTOrderTable extends Migration
             $table->string('input_by', 50);
             $table->string('shift', 50)->nullable();
             $table->string('is_delete', 1)->default('N');
-
-            $table->foreign('id_produk')->references('id_produk')->on('tb_produk')->onDelete('cascade');
-            $table->foreign('id_spare_part')->references('id_spare_part')->on('tb_spare_part')->onDelete('cascade');
         });
     }
 
