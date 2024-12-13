@@ -349,8 +349,10 @@ Route::middleware(['lang'])->group(function () {
         Route::post('profile/update/{id_bengkel}/{id_pegawai}', [PosProfileController::class, 'update'])->name('profile-pegawai.update');
 
         Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
-        Route::get('tranksaksi/pos/show-checkout/{id_bengkel}', [PosTransaksiController::class, 'showCheckout'])->name('pos.tranksaksi_pos.showcheckoutpos');
-        Route::post('tranksaksi/pos/store-checkout/{id_bengkel}', [PosTransaksiController::class, 'storeCheckout'])->name('pos.tranksaksi_pos.storecheckout');
+        Route::post('tranksaksi/pos/{id_bengkel}/checkout', [PosTransaksiController::class, 'checkout'])->name('pos.tranksaksi_pos.checkout');
+        Route::get('tranksaksi/pos/{id_bengkel}/pembayaran/{id_order}', [PosTransaksiController::class, 'createPayment'])->name('pos.tranksaksi_pos.createPayment');
+        Route::post('tranksaksi/pos/{id_bengkel}/pembayaran/bayar', [PosTransaksiController::class, 'store'])->name('pos.tranksaksi_pos.store');
+
         Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
         Route::get('tranksaksi/create-pesanan/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
         Route::post('tranksaksi/pos-pesanan/store/{id_bengkel}', [PosPesananController::class, 'store'])->name('pos.tranksaksi_pesanan.store');
@@ -359,8 +361,8 @@ Route::middleware(['lang'])->group(function () {
         Route::delete('tranksaksi/delete-pesanan/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
 
         Route::get('order-online/{id_bengkel}', [PosOrderOnlineController::class, 'index'])->name('pos.order-online');
-        Route::get('/order-online/{id_bengkel}/edit/{order_id}', [PosOrderOnlineController::class, 'edit'])->name('pos.order-online.edit');
-        Route::post('/order-online/{id_bengkel}/update/{order_id}', [PosOrderOnlineController::class, 'update'])->name('pos.order-online.update');
+        Route::get('order-online/{id_bengkel}/edit/{order_id}', [PosOrderOnlineController::class, 'edit'])->name('pos.order-online.edit');
+        Route::post('order-online/{id_bengkel}/update/{order_id}', [PosOrderOnlineController::class, 'update'])->name('pos.order-online.update');
 
         Route::prefix('Master-data')->group(function () {
             Route::prefix('pos/{id_bengkel}/product')->group(function () {
