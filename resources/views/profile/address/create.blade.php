@@ -193,9 +193,9 @@
 
             // Ketika provinsi dipilih
             $('#provinsi').change(function() {
-                let provinsiId = $(this).val();
-                if (provinsiId) {
-                    $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
+                let provinsiNama = $(this).val();
+                if (provinsiNama) {
+                    $.get('https://api.cahyadsn.com/regencies/' + provinsiNama, function(response) {
                         let kotaDropdown = $('#kota');
                         kotaDropdown.empty();
                         kotaDropdown.append(
@@ -223,9 +223,9 @@
 
             // Ketika kota dipilih
             $('#kota').change(function() {
-                let kotaId = $(this).val();
-                if (kotaId) {
-                    $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
+                let kotaNama = $(this).val();
+                if (kotaNama) {
+                    $.get('https://api.cahyadsn.com/districts/' + kotaNama, function(response) {
                         let kecamatanDropdown = $('#kecamatan');
                         kecamatanDropdown.empty();
                         kecamatanDropdown.append(
@@ -248,28 +248,29 @@
                 }
             });
             $('form').submit(function(event) {
-                var provinsiId = $('#provinsi').val();
-                var kotaId = $('#kota').val();
-                var kecamatanId = $('#kecamatan').val();
+                var provinsiNama = $('#provinsi option:selected').text();
+                var kotaNama = $('#kota option:selected').text();
+                var kecamatanNama = $('#kecamatan option:selected').text();
 
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'provinsi',
-                    value: provinsiId
+                    value: provinsiNama
                 }).appendTo(this);
 
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'kota',
-                    value: kotaId
+                    value: kotaNama
                 }).appendTo(this);
 
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'kecamatan',
-                    value: kecamatanId
+                    value: kecamatanNama
                 }).appendTo(this);
             });
+
 
         });
     </script>
