@@ -94,7 +94,7 @@
     color: var(--main-white) !important;
 }
 
-.badge-cart {
+.badge-custom {
     background-color: var(--main-light-blue) !important;
     font-weight: 500 !important;
 }
@@ -458,4 +458,8 @@ h2 {
 /* /=========================== POS DASHBOARD css ===========================/ */
 .card-statistic-1:hover{
     transform: translateY(-4px);
+}
+
+.badge.fixed-width {
+    width: 150px;
 }
