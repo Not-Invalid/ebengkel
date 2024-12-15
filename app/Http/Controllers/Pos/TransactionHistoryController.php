@@ -29,7 +29,7 @@ class TransactionHistoryController extends Controller
         }
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
-            ->get(['id_order', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
@@ -37,7 +37,7 @@ class TransactionHistoryController extends Controller
         $transactions = [];
         foreach ($pesanan as $order) {
             $transactions[] = [
-                'customer_name' => $order->nama,
+                'customer_name' => $order->nama_customer,
                 'transaction_type' => $order->tipe,
                 'payment_method' => $order->jenis_pembayaran,
                 'total_price' => $order->total_harga,
@@ -71,7 +71,7 @@ class TransactionHistoryController extends Controller
     {
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
-            ->get(['id_order', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
@@ -119,7 +119,7 @@ class TransactionHistoryController extends Controller
     {
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
-            ->get(['id_order', 'nama', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
@@ -127,7 +127,7 @@ class TransactionHistoryController extends Controller
         $transactions = [];
         foreach ($pesanan as $order) {
             $transactions[] = [
-                'customer_name' => $order->nama,
+                'customer_name' => $order->nama_customer,
                 'transaction_type' => $order->tipe,
                 'payment_method' => $order->jenis_pembayaran,
                 'total_price' => $order->total_harga,
