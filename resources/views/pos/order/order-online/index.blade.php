@@ -85,8 +85,7 @@
                                         <td style="font-size: 13px;">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
                                         <td style="font-size: 13px;">{{ $order->invoice->jenis_pembayaran }} - {{ $order->invoice->bank_tujuan }} </td>
 
-                                        <!-- Displaying Order Status -->
-                                        <td style="font-size: 13px;">
+                                        <td class="d-flex align-items-center justify-content-center">
                                             @php
                                                 $statusNames = [
                                                     'PENDING' => 'Pending',
@@ -96,7 +95,21 @@
                                                     'SELESAI' => 'Selesai'
                                                 ];
                                             @endphp
-                                            {{ $statusNames[$order->status_order] ?? 'Unknown' }}
+
+                                            @if (array_key_exists($order->status_order, $statusNames))
+                                                <div class="badge fixed-width
+                                                    @if ($order->status_order == 'PENDING') badge-secondary
+                                                    @elseif ($order->status_order == 'Waiting_Confirmation') badge-warning
+                                                    @elseif ($order->status_order == 'DIKEMAS') badge-primary
+                                                    @elseif ($order->status_order == 'DIKIRIM') badge-info
+                                                    @elseif ($order->status_order == 'SELESAI') badge-success
+                                                    @else badge-secondary
+                                                    @endif">
+                                                    {{ $statusNames[$order->status_order] }}
+                                                </div>
+                                            @else
+                                                <div class="badge badge-secondary fixed-width">Unknown</div>
+                                            @endif
                                         </td>
                                         <td style="font-size: 13px;">{{ $order->tanggal ? \Carbon\Carbon::parse($order->tanggal)->format('d-m-Y') : 'N/A' }}</td>
 
