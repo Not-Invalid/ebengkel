@@ -23,17 +23,20 @@
             </thead>
             <tbody>
                 @foreach ($pelanggan as $item)
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->nama_pelanggan }}</td>
-                    <td>{{ $item->telp_pelanggan }}</td>
-                    <td>{{ $item->email_pelanggan }}</td>
-                    <td>{{ $item->role_pelanggan }}</td>
-                    <td><span class="badge bg-success">{{ $item->delete_pelanggan }}</span></td>
-                    <td class="text-center">
-                        <a href="{{-- route('bengkel.show', $data->id_bengkel) --}}" class="btn btn-delete my-2" title="Detail" data-bs-toggle="tooltip">
-                            <i class="fas fa-trash-alt text-white"></i>
-                        </a>
-                    </td>
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->nama_pelanggan }}</td>
+                        <td>{{ $item->telp_pelanggan }}</td>
+                        <td>{{ $item->email_pelanggan }}</td>
+                        <td>{{ $item->role_pelanggan }}</td>
+                        <td><span class="badge bg-success">{{ $item->delete_pelanggan }}</span></td>
+                        <td class="text-center">
+                            <a href="{{-- route('bengkel.show', $data->id_bengkel) --}}" class="btn btn-delete my-2" title="Detail" data-bs-toggle="tooltip">
+                                <i class="fas fa-trash-alt text-white"></i>
+                            </a>
+                        </td>
+
+                    </tr>
                 @endforeach
             </tbody>
         </table>
