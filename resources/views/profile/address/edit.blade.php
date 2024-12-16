@@ -155,65 +155,113 @@
 
     <script>
         $(document).ready(function() {
-    // Load Provinces
+
     $.get('https://api.cahyadsn.com/provinces', function(response) {
         let provinsiDropdown = $('#provinsi');
-        let selectedProvinsi = "{{ $address->provinsi }}"; // ID of the province stored in DB
+        let selectedProvinsi = "{{ $address->provinsi }}";
+        provinsiDropdown.empty();
+        provinsiDropdown.append(
+            '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_province') }}</option>'
+        );
+
         if (response.data && Array.isArray(response.data)) {
             $.each(response.data, function(index, provinsi) {
-                let selected = (provinsi.kode == selectedProvinsi) ? 'selected' : '';
-                provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' + provinsi.nama + '</option>');
+                let selected = (provinsi.nama == selectedProvinsi) ? 'selected' : '';
+                provinsiDropdown.append('<option value="' + provinsi.kode + '" ' + selected + '>' +
+                    provinsi.nama + '</option>');
             });
         }
-        // Trigger change to load cities
+
         provinsiDropdown.trigger('change');
     }).fail(function() {
-        console.log('Failed to load provinces');
+        console.log('Request gagal untuk data provinsi');
     });
 
-    // Load Cities based on selected Province
     $('#provinsi').change(function() {
-        let provinsiId = $(this).val();
-        $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
-            let kotaDropdown = $('#kota');
-            kotaDropdown.empty();
-            kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
+        let provinsiNama = $(this).val();
+        if (provinsiNama) {
+            $.get('https://api.cahyadsn.com/regencies/' + provinsiNama, function(response) {
+                let kotaDropdown = $('#kota');
+                kotaDropdown.empty();
+                kotaDropdown.append(
+                    '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_city') }}</option>'
+                );
 
-            if (response.data && Array.isArray(response.data)) {
-                $.each(response.data, function(index, kota) {
-                    let selected = (kota.kode == "{{ $address->kota }}") ? 'selected' : '';
-                    kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
-                });
-            }
-            // Trigger change to load districts
-            kotaDropdown.trigger('change');
-        }).fail(function() {
-            console.log('Failed to load cities');
-        });
+                if (response.data && Array.isArray(response.data)) {
+                    $.each(response.data, function(index, kota) {
+                        let selected = (kota.nama == "{{ $address->kota }}") ? 'selected' : '';
+                        kotaDropdown.append('<option value="' + kota.kode + '" ' + selected + '>' + kota.nama + '</option>');
+                    });
+                }
+
+                kotaDropdown.trigger('change');
+            }).fail(function() {
+                console.log('Request gagal untuk data kota');
+            });
+        } else {
+            $('#kota').empty().append(
+                '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_city') }}</option>'
+            );
+            $('#kecamatan').empty().append(
+                '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_district') }}</option>'
+            );
+        }
     });
 
-    // Load Districts based on selected City
     $('#kota').change(function() {
-        let kotaId = $(this).val();
-        $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
-            let kecamatanDropdown = $('#kecamatan');
-            kecamatanDropdown.empty();
-            kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
+        let kotaNama = $(this).val();
+        if (kotaNama) {
+            $.get('https://api.cahyadsn.com/districts/' + kotaNama, function(response) {
+                let kecamatanDropdown = $('#kecamatan');
+                kecamatanDropdown.empty();
+                kecamatanDropdown.append(
+                    '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_district') }}</option>'
+                );
 
-            if (response.data && Array.isArray(response.data)) {
-                $.each(response.data, function(index, kecamatan) {
-                    let selected = (kecamatan.kode == "{{ $address->kecamatan }}") ? 'selected' : '';
-                    kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
-                });
-            }
-        }).fail(function() {
-            console.log('Failed to load districts');
-        });
+                if (response.data && Array.isArray(response.data)) {
+                    $.each(response.data, function(index, kecamatan) {
+                        let selected = (kecamatan.nama == "{{ $address->kecamatan }}") ? 'selected' : '';
+                        kecamatanDropdown.append('<option value="' + kecamatan.kode + '" ' + selected + '>' + kecamatan.nama + '</option>');
+                    });
+                }
+            }).fail(function() {
+                console.log('Request gagal untuk data kecamatan');
+            });
+        } else {
+            $('#kecamatan').empty().append(
+                '<option value="" selected disabled hidden>{{ __('messages.profile.address.select_district') }}</option>'
+            );
+        }
     });
 
-    // Initialize dropdowns with existing data
-    $('#provinsi').trigger('change'); // Load cities based on the selected province
+    $('#provinsi').trigger('change');
+    $('#kota').trigger('change');
 });
+
+$('form').submit(function(event) {
+    var provinsiNama = $('#provinsi option:selected').text();
+    var kotaNama = $('#kota option:selected').text();
+    var kecamatanNama = $('#kecamatan option:selected').text();
+
+    $('<input>').attr({
+        type: 'hidden',
+        name: 'provinsi',
+        value: provinsiNama
+    }).appendTo(this);
+
+    $('<input>').attr({
+        type: 'hidden',
+        name: 'kota',
+        value: kotaNama
+    }).appendTo(this);
+
+    $('<input>').attr({
+        type: 'hidden',
+        name: 'kecamatan',
+        value: kecamatanNama
+    }).appendTo(this);
+});
+
     </script>
 
 @endsection

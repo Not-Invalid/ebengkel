@@ -13,6 +13,14 @@
         <form action="{{ route('pos.order-online.update', ['id_bengkel' => $bengkel->id_bengkel, 'order_id' => $order->order_id]) }}" method="POST">
             @csrf
             <div class="form-group">
+                <label for="status_invoice">Status Invoice</label>
+                <select name="status_invoice" id="status_invoice" class="form-control" required>
+                    <option value="PENDING" {{ $order->invoice->status_invoice == 'PENDING' ? 'selected' : '' }}>Pending</option>
+                    <option value="Waiting_Confirmation" {{ $order->invoice->status_invoice == 'Waiting_Confirmation' ? 'selected' : '' }}>Waiting Confirmation</option>
+                    <option value="PAYMENT_CONFIRMED" {{ $order->invoice->status_invoice == 'PAYMENT_CONFIRMED' ? 'selected' : '' }}>Payment Confirmed</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="status_order">Status Order</label>
                 <select name="status_order" id="status_order" class="form-control" required>
                     <option value="PENDING" {{ $order->status_order == 'PENDING' ? 'selected' : '' }}>Pending</option>
@@ -23,14 +31,6 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="status_invoice">Status Invoice</label>
-                <select name="status_invoice" id="status_invoice" class="form-control" required>
-                    <option value="PENDING" {{ $order->invoice->status_invoice == 'PENDING' ? 'selected' : '' }}>Pending</option>
-                    <option value="Waiting_Confirmation" {{ $order->invoice->status_invoice == 'Waiting_Confirmation' ? 'selected' : '' }}>Waiting Confirmation</option>
-                    <option value="PAYMENT_CONFIRMED" {{ $order->invoice->status_invoice == 'PAYMENT_CONFIRMED' ? 'selected' : '' }}>Payment Confirmed</option>
-                </select>
-            </div>
 
             <!-- Info Pelanggan -->
             <div class="form-group">
@@ -98,7 +98,33 @@
                 <input type="text" id="tanggal_invoice" class="form-control" value="{{ $order->invoice->tanggal_invoice }}" disabled>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="d-flex gap-2 justify-content-end">
+                <a href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}" id="backButton"
+                  class="btn btn-danger">Back</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const statusInvoice = document.getElementById('status_invoice');
+            const statusOrder = document.getElementById('status_order');
+            const form = document.querySelector('form');
+
+            statusOrder.addEventListener('change', function () {
+                if (statusInvoice.value !== 'PAYMENT_CONFIRMED') {
+                    alert('You can only edit the order status if the invoice status is PAYMENT_CONFIRMED.');
+                    statusOrder.value = "{{ $order->status_order }}"; // Reset to the original value
+                }
+            });
+
+            form.addEventListener('submit', function (e) {
+                if (statusInvoice.value !== 'PAYMENT_CONFIRMED') {
+                    e.preventDefault();
+                    alert('Cannot submit: The invoice status must be PAYMENT_CONFIRMED to edit the order status.');
+                }
+            });
+        });
+    </script>
 @endsection

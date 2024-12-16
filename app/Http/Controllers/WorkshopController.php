@@ -270,6 +270,9 @@ class WorkshopController extends Controller
             'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'whatsapp' => 'nullable|string|max:15',
             'instagram' => 'nullable|string',
+            'provinsi' => 'required|string',
+            'kota' => 'required|string',
+            'kecamatan' => 'required|string',
         ]);
 
         // Handle the 'service_available' and 'payment' fields (encode them as JSON)

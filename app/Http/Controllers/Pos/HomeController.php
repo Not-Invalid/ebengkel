@@ -7,15 +7,17 @@ use App\Models\Bengkel;
 use App\Models\Service;
 use App\Models\SpareParts;
 use App\Models\Product;
-use App\Models\OrderOnline; // Model untuk t_order_online
-use App\Models\OrderItemOnline; // Model untuk t_order_item_online
+use App\Models\OrderOnline;
+use App\Models\OrderItemOnline;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-    public function index($id_bengkel)
+    public function index($id_bengkel, Request $request)
     {
-        // Mengambil bengkel berdasarkan ID
+
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
@@ -26,19 +28,45 @@ class HomeController extends Controller
             return redirect()->route('pos.login');
         }
 
-        // Mengambil data total
+        $periode = $request->input('periode', 'month');
+        $startDate = Carbon::now()->startOf($periode);
+        $endDate = Carbon::now()->endOf($periode);
+
         $totalServices = Service::count();
         $totalSpareParts = SpareParts::count();
         $totalProducts = Product::count();
-        $totalOrderOnline = OrderOnline::whereMonth('tanggal', now()->month)
-                                        ->whereYear('tanggal', now()->year)
+        $totalOrderOnline = OrderOnline::where('id_bengkel', $id_bengkel)
+                                        ->whereBetween('tanggal', [$startDate, $endDate])
                                         ->count();
 
-        // Mengambil data pesanan dengan relasi OrderItemOnline
-        $orders = OrderOnline::with('orderItems.produk', 'orderItems.sparepart', 'pelanggan', 'bengkel') // Memuat relasi produk dan sparepart
-            ->where('id_bengkel', $id_bengkel)
-            ->get();
+        $orders = OrderOnline::with('orderItems.produk', 'orderItems.sparepart', 'pelanggan', 'bengkel')
+                                ->where('id_bengkel', $id_bengkel)
+                                ->orderBy('tanggal', 'desc')
+                                ->take(6)
+                                ->get();
 
-        return view('pos.index', compact('bengkel', 'totalServices', 'totalSpareParts', 'totalProducts', 'totalOrderOnline', 'orders'));
+        $salesData = OrderItemOnline::with(['produk', 'sparepart'])
+                                    ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDate, $endDate) {
+                                        $query->where('id_bengkel', $id_bengkel)
+                                            ->whereBetween('tanggal', [$startDate, $endDate]);
+                                    })
+                                    ->get();
+
+        $topProducts = $salesData->whereNotNull('id_produk')
+            ->groupBy('id_produk')
+            ->map(function ($item) {
+                return $item->sum('qty');
+            })
+            ->sortDesc()
+            ->take(5);
+
+        $topSpareParts = $salesData->whereNotNull('id_spare_part')
+            ->groupBy('id_spare_part')
+            ->map(function ($item) {
+                return $item->sum('qty');
+            })
+            ->sortDesc()
+            ->take(5);
+        return view('pos.index', compact('bengkel', 'totalServices', 'totalSpareParts', 'totalProducts', 'totalOrderOnline',  'orders', 'topProducts', 'topSpareParts', 'periode'));
     }
 }

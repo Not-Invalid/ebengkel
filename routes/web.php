@@ -92,7 +92,7 @@ Route::middleware(['auth:pelanggan', 'lang'])->group(function () {
     Route::get('/payment/{order_id}/{id}', [PaymentController::class, 'index'])->name('payment');
     Route::post('/payment/{order_id}/{id}/store', [PaymentController::class, 'store'])->name('payment.store');
 
-    Route::get('/get-shipping-options', [CartController::class, 'getShippingOptions'])->name('getShippingOptions');
+    Route::get('/shipping-options', [PaymentController::class, 'getShippingOptions']);
     Route::get('/order', [OrderController::class, 'index'])->name('order');
 });
 

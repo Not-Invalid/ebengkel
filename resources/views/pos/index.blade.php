@@ -74,7 +74,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col">
             <div class="card">
                 <div class="card-header">
                     <h4>Online Orders</h4>
@@ -112,7 +112,7 @@
                                                 @endphp
 
                                                 @if (array_key_exists($order->status_order, $statusNames))
-                                                    <div class="badge
+                                                    <div class="badge fixed-width
                                                         @if ($order->status_order == 'PENDING') badge-secondary
                                                         @elseif ($order->status_order == 'Waiting_Confirmation') badge-warning
                                                         @elseif ($order->status_order == 'DIKEMAS') badge-primary
@@ -135,7 +135,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="5">No orders found.</td>
+                                        <td colspan="7" class="text-center">No orders found.</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -144,25 +144,113 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
             <div class="card gradient-bottom">
                 <div class="card-header">
                     <h4>Top 5 Products</h4>
                     <div class="card-header-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">Month</a>
+                        <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">{{ ucfirst($periode) }}</a>
                         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <li class="dropdown-title">Select Period</li>
-                            <li><a href="#" class="dropdown-item">Today</a></li>
-                            <li><a href="#" class="dropdown-item">Week</a></li>
-                            <li><a href="#" class="dropdown-item active">Month</a></li>
-                            <li><a href="#" class="dropdown-item">This Year</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'day']) }}" class="dropdown-item">Today</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'week']) }}" class="dropdown-item">Week</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'month']) }}" class="dropdown-item active">Month</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'year']) }}" class="dropdown-item">This Year</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="card-body" id="top-5-scroll">
-                    <!-- Top Products List -->
+                <div class="card-body" id="top-5-scroll" tabindex="2" style="height: 315px; overflow: hidden; outline: none;">
+                    <ul class="list-unstyled list-unstyled-border">
+                        @php
+                            $maxQty = $topProducts->max();
+                        @endphp
+                        @foreach ($topProducts as $productId => $qty)
+                            @php
+                                $product = \App\Models\Product::find($productId);
+                                // Calculate width as a percentage of the maximum quantity
+                                $width = $maxQty > 0 ? round(($qty / $maxQty) * 100) : 0;
+                            @endphp
+                            @if ($product)
+                                <li class="media d-flex justify-content-center align-items-center">
+                                    <img class="mr-3 rounded bg-info" width="55" src="{{ asset('assets/images/bg/car.png') }}" alt="product">
+                                    <div class="media-body">
+                                        <div class="float-right"><div class="font-weight-600 text-muted text-small">{{ $qty }} Sales</div></div>
+                                        <div class="media-title">{{ $product->nama_produk ?? 'Unknown Product' }}</div>
+                                        <div class="mt-1">
+                                            <div class="budget-price">
+                                                <div class="budget-price-square bg-primary" data-width="{{ $width }}%" style="width: {{ $width }}%;"></div>
+                                                <div class="budget-price-label">{{ $qty }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="card-footer pt-3 d-flex justify-content-center">
+                    <div class="budget-price justify-content-center">
+                        <div class="budget-price-square bg-primary" data-width="20" style="width: 20px;"></div>
+                        <div class="budget-price-label">Online</div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-6">
+            <div class="card gradient-bottom">
+                <div class="card-header">
+                    <h4>Top 5 Spareparts</h4>
+                    <div class="card-header-action dropdown">
+                        <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">{{ ucfirst($periode) }}</a>
+                        <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <li class="dropdown-title">Select Period</li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'day']) }}" class="dropdown-item">Today</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'week']) }}" class="dropdown-item">Week</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'month']) }}" class="dropdown-item active">Month</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'year']) }}" class="dropdown-item">This Year</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body" id="top-5-scroll" tabindex="2" style="height: 315px; overflow: hidden; outline: none;">
+                    <ul class="list-unstyled list-unstyled-border">
+                        @php
+                            $maxQtySpareParts = $topSpareParts->max();
+                        @endphp
+                        @foreach ($topSpareParts as $sparePartId => $qty)
+                            @php
+                                $sparePart = \App\Models\SpareParts::find($sparePartId);
+                                $width = $maxQtySpareParts > 0 ? round(($qty / $maxQtySpareParts) * 100) : 0;
+                            @endphp
+                            @if ($sparePart)
+                                <li class="media d-flex justify-content-center align-items-center">
+                                    <img class="mr-3 rounded bg-info" width="55" src="{{ asset('assets/images/bg/car.png') }}" alt="sparepart">
+                                    <div class="media-body">
+                                        <div class="float-right"><div class="font-weight-600 text-muted text-small">{{ $qty }} Sales</div></div>
+                                        <div class="media-title">{{ $sparePart->nama_spare_part ?? 'Unknown Spare Part' }}</div>
+                                        <div class="mt-1">
+                                            <div class="budget-price">
+                                                <div class="budget-price-square bg-primary" data-width="{{ $width }}%" style="width: {{ $width }}%;"></div>
+                                                <div class="budget-price-label">{{ $qty }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="card-footer pt-3 d-flex justify-content-center">
+                    <div class="budget-price justify-content-center">
+                        <div class="budget-price-square bg-primary" data-width="20" style="width: 20px;"></div>
+                        <div class="budget-price-label">Online</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection

@@ -58,7 +58,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('cart.index') }}">
                                         <i class='bx bx-cart'></i>
-                                        <span class="badge badge-cart badge-pill" id="countCart">
+                                        <span class="badge badge-custom badge-pill" id="countCart">
                                             0
                                         </span>
                                     </a>
