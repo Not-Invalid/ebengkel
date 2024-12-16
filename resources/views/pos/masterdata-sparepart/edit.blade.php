@@ -73,6 +73,18 @@
           <input type="text" class="form-control" name="nama_spare_part"
             value="{{ old('nama_spare_part', $sparepart->nama_spare_part) }}" required>
         </div>
+        <!-- Product Category -->
+        <div class="form-group">
+          <label for="id_kategori_spare_part">Sparepart Type <span class="text-danger">*</span></label>
+          <select name="id_kategori_spare_part" class="form-control" required>
+            <option value="" disabled>Select Type</option>
+            @foreach ($categories as $kategori)
+              <option value="{{ $kategori->id_kategori_spare_part }}" @if ($sparepart->id_kategori_spare_part == $kategori->id_kategori_spare_part) selected @endif>
+                {{ $kategori->nama_kategori_spare_part }}
+              </option>
+            @endforeach
+          </select>
+        </div>
 
         <!-- Product Quality -->
         <div class="form-group">
@@ -109,7 +121,8 @@
         <!-- sparepart Photos -->
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_spare_part_1" class="upload-label">Sparepart Photo 1</label>
+            <label for="foto_spare_part_1" class="upload-label">Sparepart Photo 1 <span
+                class="text-danger">*</span></label>
             <input type="file" class="file-input" name="foto_spare_part_1" id="foto_spare_part_1"
               onchange="previewImage('foto_spare_part_1', 'preview_1')">
 
@@ -124,7 +137,8 @@
         <!-- Sparepart Photo 2 -->
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_spare_part_2" class="upload-label">Sparepart Photo 2</label>
+            <label for="foto_spare_part_2" class="upload-label">Sparepart Photo 2 <span
+                class="text-danger">*</span></label>
             <input type="file" class="file-input" name="foto_spare_part_2" id="foto_spare_part_2"
               onchange="previewImage('foto_spare_part_2', 'preview_2')">
 
@@ -140,7 +154,8 @@
         <!-- Sparepart Photo 3 -->
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_spare_part_3" class="upload-label">Sparepart Photo 3</label>
+            <label for="foto_spare_part_3" class="upload-label">Sparepart Photo 3 <span
+                class="text-danger">*</span></label>
             <input type="file" class="file-input" name="foto_spare_part_3" id="foto_spare_part_3"
               onchange="previewImage('foto_spare_part_3', 'preview_3')">
 
