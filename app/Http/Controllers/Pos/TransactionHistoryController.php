@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Pos;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Bengkel;
-use App\Models\PesananService;
 use App\Models\Order;
 use App\Models\OrderOnline;
+use App\Models\Pegawai;
+use App\Models\PesananService;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\WithStyles;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class TransactionHistoryController extends Controller
 {
@@ -27,34 +27,50 @@ class TransactionHistoryController extends Controller
         if (!$bengkel) {
             return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
+
+        // Get the list of orders (Pesanan, PesananService, and OrderOnline)
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
             ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
-            ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
+            ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan', 'id_pegawai']); // Ensure id_pegawai is fetched
+
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'total_harga', 'atas_nama']);
+
         $transactions = [];
+
+        // Adding regular orders (Pesanan)
         foreach ($pesanan as $order) {
             $transactions[] = [
                 'customer_name' => $order->nama_customer,
                 'transaction_type' => $order->tipe,
                 'payment_method' => $order->jenis_pembayaran,
                 'total_price' => $order->total_harga,
-                'cashier' => $order->input_by,
+                'cashier' => $order->input_by, // Cashier info is stored as 'input_by' here
                 'action' => 'View',
             ];
         }
+
+        // Get all employees (pegawai) for the given bengkel to reduce queries in loop
+        $pegawaiData = Pegawai::where('id_bengkel', $id_bengkel)->get()->keyBy('id_pegawai');
+
+        // Adding PesananService orders
         foreach ($pesanan_service as $service) {
+            // Retrieve cashier (if stored, else assign 'Unknown')
+            $cashier = $pegawaiData->get($service->id_pegawai); // Get the employee using the id_pegawai
             $transactions[] = [
                 'customer_name' => $service->nama_pemesan,
                 'transaction_type' => 'Service',
-                'payment_method' => $service->status,
+                'payment_method' => 'Cash', // Fixed value for service orders
                 'total_price' => $service->total_pesanan,
-                'cashier' => $service->id_bengkel,
+                'cashier' => $cashier ? $cashier->nama_pegawai : 'Online Order', // If the cashier is not found, default to 'Unknown Cashier'
                 'action' => 'View',
             ];
         }
+
+        // Adding Online Orders
         foreach ($order_online as $online_order) {
             $transactions[] = [
                 'customer_name' => $online_order->atas_nama,
@@ -65,8 +81,10 @@ class TransactionHistoryController extends Controller
                 'action' => 'View',
             ];
         }
+
         return view('pos.reports.transaction-history.index', compact('bengkel', 'transactions', 'id_bengkel'));
     }
+
     public function downloadPdf($id_bengkel)
     {
         $pesanan = Order::where('id_order', $id_bengkel)
@@ -110,7 +128,7 @@ class TransactionHistoryController extends Controller
         $data = [
             'title' => 'Checkout Transaction',
             'date' => date('d/m/Y'),
-            'transaction' => $transactions
+            'transaction' => $transactions,
         ];
         $pdf = Pdf::loadView('pos.download.Transaction-history-pdf', $data);
         return $pdf->download('Transaction-history-pdf.pdf');
@@ -152,7 +170,8 @@ class TransactionHistoryController extends Controller
                 'cashier' => $online_order->id_bengkel,
             ];
         }
-        return Excel::download(new class($transactions) implements FromCollection, WithHeadings, WithTitle, WithStyles, WithColumnWidths {
+        return Excel::download(new class($transactions) implements FromCollection, WithHeadings, WithTitle, WithStyles, WithColumnWidths
+        {
             protected $transactions;
             public function __construct($transactions)
             {
