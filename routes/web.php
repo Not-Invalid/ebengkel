@@ -351,12 +351,12 @@ Route::middleware(['lang'])->group(function () {
         Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
         Route::get('tranksaksi/pos/show-checkout/{id_bengkel}', [PosTransaksiController::class, 'showCheckout'])->name('pos.tranksaksi_pos.showcheckoutpos');
         Route::post('tranksaksi/pos/store-checkout/{id_bengkel}', [PosTransaksiController::class, 'storeCheckout'])->name('pos.tranksaksi_pos.storecheckout');
-        Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
-        Route::get('tranksaksi/create-pesanan/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
-        Route::post('tranksaksi/pos-pesanan/store/{id_bengkel}', [PosPesananController::class, 'store'])->name('pos.tranksaksi_pesanan.store');
-        Route::get('tranksaksi/edit-pesanan/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.tranksaksi_pesanan.edit');
-        Route::put('tranksaksi/update-pesanan/{id_bengkel}', [PosPesananController::class, 'update'])->name('pos.tranksaksi_pesanan.update');
-        Route::delete('tranksaksi/delete-pesanan/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.tranksaksi_pesanan.delete');
+        Route::get('transaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.transaksi_pesanan.index');
+        Route::get('transaksi/create-pesanan/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.transaksi_pesanan.create');
+        Route::post('transaksi/pos-pesanan/store/{id_bengkel}', [PosPesananController::class, 'store'])->name('pos.transaksi_pesanan.store');
+        Route::get('transaksi/edit-pesanan/{id_bengkel}', [PosPesananController::class, 'edit'])->name('pos.transaksi_pesanan.edit');
+        Route::put('transaksi/update-pesanan/{id_bengkel}', [PosPesananController::class, 'update'])->name('pos.transaksi_pesanan.update');
+        Route::delete('transaksi/delete-pesanan/{id_bengkel}', [PosPesananController::class, 'delete'])->name('pos.transaksi_pesanan.delete');
 
         Route::get('order-online/{id_bengkel}', [PosOrderOnlineController::class, 'index'])->name('pos.order-online');
         Route::get('/order-online/{id_bengkel}/edit/{order_id}', [PosOrderOnlineController::class, 'edit'])->name('pos.order-online.edit');
