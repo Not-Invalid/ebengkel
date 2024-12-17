@@ -45,4 +45,8 @@ class SettingsController extends Controller
         return redirect()->route('login-admin')->with('status', 'Password successfully changed! Please login again.');
     }
 
+    public function language()
+    {
+        return view('superadmin.settings.language-setting.index');
+    }
 }
