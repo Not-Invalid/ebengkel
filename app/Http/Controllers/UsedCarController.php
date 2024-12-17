@@ -34,7 +34,7 @@ class UsedCarController extends Controller
             ->first();
 
         if (!$mobilList) {
-            return redirect()->route('used-car')->with('status_error', 'Workshop not found.');
+            return redirect()->route('used-car')->with('status_error', __('messages.profile.usedCar.toast.detail_usedcar'));
         }
         // Format nomor telepon pelanggan
         if ($mobilList->pelanggan) {
@@ -47,7 +47,7 @@ class UsedCarController extends Controller
     public function showUsedCar()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in to add an usedcar');
+            return redirect()->route('home')->with('status_error', __('messages.profile.usedCar.toast.login_usedcar'));
         }
         $mobilList = UsedCar::with('pelanggan')
             ->where('id_pelanggan', Session::get('id_pelanggan'))
@@ -60,7 +60,7 @@ class UsedCarController extends Controller
     public function create()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in to add an usedcar.');
+            return redirect()->route('home')->with('status_error', __('messages.profile.usedCar.toast.login_usedcar'));
         }
 
         $carMerks = MerkMobil::all();
@@ -161,7 +161,7 @@ class UsedCarController extends Controller
         ]);
         $fotoMobil->save();
 
-        return redirect()->route('profile-used-car')->with('status', 'Used car successfully added!');
+        return redirect()->route('profile-used-car')->with('status', __('messages.profile.usedCar.toast.create'));
     }
 
     public function edit($id)
@@ -174,7 +174,7 @@ class UsedCarController extends Controller
             ->first();
 
         if (!$mobil) {
-            return redirect()->route('profile-used-car')->with('status_error', 'Used car not found.');
+            return redirect()->route('profile-used-car')->with('status_error', __('messages.profile.usedCar.toast.usedcar_not_found'));
         }
 
         $carMerks = MerkMobil::all();
@@ -264,7 +264,7 @@ class UsedCarController extends Controller
             ]);
         }
 
-        return redirect()->route('profile-used-car')->with('status', 'Mobil berhasil diperbarui!');
+        return redirect()->route('profile-used-car')->with('status', __('messages.profile.usedCar.toast.update'));
     }
 
     public function delete($id)
@@ -272,11 +272,11 @@ class UsedCarController extends Controller
         $mobil = UsedCar::find($id);
 
         if (!$mobil) {
-            return redirect()->route('profile-used-car')->with('error', 'Mobil tidak ditemukan!');
+            return redirect()->route('profile-used-car')->with('error', __('messages.profile.usedCar.toast.usedcar_not_found'));
         }
 
         if ($mobil->delete_mobil === 'Y') {
-            return redirect()->route('profile-used-car')->with('error', 'Mobil sudah dihapus sebelumnya!');
+            return redirect()->route('profile-used-car')->with('error', __('messages.profile.usedCar.toast.message_delete_car'));
         }
 
         $mobil->delete_mobil = 'Y';
@@ -294,7 +294,7 @@ class UsedCarController extends Controller
 
         $this->deleteFolderIfEmpty(public_path('assets/images/Foto_mobil'));
 
-        return redirect()->route('profile-used-car')->with('status', 'Mobil berhasil dihapus!');
+        return redirect()->route('profile-used-car')->with('status', __('messages.profile.usedCar.toast.delete'));
     }
 
     private function deleteFolderIfEmpty($folderPath)
