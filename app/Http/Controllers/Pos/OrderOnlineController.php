@@ -69,10 +69,11 @@ class OrderOnlineController extends Controller
 
     public function update(Request $request, $id_bengkel, $order_id)
     {
-
         $request->validate([
             'status_order' => 'required|string',
             'status_invoice' => 'required|string',
+            // Validasi nomor_resi hanya jika status ordernya DIKIRIM
+            'nomor_resi' => 'required_if:status_order,DIKIRIM|string|min:3|max:50',  // Validasi nomor_resi untuk DIKIRIM
         ]);
 
         $order = OrderOnline::where('order_id', $order_id)
@@ -83,14 +84,24 @@ class OrderOnlineController extends Controller
         $invoice = Invoice::where('id_order', $order->order_id)->firstOrFail();
 
         $isStatusChangedToDikemas = $request->status_order === 'DIKEMAS' && $order->status_order !== 'DIKEMAS';
+        $isStatusChangedToDikirim = $request->status_order === 'DIKIRIM' && $order->status_order !== 'DIKIRIM';  // Check if the status is being changed to DIKIRIM
 
         try {
 
             $order->status_order = $request->status_order;
+
+
+            if ($isStatusChangedToDikirim) {
+                $order->tanggal_kirim = now();
+                $order->no_resi = $request->nomor_resi;
+            }
+
             $order->save();
+
 
             $invoice->status_invoice = $request->status_invoice;
             $invoice->save();
+
 
             if ($isStatusChangedToDikemas) {
                 foreach ($order->orderItems as $item) {
@@ -130,5 +141,6 @@ class OrderOnlineController extends Controller
                 ->with('error', $e->getMessage());
         }
     }
+
 
 }
