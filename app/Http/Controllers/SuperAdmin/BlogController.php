@@ -66,7 +66,7 @@ class BlogController extends Controller
         $blog->tanggal_post = now();
         $blog->save();
 
-        return redirect()->route('blog-admin')->with('status', 'Blog has been successfully created.');
+        return redirect()->route('blog-admin')->with('status',  __('messages-superadmin.toast_superadmin.toast_blog.create'));
     }
 
     public function edit($id)
@@ -128,7 +128,7 @@ class BlogController extends Controller
         $blog->foto_cover = $coverPath;
         $blog->save();
 
-        return redirect()->route('blog-admin')->with('status', 'Blog has been successfully updated.');
+        return redirect()->route('blog-admin')->with('status',  __('messages-superadmin.toast_superadmin.toast_blog.update'));
     }
 
     public function delete($id)
@@ -141,8 +141,6 @@ class BlogController extends Controller
 
         $blog->delete();
 
-        return redirect()->route('blog-admin')->with('status', 'Blog has been successfully deleted.');
+        return redirect()->route('blog-admin')->with('status',  __('messages-superadmin.toast_superadmin.toast_blog.delete'));
     }
-
-
 }

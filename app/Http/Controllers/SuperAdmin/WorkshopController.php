@@ -22,7 +22,7 @@ class WorkshopController extends Controller
         $bengkel = Bengkel::find($id);
 
         if (!$bengkel) {
-            return redirect()->back()->with('error', 'Bengkel not found.');
+            return redirect()->back()->with('error', __('messages-superadmin.toast_superadmin.toast_workshop.error'));
         }
 
         $products = Product::where('id_bengkel', $id)->get();

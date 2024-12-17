@@ -32,7 +32,7 @@ class SupportCenterController extends Controller
         $category->icon = $request->icon;
         $category->save();
 
-        return redirect()->route('support-center-category')->with('status', 'Support Category added successfully!');
+        return redirect()->route('support-center-category')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.create'));
     }
 
     public function editCategory($id)
@@ -56,7 +56,7 @@ class SupportCenterController extends Controller
             'icon' => $validated['icon'],
         ]);
 
-        return redirect()->route('support-center-category', $id)->with('status', ' Support Category updated successfully!');
+        return redirect()->route('support-center-category', $id)->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.update'));
     }
 
     public function deleteCategory($id)
@@ -64,7 +64,7 @@ class SupportCenterController extends Controller
         $category = SupportCategory::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('support-center-category')->with('status', 'Support Category deleted successfully!');
+        return redirect()->route('support-center-category')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.delete'));
     }
 
     public function showInfo()
@@ -95,7 +95,7 @@ class SupportCenterController extends Controller
             'answer' => $request->input('answer'),
         ]);
 
-        return redirect()->route('support-center-info')->with('status', 'Support information added successfully.');
+        return redirect()->route('support-center-info')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.i_create'));
     }
 
     public function editInfo($id)
@@ -123,7 +123,7 @@ class SupportCenterController extends Controller
             'answer' => $request->answer,
         ]);
 
-        return redirect()->route('support-center-info')->with('status', 'Support information  updated successfully.');
+        return redirect()->route('support-center-info')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.i_update'));
     }
 
     public function deleteInfo($id)
@@ -131,6 +131,6 @@ class SupportCenterController extends Controller
         $supportInfo = SupportInfo::findOrFail($id);
         $supportInfo->delete();
 
-        return redirect()->route('support-center-info')->with('status', 'Support information  deleted successfully.');
+        return redirect()->route('support-center-info')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.i_delete'));
     }
 }

@@ -65,7 +65,7 @@ class EventController extends Controller
 
         Event::create($data);
 
-        return redirect()->route('event-data')->with('status', 'Event has been successfully created.');
+        return redirect()->route('event-data')->with('status',  __('messages-superadmin.toast_superadmin.toast_event_controller.create'));
     }
     public function edit($id)
     {
@@ -133,9 +133,9 @@ class EventController extends Controller
 
             $event->save();
 
-            return redirect()->route('event-data')->with('status', 'Event has been successfully updated.');
+            return redirect()->route('event-data')->with('status',  __('messages-superadmin.toast_superadmin.toast_event_controller.update'));
         } catch (\Exception $e) {
-            return redirect()->route('event-data')->with('status_error', 'An error occurred while updating the event.');
+            return redirect()->route('event-data')->with('status_error', __('messages-superadmin.toast_superadmin.toast_event_controller.error'));
         }
     }
 
@@ -149,7 +149,7 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('event-data')->with('status', 'Event has been successfully deleted.');
+        return redirect()->route('event-data')->with('status', __('messages-superadmin.toast_superadmin.toast_event_controller.delete'));
     }
 
     public function showPesertaEvent($eventId)
