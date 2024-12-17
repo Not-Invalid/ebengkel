@@ -21,9 +21,9 @@ class CreateTbBengkelTable extends Migration
             $table->text('foto_bengkel')->nullable();
             $table->text('foto_cover_bengkel')->nullable();
             $table->text('alamat_bengkel')->nullable();
-            $table->string('kota')->nullable();
-            $table->string('provinsi')->nullable();
-            $table->string('kecamatan')->nullable();
+            $table->integer('provinsi_id')->nullable();
+            $table->integer('kota_id')->nullable();
+            $table->integer('kecamatan_id')->nullable();
             $table->string('whatsapp', 15)->nullable();
             $table->string('tiktok')->nullable();
             $table->string('instagram')->nullable();
@@ -44,6 +44,10 @@ class CreateTbBengkelTable extends Migration
             $table->string('POS', 1)->default('N');
             $table->dateTime('create_bengkel')->nullable();
             $table->string('delete_bengkel', 1)->default('N');
+
+            $table->foreign('provinsi_id')->references('province_id')->on('m_provinsi')->onDelete('cascade');
+            $table->foreign('kota_id')->references('city_id')->on('m_kota')->onDelete('cascade');
+            $table->foreign('kecamatan_id')->references('subdistrict_id')->on('m_kecamatan')->onDelete('cascade');
         });
     }
 
