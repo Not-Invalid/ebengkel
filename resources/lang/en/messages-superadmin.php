@@ -1,59 +1,62 @@
 <?php
 
 return [
-    'controller_pos' => [
-        'event_controller' => [
+    'toast_superadmin' => [
+        'toast_event_controller' => [
             'create' => 'Event has been successfully created.',
             'update' => 'Event has been successfully updated.',
-            'error' => 'There was an error while updating the event.',
-            'delete' => 'Event has been successfully deleted.',
+            'error' => 'An error occurred while updating the event..',
+            'delete' => 'Event has been successfully deleted.'
         ],
-        'blog_category' => [
+        'toast_blog_category' => [
             'create' => 'Blog Category has been successfully created.',
             'update' => 'Blog Category has been successfully updated.',
             'delete' => 'Blog Category has been successfully deleted.'
         ],
-        'car_brand' => [
+        'toast_car_brand' => [
             'create' => 'Car Brand has been successfully created.',
             'update' => 'Car Brand has been successfully updated.',
             'delete' => 'Car Brand has been successfully deleted.'
         ],
-        'product_sparepart' => [
+        'toast_product_sparepart' => [
             'create' => 'Product & Sparepart Category has been successfully created.',
             'update' => 'Product & Sparepart Category has been successfully updated.',
             'delete' => 'Product & Sparepart Category has been successfully deleted.'
         ],
-        'profile' => [
+        'toast_profile' => [
             'update' => 'Profile has been successfully updated.',
         ],
-        'setting' => [
+        'toast_workshop' => [
+            'error' => 'Bengkel Not found',
+        ],
+        'toast_setting' => [
             'error_user' => 'User not found',
             'error_pw' => 'Current password is incorrect.',
-            'succes_pw' => 'Password changed successfully! Please log in again.',
+            'succes_pw' => 'Password changed successfully! Please log in again.'
         ],
-        'staff' => [
+        'toast_staff' => [
             'create' => 'Staff has been successfully created.',
             'update' => 'Staff has been successfully updated.',
-            'delete' => 'Staff has been successfully deleted.',
+            'delete' => 'Staff has been successfully deleted.'
         ],
-        'blog' => [
+        'toast_blog' => [
             'create' => 'Blog has been successfully created.',
             'update' => 'Blog has been successfully updated.',
-            'delete' => 'Blog has been successfully deleted.',
+            'delete' => 'Blog has been successfully deleted.'
         ],
-        'auth' => [
-            'login' => 'The provided credentials do not match our records.',
+        'toast_auth' => [
+            'credentials' => 'The provided credentials do not match our records.',
             'login2' => 'Login successful!',
             'erro_login' => 'Login failed. Please check your credentials.',
-            'logout' => 'Logout successful!',
+            'logout' => 'Logout successful!'
         ],
-        'support_center' => [
+        'toast_support_center' => [
             'create' => 'Support Category successfully added.',
             'update' => 'Support Category successfully updated.',
             'delete' => 'Support Category successfully deleted.',
-            'c_create' => 'Support Information successfully added.',
-            'c_update' => 'Support Information successfully updated.',
-            'c_delete' => 'Support Information successfully deleted.',
+            'i_create' => 'Support Information successfully added.',
+            'i_update' => 'Support Information successfully updated.',
+            'i_delete' => 'Support Information successfully deleted.'
         ],
     ],
 
@@ -121,7 +124,7 @@ return [
             'user' => 'user',
             'heart' => 'heart',
             'option' => 'View Icon options on the',
-            'aws_web' => 'Font Awesome Website',
+            'aws_web' => 'Font Awesome Website'
         ],
 
         'info_event' => [
@@ -150,7 +153,7 @@ return [
             'add_guest' => 'Add Guest Star',
             'add_participant' => 'Event Participant List',
             'payment_status' => 'Payment Status',
-            'phone_number' => 'Phone Number',
+            'phone_number' => 'Phone Number'
         ],
 
         'info_profile' => [
@@ -159,7 +162,7 @@ return [
             'name' => 'name',
             'profil_phone' => 'Phone',
             'profil_photo' => 'Profile Photo',
-            'profil_edit' => 'Edit Profile',
+            'profil_edit' => 'Edit Profile'
         ],
 
         'info_category' => [
@@ -167,7 +170,7 @@ return [
             'add_category' => 'Add New Category',
             'edit_category' => 'Edit Category',
             'category_name' => 'Category Name',
-            'action' => 'Acion',
+            'action' => 'Acion'
         ],
 
         'info_merk' => [
@@ -175,7 +178,7 @@ return [
             'add_merk' => 'Add New Merk',
             'edit_merk' => 'Edit Merk',
             'name_merk' => 'Name Merk',
-            'action' => 'action',
+            'action' => 'action'
         ],
 
         'info_workshop' => [
@@ -194,7 +197,7 @@ return [
             'sparepart' => 'SparePart',
             'service' => 'Service',
             'sold_product' => 'Product Sold',
-            'sold_service' => 'Service Sold',
+            'sold_service' => 'Service Sold'
         ],
 
         'info_data_pelanggan' => [
@@ -204,7 +207,7 @@ return [
             'email_pelanggan' => 'Customer Email',
             'role' => 'Role',
             'delete_pelanggan' => 'Delete Customer',
-            'action' => 'Action',
+            'action' => 'Action'
         ],
 
         'staff_admin' => [
@@ -218,7 +221,7 @@ return [
             'user' => 'User',
             'password' => 'Password',
             'confirm_password' => 'Confirm Password',
-            'edit_admin' => 'Edit Admin Staff',
+            'edit_admin' => 'Edit Admin Staff'
         ],
 
         'password' => [
@@ -246,11 +249,11 @@ return [
             'september' => 'September',
             'october' => 'October',
             'november' => 'November',
-            'december' => 'December',
+            'december' => 'December'
         ],
         'button' => [
             'cancel' => 'Cancel',
-            'save' => 'Save',
+            'save' => 'Save'
         ],
         'not_found' => 'Data not Found.'
     ],

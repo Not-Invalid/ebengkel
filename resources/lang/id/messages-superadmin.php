@@ -1,60 +1,64 @@
 <?php
 
 return [
-    'controller_pos' => [
-        'event_controller' => [
+    'toast_superadmin' => [
+        'toast_event_controller' => [
             'create' => 'Acara telah berhasil dibuat.',
             'update' => 'Acara telah berhasil diperbarui.',
             'error' => 'Terjadi kesalahan saat memperbarui acara.',
-            'delete' => 'Acara telah berhasil dihapus.',
+            'delete' => 'Acara telah berhasil dihapus.'
         ],
-        'blog_category' => [
+        'toast_blog_category' => [
             'create' => 'Kategori Blog telah berhasil dibuat.',
             'update' => 'Kategori Blog telah berhasil diperbarui.',
             'delete' => 'Kategori Blog telah berhasil dihapus.'
         ],
-        'car_brand' => [
+        'toast_car_brand' => [
             'create' => 'Merek Mobil telah berhasil dibuat.',
             'update' => 'Merek Mobil telah berhasil diperbarui.',
             'delete' => 'Merek Mobil telah berhasil dihapus.'
         ],
-        'product_sparepart' => [
-            'create' => 'Kategori Produk & Sparepart telah berhasil dibuat.',
-            'update' => 'Kategori Produk & Sparepart telah berhasil diperbarui.',
-            'delete' => 'Kategori Produk & Sparepart telah berhasil dihapus.'
+
+        'toast_product_sparepart' => [
+            'create' => 'Kategori Produk & Suku Cadang telah berhasil dibuat.',
+            'update' => 'Kategori Produk & Suku Cadang telah berhasil diperbarui.',
+            'delete' => 'Kategori Produk & Suku Cadang telah berhasil dihapus.'
         ],
-        'profile' => [
-            'update' => 'Profil telah berhasil diperbarui.',
+        'toast_profile' => [
+            'update' => 'Profil telah berhasil diperbarui.'
         ],
-        'setting' => [
+        'toast_workshop' => [
+            'error' => 'Bengkel Tidak ditemukan',
+        ],
+        'toast_setting' => [
             'error_user' => 'Pengguna tidak ditemukan',
             'error_pw' => 'Kata sandi saat ini salah.',
-            'succes_pw' => 'Kata sandi berhasil diubah! Silakan masuk lagi.',
+            'succes_pw' => 'Kata sandi berhasil diubah! Silakan masuk lagi.'
         ],
-        'staff' => [
-            'create' => 'Staf telah berhasil dibuat.',
-            'update' => 'Staf telah berhasil diperbarui.',
-            'delete' => 'Staf telah berhasil dihapus.',
+        'toast_staff' => [
+            'create' => 'Staf berhasil dibuat.',
+            'update' => 'Staf berhasil diperbarui.',
+            'delete' => 'Staf berhasil dihapus.'
         ],
-        'blog' => [
-            'create' => 'Blog telah berhasil dibuat.',
-            'update' => 'Blog telah berhasil diperbarui.',
-            'delete' => 'Blog telah berhasil dihapus.',
+        'toast_blog' => [
+            'create' => 'Blog berhasil dibuat.',
+            'update' => 'Blog berhasil diperbarui.',
+            'delete' => 'Blog berhasil dihapus.'
         ],
-        'auth' => [
-            'login' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
+        'toast_auth' => [
+            'credentials' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
             'login2' => 'Login berhasil!',
             'erro_login' => 'Login gagal. Silakan periksa kredensial Anda.',
-            'logout' => 'Keluar berhasil!',
+            'logout' => 'Keluar berhasil!'
         ],
 
-        'support_center' => [
+        'toast_support_center' => [
             'create' => 'Kategori Dukungan berhasil ditambahkan.',
             'update' => 'Kategori Dukungan berhasil diperbarui.',
             'delete' => 'Kategori Dukungan berhasil dihapus.',
-            'c_create' => 'Informasi Dukungan berhasil ditambahkan.',
-            'c_update' => 'Informasi Dukungan berhasil diperbarui.',
-            'c_delete' => 'Informasi Dukungan berhasil dihapus.',
+            'i_create' => 'Informasi Dukungan berhasil ditambahkan.',
+            'i_update' => 'Informasi Dukungan berhasil diperbarui.',
+            'i_delete' => 'Informasi Dukungan berhasil dihapus.'
         ],
     ],
 
@@ -123,7 +127,7 @@ return [
             'user' => 'pengguna',
             'heart' => 'hati',
             'option' => 'Lihat opsi Ikon di',
-            'aws_web' => 'Website Fontt Awesome',
+            'aws_web' => 'Website Fontt Awesome'
         ],
 
         'info_event' => [
@@ -152,7 +156,7 @@ return [
             'add_guest' => 'Tambah Bintang Tamu',
             'add_participant' => 'Daftar Peserta Event',
             'payment_status' => 'Status Pembayaran',
-            'phone_number' => 'No Telepon',
+            'phone_number' => 'No Telepon'
         ],
 
         'info_profile' => [
@@ -161,7 +165,7 @@ return [
             'name' => 'nama',
             'profil_phone' => 'Telepon',
             'profil_photo' => 'Foto Profil',
-            'profil_edit' => 'Ubah Profil',
+            'profil_edit' => 'Ubah Profil'
         ],
 
         'info_category' => [
@@ -169,7 +173,7 @@ return [
             'add_category' => 'Tambah Kategori Baru',
             'edit_category' => 'Edit Kategori',
             'category_name' => 'Nama Kategori',
-            'action' => 'Aksi',
+            'action' => 'Aksi'
         ],
 
         'info_merk' => [
@@ -177,7 +181,7 @@ return [
             'add_merk' => 'Tambah Brand Baru',
             'edit_merk' => 'Edit Brand',
             'name_merk' => 'Nama Brand',
-            'action' => 'Aksi',
+            'action' => 'Aksi'
         ],
 
         'info_workshop' => [
@@ -196,7 +200,7 @@ return [
             'sparepart' => 'Sparepart',
             'service' => 'Service',
             'sold_product' => 'Produk Terjual',
-            'sold_service' => 'Service Terjual',
+            'sold_service' => 'Service Terjual'
         ],
 
         'info_data_pelanggan' => [
@@ -206,7 +210,7 @@ return [
             'email_pelanggan' => 'Email Pelanggan',
             'peran' => 'Peran',
             'delete_pelanggan' => 'Hapus Pelanggan',
-            'aksi' => 'Aksi',
+            'aksi' => 'Aksi'
         ],
 
         'staff_admin' => [
@@ -220,7 +224,7 @@ return [
             'user' => 'Pengguna',
             'password' => 'Kata Sandi',
             'confirm_password' => 'Konfirmasi Kata Sandi',
-            'edit_admin' => 'Edit Staf Admin',
+            'edit_admin' => 'Edit Staf Admin'
         ],
 
         'password' => [
@@ -232,7 +236,7 @@ return [
             'placeholder' => [
                 'current' => 'Masukkan kata sandi Anda saat ini',
                 'new' => 'Masukkan kata sandi baru',
-                'confirm' => 'Konfirmasi kata sandi baru',
+                'confirm' => 'Konfirmasi kata sandi baru'
             ],
         ],
 
@@ -248,7 +252,7 @@ return [
             'september' => 'September',
             'october' => 'Oktober',
             'november' => 'November',
-            'december' => 'Desember',
+            'december' => 'Desember'
         ],
 
         'button' => [
