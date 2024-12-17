@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RajaOngkirService
 {
@@ -11,39 +12,31 @@ class RajaOngkirService
 
     public function __construct()
     {
-        $this->apiKey = env('RAJAONGKIR_API_KEY');
-        $this->baseUrl = env('RAJAONGKIR_BASE_URL');
+        $this->apiKey = env('RAJAONGKIR_API_KEY'); // Pastikan API Key disimpan di .env
+        $this->baseUrl = 'https://api.rajaongkir.com/starter/'; // URL API RajaOngkir
     }
 
-    public function getShippingCost($origin, $destination, $weight, $courier)
+    // Mendapatkan estimasi ongkir dari RajaOngkir
+    public function getShippingCost($originCity, $destinationCity, $weight, $courier)
     {
         $response = Http::withHeaders([
-            'key' => $this->apiKey,
+            'key' => $this->apiKey
         ])->post($this->baseUrl . 'cost', [
-            'origin' => $origin,
-            'destination' => $destination,
-            'weight' => $weight,
-            'courier' => $courier,
+            'origin' => $originCity,       // ID kota asal (misalnya ID kota bengkel)
+            'destination' => $destinationCity, // ID kota tujuan (misalnya ID kota alamat pengiriman)
+            'weight' => $weight,           // Berat barang dalam gram
+            'courier' => $courier,         // Kurir yang dipilih (misalnya 'jne', 'tiki', 'pos')
         ]);
 
-        return $response->json();
-    }
+        // Debugging: cek respons API
+        Log::info($response->json());
 
-    public function getProvinces()
-    {
-        $response = Http::withHeaders([
-            'key' => $this->apiKey,
-        ])->get($this->baseUrl . 'province');
 
-        return $response->json();
-    }
+        // Memeriksa apakah request berhasil
+        if ($response->successful()) {
+            return $response->json(); // Mengembalikan data dalam bentuk JSON jika sukses
+        }
 
-    public function getCities($provinceId)
-    {
-        $response = Http::withHeaders([
-            'key' => $this->apiKey,
-        ])->get($this->baseUrl . 'city?province=' . $provinceId);
-
-        return $response->json();
+        return null; // Mengembalikan null jika ada error dalam request API
     }
 }
