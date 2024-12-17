@@ -25,24 +25,18 @@ class WorkshopController extends Controller
             return redirect()->back()->with('error', 'Bengkel not found.');
         }
 
-        // Ambil produk yang terkait dengan bengkel
         $products = Product::where('id_bengkel', $id)->get();
 
-        // Ambil sparepart yang terkait dengan bengkel
         $spareParts = SpareParts::where('id_bengkel', $id)->get();
 
-        // Ambil layanan yang terkait dengan bengkel
         $services = Service::where('id_bengkel', $id)->get();
 
-        // Total produk, sparepart, dan layanan
         $totalProducts = $products->count();
         $totalSpareParts = $spareParts->count();
         $totalServices = $services->count();
 
-        // Rating rata-rata (menggunakan relasi)
         $averageRating = ReviewWorkshop::where('id_bengkel', $id)->avg('rating');
 
         return view('superadmin.masterdata-workshop.detail', compact('bengkel', 'products', 'spareParts', 'services', 'totalProducts', 'totalSpareParts', 'totalServices', 'averageRating'));
     }
-
 }
