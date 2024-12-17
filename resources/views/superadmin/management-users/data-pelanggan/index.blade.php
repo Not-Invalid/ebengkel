@@ -7,33 +7,36 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>List Data Pelanggan</h2>
+            <h2> {{ __('messages-superadmin.sidebar.info_data_pelanggan.list_pelanggan') }}</h2>
         </div>
         <table class="table table-bordered">
             <thead class="field-title">
                 <tr>
                     <th>No</th>
-                    <th>Nama Pelanggan</th>
-                    <th>Telp. Pelanggan</th>
-                    <th>Email Pelanggan</th>
-                    <th>Role</th>
-                    <th>Delete Pelanggan</th>
-                    <th>Action</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_data_pelanggan.name_pelanggan') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_data_pelanggan.phone_pelanggan') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_data_pelanggan.email_pelanggan') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_data_pelanggan.role') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_data_pelanggan.delete_pelanggan') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_data_pelanggan.action') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($pelanggan as $item)
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->nama_pelanggan }}</td>
-                    <td>{{ $item->telp_pelanggan }}</td>
-                    <td>{{ $item->email_pelanggan }}</td>
-                    <td>{{ $item->role_pelanggan }}</td>
-                    <td><span class="badge bg-success">{{ $item->delete_pelanggan }}</span></td>
-                    <td class="text-center">
-                        <a href="{{-- route('bengkel.show', $data->id_bengkel) --}}" class="btn btn-delete my-2" title="Detail" data-bs-toggle="tooltip">
-                            <i class="fas fa-trash-alt text-white"></i>
-                        </a>
-                    </td>
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->nama_pelanggan }}</td>
+                        <td>{{ $item->telp_pelanggan }}</td>
+                        <td>{{ $item->email_pelanggan }}</td>
+                        <td>{{ $item->role_pelanggan }}</td>
+                        <td><span class="badge bg-success">{{ $item->delete_pelanggan }}</span></td>
+                        <td class="text-center">
+                            <a href="{{-- route('bengkel.show', $data->id_bengkel) --}}" class="btn btn-delete my-2" title="Detail" data-bs-toggle="tooltip">
+                                <i class="fas fa-trash-alt text-white"></i>
+                            </a>
+                        </td>
+
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -57,7 +60,8 @@
                     @foreach ($pelanggan->getUrlRange(1, $pelanggan->lastPage()) as $page => $url)
                         @if ($page == $pelanggan->currentPage())
                             <li class="page-item active">
-                                <span class="page-num page-link text-white border-0 rounded-pill">{{ $page }}</span>
+                                <span
+                                    class="page-num page-link text-white border-0 rounded-pill">{{ $page }}</span>
                             </li>
                         @else
                             <li class="page-item">
