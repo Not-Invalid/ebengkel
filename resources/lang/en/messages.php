@@ -313,6 +313,15 @@ return [
             'upload' => [
                 'clik_upload' => 'Click to Upload'
             ],
+            'toast' => [
+                'detail_usedcar' => 'Workshop not found.',
+                'usedcar_not_found' => 'Used car not found.',
+                'login_usedcar' => 'You must be logged in to add an usedcar',
+                'create' => 'Used car successfully added!',
+                'update' => 'Used Car successfully updated!',
+                'delete' => 'Car successfully deleted!',
+                'message_delete_car' => 'The car has been deleted before!',
+            ],
             'button' => [
                 'submit' => 'Submit',
                 'cancel' => 'Cancel',

@@ -315,6 +315,15 @@ return [
             'upload' => [
                 'clik_upload' => 'Klik Untuk Upload'
             ],
+            'toast' => [
+                'detail_usedcar' => 'Bengkel tidak ditemukan.',
+                'usedcar_not_found' => 'Mobil bekas tidak ditemukan.',
+                'login_usedcar' => 'Anda harus login untuk menambahkan mobil bekas',
+                'create' => 'Mobil bekas berhasil ditambahkan!',
+                'update' => 'Mobil bekas berhasil diperbarui!',
+                'delete' => 'Mobil berhasil dihapus!',
+                'message_delete_car' => 'Mobil tersebut telah dihapus sebelumnya!',
+            ],
             'button' => [
                 'submit' => 'Kirim',
                 'cancel' => 'Batal',
