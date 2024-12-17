@@ -78,7 +78,7 @@ return [
         'change_password' => 'Ganti Kata Sandi',
         'language_setting' => 'Pengaturan Bahasa',
         'customer_data' => 'Data Pelanggan',
-        'admin_staff_data' => 'Data Staff Admin',
+        'admin_staff_data' => 'Data Staf Admin',
 
         'dashboard' => [
             'register_workshop' => 'Bengkel Terdaftar',
