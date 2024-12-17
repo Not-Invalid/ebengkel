@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\AlamatPengiriman;
 use App\Models\Bengkel;
 use App\Models\Pelanggan;
+use App\Models\Provinsi;
+use App\Models\Kota;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -117,7 +120,24 @@ class ProfileController extends Controller
         if (!Session::has('id_pelanggan')) {
             return redirect()->route('home')->with('error_status', 'You must be logged in to add an address.');
         }
-        return view('profile.address.create');
+        $provinces = Provinsi::all();
+        return view('profile.address.create', compact('provinces'));
+    }
+    public function getLocations(Request $request)
+    {
+        $response = [];
+
+        if ($request->has('province_id')) {
+            $cities = Kota::where('province_id', $request->province_id)->get();
+            $response['cities'] = $cities;
+        }
+
+        if ($request->has('city_id')) {
+            $subdistricts = Kecamatan::where('city_id', $request->city_id)->get();
+            $response['subdistricts'] = $subdistricts;
+        }
+
+        return response()->json($response);
     }
     public function storeAddress(Request $request)
     {
@@ -130,9 +150,9 @@ class ProfileController extends Controller
             'lat_alamat_pengiriman' => 'nullable|string',
             'long_alamat_pengiriman' => 'nullable|string',
             'status_alamat_pengiriman' => 'nullable|string',
-            'kota' => 'nullable|string',
-            'provinsi' => 'nullable|string',
-            'kecamatan' => 'nullable|string',
+            'provinsi_id' => 'nullable|string',
+            'kota_id' => 'nullable|string',
+            'kecamatan_id' => 'nullable|string',
         ]);
 
         // Ambil id pelanggan dari session
@@ -148,9 +168,9 @@ class ProfileController extends Controller
             'lat_alamat_pengiriman' => $request->lat_alamat_pengiriman,
             'long_alamat_pengiriman' => $request->long_alamat_pengiriman,
             'status_alamat_pengiriman' => $request->status_alamat_pengiriman,
-            'kota' => $request->kota,
-            'provinsi' => $request->provinsi,
-            'kecamatan' => $request->kecamatan,
+            'provinsi_id' => $request->provinsi_id,
+            'kota_id' => $request->kota_id,
+            'kecamatan_id' => $request->kecamatan_id,
             'delete_alamat_pengiriman' => 'N',
         ]);
 
@@ -168,7 +188,11 @@ class ProfileController extends Controller
             return redirect()->route('profile.address')->with('error_status', 'Address not found.');
         }
 
-        return view('profile.address.edit', compact('address'));
+        $provinces = Provinsi::all();
+        $cities = Kota::where('province_id', $address->provinsi_id)->get();
+        $subdistricts = Kecamatan::where('city_id', $address->kota_id)->get();
+
+        return view('profile.address.edit', compact('address', 'provinces', 'cities', 'subdistricts'));
     }
     public function updateAddress(Request $request, $id)
     {
@@ -181,9 +205,9 @@ class ProfileController extends Controller
             'lat_alamat_pengiriman' => 'nullable|string',
             'long_alamat_pengiriman' => 'nullable|string',
             'status_alamat_pengiriman' => 'nullable|string',
-            'kota' => 'nullable|string',
-            'provinsi' => 'nullable|string',
-            'kecamatan' => 'nullable|string',
+            'provinsi_id' => 'nullable|string',
+            'kota_id' => 'nullable|string',
+            'kecamatan_id' => 'nullable|string',
         ]);
 
         $customerId = Session::get('id_pelanggan');
@@ -205,9 +229,9 @@ class ProfileController extends Controller
             'lat_alamat_pengiriman' => $request->lat_alamat_pengiriman,
             'long_alamat_pengiriman' => $request->long_alamat_pengiriman,
             'status_alamat_pengiriman' => $request->status_alamat_pengiriman,
-            'kota' => $request->kota,
-            'provinsi' => $request->provinsi,
-            'kecamatan' => $request->kecamatan,
+            'provinsi_id' => $request->provinsi_id,
+            'kota_id' => $request->kota_id,
+            'kecamatan_id' => $request->kecamatan_id,
         ]);
 
         return redirect()->route('profile.address')->with('status', 'Shipping address successfully updated.');
