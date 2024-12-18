@@ -46,12 +46,10 @@
                         <thead class="bg-light-grey text-white">
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Item Name</th>
                                 <th class="text-center">Order ID</th>
                                 <th class="text-center">Nama Pemesan</th>
-                                <th class="text-center">Quantity</th>
-                                <th class="text-center">Grand Total</th>
                                 <th class="text-center">Jenis Pembayaran</th>
+                                <th class="text-center">Grand Total</th>
                                 <th class="text-center">Status Order</th>
                                 <th class="text-center">Tanggal Order</th>
                                 <th class="text-center">Tools</th>
@@ -66,24 +64,10 @@
                                 @foreach ($orderonline as $index => $order)
                                     <tr>
                                         <td style="font-size: 12px;">{{ $loop->iteration }}</td>
-                                        <td style="font-size: 13px;">
-                                            @if ($order->orderItems->isNotEmpty())
-                                                @foreach ($order->orderItems as $item)
-                                                    @if ($item->produk)
-                                                        {{ $item->produk->nama_produk }} ({{ $item->qty }})
-                                                    @elseif ($item->sparepart)
-                                                        {{ $item->sparepart->nama_spare_part }} ({{ $item->qty }})
-                                                    @endif
-                                                @endforeach
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
                                         <td style="font-size: 13px;">{{ $order->order_id }}</td>
                                         <td style="font-size: 13px;">{{ $order->pelanggan->nama_pelanggan ?? 'N/A' }}</td>
-                                        <td style="font-size: 13px;">{{ $order->orderItems->sum('qty') }}</td>
-                                        <td style="font-size: 13px;">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
                                         <td style="font-size: 13px;">{{ $order->invoice->jenis_pembayaran }} - {{ $order->invoice->bank_tujuan }} </td>
+                                        <td style="font-size: 13px;">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
 
                                         <td class="d-flex align-items-center justify-content-center">
                                             @php
@@ -217,7 +201,7 @@
             });
         };
 
-        filterTable('order-table-body', [1, 2, 3, 6, 7]);
+        filterTable('order-table-body', [1, 2, 6]);
     });
 </script>
 @endsection
