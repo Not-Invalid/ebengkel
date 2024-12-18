@@ -39,17 +39,22 @@
 @section('content')
     <div class="container-fluid py-4">
         <div class="search-container">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Cari Produk ...">
-                <button class="btn btn-info text-white mx-3"><i class="fa-solid fa-search"></i></button>
-            </div>
+            <form action="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $id_bengkel]) }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Cari Produk ..."
+                        value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-info text-white mx-3">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
         <div class="main-layout">
             <div class="row">
                 <div class="col-12 col-md-8">
                     <h4 class="judul">List Item</h4>
                     <div class="row">
-                        @foreach ($items as $item)
+                        @forelse ($items as $item)
                             <div class="col-md-4 col-sm-6 mb-3 d-flex justify-content-center align-items-center">
                                 <div
                                     class="custom-card shadow {{ $item->type === 'produk' ? 'product-card' : 'sparepart-card' }}">
@@ -82,7 +87,11 @@
                                     </a>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="col-12 text-center">
+                                <p>Item tidak ditemukan.</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -111,6 +120,12 @@
             </div>
         </div>
     </div>
+
+    @if (session('preview_url'))
+        <script>
+            window.open('{{ session('preview_url') }}', '_blank');
+        </script>
+    @endif
 
 
     <script>
