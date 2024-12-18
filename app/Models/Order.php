@@ -15,11 +15,12 @@ class Order extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'kode_order', // Tambahkan kode order
+        'kode_order',
         'nama_customer',
         'id_bengkel',
         'tanggal',
         'tipe',
+        'status',
         'jenis_pembayaran',
         'no_kartu',
         'harga',
