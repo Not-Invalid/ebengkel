@@ -14,8 +14,11 @@
             </h4>
         </div>
         <div class="card-body">
-            <form action="{{ route('pos.tranksaksi_pos.store', ['id_bengkel' => $bengkel->id_bengkel]) }}" method="POST">
+            <form
+                action="{{ route('pos.tranksaksi_pos.update', ['id_bengkel' => $bengkel->id_bengkel, 'id_order' => $order->id_order]) }}"
+                method="POST">
                 @csrf
+                @method('PUT')
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
 
                 <!-- Nama Customer -->
@@ -27,8 +30,8 @@
                 <!-- Tanggal -->
                 <div class="mb-3">
                     <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" id="tanggal" name="tanggal"
-                        value="{{ now()->format('Y-m-d') }}">
+                    <input type="datetime-local" class="form-control" id="tanggal" name="tanggal"
+                        value="{{ now()->format('Y-m-d\TH:i') }}">
                 </div>
 
                 <div class="mb-3">
@@ -66,15 +69,16 @@
                 <!-- Harga -->
                 <div class="mb-3">
                     <label for="harga" class="form-label">Harga (Total)</label>
-                    <input type="number" class="form-control" id="harga" name="harga"
-                        value="{{ $order->total_harga }}" readonly>
+                    <input type="hidden" id="harga" name="harga" value="{{ $order->total_harga }}">
+                    <input type="text" class="form-control" id="harga_display"
+                        value="{{ number_format($order->total_harga, 0, ',', '.') }}" readonly>
                 </div>
 
                 <!-- Qty -->
                 <div class="mb-3">
                     <label for="qty" class="form-label">Qty (Total)</label>
-                    <input type="number" class="form-control" id="qty" name="qty" value="{{ $order->total_qty }}"
-                        readonly>
+                    <input type="number" class="form-control" id="qty" name="qty"
+                        value="{{ $order->total_qty }}" readonly>
                 </div>
 
                 <!-- Diskon -->
@@ -99,7 +103,8 @@
                 <!-- Nominal Bayar -->
                 <div class="mb-3">
                     <label for="nominal_bayar" class="form-label">Nominal Bayar</label>
-                    <input type="number" class="form-control" id="nominal_bayar" name="nominal_bayar">
+                    <input type="hidden" id="nominal_bayar_hidden" name="nominal_bayar">
+                    <input type="text" class="form-control" id="nominal_bayar" value="0">
                 </div>
 
                 <!-- Kembali -->
@@ -117,49 +122,61 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hargaInput = document.getElementById('harga');
+            const hargaDisplay = document.getElementById('harga_display');
             const diskonInput = document.getElementById('diskon');
             const ppnInput = document.getElementById('ppn');
             const totalHargaInput = document.getElementById('total_harga');
             const totalHargaDisplay = document.getElementById('total_harga_display');
             const nominalBayarInput = document.getElementById('nominal_bayar');
+            const nominalBayarHidden = document.getElementById('nominal_bayar_hidden'); // Hidden input
             const kembaliInput = document.getElementById('kembali');
             const kembaliDisplay = document.getElementById('kembali_display');
 
+            function formatRupiah(angka) {
+                return angka.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                });
+            }
+
+            function parseRupiah(value) {
+                return parseFloat(value.replace(/[^,\d]/g, '').replace(',', '.')) || 0;
+            }
+
             function calculateTotal() {
-                const harga = parseFloat(hargaInput.value) || 0;
+                const harga = parseRupiah(hargaDisplay.value) || 0;
                 const diskon = parseFloat(diskonInput.value) || 0;
                 const ppn = parseFloat(ppnInput.value) || 0;
 
-                // Perhitungan total harga
                 const hargaDiskon = harga - (harga * (diskon / 100));
                 const hargaTotal = hargaDiskon + (hargaDiskon * (ppn / 100));
 
-                // Update hasil
                 totalHargaInput.value = hargaTotal.toFixed(2);
-                totalHargaDisplay.value = hargaTotal.toLocaleString('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR'
-                });
+                totalHargaDisplay.value = formatRupiah(hargaTotal);
             }
 
             function calculateKembali() {
-                const totalHarga = parseFloat(totalHargaInput.value) || 0;
-                const nominalBayar = parseFloat(nominalBayarInput.value) || 0;
+                const totalHarga = parseRupiah(totalHargaDisplay.value);
+                const nominalBayar = parseRupiah(nominalBayarInput.value);
 
                 const kembali = nominalBayar - totalHarga;
 
-                // Update hasil
                 kembaliInput.value = kembali.toFixed(2);
-                kembaliDisplay.value = kembali.toLocaleString('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR'
-                });
+                kembaliDisplay.value = formatRupiah(kembali);
             }
 
-            // Event Listeners
+            nominalBayarInput.addEventListener('input', function() {
+                const nominalBayar = parseRupiah(this.value);
+                nominalBayarHidden.value = nominalBayar;
+                this.value = formatRupiah(nominalBayar);
+                calculateKembali();
+            });
+
             diskonInput.addEventListener('input', calculateTotal);
             ppnInput.addEventListener('input', calculateTotal);
-            nominalBayarInput.addEventListener('input', calculateKembali);
+
+            hargaDisplay.value = formatRupiah(parseFloat(hargaInput.value));
         });
     </script>
 
