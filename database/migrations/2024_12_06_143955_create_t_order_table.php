@@ -21,6 +21,7 @@ class CreateTOrderTable extends Migration
             $table->integer('id_voucher')->nullable();
             $table->dateTime('tanggal')->useCurrent();
             $table->string('tipe', 50)->nullable();
+            $table->string('status', 50)->nullable();
             $table->string('jenis_pembayaran', 50)->nullable();
             $table->string('no_kartu', 50)->nullable();
             $table->integer('harga')->default(0);
