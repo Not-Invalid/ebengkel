@@ -9,6 +9,9 @@ use App\Models\Product;
 use App\Models\ReviewWorkshop;
 use App\Models\Service;
 use App\Models\SpareParts;
+use App\Models\Provinsi;
+use App\Models\Kota;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -123,7 +126,26 @@ class WorkshopController extends Controller
         if (!Session::has('id_pelanggan')) {
             return redirect()->route('home')->with('status_error', 'You must be logged in to add an address.');
         }
-        return view('profile.workshop.create');
+
+        $provinces = Provinsi::all();
+        return view('profile.workshop.create', compact('provinces'));
+    }
+
+    public function getLocations(Request $request)
+    {
+        $response = [];
+
+        if ($request->has('province_id')) {
+            $cities = Kota::where('province_id', $request->province_id)->get();
+            $response['cities'] = $cities;
+        }
+
+        if ($request->has('city_id')) {
+            $subdistricts = Kecamatan::where('city_id', $request->city_id)->get();
+            $response['subdistricts'] = $subdistricts;
+        }
+
+        return response()->json($response);
     }
 
     public function storeWorkshop(Request $request)
@@ -151,9 +173,9 @@ class WorkshopController extends Controller
             'rekening_bank.*.nama_bank' => 'required|string|max:100',
             'rekening_bank.*.atas_nama' => 'required|string|max:100',
             'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'provinsi' => 'required|string',
-            'kota' => 'required|string',
-            'kecamatan' => 'required|string',
+            'provinsi_id' => 'required|string',
+            'kota_id' => 'required|string',
+            'kecamatan_id' => 'required|string',
         ]);
 
         // Add the customer ID from the session
@@ -168,9 +190,9 @@ class WorkshopController extends Controller
         $validatedData['close_time'] = Carbon::createFromFormat('H:i', $request->close_time)->format('H:i');
 
         // Store the province, city, and district
-        $validatedData['provinsi'] = $request->provinsi;
-        $validatedData['kota'] = $request->kota;
-        $validatedData['kecamatan'] = $request->kecamatan;
+        $validatedData['provinsi_id'] = $request->provinsi_id;
+        $validatedData['kota_id'] = $request->kota_id;
+        $validatedData['kecamatan_id'] = $request->kecamatan_id;
 
         // Handle the bank account information
         if ($request->has('rekening_bank')) {
@@ -235,7 +257,12 @@ class WorkshopController extends Controller
         $paymentMethods = $bengkel->payment ?? [];
 
         // Pass the bankAccounts data to the view
-        return view('profile.workshop.edit', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'bankAccounts'));
+
+        $provinces = Provinsi::all();
+        $cities = Kota::where('province_id', $bengkel->provinsi_id)->get();
+        $subdistricts = Kecamatan::where('city_id', $bengkel->kota_id)->get();
+
+        return view('profile.workshop.edit', compact('bengkel', 'serviceAvailable', 'paymentMethods', 'bankAccounts', 'provinces', 'cities', 'subdistricts'));
     }
 
     public function updateWorkshop(Request $request, $id)
@@ -270,6 +297,9 @@ class WorkshopController extends Controller
             'qris_qrcode' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'whatsapp' => 'nullable|string|max:15',
             'instagram' => 'nullable|string',
+            'provinsi_id' => 'required|string',
+            'kota_id' => 'required|string',
+            'kecamatan_id' => 'required|string',
         ]);
 
         // Handle the 'service_available' and 'payment' fields (encode them as JSON)

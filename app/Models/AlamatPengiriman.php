@@ -24,9 +24,9 @@ class AlamatPengiriman extends Model
         'lat_alamat_pengiriman',
         'long_alamat_pengiriman',
         'status_alamat_pengiriman',
-        'kota',
-        'provinsi',
-        'kecamatan',
+        'provinsi_id',
+        'kota_id',
+        'kecamatan_id',
         'delete_alamat_pengiriman',
     ];
 

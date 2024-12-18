@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+
 class CreateMProvinsiTable extends Migration
 {
     /**
@@ -14,9 +15,10 @@ class CreateMProvinsiTable extends Migration
     public function up()
     {
         Schema::create('m_provinsi', function (Blueprint $table) {
-            $table->integer('id_provinsi')->primary()->autoIncrement();
-            $table->string('provinsi', 100)->nullable();
+            $table->integer('province_id')->primary();
+            $table->string('province_name', 255)->nullable();
         });
+
     }
 
     /**

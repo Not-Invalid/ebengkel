@@ -14,11 +14,12 @@ class CreateMKotaTable extends Migration
     public function up()
     {
         Schema::create('m_kota', function (Blueprint $table) {
-            $table->integer('id_kota')->primary()->autoIncrement();
-            $table->integer('id_provinsi');
-            $table->string('tipe', 50);
-            $table->string('kota', 100);
-            $table->string('postal_code', 10);
+            $table->integer('city_id')->primary();
+            $table->integer('province_id')->nullable();
+            $table->string('city_name', 255)->nullable();
+            $table->char('postal_code', 5)->nullable();
+
+            $table->foreign('province_id')->references('province_id')->on('m_provinsi')->onDelete('cascade');
         });
     }
 

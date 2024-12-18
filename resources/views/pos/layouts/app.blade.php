@@ -342,10 +342,9 @@
     {{-- Template JS file --}}
     <script src="{{ asset('template_pos/js/scripts.js') }}"></script>
     <script src="{{ asset('template_pos/js/custom.js') }}"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></scrip>
 
     <script src="{{ asset('template_pos/js/page/forms-advanced-forms.js') }}"></script>
 

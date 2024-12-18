@@ -186,6 +186,14 @@ public function placeOrder(Request $request)
         $order->order_id = Str::random(10); // Generate a random order_id
         $order->status_order = 'PENDING';
         $order->tanggal = now();
+        $order->atas_nama = $request->recipient;
+        $order->alamat_pengiriman = $request->location;
+        $order->provinsi = $request->province;
+        $order->kabupaten = $request->city;
+        $order->kecamatan = $request->district;
+        $order->kode_pos = $request->postal_code;
+        $order->no_telp = $request->phone;
+
 
         // Determine id_bengkel from the first item
         $firstItem = $cartItems->first();
@@ -217,7 +225,6 @@ public function placeOrder(Request $request)
 
         // Set total_harga and grand_total before saving
         $order->total_harga = $totalPrice;
-        $order->grand_total = $totalPrice; // No shipping cost
 
         // Save order
         $order->save();
