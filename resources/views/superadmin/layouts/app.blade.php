@@ -146,10 +146,10 @@
                 </a>
                 <ul class="submenu">
                   <li class="submenu-item has-sub">
-                    <a href="{{ route('support-center-category') }}" class="sidebar-link">Data Pelanggan</a>
+                    <a href="{{ route('data-pelanggan') }}" class="sidebar-link">Data Pelanggan</a>
                   </li>
                   <li class="submenu-item has-sub">
-                    <a href="{{ route('product-sparepart-category') }}" class="sidebar-link">Data Staff Admin</a>
+                    <a href="{{ route('data-staff-admin') }}" class="sidebar-link">Data Staff Admin</a>
                   </li>
                 </ul>
               </li>
