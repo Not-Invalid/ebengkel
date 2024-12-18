@@ -351,7 +351,8 @@ Route::middleware(['lang'])->group(function () {
         Route::get('tranksaksi/pos/{id_bengkel}', [PosTransaksiController::class, 'index'])->name('pos.tranksaksi_pos.index');
         Route::post('tranksaksi/pos/{id_bengkel}/checkout', [PosTransaksiController::class, 'checkout'])->name('pos.tranksaksi_pos.checkout');
         Route::get('tranksaksi/pos/{id_bengkel}/pembayaran/{id_order}', [PosTransaksiController::class, 'createPayment'])->name('pos.tranksaksi_pos.createPayment');
-        Route::post('tranksaksi/pos/{id_bengkel}/pembayaran/bayar', [PosTransaksiController::class, 'store'])->name('pos.tranksaksi_pos.store');
+        Route::put('/pos/tranksaksi_pos/{id_bengkel}/{id_order}/update', [PosTransaksiController::class, 'update'])->name('pos.tranksaksi_pos.update');
+        Route::get('/preview/struk/{id_order}', [PosTransaksiController::class, 'preview'])->name('preview.struk');
 
         Route::get('tranksaksi/pesanan/{id_bengkel}', [PosPesananController::class, 'index'])->name('pos.tranksaksi_pesanan.index');
         Route::get('tranksaksi/create-pesanan/{id_bengkel}', [PosPesananController::class, 'create'])->name('pos.tranksaksi_pesanan.create');
