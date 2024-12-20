@@ -28,13 +28,13 @@ eBengkelku | Cart
 <div class="container my-5">
     <div class="row">
         <!-- Price Summary Column -->
-        <div class="col-lg-8">
+        <div class="col-lg-12 col-md-12">
             @if ($cartItems->isEmpty())
                 <div class="d-flex justify-content-center pb-5">
                     <div class="empty-cart-message text-center" style="display: block;">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200" alt="No items in cart">
                         <p>{{ __('messages.home.no_data_cart') }}.</p>
-                        <a href="{{ route('ProductSparePart') }}" class="btn btn-primary"><i class="fas fa-cart-shopping"></i> Shop Now</a>
+                        <a href="{{ route('ProductSparePart') }}" class="btn btn-primary my-2"><i class="fas fa-cart-shopping"></i> Shop Now</a>
                     </div>
                 </div>
             @else
