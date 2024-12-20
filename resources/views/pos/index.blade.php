@@ -152,13 +152,13 @@
                 <div class="card-header">
                     <h4>Top 5 Products</h4>
                     <div class="card-header-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">{{ ucfirst($periode) }}</a>
+                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">{{ ucfirst($periodeProduk) }}</a>
                         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <li class="dropdown-title">Select Period</li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'day']) }}" class="dropdown-item">Today</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'week']) }}" class="dropdown-item">Week</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'month']) }}" class="dropdown-item active">Month</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'year']) }}" class="dropdown-item">This Year</a></li>
+                            <li class="dropdown-title">Select Periode</li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'day', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'day' ? 'active' : '' }}">Today</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'week', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'week' ? 'active' : '' }}">Week</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'month', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'month' ? 'active' : '' }}">Month</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'year', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'year' ? 'active' : '' }}">This Year</a></li>
                         </ul>
                     </div>
                 </div>
@@ -170,7 +170,6 @@
                         @foreach ($topProducts as $productId => $qty)
                             @php
                                 $product = \App\Models\Product::find($productId);
-                                // Calculate width as a percentage of the maximum quantity
                                 $width = $maxQty > 0 ? round(($qty / $maxQty) * 100) : 0;
                             @endphp
                             @if ($product)
@@ -205,13 +204,13 @@
                 <div class="card-header">
                     <h4>Top 5 Spareparts</h4>
                     <div class="card-header-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">{{ ucfirst($periode) }}</a>
+                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">{{ ucfirst($periodeSpareParts) }}</a>
                         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <li class="dropdown-title">Select Period</li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'day']) }}" class="dropdown-item">Today</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'week']) }}" class="dropdown-item">Week</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'month']) }}" class="dropdown-item active">Month</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periode' => 'year']) }}" class="dropdown-item">This Year</a></li>
+                            <li class="dropdown-title">Select Periode</li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'day', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'day' ? 'active' : '' }}">Today</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'week', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'week' ? 'active' : '' }}">Week</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'month', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'month' ? 'active' : '' }}">Month</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'year', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'year' ? 'active' : '' }}">This Year</a></li>
                         </ul>
                     </div>
                 </div>
