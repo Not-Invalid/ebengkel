@@ -25,24 +25,24 @@ eBengkelku | Cart
     </div>
 </section>
 
-<div class="container mt-5">
+<div class="container my-5">
     <div class="row">
         <!-- Price Summary Column -->
         <div class="col-lg-8">
             @if ($cartItems->isEmpty())
-            <div class="d-flex justify-content-center pb-5">
-                <div class="empty-cart-message text-center" style="display: block;">
-                    <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200" alt="No items in cart">
-                    <p>{{ __('messages.home.no_data_cart') }}.</p>
+                <div class="d-flex justify-content-center pb-5">
+                    <div class="empty-cart-message text-center" style="display: block;">
+                        <img src="{{ asset('assets/images/components/empty.png') }}" height="200" width="200" alt="No items in cart">
+                        <p>{{ __('messages.home.no_data_cart') }}.</p>
+                        <a href="{{ route('ProductSparePart') }}" class="btn btn-primary"><i class="fas fa-cart-shopping"></i> Shop Now</a>
+                    </div>
                 </div>
-            </div>
             @else
                 @foreach ($cartItems as $item)
                     <div class="cart-item d-flex align-items-center mb-3 p-3" data-id="{{ $item->id }}"
                         data-stock="{{ optional($item->produk)->stok_produk ?? optional($item->sparepart)->stok_spare_part }}"
                         data-price="{{ optional($item->produk)->harga_produk ?? optional($item->sparepart)->harga_spare_part }}">
                         <input type="checkbox" class="form-check-input me-3 item-select" @if(request()->get('buy_now') && $item->id == session('last_added_item_id')) checked @endif>
-
 
                         <div class="cart-item-image me-3">
                             @if ($item->produk)
@@ -77,6 +77,9 @@ eBengkelku | Cart
                             class='bx bx-trash'></i></button>
                     </div>
                 @endforeach
+                <div class="d-flex justify-content-start my-3">
+                    <a href="{{ route('ProductSparePart') }}" class="shop-more btn btn-primary text-decoration-none"><i class="fas fa-circle-left"></i> See Other Products & Spareparts</a> <!-- See Other Products button -->
+                </div>
             </div>
             <div class="col-lg-4 mb-5">
                 <div class="cart-summary p-3">
@@ -98,11 +101,10 @@ eBengkelku | Cart
                 </div>
             </div>
         </div>
-
-        <!-- Cart Items Column -->
     </div>
 @endif
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="placeOrderModal" tabindex="-1" aria-labelledby="placeOrderModalLabel" aria-hidden="true">
@@ -140,14 +142,13 @@ eBengkelku | Cart
             <div class="modal-footer">
                 <form id="modalOrderForm" action="{{ route('cart.place-order') }}" method="POST">
                     @csrf
-                    <input type="hidden" id="hiddenAddressRecipient" name="recipient">
-                    <input type="hidden" id="hiddenAddressLocation" name="location">
-                    <input type="hidden" id="hiddenAddressPhone" name="phone">
-                    <input type="hidden" id="hiddenAddressProvince" name="province">
-                    <input type="hidden" id="hiddenAddressDistrict" name="district">
-                    <input type="hidden" id="hiddenAddressSubDistrict" name="subDistrict">
-                    <input type="hidden" id="hiddenAddressCity" name="city">
-                    <input type="hidden" id="hiddenAddressPostalCode" name="postalCode">
+                    <input type="hidden" name="recipient" id="hiddenAddressRecipient">
+                    <input type="hidden" name="location" id="hiddenAddressLocation">
+                    <input type="hidden" name="phone" id="hiddenAddressPhone">
+                    <input type="hidden" name="province" id="hiddenAddressProvince">
+                    <input type="hidden" name="district" id="hiddenAddressDistrict">
+                    <input type="hidden" name="city" id="hiddenAddressCity">
+                    <input type="hidden" name="postal_code" id="hiddenAddressPostalCode">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Confirm Order</button>
                 </form>
@@ -157,27 +158,29 @@ eBengkelku | Cart
 </div>
 
 <script>
-    function updateAddress(recipient, location, phone, province, district, subDistrict, city, postalCode) {
-        const locationWords = location.split(' ');
-        let formattedLocation = '';
-        for (let i = 0; i < locationWords.length; i += 11) {
-            formattedLocation += locationWords.slice(i, i + 11).join(' ') + '<br>';
+    function updateAddress(recipient, location, phone, province, district, city, postalCode) {
+        console.log('City:', city);
+        console.log('Postal Code:', postalCode);
+
+            const locationWords = location.split(' ');
+            let formattedLocation = '';
+            for (let i = 0; i < locationWords.length; i += 11) {
+                formattedLocation += locationWords.slice(i, i + 11).join(' ') + '<br>';
+            }
+
+            document.getElementById('selectedAddressName').textContent = recipient + ' | ' + phone;
+            document.getElementById('selectedAddressDetails').innerHTML = formattedLocation;
+
+            // Store additional address details in hidden fields
+            document.getElementById('hiddenAddressRecipient').value = recipient;
+            document.getElementById('hiddenAddressLocation').value = location;
+            document.getElementById('hiddenAddressPhone').value = phone;
+            document.getElementById('hiddenAddressProvince').value = province;
+            document.getElementById('hiddenAddressDistrict').value = district;
+            document.getElementById('hiddenAddressCity').value = city;
+            document.getElementById('hiddenAddressPostalCode').value = postalCode;
         }
 
-        // Update selected address details in the dropdown
-        document.getElementById('selectedAddressName').textContent = recipient + ' | ' + phone;
-        document.getElementById('selectedAddressDetails').innerHTML = formattedLocation;
-
-        // Store the selected address data in hidden form fields
-        document.getElementById('hiddenAddressRecipient').value = recipient;
-        document.getElementById('hiddenAddressLocation').value = location;
-        document.getElementById('hiddenAddressPhone').value = phone;
-        document.getElementById('hiddenAddressProvince').value = province;
-        document.getElementById('hiddenAddressDistrict').value = district;
-        document.getElementById('hiddenAddressSubDistrict').value = subDistrict;
-        document.getElementById('hiddenAddressCity').value = city;
-        document.getElementById('hiddenAddressPostalCode').value = postalCode;
-    }
 
     function formatRupiahJS(angka) {
     return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -225,10 +228,7 @@ document.getElementById('total-selected-price-items').innerText = formatRupiahJS
 const shippingPrice = parseFloat(document.getElementById('shipping_cost').value) || 0;
 
 // Menghitung Grand Total
-const grandTotal = totalPrice + shippingPrice;
-
-// Menampilkan biaya pengiriman dan grand total
-document.getElementById('total-shipping-price').innerText = formatRupiahJS(shippingPrice);
+const grandTotal = totalPrice;
 document.getElementById('grand-total').innerText = formatRupiahJS(grandTotal);
 
 // Update jumlah item yang dipilih
