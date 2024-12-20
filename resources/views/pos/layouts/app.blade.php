@@ -349,29 +349,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
     {{-- Toastr JS --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script>
-        // Toastr configuration
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3000"
-        };
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-        // Display success message
-        @if (session('status'))
-            toastr.success("{{ session('status') }}");
-        @endif
+  <script>
+    toastr.options = {
+      "closeButton": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "3000"
+    };
 
-        // Display error message
-        @if (session('status_error'))
-            toastr.error("{{ session('status_error') }}");
-        @endif
-    </script>
+
+    // Display success message
+    @if (session('status'))
+      toastr.success("{{ session('status') }}");
+    @endif
+
+    // Display error message
+    @if (session('status_error'))
+      toastr.error("{{ session('status_error') }}");
+    @endif
+  </script>
     {{-- Loader script --}}
     <script>
         function show(value) {
