@@ -72,9 +72,13 @@ class OrderOnlineController extends Controller
         $request->validate([
             'status_order' => 'required|string',
             'status_invoice' => 'required|string',
-            // Validasi nomor_resi hanya jika status ordernya DIKIRIM
-            'nomor_resi' => 'required_if:status_order,DIKIRIM|string|min:3|max:50',  // Validasi nomor_resi untuk DIKIRIM
         ]);
+
+        if ($request->status_order === 'DIKIRIM') {
+            $request->validate([
+                'nomor_resi' => 'required|string|min:3|max:50',
+            ]);
+        }
 
         $order = OrderOnline::where('order_id', $order_id)
             ->where('id_bengkel', $id_bengkel)
@@ -84,29 +88,25 @@ class OrderOnlineController extends Controller
         $invoice = Invoice::where('id_order', $order->order_id)->firstOrFail();
 
         $isStatusChangedToDikemas = $request->status_order === 'DIKEMAS' && $order->status_order !== 'DIKEMAS';
-        $isStatusChangedToDikirim = $request->status_order === 'DIKIRIM' && $order->status_order !== 'DIKIRIM';  // Check if the status is being changed to DIKIRIM
+        $isStatusChangedToDikirim = $request->status_order === 'DIKIRIM' && $order->status_order !== 'DIKIRIM';
 
         try {
-
             $order->status_order = $request->status_order;
-
 
             if ($isStatusChangedToDikirim) {
                 $order->tanggal_kirim = now();
+                $order->status_pengiriman = "DIKIRIM";
                 $order->no_resi = $request->nomor_resi;
             }
 
             $order->save();
 
-
             $invoice->status_invoice = $request->status_invoice;
             $invoice->save();
-
 
             if ($isStatusChangedToDikemas) {
                 foreach ($order->orderItems as $item) {
                     if ($item->id_produk) {
-
                         $product = Product::findOrFail($item->id_produk);
 
                         if ($product->stok_produk < $item->qty) {
@@ -116,7 +116,6 @@ class OrderOnlineController extends Controller
                         $product->stok_produk -= $item->qty;
                         $product->save();
                     } elseif ($item->id_spare_part) {
-
                         $sparePart = SpareParts::findOrFail($item->id_spare_part);
 
                         if ($sparePart->stok_spare_part < $item->qty) {
@@ -133,12 +132,11 @@ class OrderOnlineController extends Controller
                 ->with('status', 'Order and Invoice updated successfully.');
 
         } catch (\Exception $e) {
-
             Log::error('Order update failed: ' . $e->getMessage());
 
             return redirect()->back()
-                ->withInput()
-                ->with('error', $e->getMessage());
+            ->withInput()
+            ->with('status_error', $e->getMessage());
         }
     }
 
