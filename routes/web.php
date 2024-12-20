@@ -83,6 +83,7 @@ Route::middleware(['lang'])->group(function () {
 
 Route::middleware(['auth:pelanggan', 'lang'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/locations', [ProfileController::class, 'getLocations'])->name('get.location');
     Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.getCartCount');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
