@@ -3,160 +3,153 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk Pembelian</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>Struk Pembelian &mdash; Stisla</title>
 
-        .header {
-            text-align: center;
-            padding: 20px;
-            border-bottom: 2px solid #000;
-        }
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('template_pos/modules/fontawesome/css/all.min.css') }}">
 
-        .header img {
-            max-width: 120px;
-            margin-bottom: 10px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-            text-transform: uppercase;
-        }
-
-        .header p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .content h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 20px;
-            text-transform: uppercase;
-            color: #000;
-        }
-
-        .content p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .table th {
-            background-color: #f4f4f4;
-            text-transform: uppercase;
-        }
-
-        .footer {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .print-button {
-            display: none;
-        }
-
-        @media print {
-            .print-button {
-                display: none;
-            }
-        }
-    </style>
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ asset('template_pos/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('template_pos/css/components.css') }}">
 </head>
 
 <body onload="window.print()">
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            <section class="section">
+                <div class="section-body">
+                    <div class="invoice">
+                        <div class="invoice-print">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="invoice-title">
+                                        <h2>Invoice</h2>
+                                        <div class="invoice-number">Order #{{ $order->kode_order }}</div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col">
+                                            <address>
+                                                <strong>Billed To</strong><br>
+                                                {{ $order->nama_customer }}<br>
+                                            </address>
+                                        </div>
+                                        <div class="col text-right">
+                                            <address>
+                                                <strong>Order Date</strong><br>
+                                                {{ \Carbon\Carbon::parse($order->tanggal)->format('d-m-Y H:i') }}<br><br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-0">
+                                        <div class="col">
+                                            <address>
+                                                <strong>Payment Method</strong><br>
+                                                {{ $order->jenis_pembayaran }}
+                                            </address>
+                                        </div>
+                                        <div class="col text-right">
+                                            <address>
+                                                <strong>Staff</strong><br>
+                                                {{ $order->input_by }}<br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-    <!-- Header -->
-    <div class="header">
-        <h1>{{ $order->bengkel->nama_bengkel }}</h1>
-        <p>{{ $order->bengkel->alamat }}</p>
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <div class="section-title">Order Summary</div>
+                                    <p class="section-lead">Detail pembelian.</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-md">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Produk / Sparepart</th>
+                                                <th class="text-center">Harga</th>
+                                                <th class="text-center">Qty</th>
+                                                <th class="text-right">Subtotal</th>
+                                            </tr>
+                                            @foreach ($order->orderItems as $key => $item)
+                                                <tr>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>
+                                                        @if ($item->id_produk)
+                                                            {{ $item->produk->nama_produk }}
+                                                        @elseif($item->id_spare_part)
+                                                            {{ $item->sparePart->nama_spare_part }}
+                                                        @else
+                                                            N/A
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">{{ formatRupiah($item->harga) }}</td>
+                                                    <td class="text-center">{{ $item->qty }}</td>
+                                                    <td class="text-right">{{ formatRupiah($item->subtotal) }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col text-left">
+                                            <div class="invoice-detail-item">
+                                                <div class="invoice-detail-name">Subtotal</div>
+                                                <div class="invoice-detail-value">
+                                                    {{ formatRupiah($order->harga) }}</div>
+                                            </div>
+                                            <div class="invoice-detail-item">
+                                                <div class="invoice-detail-name">Diskon</div>
+                                                <div class="invoice-detail-value">{{ $order->diskon }}%</div>
+                                            </div>
+                                            <div class="invoice-detail-item">
+                                                <div class="invoice-detail-name">PPN</div>
+                                                <div class="invoice-detail-value">{{ $order->ppn }}%</div>
+                                            </div>
+                                        </div>
+                                        <hr class="mt-2 mb-2">
+                                        <div class="col text-right">
+                                            <div class="invoice-detail-item">
+                                                <div class="invoice-detail-name">Total </div>
+                                                <div class="invoice-detail-value invoice-detail-value-lg">
+                                                    {{ formatRupiah($order->total_harga) }}
+                                                </div>
+                                            </div>
+                                            <div class="invoice-detail-item">
+                                                <div class="invoice-detail-name">Nominal Bayar</div>
+                                                <div class="invoice-detail-value">
+                                                    {{ formatRupiah($order->nominal_bayar) }}</div>
+                                            </div>
+                                            <div class="invoice-detail-item">
+                                                <div class="invoice-detail-name">Kembali</div>
+                                                <div class="invoice-detail-value">
+                                                    {{ formatRupiah($order->kembali) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <p>Terima kasih telah berbelanja di {{ $order->bengkel->nama_bengkel }}</p>
+                    </div>
+                </div>
+        </div>
+        </section>
+    </div>
     </div>
 
-    <!-- Content -->
-    <div class="content">
-        <h2>Struk Pembelian</h2>
-        <p><strong>Kode Order:</strong> {{ $order->kode_order }}</p>
-        <p><strong>Nama Customer:</strong> {{ $order->nama_customer }}</p>
-        <p><strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($order->tanggal)->format('d-m-Y H:i') }}</p>
-        <p><strong>Metode Pembayaran:</strong> {{ $order->jenis_pembayaran }}</p>
-
-        <!-- Table Produk/Sparepart -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Produk / Sparepart</th>
-                    <th>Qty</th>
-                    <th>Harga</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($order->orderItems as $item)
-                    <tr>
-                        <td>
-                            @if ($item->id_produk)
-                                {{ $item->produk->nama_produk }}
-                            @elseif($item->id_spare_part)
-                                {{ $item->sparePart->nama_spare_part }}
-                            @else
-                                N/A
-                            @endif
-                        </td>
-                        <td>{{ $item->qty }}</td>
-                        <td>{{ formatRupiah($item->harga) }}</td>
-                        <td>{{ formatRupiah($item->subtotal) }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <!-- Summary -->
-        <p><strong>Total Qty:</strong> {{ $order->total_qty }}</p>
-        <p><strong>Total Harga:</strong> {{ formatRupiah($order->total_harga) }}</p>
-        <p><strong>Diskon:</strong> {{ $order->diskon }}%</p>
-        <p><strong>PPN:</strong> {{ $order->ppn }}%</p>
-        <p><strong>Total Bayar:</strong> {{ formatRupiah($order->total_harga) }}</p>
-        <p><strong>Nominal Bayar:</strong> {{ formatRupiah($order->nominal_bayar) }}</p>
-        <p><strong>Kembali:</strong> {{ formatRupiah($order->kembali) }}</p>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>Terima kasih telah berbelanja di {{ $order->bengkel->nama_bengkel }}</p>
-    </div>
-
-    <!-- Print Button -->
-    <div class="print-button" style="text-align: center; margin: 20px;">
-        <button onclick="window.print()"
-            style="padding: 10px 20px; background: #007bff; color: #fff; border: none; cursor: pointer;">Cetak
-            Ulang</button>
-    </div>
-
+    <!-- General JS Scripts -->
+    <script src="{{ asset('template_pos/modules/jquery.min.js') }}"></script>
+    <script src="{{ asset('template_pos/modules/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('template_pos/js/stisla.js') }}"></script>
+    <script src="{{ asset('template_pos/js/scripts.js') }}"></script>
+    <script src="{{ asset('template_pos/js/custom.js') }}"></script>
 </body>
 
 </html>
