@@ -40,7 +40,7 @@ class StaffController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('data-staff-admin')->with('status', 'Staff has been successfully created.');
+        return redirect()->route('data-staff-admin')->with('status', __('messages-superadmin.toast_superadmin.toast_staff.create'));
     }
 
     public function edit($id)
@@ -68,7 +68,7 @@ class StaffController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('data-staff-admin')->with('status', 'Staff has been successfully updated.');
+        return redirect()->route('data-staff-admin')->with('status', __('messages-superadmin.toast_superadmin.toast_staff.update'));
     }
 
     public function delete($id)
@@ -77,6 +77,6 @@ class StaffController extends Controller
 
         $staff->delete();
 
-        return redirect()->route('data-staff-admin')->with('status', 'Staff has been successfully deleted.');
+        return redirect()->route('data-staff-admin')->with('status', __('messages-superadmin.toast_superadmin.toast_staff.delete'));
     }
 }

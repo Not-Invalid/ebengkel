@@ -7,8 +7,9 @@
 @section('content')
     <div class="w-100 shadow bg-white rounded" style="padding: 1rem">
         <div class="d-flex justify-content-between align-items-center">
-            <h4 class="fs-5">Your Used Car</h4>
-            <a href="{{ route('used-car-create') }}" class="btn btn-custom-2">+ Add New Used Car</a>
+            <h4 class="fs-5">{{ __('messages.profile.usedCar.title') }}</h4>
+            <a href="{{ route('used-car-create') }}" class="btn btn-custom-2">+
+                {{ __('messages.profile.usedCar.add_newcar') }}</a>
         </div>
 
         @if ($mobilList->isEmpty())
@@ -17,7 +18,7 @@
                     <div class="text-center">
                         <img src="{{ asset('assets/images/components/empty.png') }}" height="130" width="130"
                             alt="">
-                        <p>No data available.</p>
+                        <p>{{ __('messages.profile.usedCar.no_data') }}</p>
                     </div>
                 </div>
             </div>
@@ -49,14 +50,15 @@
                                         {{ $mobil->merkMobil->nama_merk ?? 'No car name' }}
                                     </p>
                                     <a href="{{ route('used-car-edit', $mobil->id_mobil) }}"
-                                        class="btn btn-custom-3">Edit</a>
+                                        class="btn btn-custom-3">{{ __('messages.profile.usedCar.edit_usedcar') }}</a>
 
                                     <!-- Form hapus mobil -->
                                     <form action="{{ route('used-car-delete', $mobil->id_mobil) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-delete">Delete</button>
+                                        <button type="submit"
+                                            class="btn btn-delete">{{ __('messages.profile.usedCar.button.delete') }}</button>
                                     </form>
                                 </div>
                             </div>

@@ -15,13 +15,11 @@ class SupportCenterController extends Controller
         return view('superadmin.masterdata-category.support-center.index', compact('categories'));
     }
 
-    // Show form to create a new category
     public function createCategory()
     {
         return view('superadmin.masterdata-category.support-center.create');
     }
 
-    // Store a new support category
     public function storeCategory(Request $request)
     {
         $request->validate([
@@ -29,44 +27,36 @@ class SupportCenterController extends Controller
             'icon' => 'required|string|max:50',
         ]);
 
-        // Create new category
         $category = new SupportCategory();
         $category->nama_category = $request->nama_category;
         $category->icon = $request->icon;
         $category->save();
 
-        // Redirect with success message
-        return redirect()->route('support-center-category')->with('status', ' Support Category added successfully!');
+        return redirect()->route('support-center-category')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.create'));
     }
 
     public function editCategory($id)
     {
-        // Retrieve the category by ID
         $category = SupportCategory::findOrFail($id);
 
-        // Return the edit view with the category data
         return view('superadmin.masterdata-category.support-center.edit', compact('category'));
     }
 
     public function updateCategory(Request $request, $id)
     {
-        // Validate the incoming data
         $validated = $request->validate([
             'nama_category' => 'required|string|max:255',
             'icon' => 'nullable|string|max:255',
         ]);
 
-        // Retrieve the category to update
         $category = SupportCategory::findOrFail($id);
 
-        // Update the category with the new data
         $category->update([
             'nama_category' => $validated['nama_category'],
             'icon' => $validated['icon'],
         ]);
 
-        // Redirect back with a success message
-        return redirect()->route('support-center-category', $id)->with('status', ' Support Category updated successfully!');
+        return redirect()->route('support-center-category', $id)->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.update'));
     }
 
     public function deleteCategory($id)
@@ -74,10 +64,9 @@ class SupportCenterController extends Controller
         $category = SupportCategory::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('support-center-category')->with('status', 'Support Category deleted successfully!');
+        return redirect()->route('support-center-category')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.delete'));
     }
 
-    // Show form to create a new detail for a category
     public function showInfo()
     {
         $supportInfo = SupportInfo::with('category')->orderBy('id', 'DESC')->paginate(10);
@@ -85,7 +74,6 @@ class SupportCenterController extends Controller
         return view('superadmin.support-center.index', compact('supportInfo'));
     }
 
-    // Store a new support detail
     public function createInfo()
     {
         $categories = SupportCategory::all();
@@ -101,23 +89,19 @@ class SupportCenterController extends Controller
             'answer' => 'required|string',
         ]);
 
-        // Simpan data support info baru
         SupportInfo::create([
             'support_category_id' => $request->input('support_category_id'),
             'question' => $request->input('question'),
             'answer' => $request->input('answer'),
         ]);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('support-center-info')->with('status', 'Support information added successfully.');
+        return redirect()->route('support-center-info')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.i_create'));
     }
 
     public function editInfo($id)
     {
-        // Retrieve the SupportInfo by id, including the category data
         $supportInfo = SupportInfo::with('category')->findOrFail($id);
 
-        // Get all categories for the select dropdown
         $categories = SupportCategory::all();
 
         return view('superadmin.support-center.edit', compact('supportInfo', 'categories'));
@@ -139,7 +123,7 @@ class SupportCenterController extends Controller
             'answer' => $request->answer,
         ]);
 
-        return redirect()->route('support-center-info')->with('status', 'Support information  updated successfully.');
+        return redirect()->route('support-center-info')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.i_update'));
     }
 
     public function deleteInfo($id)
@@ -147,7 +131,6 @@ class SupportCenterController extends Controller
         $supportInfo = SupportInfo::findOrFail($id);
         $supportInfo->delete();
 
-        return redirect()->route('support-center-info')->with('status', 'Support information  deleted successfully.');
+        return redirect()->route('support-center-info')->with('status', __('messages-superadmin.toast_superadmin.toast_support_center.i_delete'));
     }
-
 }

@@ -7,21 +7,21 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>Daftar Peserta Event {{ $event->nama_event }}</h2>
+            <h2>{{ __('messages-superadmin.sidebar.info_event.add_participant') }} {{ $event->nama_event }}</h2>
         </div>
 
         <table class="table table-bordered">
             <thead class="field-title">
                 <tr>
                     <th>No</th>
-                    <th>Nama</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_event.name') }}</th>
                     <th>Email</th>
-                    <th>No Telepon</th>
-                    <th>Payment Status</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_event.phone_number') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_event.payment_status') }}</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($daftar_peserta as $index => $data)
+                @foreach ($daftar_peserta as $index => $data)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $data->nama_peserta }}</td>
@@ -43,7 +43,9 @@
                     </li>
                 @else
                     <li class="page-item">
-                        <a href="{{ $daftar_peserta->previousPageUrl() }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i class="fas fa-chevron-left"></i></a>
+                        <a href="{{ $daftar_peserta->previousPageUrl() }}"
+                            class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i
+                                class="fas fa-chevron-left"></i></a>
                     </li>
                 @endif
 
@@ -54,14 +56,17 @@
                         </li>
                     @else
                         <li class="page-item">
-                            <a href="{{ $url }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark">{{ $page }}</a>
+                            <a href="{{ $url }}"
+                                class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark">{{ $page }}</a>
                         </li>
                     @endif
                 @endforeach
 
                 @if ($daftar_peserta->hasMorePages())
                     <li class="page-item">
-                        <a href="{{ $daftar_peserta->nextPageUrl() }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i class="fas fa-chevron-right"></i></a>
+                        <a href="{{ $daftar_peserta->nextPageUrl() }}"
+                            class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i
+                                class="fas fa-chevron-right"></i></a>
                     </li>
                 @else
                     <li class="page-item disabled">

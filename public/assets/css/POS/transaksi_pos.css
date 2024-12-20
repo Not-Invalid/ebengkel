@@ -36,6 +36,8 @@
     justify-content: space-between;
     height: auto;
     width: 300px;
+    max-width: 350px;
+    overflow: hidden;
 }
 
 .custom-card:hover {
@@ -43,7 +45,7 @@
 }
 
 .product-image {
-    width: 100%;
+    width: auto;
     height: 150px;
     object-fit: cover;
     border-radius: 10px;
@@ -203,5 +205,21 @@
         padding: 15px;
         z-index: 10;
         overflow-y: hidden;
+    }
+
+    .product-image {
+        width: auto;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-image {
+        width: auto;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
     }
 }

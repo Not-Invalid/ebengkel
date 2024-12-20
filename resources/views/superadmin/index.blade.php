@@ -31,7 +31,7 @@
                 <i class="fas fa-wrench text-primary fs-2"></i>
             </div>
             <div>
-                <div class="text-secondary">Bengkel Terdaftar</div>
+                <div class="text-secondary">{{ __('messages-superadmin.sidebar.dashboard.register_workshop') }}</div>
                 <div class="fs-4 fw-semibold text-dark">{{ $ttl_bengkel }}</div>
             </div>
         </div>
@@ -43,7 +43,7 @@
                 <i class="fas fa-user text-primary fs-2"></i>
             </div>
             <div>
-                <div class="text-secondary">User Terdaftar</div>
+                <div class="text-secondary">{{ __('messages-superadmin.sidebar.dashboard.register_user') }}</div>
                 <div class="fs-4 fw-semibold text-dark">{{ $ttl_user }}</div>
             </div>
         </div>

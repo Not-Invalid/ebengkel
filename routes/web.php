@@ -163,6 +163,7 @@ Route::middleware(['auth:superadmin', 'lang'])->prefix('superadmin')->group(func
 
     Route::get('settings/change-password', [SuperAdminSettingsController::class, 'index'])->name('change-password');
     Route::post('/reset-password', [SuperAdminSettingsController::class, 'resetPassword'])->name('reset-password');
+    Route::get('/language', [SuperAdminSettingsController::class, 'language'])->name('language.setting');
 });
 
 // UsedCar

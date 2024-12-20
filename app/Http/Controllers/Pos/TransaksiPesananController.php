@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pos;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\Service;
 use App\Models\PesananService;
 use Illuminate\Http\Request;
 
@@ -36,8 +37,13 @@ class TransaksiPesananController extends Controller
             return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
-        return view('pos.master-transaksi.pesanan.create', compact('bengkel'));
+        $services = Service::where('id_bengkel', $id_bengkel)
+            ->where('delete_services', 'N')
+            ->get();
+
+        return view('pos.master-transaksi.pesanan.create', compact('bengkel', 'services'));
     }
+
     public function store(Request $request, $id_bengkel)
     {
         $request->validate([

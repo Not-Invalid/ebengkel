@@ -7,9 +7,9 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>List Merk Mobil</h2>
+            <h2> {{ __('messages-superadmin.sidebar.info_merk.list_merk') }}</h2>
             <a href="{{ route('merk-mobil-create') }}" class="btn btn-custom-2 btn-sm">
-                <i class="fas fa-plus"></i> Tambah Merk Baru
+                <i class="fas fa-plus"></i> {{ __('messages-superadmin.sidebar.info_merk.add_merk') }}
             </a>
         </div>
 
@@ -17,24 +17,27 @@
             <thead class="field-title">
                 <tr>
                     <th>No</th>
-                    <th>Nama Merk</th>
-                    <th>Action</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_merk.name_merk') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_merk.action') }}</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($merks as $index => $merk)
+                @foreach ($merks as $index => $merk)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $merk->nama_merk }}</td>
                         <td class="text-center">
-                            <a href="{{ route('merk-mobil-edit', $merk->id) }}" class="btn btn-custom-3 my-2" title="Edit" category-bs-toggle="tooltip">
+                            <a href="{{ route('merk-mobil-edit', $merk->id) }}" class="btn btn-custom-3 my-2" title="Edit"
+                                category-bs-toggle="tooltip">
                                 <i class="fas fa-edit text-primary"></i>
                             </a>
 
-                            <form action="{{ route('merk-mobil-delete', $merk->id) }}" method="POST" style="display:inline-block;">
+                            <form action="{{ route('merk-mobil-delete', $merk->id) }}" method="POST"
+                                style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-delete" title="Delete" data-bs-toggle="tooltip" style="border: none; background: none;">
+                                <button type="submit" class="btn btn-delete" title="Delete" data-bs-toggle="tooltip"
+                                    style="border: none; background: none;">
                                     <i class="fas fa-trash-alt text-white"></i>
                                 </button>
                             </form>
@@ -54,7 +57,9 @@
                     </li>
                 @else
                     <li class="page-item">
-                        <a href="{{ $merks->previousPageUrl() }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i class="fas fa-chevron-left"></i></a>
+                        <a href="{{ $merks->previousPageUrl() }}"
+                            class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i
+                                class="fas fa-chevron-left"></i></a>
                     </li>
                 @endif
 
@@ -65,14 +70,17 @@
                         </li>
                     @else
                         <li class="page-item">
-                            <a href="{{ $url }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark">{{ $page }}</a>
+                            <a href="{{ $url }}"
+                                class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark">{{ $page }}</a>
                         </li>
                     @endif
                 @endforeach
 
                 @if ($merks->hasMorePages())
                     <li class="page-item">
-                        <a href="{{ $merks->nextPageUrl() }}" class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i class="fas fa-chevron-right"></i></a>
+                        <a href="{{ $merks->nextPageUrl() }}"
+                            class="page-link bg-light border-0 rounded-pill hover:bg-danger text-dark"><i
+                                class="fas fa-chevron-right"></i></a>
                     </li>
                 @else
                     <li class="page-item disabled">

@@ -37,7 +37,7 @@
                         <div class="d-flex justify-end mb-4">
                             <select name="download_format" id="downloadFormat" class="form-control w-auto mx-2"
                                 onchange="handleDownload(this)">
-                                <option value="" disabled selected hidden>Download</option>
+                                <option value="" disabled selected hidden>Download All</option>
                                 <option value="pdf" onclick="">PDF</option>
                                 <option value="excel">Excel</option>
                             </select>

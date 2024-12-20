@@ -7,15 +7,15 @@
 @section('content')
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2>List Registered Workshop</h2>
+            <h2> {{ __('messages-superadmin.sidebar.info_workshop.regis_workshop') }}</h2>
         </div>
         <table class="table table-bordered">
             <thead class="field-title">
                 <tr>
                     <th>No</th>
-                    <th>Nama Bengkel</th>
-                    <th>Pemilik</th>
-                    <th>Action</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_workshop.name_workshop') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_workshop.owner') }}</th>
+                    <th>{{ __('messages-superadmin.sidebar.info_workshop.action') }}</th>
                 </tr>
             </thead>
             <tbody>

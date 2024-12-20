@@ -40,7 +40,7 @@
     <div class="container-fluid py-4">
         <div class="search-container">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Scan atau Cari ...">
+                <input type="text" class="form-control" placeholder="Cari Produk ...">
                 <button class="btn btn-info text-white mx-3" data-toggle="tooltip" title="Print"><i
                         class="fa-solid fa-print"></i></button>
             </div>
@@ -57,17 +57,19 @@
                                     <div class="product-code d-flex justify-content-end">
                                         <span class="product-stock mb-2">Stock: {{ $product->stok_produk }}</span>
                                     </div>
-                                    <img src="{{ $product->foto_produk }}" alt="Product Image" class="product-image">
+                                    <img src="{{ isset($product->fotoProduk) && $product->fotoProduk->file_foto_produk_1 ? url($product->fotoProduk->file_foto_produk_1) : asset('assets/images/components/image.png') }}"
+                                        alt="Product Image" class="product-image">
                                     <div class="product-title mt-3">{{ $product->nama_produk }}</div>
                                     <div class="product-category">{{ $product->merk_produk }}</div>
-                                    <div class="product-price mb-2 mt-2">Rp
-                                        {{ number_format($product->harga_produk, 0, ',', '.') }}
+                                    <div class="product-price mb-2 mt-2">
+                                        {{ formatRupiah($product->harga_produk) }}
                                     </div>
-                                    <!-- Tambahkan atribut data-harga untuk harga produk -->
                                     <a class="add-button w-100" data-id="{{ $product->id }}"
-                                        data-nama="{{ $product->nama_produk }}" data-harga="{{ $product->harga_produk }}">
+                                        data-harga="{{ $product->harga_produk }}" data-tipe="produk"
+                                        data-stock="{{ $product->stok_produk }}">
                                         <i class="fa-solid fa-bag-shopping mr-1"></i> TAMBAHKAN
                                     </a>
+
                                 </div>
                             </div>
                         @endforeach
@@ -178,7 +180,6 @@
                     const item = activeOrder.items.find(item => item.id === itemId);
                     if (item) {
                         if (change === -1 && item.quantity === 1) {
-                            // Remove item if quantity becomes 0
                             removeFromOrder(itemId);
                         } else if (change === 1 && item.quantity < item.stock) {
                             item.quantity += change;
@@ -195,28 +196,21 @@
                         }
                     }
                 }
-
-                // Update total items and price
                 document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
                 document.querySelector('.total-price').textContent =
                     `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
-
-                // Add event listeners for increase and decrease buttons
                 document.querySelectorAll('.increase-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const itemId = this.getAttribute('data-id');
                         changeItemQuantity(itemId, 1);
                     });
                 });
-
                 document.querySelectorAll('.decrease-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const itemId = this.getAttribute('data-id');
                         changeItemQuantity(itemId, -1);
                     });
                 });
-
-                // Add event listeners for remove buttons
                 document.querySelectorAll('.remove-item-btn').forEach(button => {
                     button.addEventListener('click', function() {
                         const itemId = this.getAttribute('data-id');

@@ -26,11 +26,11 @@ class SettingsController extends Controller
         $user = User::find(Auth::id());
 
         if (!$user) {
-            return back()->with('status_error', 'User not found.');
+            return back()->with('status_error', __('messages-superadmin.toast_superadmin.toast_setting.error_user'));
         }
 
         if (!password_verify($request->input('currentPassword'), $user->password)) {
-            return back()->with('status_error', 'Current password is incorrect.');
+            return back()->with('status_error', __('messages-superadmin.toast_superadmin.toast_setting.error_pw'));
         }
 
         $user->update([
@@ -42,7 +42,11 @@ class SettingsController extends Controller
         session()->invalidate();
         session()->regenerateToken();
 
-        return redirect()->route('login-admin')->with('status', 'Password successfully changed! Please login again.');
+        return redirect()->route('login-admin')->with('status', __('messages-superadmin.toast_superadmin.toast_setting.succes_pw'));
     }
 
+    public function language()
+    {
+        return view('superadmin.settings.language-setting.index');
+    }
 }

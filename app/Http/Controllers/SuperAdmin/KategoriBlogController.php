@@ -30,7 +30,7 @@ class KategoriBlogController extends Controller
             'nama_kategori' => $request->nama_kategori,
         ]);
 
-        return redirect()->route('blog-category')->with('status', 'Blog Category has been successfully created.');
+        return redirect()->route('blog-category')->with('status', __('messages-superadmin.toast_superadmin.toast_blog_category.create'));
     }
 
     public function edit($id)
@@ -51,7 +51,7 @@ class KategoriBlogController extends Controller
         $category->nama_kategori = $request->nama_kategori;
         $category->save();
 
-        return redirect()->route('blog-category')->with('status', 'Blog Category has been successfully updated.');
+        return redirect()->route('blog-category')->with('status', __('messages-superadmin.toast_superadmin.toast_blog_category.update'));
     }
 
     public function delete($id)
@@ -59,6 +59,6 @@ class KategoriBlogController extends Controller
         $category = KategoriBlog::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('blog-category')->with('status', 'Blog Category has been successfully deleted.');
+        return redirect()->route('blog-category')->with('status', __('messages-superadmin.toast_superadmin.toast_blog_category.delete'));
     }
 }

@@ -51,6 +51,6 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->route('profile-admin', $id)
-            ->with('status', 'Profile updated successfully.');
+            ->with('status', __('messages-superadmin.toast_superadmin.toast_profile.update'));
     }
 }

@@ -30,17 +30,15 @@ class AuthController extends Controller
                 session(['expires_at' => now()->addMinutes(120)]);
             }
 
-            return redirect()->route('superadmin')->with('status', 'Login successful!');
+            return redirect()->route('superadmin')->with('status', __('messages-superadmin.toast_superadmin.toast_auth.login2'));
         }
 
-        return back()->withErrors(['email' => 'The provided credentials do not match our records.'])->with('status_error', 'Login failed. Please check your credentials.');
+        return back()->withErrors(['email' =>  __('messages-superadmin.toast_superadmin.toast_auth.credentials')])->with('status_error',  __('messages-superadmin.toast_superadmin.toast_auth.erro_login'));
     }
-
-
 
     public function logout()
     {
         Auth::guard('superadmin')->logout();
-        return redirect()->route('login-admin')->with('status', 'Logout successful!');
+        return redirect()->route('login-admin')->with('status',  __('messages-superadmin.toast_superadmin.toast_auth.logout'));
     }
 }

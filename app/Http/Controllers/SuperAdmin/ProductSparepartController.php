@@ -33,7 +33,7 @@ class ProductSparepartController extends Controller
             'deleted_kategori_spare_part' => 'N',
         ]);
 
-        return redirect()->route('product-sparepart-category')->with('status', 'Product & Sparepart Category has been successfully created.');
+        return redirect()->route('product-sparepart-category')->with('status', __('messages-superadmin.toast_superadmin.toast_product_sparepart.create'));
     }
 
     public function editCategory($id)
@@ -55,7 +55,7 @@ class ProductSparepartController extends Controller
         $category->updated_date = now();
         $category->save();
 
-        return redirect()->route('product-sparepart-category')->with('status', 'Product & Sparepart Category has been successfully updated.');
+        return redirect()->route('product-sparepart-category')->with('status', __('messages-superadmin.toast_superadmin.toast_product_sparepart.update'));
     }
 
     public function deleteCategory($id)
@@ -63,6 +63,6 @@ class ProductSparepartController extends Controller
         $category = KategoriSparePart::findOrFail($id);
         $category->delete();
 
-        return redirect()->route('product-sparepart-category')->with('status', 'Product & Sparepart Category has been successfully deleted.');
+        return redirect()->route('product-sparepart-category')->with('status', __('messages-superadmin.toast_superadmin.toast_product_sparepart.delete'));
     }
 }
