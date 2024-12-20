@@ -8,73 +8,47 @@
 <script>
     $(document).ready(function() {
 
-        $.get('https://api.cahyadsn.com/provinces', function(response) {
-            console.log('Provinces Response:', response);
-            let provinsiDropdown = $('#provinsi');
-            provinsiDropdown.empty();
-            provinsiDropdown.append(
-                '<option value="" selected disabled hidden>Select Province</option>');
-
-            if (response.data && Array.isArray(response.data)) {
-                $.each(response.data, function(index, provinsi) {
-                    let selected = (provinsi.kode == "{{ $bengkel->provinsi }}") ? 'selected' :
-                        '';
-                    provinsiDropdown.append('<option value="' + provinsi.kode + '" ' +
-                        selected + '>' + provinsi.nama + '</option>');
-                });
-            }
-
-            provinsiDropdown.trigger('change');
-        }).fail(function() {
-            console.log('Failed to load provinces');
-        });
-
         $('#provinsi').change(function() {
-            let provinsiId = $(this).val();
-            let kotaDropdown = $('#kota');
-            kotaDropdown.empty();
-            kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
+            let provinceId = $(this).val();
+            if (provinceId) {
+                $.get('/locations?province_id=' + provinceId, function(response) {
+                    let kotaDropdown = $('#kota');
+                    kotaDropdown.empty();
+                    kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
 
-            $.get('https://api.cahyadsn.com/regencies/' + provinsiId, function(response) {
-                console.log('Cities Response:', response);
-                if (response.data && Array.isArray(response.data)) {
-                    $.each(response.data, function(index, kota) {
-                        let selected = (kota.kode == "{{ $bengkel->kota }}") ?
-                            'selected' : '';
-                        kotaDropdown.append('<option value="' + kota.kode + '" ' +
-                            selected + '>' + kota.nama + '</option>');
-                    });
-                }
-
-                kotaDropdown.trigger('change');
-            }).fail(function() {
-                console.log('Failed to load cities');
-            });
+                    if (response.cities && Array.isArray(response.cities)) {
+                        $.each(response.cities, function(index, city) {
+                            kotaDropdown.append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#kota').empty().append('<option value="" selected disabled hidden>Select City</option>');
+                $('#kecamatan').empty().append('<option value="" selected disabled hidden>Select District</option>').hide();
+            }
         });
 
         $('#kota').change(function() {
-            let kotaId = $(this).val();
-            let kecamatanDropdown = $('#kecamatan');
-            kecamatanDropdown.empty();
-            kecamatanDropdown.append(
-                '<option value="" selected disabled hidden>Select District</option>');
+            let cityId = $(this).val();
+            if (cityId) {
+                $.get('/locations?city_id=' + cityId, function(response) {
+                    let kecamatanDropdown = $('#kecamatan');
+                    kecamatanDropdown.empty();
+                    kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
 
-            $.get('https://api.cahyadsn.com/districts/' + kotaId, function(response) {
-                console.log('Districts Response:', response);
-                if (response.data && Array.isArray(response.data)) {
-                    $.each(response.data, function(index, kecamatan) {
-                        let selected = (kecamatan.kode == "{{ $bengkel->kecamatan }}") ?
-                            'selected' : '';
-                        kecamatanDropdown.append('<option value="' + kecamatan.kode +
-                            '" ' + selected + '>' + kecamatan.nama + '</option>');
-                    });
-                }
-            }).fail(function() {
-                console.log('Failed to load districts');
-            });
+                    if (response.subdistricts && Array.isArray(response.subdistricts)) {
+                        $.each(response.subdistricts, function(index, subdistrict) {
+                            kecamatanDropdown.append('<option value="' + subdistrict.subdistrict_id + '">' + subdistrict.subdistrict_name + '</option>');
+                        });
+                    }
+
+                    // Show district dropdown
+                    kecamatanDropdown.show();
+                });
+            } else {
+                $('#kecamatan').empty().append('<option value="" selected disabled hidden>Select District</option>').hide();
+            }
         });
-
-        $('#provinsi').trigger('change');
     });
 </script>
 <script>
@@ -290,31 +264,43 @@
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
-                    <select name="provinsi" id="provinsi" class="did-floating-select">
+                    <select name="provinsi_id" id="provinsi" class="did-floating-select">
                         <option value="" selected disabled hidden>Select Province</option>
-                        <!-- Options will be populated by JavaScript -->
+                        @foreach($provinces as $province)
+                            <option value="{{ $province->province_id }}" {{ $province->province_id == $bengkel->provinsi_id ? 'selected' : '' }}>
+                                {{ $province->province_name }}
+                            </option>
+                        @endforeach
                     </select>
-                    <label class="did-floating-label">Province<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">Province</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
-                    <select name="kota" id="kota" class="did-floating-select">
+                    <select name="kota_id" id="kota" class="did-floating-select">
                         <option value="" selected disabled hidden>Select City</option>
-                        <!-- Options will be populated by JavaScript -->
+                        @foreach($cities as $city)
+                            <option value="{{ $city->city_id }}" {{ $city->city_id == $bengkel->kota_id ? 'selected' : '' }}>
+                                {{ $city->city_name }}
+                            </option>
+                        @endforeach
                     </select>
-                    <label class="did-floating-label">City<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">City</label>
                 </div>
             </div>
 
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
-                    <select name="kecamatan" id="kecamatan" class="did-floating-select">
+                    <select name="kecamatan_id" id="kecamatan" class="did-floating-select">
                         <option value="" selected disabled hidden>Select District</option>
-                        <!-- Options will be populated by JavaScript -->
+                        @foreach($subdistricts as $subdistrict)
+                            <option value="{{ $subdistrict->subdistrict_id }}" {{ $subdistrict->subdistrict_id == $bengkel->kecamatan_id ? 'selected' : '' }}>
+                                {{ $subdistrict->subdistrict_name }}
+                            </option>
+                        @endforeach
                     </select>
-                    <label class="did-floating-label">District<span class="text-danger">*</span></label>
+                    <label class="did-floating-label">District</label>
                 </div>
             </div>
 
@@ -446,21 +432,10 @@
                 <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
                 <div class="options-group">
                     <label class="option-item">
-                        <input type="checkbox" name="payment[]" value="Cash" id="paymentCash"
-                            {{ in_array('Cash', old('payment', $paymentMethods)) ? 'checked' : '' }}>
-                        <span>Cash</span>
-                    </label>
-                    <label class="option-item">
                         <input type="checkbox" name="payment[]" value="Manual Transfer" id="paymentManualTransfer"
                             {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'checked' : '' }}
                             onchange="toggleBankFields()">
                         <span>Manual Transfer</span>
-                    </label>
-                    <label class="option-item">
-                        <input type="checkbox" name="payment[]" value="QRIS" id="paymentQRIS"
-                            {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'checked' : '' }}
-                            onchange="toggleBankFields()">
-                        <span>QRIS</span>
                     </label>
                 </div>
             </div>
@@ -538,21 +513,6 @@
                 </div>
             </div>
 
-            <!-- QRIS QR Code Input (will be shown if "QRIS" is selected) -->
-            <div class="form-group mb-4" id="qrisContainer"
-                style="display: {{ in_array('QRIS', old('payment', $paymentMethods)) ? 'block' : 'none' }};">
-                <div class="upload-box">
-                    <label for="qris_qrcode" class="upload-label">QRIS QR Code</label>
-                    <input type="file" class="file-input" name="qris_qrcode" id="qris_qrcode"
-                        onchange="previewImage('qris_qrcode', 'qrisPreview')">
-                    <div class="preview-container d-flex justify-content-center">
-                        <img id="qrisPreview" src="{{ old('qris_qrcode', $bengkel->qris_qrcode) }}"
-                            alt="QRIS QR Code Preview" class="image-preview"
-                            style="display: {{ old('qris_qrcode', $bengkel->qris_qrcode) ? 'block' : 'none' }}; width: 200px; margin-top: 10px;">
-                    </div>
-                </div>
-            </div>
-
             <!-- WhatsApp -->
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
@@ -593,12 +553,10 @@
         function toggleBankFields() {
 
             const paymentManualTransfer = document.getElementById('paymentManualTransfer');
-            const paymentQRIS = document.getElementById('paymentQRIS');
 
             if (paymentManualTransfer && paymentQRIS) {
 
                 const bankAccountContainer = document.getElementById('bankAccountContainer');
-                const qrisContainer = document.getElementById('qrisContainer');
                 const addBankAccountButton = document.getElementById('add-bank-account');
 
                 if (paymentManualTransfer.checked) {
@@ -607,12 +565,6 @@
                 } else {
                     bankAccountContainer.style.display = 'none';
                     addBankAccountButton.style.display = 'none';
-                }
-
-                if (paymentQRIS.checked) {
-                    qrisContainer.style.display = 'block';
-                } else {
-                    qrisContainer.style.display = 'none';
                 }
             }
         }
