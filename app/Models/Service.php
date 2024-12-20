@@ -17,7 +17,8 @@ class Service extends Model
         'keterangan_services',
         'harga_services',
         'foto_services',
-        'jumlah_services',
+        'jumlah_services_online',
+        'jumlah_services_offline',
         'delete_services',
     ];
 
