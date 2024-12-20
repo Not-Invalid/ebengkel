@@ -17,7 +17,6 @@ class HomeController extends Controller
 {
     public function index($id_bengkel, Request $request)
     {
-
         $bengkel = Bengkel::find($id_bengkel);
 
         if (!$bengkel) {
@@ -28,45 +27,66 @@ class HomeController extends Controller
             return redirect()->route('pos.login');
         }
 
-        $periode = $request->input('periode', 'month');
-        $startDate = Carbon::now()->startOf($periode);
-        $endDate = Carbon::now()->endOf($periode);
+        $periodeProduk = $request->input('periodeProduk', 'month');
+        $periodeSpareParts = $request->input('periodeSpareParts', 'month');
+
+        $startDateProduk = Carbon::now()->startOf($periodeProduk);
+        $endDateProduk = Carbon::now()->endOf($periodeProduk);
+
+        $startDateSpareParts = Carbon::now()->startOf($periodeSpareParts);
+        $endDateSpareParts = Carbon::now()->endOf($periodeSpareParts);
 
         $totalServices = Service::count();
         $totalSpareParts = SpareParts::count();
         $totalProducts = Product::count();
         $totalOrderOnline = OrderOnline::where('id_bengkel', $id_bengkel)
-                                        ->whereBetween('tanggal', [$startDate, $endDate])
+                                        ->whereBetween('tanggal', [$startDateProduk, $endDateProduk])
                                         ->count();
 
         $orders = OrderOnline::with('orderItems.produk', 'orderItems.sparepart', 'pelanggan', 'bengkel')
-                                ->where('id_bengkel', $id_bengkel)
-                                ->orderBy('tanggal', 'desc')
-                                ->take(6)
-                                ->get();
+                            ->where('id_bengkel', $id_bengkel)
+                            ->orderBy('tanggal', 'desc')
+                            ->take(6)
+                            ->get();
+
 
         $salesData = OrderItemOnline::with(['produk', 'sparepart'])
-                                    ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDate, $endDate) {
+                                    ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
                                         $query->where('id_bengkel', $id_bengkel)
-                                            ->whereBetween('tanggal', [$startDate, $endDate]);
+                                            ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
                                     })
                                     ->get();
 
+
         $topProducts = $salesData->whereNotNull('id_produk')
-            ->groupBy('id_produk')
-            ->map(function ($item) {
-                return $item->sum('qty');
-            })
-            ->sortDesc()
-            ->take(5);
+                                ->groupBy('id_produk')
+                                ->map(function ($item) {
+                                    return $item->sum('qty');
+                                })
+                                ->sortDesc()
+                                ->take(5);
+
 
         $topSpareParts = $salesData->whereNotNull('id_spare_part')
-            ->groupBy('id_spare_part')
-            ->map(function ($item) {
-                return $item->sum('qty');
-            })
-            ->sortDesc()
-            ->take(5);
-        return view('pos.index', compact('bengkel', 'totalServices', 'totalSpareParts', 'totalProducts', 'totalOrderOnline',  'orders', 'topProducts', 'topSpareParts', 'periode'));
+                                ->groupBy('id_spare_part')
+                                ->map(function ($item) {
+                                    return $item->sum('qty');
+                                })
+                                ->sortDesc()
+                                ->take(5);
+
+        return view('pos.index', compact(
+            'bengkel',
+            'totalServices',
+            'totalSpareParts',
+            'totalProducts',
+            'totalOrderOnline',
+            'orders',
+            'topProducts',
+            'topSpareParts',
+            'periodeProduk',
+            'periodeSpareParts'
+        ));
     }
+
 }
