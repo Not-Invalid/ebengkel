@@ -443,53 +443,52 @@ class WorkshopController extends Controller
         if (!$customerId) {
             return redirect()->back()->with('error', 'ID pelanggan tidak ditemukan. Silakan login.');
         }
+
+        // Validate the input
         $validated = $request->validate([
             'nama_pemesan' => 'required|string|max:255',
             'telp_pelanggan' => 'required|numeric',
             'tgl_pesanan' => 'required|date',
-            'nama_service' => 'required|string|max:255',
         ]);
 
+        // Find the service by ID
         $service = Service::find($id_services);
         if (!$service) {
             return redirect()->back()->with('error', 'Layanan tidak ditemukan.');
         }
 
+        // Get the price of the service
         $totalHarga = $service->harga_services ?? 0;
+
+        // Create PesananService record with the relevant fields
         PesananService::create([
             'id_pelanggan' => $customerId,
             'id_bengkel' => $id_bengkel,
             'telp_pelanggan' => $request->telp_pelanggan,
             'nama_pemesan' => $request->nama_pemesan,
             'tgl_pesanan' => $request->tgl_pesanan,
-            'nama_service' => $request->nama_service,
+            'nama_services' => $service->nama_services, // Use the service's name directly
             'status' => 'pending',
             'total_pesanan' => $totalHarga,
         ]);
         return redirect()->route('service.detail', ['id_bengkel' => $id_bengkel, 'id_services' => $id_services])
             ->with('status', 'Pesanan berhasil dibuat.');
     }
-
     public function storeReview(Request $request)
     {
         $customerId = Session::get('id_pelanggan');
-
-        // Validasi input
         $request->validate([
             'id_pelanggan' => 'required|integer',
             'id_bengkel' => 'required|integer',
             'rating' => 'required|integer|min:1|max:5',
             'komentar' => 'nullable|string|max:1000',
         ]);
-
-        // Simpan data ke database
         ReviewWorkshop::create([
             'id_pelanggan' => $customerId,
             'id_bengkel' => $request->id_bengkel,
             'rating' => $request->rating,
             'komentar' => $request->komentar, // Pastikan komentar ini diterima
         ]);
-
         return redirect()->back()->with('status', 'Sending Review');
     }
 }

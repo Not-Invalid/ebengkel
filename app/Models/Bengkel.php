@@ -66,4 +66,9 @@ class Bengkel extends Model
     {
         return $this->hasMany(OrderItemOnline::class, 'id_bengkel');
     }
+    public function services()
+    {
+        return $this->hasMany(Service::class, 'id_bengkel');
+    }
+
 }

@@ -112,19 +112,21 @@
 
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_spare_part_2" class="upload-label">Sparepart Photo 2</label>
-            <input type="file" class="file-input" name="foto_spare_part_2" id="foto_spare_part_2"
-              onchange="previewImage('foto_spare_part_2', 'preview_2')">
-            <div class="preview-container d-flex justify-content-center">
-              <img id="preview_2" src="" alt="Sparepart Photo Preview" class="image-preview"
-                style="display: none; width: 200px; margin-top: 10px;">
-            </div>
+            <label for="foto_spare_part_2" class="upload-label">Sparepart Photo 2 <span
+                class="text-danger">*</span><label>
+                <input type="file" class="file-input" name="foto_spare_part_2" id="foto_spare_part_2"
+                  onchange="previewImage('foto_spare_part_2', 'preview_2')">
+                <div class="preview-container d-flex justify-content-center">
+                  <img id="preview_2" src="" alt="Sparepart Photo Preview" class="image-preview"
+                    style="display: none; width: 200px; margin-top: 10px;">
+                </div>
           </div>
         </div>
 
         <div class="form-group">
           <div class="upload-box">
-            <label for="foto_spare_part_3" class="upload-label">Sparepart Photo 3</label>
+            <label for="foto_spare_part_3" class="upload-label">Sparepart Photo 3 <span
+                class="text-danger">*</span></label>
             <input type="file" class="file-input" name="foto_spare_part_3" id="foto_spare_part_3"
               onchange="previewImage('foto_spare_part_3', 'preview_3')">
             <div class="preview-container d-flex justify-content-center">

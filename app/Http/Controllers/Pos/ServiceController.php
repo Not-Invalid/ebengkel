@@ -51,7 +51,8 @@ class ServiceController extends Controller
             'keterangan_services' => 'required|string',
             'harga_services' => 'nullable|string',
             'foto_services' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'jumlah_services' => 'nullable|integer',
+            'jumlah_services_online' => 'nullable|integer',
+            'jumlah_services_offline' => 'nullable|integer',
         ]);
 
         $service = new Service();
@@ -59,7 +60,8 @@ class ServiceController extends Controller
         $service->nama_services = $request->nama_services;
         $service->harga_services = $request->harga_services;
         $service->keterangan_services = $request->keterangan_services;
-        $service->jumlah_services = $request->jumlah_services;
+        $service->jumlah_services_online = $request->jumlah_services_online;
+        $service->jumlah_services_offline = $request->jumlah_services_offline;
 
         if ($request->hasFile('foto_services')) {
             $imageName = 'foto_services_' . now()->format('Ymd_His') . '.' . $request->foto_services->extension();
@@ -102,7 +104,8 @@ class ServiceController extends Controller
             'keterangan_services' => 'required|string',
             'harga_services' => 'nullable|string',
             'foto_services' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'jumlah_services' => 'nullable|integer',
+            'jumlah_services_online' => 'nullable|integer',
+            'jumlah_services_offline' => 'nullable|integer',
         ]);
 
         $service = Service::findOrFail($id_services);
@@ -110,7 +113,8 @@ class ServiceController extends Controller
         $service->nama_services = $request->nama_services;
         $service->harga_services = $request->harga_services;
         $service->keterangan_services = $request->keterangan_services;
-        $service->jumlah_services = $request->jumlah_services;
+        $service->jumlah_services_online = $request->jumlah_services_online;
+        $service->jumlah_services_offline = $request->jumlah_services_offline;
 
         if ($request->hasFile('foto_services')) {
             if ($service->foto_services && file_exists(public_path($service->foto_services))) {

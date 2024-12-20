@@ -193,8 +193,8 @@ class SparePartController extends Controller
         }
 
         $fotoSparepart = FotoSparepart::where('id_spare_part', $id_spare_part)->first();
-
-        return view('pos.masterdata-sparepart.edit', compact('bengkel', 'sparepart', 'fotoSparepart'));
+        $categories = KategoriSparePart::all();
+        return view('pos.masterdata-sparepart.edit', compact('bengkel', 'sparepart', 'fotoSparepart', 'categories'));
     }
 
     public function update(Request $request, $id_bengkel, $id_spare_part)
