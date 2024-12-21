@@ -39,40 +39,59 @@
 @section('content')
     <div class="container-fluid py-4">
         <div class="search-container">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Cari Produk ...">
-                <button class="btn btn-info text-white mx-3" data-toggle="tooltip" title="Print"><i
-                        class="fa-solid fa-print"></i></button>
-            </div>
+            <form action="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $id_bengkel]) }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Cari Produk ..."
+                        value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-info text-white mx-3">
+                        <i class="fa-solid fa-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
         <div class="main-layout">
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <!-- Product Section -->
-                    <h4 class="judul">List Produk</h4>
+                    <h4 class="judul">List Item</h4>
                     <div class="row">
-                        @foreach ($products as $product)
-                            <div class="col-md-4 col-sm-6 mb-3 d-flex align-items-center">
-                                <div class="custom-card shadow product-card">
+                        @forelse ($items as $item)
+                            <div class="col-md-4 col-sm-6 mb-3 d-flex justify-content-center align-items-center">
+                                <div
+                                    class="custom-card shadow {{ $item->type === 'produk' ? 'product-card' : 'sparepart-card' }}">
                                     <div class="product-code d-flex justify-content-end">
-                                        <span class="product-stock mb-2">Stock: {{ $product->stok_produk }}</span>
+                                        <span class="product-stock mb-2">Stock:
+                                            {{ $item->type === 'produk' ? $item->stok_produk : $item->stok_spare_part }}
+                                        </span>
                                     </div>
-                                    <img src="{{ isset($product->fotoProduk) && $product->fotoProduk->file_foto_produk_1 ? url($product->fotoProduk->file_foto_produk_1) : asset('assets/images/components/image.png') }}"
-                                        alt="Product Image" class="product-image">
-                                    <div class="product-title mt-3">{{ $product->nama_produk }}</div>
-                                    <div class="product-category">{{ $product->merk_produk }}</div>
+                                    <img src="{{ isset($item->fotoProduk) && $item->type === 'produk'
+                                        ? ($item->fotoProduk->file_foto_produk_1
+                                            ? url($item->fotoProduk->file_foto_produk_1)
+                                            : asset('assets/images/components/image.png'))
+                                        : (isset($item->fotoSparepart) && $item->fotoSparepart->file_foto_sparepart_1
+                                            ? url($item->fotoSparepart->file_foto_sparepart_1)
+                                            : asset('assets/images/components/image.png')) }}"
+                                        alt="Item Image" class="product-image">
+                                    <div class="product-title mt-3">
+                                        {{ $item->type === 'produk' ? $item->nama_produk : $item->nama_spare_part }}</div>
+                                    <div class="product-category">
+                                        {{ $item->type === 'produk' ? $item->merk_produk : $item->merk_spare_part }}</div>
                                     <div class="product-price mb-2 mt-2">
-                                        {{ formatRupiah($product->harga_produk) }}
+                                        {{ $item->type === 'produk' ? formatRupiah($item->harga_produk) : formatRupiah($item->harga_spare_part) }}
                                     </div>
-                                    <a class="add-button w-100" data-id="{{ $product->id }}"
-                                        data-harga="{{ $product->harga_produk }}" data-tipe="produk"
-                                        data-stock="{{ $product->stok_produk }}">
+                                    <a class="add-button w-100"
+                                        data-id="{{ $item->type === 'produk' ? $item->id_produk : $item->id_spare_part }}"
+                                        data-harga="{{ $item->type === 'produk' ? $item->harga_produk : $item->harga_spare_part }}"
+                                        data-tipe="{{ $item->type }}"
+                                        data-stock="{{ $item->type === 'produk' ? $item->stok_produk : $item->stok_spare_part }}">
                                         <i class="fa-solid fa-bag-shopping mr-1"></i> TAMBAHKAN
                                     </a>
-
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="col-12 text-center">
+                                <p>Item tidak ditemukan.</p>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -91,8 +110,8 @@
                             <a class="trash-btn" data-toggle="tooltip" title="Delete Order">
                                 <i class="fa-solid fa-trash"></i>
                             </a>
-                            <a href="{{ route('pos.tranksaksi_pos.showcheckoutpos', ['id_bengkel' => $id_bengkel]) }}"
-                                class="checkout-btn text-center" id="checkoutBtn">
+                            <a href="javascript:void(0)" class="checkout-btn text-center"
+                                data-id-bengkel="{{ $id_bengkel }}" id="checkoutBtn">
                                 <i class="fa-solid fa-cart-shopping"></i> CHECKOUT
                             </a>
                         </div>
@@ -102,149 +121,188 @@
         </div>
     </div>
 
+    @if (session('preview_url'))
+        <script>
+            window.open('{{ session('preview_url') }}', '_blank');
+        </script>
+    @endif
+
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let activeOrder = {
-                items: [],
-                total: 0,
-                totalItems: 0
-            };
+        // Global cart variable
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartContainer = document.querySelector('.order-items-container');
+            const totalItemsElement = document.querySelector('.total-items');
+            const totalPriceElement = document.querySelector('.total-price');
+            const trashBtn = document.querySelector('.trash-btn');
+
+            // Add to Cart event listener
             document.querySelectorAll('.add-button').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const productCard = this.closest('.product-card');
-                    const product = {
-                        id: productCard.querySelector('.product-code').textContent.trim(),
-                        name: productCard.querySelector('.product-title').textContent,
-                        price: parseInt(productCard.querySelector('.product-price').textContent
-                            .replace(/[^0-9]/g, '')),
-                        stock: parseInt(productCard.querySelector('.product-stock').textContent
-                            .replace(/[^0-9]/g, '')),
-                        brand: productCard.querySelector('.product-category').textContent
-                    };
-                    addToOrder(product);
-                });
-            });
+                button.addEventListener('click', () => {
+                    const id = button.getAttribute('data-id');
+                    const harga = parseFloat(button.getAttribute('data-harga'));
+                    const stok = parseInt(button.getAttribute('data-stock'));
+                    const tipe = button.getAttribute('data-tipe');
+                    const nama = button.closest('.custom-card').querySelector('.product-title')
+                        .textContent;
+                    const merk = button.closest('.custom-card').querySelector('.product-category')
+                        .textContent;
+                    const uniqueKey = `${id}-${tipe}-${nama}-${merk}`;
 
-            function addToOrder(product) {
-                const existingItem = activeOrder.items.find(item => item.id === product.id);
-                if (existingItem) {
-                    if (existingItem.quantity < product.stock) {
-                        existingItem.quantity += 1;
-                        activeOrder.total += product.price;
-                        activeOrder.totalItems += 1;
-                        updateActiveOrderDisplay();
-                    } else {
-                        alert('Stok produk tidak mencukupi!');
+                    if (!id) {
+                        alert('ID barang tidak ditemukan!');
+                        return;
                     }
-                } else {
-                    activeOrder.items.push({
-                        ...product,
-                        quantity: 1
-                    });
-                    activeOrder.total += product.price;
-                    activeOrder.totalItems += 1;
-                    updateActiveOrderDisplay();
-                }
-            }
 
-            function updateActiveOrderDisplay() {
-                const orderItemsContainer = document.querySelector('.order-items-container');
-                orderItemsContainer.innerHTML = '';
-                activeOrder.items.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'order-item';
-                    itemElement.innerHTML = `
-                            <div class="order-item-details d-flex justify-content-between align-items-center">
-                                <div class="order-item-name">
-                                    ${item.name}
-                                    <div class="order-item-brand">${item.brand}</div>
-                                </div>
-                                <div class="order-item-quantity d-flex align-items-center">
-                                    <button class="decrease-btn btn btn-sm mb-3" data-id="${item.id}">-</button>
-                                    <span class="mx-2 mb-3">${item.quantity}</span>
-                                    <button class="increase-btn btn btn-sm mb-3" data-id="${item.id}">+</button>
-                                </div>
-                                <div class="order-item-price">
-                                    Rp ${(item.price * item.quantity).toLocaleString('id-ID')}
-                                </div>
-                                <button class="remove-item-btn btn btn-sm btn-danger mb-4" data-id="${item.id}">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </div>
-                        `;
-                    orderItemsContainer.appendChild(itemElement);
-                });
+                    if (stok <= 0) {
+                        alert('Stok habis, tidak dapat menambahkan item ini.');
+                        return;
+                    }
 
-                function changeItemQuantity(itemId, change) {
-                    const item = activeOrder.items.find(item => item.id === itemId);
-                    if (item) {
-                        if (change === -1 && item.quantity === 1) {
-                            removeFromOrder(itemId);
-                        } else if (change === 1 && item.quantity < item.stock) {
-                            item.quantity += change;
-                            activeOrder.total += item.price * change;
-                            activeOrder.totalItems += change;
-                            updateActiveOrderDisplay();
-                        } else if (change === 1 && item.quantity >= item.stock) {
-                            alert('Stok produk tidak mencukupi!');
+                    const existingItemIndex = cart.findIndex(item =>
+                        `${item.id}-${item.tipe}-${item.nama}-${item.merk}` === uniqueKey
+                    );
+
+                    if (existingItemIndex !== -1) {
+                        if (cart[existingItemIndex].quantity < stok) {
+                            cart[existingItemIndex].quantity++;
                         } else {
-                            item.quantity += change;
-                            activeOrder.total += item.price * change;
-                            activeOrder.totalItems += change;
-                            updateActiveOrderDisplay();
+                            alert('Jumlah item melebihi stok yang tersedia.');
                         }
+                    } else {
+                        cart.push({
+                            id,
+                            nama,
+                            harga,
+                            stok,
+                            tipe,
+                            merk,
+                            quantity: 1,
+                            uniqueKey
+                        });
                     }
-                }
-                document.querySelector('.total-items').textContent = `${activeOrder.totalItems} Pcs`;
-                document.querySelector('.total-price').textContent =
-                    `Rp ${activeOrder.total.toLocaleString('id-ID')}`;
-                document.querySelectorAll('.increase-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.getAttribute('data-id');
-                        changeItemQuantity(itemId, 1);
-                    });
+
+                    renderCart();
                 });
-                document.querySelectorAll('.decrease-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.getAttribute('data-id');
-                        changeItemQuantity(itemId, -1);
-                    });
+            });
+
+            // Render cart function
+            function renderCart() {
+                cartContainer.innerHTML = '';
+                let totalItems = 0;
+                let totalPrice = 0;
+
+                cart.forEach((item, index) => {
+                    totalItems += item.quantity;
+                    totalPrice += item.quantity * item.harga;
+
+                    const cartItem = document.createElement('div');
+                    cartItem.classList.add('cart-item', 'd-flex', 'justify-content-between',
+                        'align-items-center', 'mb-2');
+                    cartItem.innerHTML = `
+                        <div>
+                            <div>${item.nama} (${item.merk})</div>
+                            <small>${item.quantity} x ${item.harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="decrease-btn" data-index="${index}">-</button>
+                            <span class="mx-2">${item.quantity}</span>
+                            <button class="increase-btn" data-index="${index}">+</button>
+                            <button class="remove-item-btn ml-2 text-danger" data-index="${index}">
+                                <i class="fa-solid fa-x"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    cartContainer.appendChild(cartItem);
                 });
+
+                totalItemsElement.textContent = `${totalItems} Pcs`;
+                totalPriceElement.textContent = totalPrice.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                });
+                attachCartEventListeners();
+            }
+
+            // Attach event listeners to cart actions
+            function attachCartEventListeners() {
                 document.querySelectorAll('.remove-item-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.getAttribute('data-id');
-                        removeFromOrder(itemId);
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        cart.splice(index, 1);
+                        renderCart();
+                    });
+                });
+
+                document.querySelectorAll('.increase-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        if (cart[index].quantity < cart[index].stok) {
+                            cart[index].quantity++;
+                            renderCart();
+                        } else {
+                            alert('Jumlah item melebihi stok yang tersedia.');
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.decrease-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const index = button.getAttribute('data-index');
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity--;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                        renderCart();
                     });
                 });
             }
 
-            function removeFromOrder(itemId) {
-                const itemIndex = activeOrder.items.findIndex(item => item.id === itemId);
-                if (itemIndex !== -1) {
-                    const item = activeOrder.items[itemIndex];
-                    activeOrder.total -= item.price * item.quantity;
-                    activeOrder.totalItems -= item.quantity;
-                    activeOrder.items.splice(itemIndex, 1);
-                    updateActiveOrderDisplay();
-                }
+            // Trash all items
+            if (trashBtn) {
+                trashBtn.addEventListener('click', () => {
+                    if (confirm('Anda yakin ingin menghapus semua item?')) {
+                        cart = [];
+                        renderCart();
+                        cartContainer.innerHTML = '';
+                        totalItemsElement.textContent = '0 Pcs';
+                        totalPriceElement.textContent = '0';
+                    }
+                });
             }
-            document.querySelector('.trash-btn').addEventListener('click', function() {
-                activeOrder = {
-                    items: [],
-                    total: 0,
-                    totalItems: 0
-                };
-                updateActiveOrderDisplay();
-            });
-            const checkoutBtn = document.querySelector('.checkout-btn');
-            checkoutBtn.addEventListener('click', function(e) {
-                if (activeOrder.items.length === 0) {
-                    e.preventDefault();
-                    alert('Keranjang Anda kosong! Tambahkan produk terlebih dahulu.');
-                }
-                document.querySelector('input[name="orderData"]').value = JSON.stringify(activeOrder);
-                document.querySelector('form').submit();
+
+            // Checkout action
+            document.getElementById('checkoutBtn').addEventListener('click', function() {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const cartData = cart;
+
+                const id_bengkel = this.getAttribute('data-id-bengkel');
+
+                const endpoint = `/POS/tranksaksi/pos/${id_bengkel}/checkout`;
+
+                fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken,
+                        },
+                        body: JSON.stringify({
+                            cart: cartData,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = data.redirect;
+                        } else {
+                            alert(data.error || 'Terjadi kesalahan.');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     </script>

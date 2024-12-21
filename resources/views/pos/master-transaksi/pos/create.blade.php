@@ -14,9 +14,11 @@
             </h4>
         </div>
         <div class="card-body">
-            <form action="{{ route('pos.tranksaksi_pos.storecheckout', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-                method="POST" enctype="multipart/form-data">
+            <form
+                action="{{ route('pos.tranksaksi_pos.update', ['id_bengkel' => $bengkel->id_bengkel, 'id_order' => $order->id_order]) }}"
+                method="POST">
                 @csrf
+                @method('PUT')
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
 
                 <!-- Nama Customer -->
@@ -28,82 +30,91 @@
                 <!-- Tanggal -->
                 <div class="mb-3">
                     <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" class="form-control" id="tanggal" name="tanggal" required
-                        value="{{ now()->format('Y-m-d') }}">
+                    <input type="datetime-local" class="form-control" id="tanggal" name="tanggal"
+                        value="{{ now()->format('Y-m-d\TH:i') }}">
                 </div>
 
-                <!-- Tipe -->
                 <div class="mb-3">
-                    <label for="tipe" class="form-label">Tipe</label>
-                    <select class="form-control" id="tipe" name="tipe" required>
-                        <option value="produk">Produk</option>
-                        <option value="spare_part">Spare Part</option>
-                    </select>
-                </div>
-
-                <!-- Jenis Pembayaran -->
-                <div class="mb-3">
-                    <label for="jenis_pembayaran" class="form-label">Jenis Pembayaran</label>
-                    <select class="form-control" id="jenis_pembayaran" name="jenis_pembayaran" required>
-                        <option value="tunai">Tunai</option>
-                        <option value="kredit">Kredit</option>
-                    </select>
-                </div>
-
-                <!-- Nomor Kartu (hanya jika pembayaran kredit) -->
-                <div class="mb-3" id="no_kartu_group" style="display: none;">
-                    <label for="no_kartu" class="form-label">Nomor Kartu</label>
-                    <input type="text" class="form-control" id="no_kartu" name="no_kartu">
+                    <label for="Items">Items </label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Produk / Sparepart</th>
+                                <th>Qty</th>
+                                <th>Harga</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($order->orderItems as $item)
+                                <tr>
+                                    <td>
+                                        @if ($item->id_produk)
+                                            {{ $item->produk->nama_produk }}
+                                        @elseif($item->id_spare_part)
+                                            {{ $item->sparepart->nama_spare_part }}
+                                        @else
+                                            N/A
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->qty }}</td>
+                                    <td>{{ formatRupiah($item->harga) }}</td>
+                                    <td>{{ formatRupiah($item->subtotal) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
                 <!-- Harga -->
                 <div class="mb-3">
-                    <label for="harga" class="form-label">Harga</label>
-                    <input type="number" class="form-control" id="harga" name="harga" required>
+                    <label for="harga" class="form-label">Harga (Total)</label>
+                    <input type="hidden" id="harga" name="harga" value="{{ $order->total_harga }}">
+                    <input type="text" class="form-control" id="harga_display"
+                        value="{{ number_format($order->total_harga, 0, ',', '.') }}" readonly>
+                </div>
+
+                <!-- Qty -->
+                <div class="mb-3">
+                    <label for="qty" class="form-label">Qty (Total)</label>
+                    <input type="number" class="form-control" id="qty" name="qty"
+                        value="{{ $order->total_qty }}" readonly>
                 </div>
 
                 <!-- Diskon -->
                 <div class="mb-3">
                     <label for="diskon" class="form-label">Diskon (%)</label>
-                    <input type="number" class="form-control" id="diskon" name="diskon" value="0" min="0">
+                    <input type="number" class="form-control" id="diskon" name="diskon" min="0" max="100">
                 </div>
 
                 <!-- PPN -->
                 <div class="mb-3">
                     <label for="ppn" class="form-label">PPN (%)</label>
-                    <input type="number" class="form-control" id="ppn" name="ppn" value="0" min="0">
+                    <input type="number" class="form-control" id="ppn" name="ppn" min="0" max="100">
                 </div>
 
                 <!-- Total Harga -->
                 <div class="mb-3">
                     <label for="total_harga" class="form-label">Total Harga</label>
-                    <input type="text" class="form-control" id="total_harga" name="total_harga" readonly>
-                </div>
-
-                <!-- Total Qty -->
-                <div class="mb-3">
-                    <label for="total_qty" class="form-label">Total Quantity</label>
-                    <input type="number" class="form-control" id="total_qty" name="total_qty" value="1"
-                        min="1">
+                    <input type="hidden" id="total_harga" name="total_harga">
+                    <input type="text" class="form-control" id="total_harga_display" readonly>
                 </div>
 
                 <!-- Nominal Bayar -->
                 <div class="mb-3">
                     <label for="nominal_bayar" class="form-label">Nominal Bayar</label>
-                    <input type="number" class="form-control" id="nominal_bayar" name="nominal_bayar" required>
+                    <input type="hidden" id="nominal_bayar_hidden" name="nominal_bayar">
+                    <input type="text" class="form-control" id="nominal_bayar" value="0">
                 </div>
 
                 <!-- Kembali -->
                 <div class="mb-3">
                     <label for="kembali" class="form-label">Kembali</label>
-                    <input type="text" class="form-control" id="kembali" name="kembali" readonly>
+                    <input type="hidden" id="kembali" name="kembali">
+                    <input type="text" class="form-control" id="kembali_display" readonly>
                 </div>
 
-                <div class="d-flex gap-2 justify-content-end">
-                    <button type="submit" class="btn btn-custom-icon">Submit</button>
-                    <a href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}"
-                        class="btn btn-cancel">Cancel</a>
-                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
@@ -111,62 +122,61 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hargaInput = document.getElementById('harga');
+            const hargaDisplay = document.getElementById('harga_display');
             const diskonInput = document.getElementById('diskon');
             const ppnInput = document.getElementById('ppn');
-            const totalQtyInput = document.getElementById('total_qty');
-            const nominalBayarInput = document.getElementById('nominal_bayar');
             const totalHargaInput = document.getElementById('total_harga');
+            const totalHargaDisplay = document.getElementById('total_harga_display');
+            const nominalBayarInput = document.getElementById('nominal_bayar');
+            const nominalBayarHidden = document.getElementById('nominal_bayar_hidden'); // Hidden input
             const kembaliInput = document.getElementById('kembali');
-            const noKartuGroup = document.getElementById('no_kartu_group');
-            const jenisPembayaranSelect = document.getElementById('jenis_pembayaran');
-            const form = document.querySelector('form');
+            const kembaliDisplay = document.getElementById('kembali_display');
 
-            function hitungTotalHarga() {
-                const harga = parseFloat(hargaInput.value) || 0;
+            function formatRupiah(angka) {
+                return angka.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                });
+            }
+
+            function parseRupiah(value) {
+                return parseFloat(value.replace(/[^,\d]/g, '').replace(',', '.')) || 0;
+            }
+
+            function calculateTotal() {
+                const harga = parseRupiah(hargaDisplay.value) || 0;
                 const diskon = parseFloat(diskonInput.value) || 0;
                 const ppn = parseFloat(ppnInput.value) || 0;
-                const qty = parseInt(totalQtyInput.value) || 1;
 
-                let total = harga * qty;
-                total -= total * (diskon / 100);
-                total += total * (ppn / 100);
-                totalHargaInput.value = total.toFixed(2);
+                const hargaDiskon = harga - (harga * (diskon / 100));
+                const hargaTotal = hargaDiskon + (hargaDiskon * (ppn / 100));
+
+                totalHargaInput.value = hargaTotal.toFixed(2);
+                totalHargaDisplay.value = formatRupiah(hargaTotal);
             }
 
-            function hitungKembali() {
-                const totalHarga = parseFloat(totalHargaInput.value) || 0;
-                const nominalBayar = parseFloat(nominalBayarInput.value) || 0;
+            function calculateKembali() {
+                const totalHarga = parseRupiah(totalHargaDisplay.value);
+                const nominalBayar = parseRupiah(nominalBayarInput.value);
+
                 const kembali = nominalBayar - totalHarga;
-                kembaliInput.value = kembali >= 0 ? kembali.toFixed(2) : 0;
+
+                kembaliInput.value = kembali.toFixed(2);
+                kembaliDisplay.value = formatRupiah(kembali);
             }
 
-            function validateForm(event) {
-                const totalHarga = parseFloat(totalHargaInput.value) || 0;
-                const nominalBayar = parseFloat(nominalBayarInput.value) || 0;
-
-                if (nominalBayar < totalHarga) {
-                    event.preventDefault();
-                    alert('Nominal bayar tidak cukup!');
-                }
-            }
-
-            hargaInput.addEventListener('input', hitungTotalHarga);
-            diskonInput.addEventListener('input', hitungTotalHarga);
-            ppnInput.addEventListener('input', hitungTotalHarga);
-            totalQtyInput.addEventListener('input', hitungTotalHarga);
-            nominalBayarInput.addEventListener('input', hitungKembali);
-            jenisPembayaranSelect.addEventListener('change', function() {
-                if (this.value === 'kredit') {
-                    noKartuGroup.style.display = 'block';
-                } else {
-                    noKartuGroup.style.display = 'none';
-                }
+            nominalBayarInput.addEventListener('input', function() {
+                const nominalBayar = parseRupiah(this.value);
+                nominalBayarHidden.value = nominalBayar;
+                this.value = formatRupiah(nominalBayar);
+                calculateKembali();
             });
 
-            form.addEventListener('submit', validateForm);
+            diskonInput.addEventListener('input', calculateTotal);
+            ppnInput.addEventListener('input', calculateTotal);
 
-            hitungTotalHarga();
-            hitungKembali();
+            hargaDisplay.value = formatRupiah(parseFloat(hargaInput.value));
         });
     </script>
 
