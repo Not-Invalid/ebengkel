@@ -166,9 +166,9 @@
                                     <a class="nav-link"
                                         href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
                                 </li>
-                                <li class="{{ request()->routeIs('pos.tranksaksi_pesanan.index') ? 'active' : '' }}">
+                                <li class="">
                                     <a class="nav-link"
-                                        href="{{ route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Pesanan</a>
+                                        href="">Pesanan</a>
                                 </li>
                             </ul>
                         </li>
