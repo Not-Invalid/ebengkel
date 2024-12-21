@@ -204,12 +204,6 @@
                       </div>
                       <h5 class="card-title">
                         {{ \Illuminate\Support\Str::limit($bengkel->nama_bengkel, 20) }}</h5>
-                      <div class="mt-3">
-                        <div class="tagline d-flex justify-content-start">
-                          <span
-                            class="tagline">{{ \Illuminate\Support\Str::limit($bengkel->tagline_bengkel, 20) }}</span>
-                        </div>
-                      </div>
                     </div>
                   </a>
                 </div>
