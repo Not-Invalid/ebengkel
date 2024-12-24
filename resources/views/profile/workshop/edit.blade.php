@@ -14,17 +14,21 @@
                 $.get('/locations?province_id=' + provinceId, function(response) {
                     let kotaDropdown = $('#kota');
                     kotaDropdown.empty();
-                    kotaDropdown.append('<option value="" selected disabled hidden>Select City</option>');
+                    kotaDropdown.append(
+                        '<option value="" selected disabled hidden>Select City</option>');
 
                     if (response.cities && Array.isArray(response.cities)) {
                         $.each(response.cities, function(index, city) {
-                            kotaDropdown.append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
+                            kotaDropdown.append('<option value="' + city.city_id +
+                                '">' + city.city_name + '</option>');
                         });
                     }
                 });
             } else {
-                $('#kota').empty().append('<option value="" selected disabled hidden>Select City</option>');
-                $('#kecamatan').empty().append('<option value="" selected disabled hidden>Select District</option>').hide();
+                $('#kota').empty().append(
+                    '<option value="" selected disabled hidden>Select City</option>');
+                $('#kecamatan').empty().append(
+                    '<option value="" selected disabled hidden>Select District</option>').hide();
             }
         });
 
@@ -34,19 +38,23 @@
                 $.get('/locations?city_id=' + cityId, function(response) {
                     let kecamatanDropdown = $('#kecamatan');
                     kecamatanDropdown.empty();
-                    kecamatanDropdown.append('<option value="" selected disabled hidden>Select District</option>');
+                    kecamatanDropdown.append(
+                        '<option value="" selected disabled hidden>Select District</option>'
+                        );
 
                     if (response.subdistricts && Array.isArray(response.subdistricts)) {
                         $.each(response.subdistricts, function(index, subdistrict) {
-                            kecamatanDropdown.append('<option value="' + subdistrict.subdistrict_id + '">' + subdistrict.subdistrict_name + '</option>');
+                            kecamatanDropdown.append('<option value="' + subdistrict
+                                .subdistrict_id + '">' + subdistrict
+                                .subdistrict_name + '</option>');
                         });
                     }
 
-                    // Show district dropdown
                     kecamatanDropdown.show();
                 });
             } else {
-                $('#kecamatan').empty().append('<option value="" selected disabled hidden>Select District</option>').hide();
+                $('#kecamatan').empty().append(
+                    '<option value="" selected disabled hidden>Select District</option>').hide();
             }
         });
     });
@@ -203,7 +211,7 @@
             @csrf
             @method('PUT')
 
-            <!-- Cover Image -->
+
             <div class="form-group mb-4">
                 <div class="upload-box">
                     <label for="foto_cover_bengkel" class="upload-label">Cover Workshop Photo</label>
@@ -219,7 +227,7 @@
                 </div>
             </div>
 
-            <!-- Workshop Image -->
+
             <div class="form-group mb-4">
                 <div class="upload-box">
                     <label for="foto_bengkel" class="upload-label">Workshop Photo</label>
@@ -235,7 +243,7 @@
                 </div>
             </div>
 
-            <!-- Workshop Name -->
+
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="nama_bengkel" name="nama_bengkel"
@@ -244,7 +252,7 @@
                 </div>
             </div>
 
-            <!-- Tagline -->
+
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder=" " id="tagline_bengkel"
@@ -253,7 +261,7 @@
                 </div>
             </div>
 
-            <!-- Address -->
+
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <textarea class="did-floating-input form-control" name="alamat_bengkel" placeholder=" " rows="4" required
@@ -266,8 +274,9 @@
                 <div class="did-floating-label-content">
                     <select name="provinsi_id" id="provinsi" class="did-floating-select">
                         <option value="" selected disabled hidden>Select Province</option>
-                        @foreach($provinces as $province)
-                            <option value="{{ $province->province_id }}" {{ $province->province_id == $bengkel->provinsi_id ? 'selected' : '' }}>
+                        @foreach ($provinces as $province)
+                            <option value="{{ $province->province_id }}"
+                                {{ $province->province_id == $bengkel->provinsi_id ? 'selected' : '' }}>
                                 {{ $province->province_name }}
                             </option>
                         @endforeach
@@ -280,8 +289,9 @@
                 <div class="did-floating-label-content">
                     <select name="kota_id" id="kota" class="did-floating-select">
                         <option value="" selected disabled hidden>Select City</option>
-                        @foreach($cities as $city)
-                            <option value="{{ $city->city_id }}" {{ $city->city_id == $bengkel->kota_id ? 'selected' : '' }}>
+                        @foreach ($cities as $city)
+                            <option value="{{ $city->city_id }}"
+                                {{ $city->city_id == $bengkel->kota_id ? 'selected' : '' }}>
                                 {{ $city->city_name }}
                             </option>
                         @endforeach
@@ -294,8 +304,9 @@
                 <div class="did-floating-label-content">
                     <select name="kecamatan_id" id="kecamatan" class="did-floating-select">
                         <option value="" selected disabled hidden>Select District</option>
-                        @foreach($subdistricts as $subdistrict)
-                            <option value="{{ $subdistrict->subdistrict_id }}" {{ $subdistrict->subdistrict_id == $bengkel->kecamatan_id ? 'selected' : '' }}>
+                        @foreach ($subdistricts as $subdistrict)
+                            <option value="{{ $subdistrict->subdistrict_id }}"
+                                {{ $subdistrict->subdistrict_id == $bengkel->kecamatan_id ? 'selected' : '' }}>
                                 {{ $subdistrict->subdistrict_name }}
                             </option>
                         @endforeach
@@ -304,7 +315,7 @@
                 </div>
             </div>
 
-            <!-- Google Maps Link -->
+
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder="https://" id="gmaps" name="gmaps"
@@ -313,7 +324,7 @@
                 </div>
             </div>
 
-            <!-- Schedule -->
+
             <div class="form-group mb-3 text-center">
                 <label for="open_day" class="w-100">Open Day<span class="text-danger">*</span></label>
             </div>
@@ -387,7 +398,7 @@
                 </div>
             </div>
 
-            <!-- Clock -->
+
             <div class="form-group mb-3 text-center">
                 <label for="open_time" class="w-100">Open Hour<span class="text-danger">*</span></label>
             </div>
@@ -408,7 +419,7 @@
                 </div>
             </div>
 
-            <!-- Service Available -->
+
             <div class="form-group mb-4">
                 <label for="service_available" class="section-title">Service Available<span
                         class="text-danger">*</span></label>
@@ -427,7 +438,7 @@
                 </div>
             </div>
 
-            <!-- Bagian Payment Methods -->
+
             <div class="form-group mb-4">
                 <label for="payment" class="section-title">Payment Methods<span class="text-danger">*</span></label>
                 <div class="options-group">
@@ -440,7 +451,7 @@
                 </div>
             </div>
 
-            <!-- Bank Account Input (styled like the event form) -->
+
             <div class="form-group mb-3" id="bankAccountContainer"
                 style="display: {{ in_array('Manual Transfer', old('payment', $paymentMethods)) ? 'block' : 'none' }};">
                 @foreach ($bankAccounts as $index => $bankAccount)
@@ -504,7 +515,7 @@
 
             <div id="additional-bank-account-rows"></div>
 
-            <!-- Add Bank Account Button -->
+
             <div class="row mb-3">
                 <div class="col text-left">
                     <button type="button" class="btn btn-custom-3" id="add-bank-account"
@@ -513,7 +524,7 @@
                 </div>
             </div>
 
-            <!-- WhatsApp -->
+
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" name="whatsapp" placeholder="62"
@@ -523,7 +534,7 @@
                 </div>
             </div>
 
-            <!-- Instagram -->
+
             <div class="form-group mb-3">
                 <div class="did-floating-label-content">
                     <input class="did-floating-input" type="text" placeholder="username" id="instagram"
@@ -532,7 +543,7 @@
                 </div>
             </div>
 
-            <!-- Submit Button -->
+
             <div class="form-group">
                 <div class="d-flex justify-content-end align-items-center gap-2">
                     <a href="{{ route('profile.workshop') }}" class="btn btn-cancel">Cancel</a>
@@ -554,7 +565,7 @@
 
             const paymentManualTransfer = document.getElementById('paymentManualTransfer');
 
-            if (paymentManualTransfer && paymentQRIS) {
+            if (paymentManualTransfer) {
 
                 const bankAccountContainer = document.getElementById('bankAccountContainer');
                 const addBankAccountButton = document.getElementById('add-bank-account');
