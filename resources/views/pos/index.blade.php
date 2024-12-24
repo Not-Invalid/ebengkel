@@ -5,12 +5,11 @@
 @stop
 
 @php
-     $header = 'Dashboard';
+    $header = 'Dashboard';
 @endphp
 
 @section('content')
     <div class="row">
-        <!-- Stat cards for Total Services, Products, Spareparts -->
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="card card-statistic-1 shadow-sm">
                 <div class="card-icon bg-primary">
@@ -79,7 +78,8 @@
                 <div class="card-header">
                     <h4>Online Orders</h4>
                     <div class="card-header-action">
-                        <a href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}" class="btn btn-primary">View More <i class="fas fa-chevron-right"></i></a>
+                        <a href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+                            class="btn btn-primary">View More <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -95,7 +95,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($orders && $orders->isNotEmpty())
+                                @if ($orders && $orders->isNotEmpty())
                                     @foreach ($orders as $order)
                                         <tr>
                                             <td class="text-center">{{ $order->order_id }}</td>
@@ -107,19 +107,19 @@
                                                         'Waiting_Confirmation' => 'Menunggu Konfirmasi',
                                                         'DIKEMAS' => 'Dikemas',
                                                         'DIKIRIM' => 'Dikirim',
-                                                        'SELESAI' => 'Selesai'
+                                                        'SELESAI' => 'Selesai',
                                                     ];
                                                 @endphp
 
                                                 @if (array_key_exists($order->status_order, $statusNames))
-                                                    <div class="badge fixed-width
+                                                    <div
+                                                        class="badge fixed-width
                                                         @if ($order->status_order == 'PENDING') badge-secondary
                                                         @elseif ($order->status_order == 'Waiting_Confirmation') badge-warning
                                                         @elseif ($order->status_order == 'DIKEMAS') badge-primary
                                                         @elseif ($order->status_order == 'DIKIRIM') badge-info
                                                         @elseif ($order->status_order == 'SELESAI') badge-success
-                                                        @else badge-secondary
-                                                        @endif">
+                                                        @else badge-secondary @endif">
                                                         {{ $statusNames[$order->status_order] }}
                                                     </div>
                                                 @else
@@ -127,9 +127,11 @@
                                                 @endif
                                             </td>
 
-                                            <td class="text-center">{{ \Carbon\Carbon::parse($order->tanggal)->format('d-m-Y') }}</td>
+                                            <td class="text-center">
+                                                {{ \Carbon\Carbon::parse($order->tanggal)->format('d-m-Y') }}</td>
                                             <td class="d-flex align-items-center justify-content-center">
-                                                <a href="{{ route('pos.order-online.edit', ['id_bengkel' => $order->id_bengkel, 'order_id' => $order->order_id]) }}" class="btn btn-primary">Detail</a>
+                                                <a href="{{ route('pos.order-online.edit', ['id_bengkel' => $order->id_bengkel, 'order_id' => $order->order_id]) }}"
+                                                    class="btn btn-primary">Detail</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -152,37 +154,62 @@
                 <div class="card-header">
                     <h4>Top 5 Products</h4>
                     <div class="card-header-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">{{ ucfirst($periodeProduk) }}</a>
+                        <a href="#" data-toggle="dropdown"
+                            class="btn btn-primary dropdown-toggle">{{ ucfirst($periodeProduk) }}</a>
                         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <li class="dropdown-title">Select Periode</li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'day', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'day' ? 'active' : '' }}">Today</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'week', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'week' ? 'active' : '' }}">Week</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'month', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'month' ? 'active' : '' }}">Month</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'year', 'periodeSpareParts' => $periodeSpareParts]) }}" class="dropdown-item {{ $periodeProduk == 'year' ? 'active' : '' }}">This Year</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'day', 'periodeSpareParts' => $periodeSpareParts]) }}"
+                                    class="dropdown-item {{ $periodeProduk == 'day' ? 'active' : '' }}">Today</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'week', 'periodeSpareParts' => $periodeSpareParts]) }}"
+                                    class="dropdown-item {{ $periodeProduk == 'week' ? 'active' : '' }}">Week</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'month', 'periodeSpareParts' => $periodeSpareParts]) }}"
+                                    class="dropdown-item {{ $periodeProduk == 'month' ? 'active' : '' }}">Month</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeProduk' => 'year', 'periodeSpareParts' => $periodeSpareParts]) }}"
+                                    class="dropdown-item {{ $periodeProduk == 'year' ? 'active' : '' }}">This Year</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="card-body" id="top-5-scroll" tabindex="2" style="height: 315px; overflow: hidden; outline: none;">
+                <div class="card-body" id="top-5-scroll" tabindex="2"
+                    style="height: 315px; overflow: hidden; outline: none;">
                     <ul class="list-unstyled list-unstyled-border">
                         @php
-                            $maxQty = $topProducts->max();
+                            $maxQtyOnline = $topProductsOnline->max();
+                            $maxQtyOffline = $topProductsOffline->max();
                         @endphp
-                        @foreach ($topProducts as $productId => $qty)
+                        @foreach ($topProductsOnline as $productId => $onlineQty)
                             @php
                                 $product = \App\Models\Product::find($productId);
-                                $width = $maxQty > 0 ? round(($qty / $maxQty) * 100) : 0;
+                                $offlineQty = $topProductsOffline[$productId] ?? 0;
+                                $onlineWidth = $maxQtyOnline > 0 ? round(($onlineQty / $maxQtyOnline) * 100) : 0;
+                                $offlineWidth = $maxQtyOffline > 0 ? round(($offlineQty / $maxQtyOffline) * 100) : 0;
+                                $totalQty = $onlineQty + $offlineQty;
                             @endphp
-                            @if ($product)
+                            @if ($product && $totalQty > 0)
                                 <li class="media d-flex justify-content-center align-items-center">
-                                    <img class="mr-3 rounded bg-info" width="55" src="{{ asset('assets/images/bg/car.png') }}" alt="product">
+                                    <img class="mr-3 rounded bg-info" width="55"
+                                        src="{{ asset('assets/images/bg/car.png') }}" alt="product">
                                     <div class="media-body">
-                                        <div class="float-right"><div class="font-weight-600 text-muted text-small">{{ $qty }} Sales</div></div>
+                                        <div class="float-right">
+                                            <div class="font-weight-600 text-muted text-small">{{ $totalQty }}</div>
+                                        </div>
                                         <div class="media-title">{{ $product->nama_produk ?? 'Unknown Product' }}</div>
                                         <div class="mt-1">
-                                            <div class="budget-price">
-                                                <div class="budget-price-square bg-primary" data-width="{{ $width }}%" style="width: {{ $width }}%;"></div>
-                                                <div class="budget-price-label">{{ $qty }}</div>
-                                            </div>
+                                            @if ($onlineQty > 0)
+                                                <div class="budget-price">
+                                                    <div class="budget-price-square bg-primary"
+                                                        data-width="{{ $onlineWidth }}%"
+                                                        style="width: {{ $onlineWidth }}%;"></div>
+                                                    <div class="budget-price-label">{{ $onlineQty }}</div>
+                                                </div>
+                                            @endif
+                                            @if ($offlineQty > 0)
+                                                <div class="budget-price mt-1">
+                                                    <div class="budget-price-square bg-warning"
+                                                        data-width="{{ $offlineWidth }}%"
+                                                        style="width: {{ $offlineWidth }}%;"></div>
+                                                    <div class="budget-price-label">{{ $offlineQty }}</div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
@@ -194,6 +221,10 @@
                     <div class="budget-price justify-content-center">
                         <div class="budget-price-square bg-primary" data-width="20" style="width: 20px;"></div>
                         <div class="budget-price-label">Online</div>
+                    </div>
+                    <div class="budget-price justify-content-center">
+                        <div class="budget-price-square bg-warning" data-width="20" style="width: 20px;"></div>
+                        <div class="budget-price-label">Offline</div>
                     </div>
                 </div>
             </div>
@@ -204,42 +235,71 @@
                 <div class="card-header">
                     <h4>Top 5 Spareparts</h4>
                     <div class="card-header-action dropdown">
-                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">{{ ucfirst($periodeSpareParts) }}</a>
+                        <a href="#" data-toggle="dropdown"
+                            class="btn btn-primary dropdown-toggle">{{ ucfirst($periodeSpareParts) }}</a>
                         <ul class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <li class="dropdown-title">Select Periode</li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'day', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'day' ? 'active' : '' }}">Today</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'week', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'week' ? 'active' : '' }}">Week</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'month', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'month' ? 'active' : '' }}">Month</a></li>
-                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'year', 'periodeProduk' => $periodeProduk]) }}" class="dropdown-item {{ $periodeSpareParts == 'year' ? 'active' : '' }}">This Year</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'day', 'periodeProduk' => $periodeProduk]) }}"
+                                    class="dropdown-item {{ $periodeSpareParts == 'day' ? 'active' : '' }}">Today</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'week', 'periodeProduk' => $periodeProduk]) }}"
+                                    class="dropdown-item {{ $periodeSpareParts == 'week' ? 'active' : '' }}">Week</a></li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'month', 'periodeProduk' => $periodeProduk]) }}"
+                                    class="dropdown-item {{ $periodeSpareParts == 'month' ? 'active' : '' }}">Month</a>
+                            </li>
+                            <li><a href="{{ route('pos.index', ['id_bengkel' => $bengkel->id_bengkel, 'periodeSpareParts' => 'year', 'periodeProduk' => $periodeProduk]) }}"
+                                    class="dropdown-item {{ $periodeSpareParts == 'year' ? 'active' : '' }}">This Year</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                <div class="card-body" id="top-5-scroll" tabindex="2" style="height: 315px; overflow: hidden; outline: none;">
+                <div class="card-body" id="top-5-scroll" tabindex="2"
+                    style="height: 315px; overflow: hidden; outline: none;">
                     <ul class="list-unstyled list-unstyled-border">
                         @php
-                            $maxQtySpareParts = $topSpareParts->max();
+                            $maxQtySparePartsOnline = $topSparePartsOnline->max();
+                            $maxQtySparePartsOffline = $topSparePartsOffline->max();
                         @endphp
-                        @foreach ($topSpareParts as $sparePartId => $qty)
+                        @foreach ($topSparePartsOnline as $sparePartId => $onlineQty)
                             @php
                                 $sparePart = \App\Models\SpareParts::find($sparePartId);
-                                $width = $maxQtySpareParts > 0 ? round(($qty / $maxQtySpareParts) * 100) : 0;
+                                $offlineQtySpareParts = $topSparePartsOffline[$sparePartId] ?? 0;
+                                $onlineWidth = $maxQtySparePartsOnline > 0 ? round(($onlineQty / $maxQtySparePartsOnline) * 100) : 0;
+                                $offlineWidth = $maxQtySparePartsOffline > 0 ? round(($offlineQtySpareParts / $maxQtySparePartsOffline) * 100) : 0;
+                                $totalQty = $onlineQty + $offlineQtySpareParts;
                             @endphp
-                            @if ($sparePart)
+                            @if ($sparePart && $totalQty > 0)
                                 <li class="media d-flex justify-content-center align-items-center">
-                                    <img class="mr-3 rounded bg-info" width="55" src="{{ asset('assets/images/bg/car.png') }}" alt="sparepart">
+                                    <img class="mr-3 rounded bg-info" width="55"
+                                        src="{{ asset('assets/images/bg/car.png') }}" alt="sparepart">
                                     <div class="media-body">
-                                        <div class="float-right"><div class="font-weight-600 text-muted text-small">{{ $qty }} Sales</div></div>
-                                        <div class="media-title">{{ $sparePart->nama_spare_part ?? 'Unknown Spare Part' }}</div>
+                                        <div class="float-right">
+                                            <div class="font-weight-600 text-muted text-small">{{ $totalQty }}</div>
+                                        </div>
+                                        <div class="media-title">{{ $sparePart->nama_spare_part ?? 'Unknown Spare Part' }}
+                                        </div>
                                         <div class="mt-1">
-                                            <div class="budget-price">
-                                                <div class="budget-price-square bg-primary" data-width="{{ $width }}%" style="width: {{ $width }}%;"></div>
-                                                <div class="budget-price-label">{{ $qty }}</div>
-                                            </div>
+                                            @if ($onlineQty > 0)
+                                                <div class="budget-price">
+                                                    <div class="budget-price-square bg-primary"
+                                                        data-width="{{ $onlineWidth }}%"
+                                                        style="width: {{ $onlineWidth }}%;"></div>
+                                                    <div class="budget-price-label">{{ $onlineQty }}</div>
+                                                </div>
+                                            @endif
+                                            @if ($offlineQtySpareParts > 0)
+                                                <div class="budget-price mt-2">
+                                                    <div class="budget-price-square bg-warning"
+                                                        data-width="{{ $offlineWidth }}%"
+                                                        style="width: {{ $offlineWidth }}%;"></div>
+                                                    <div class="budget-price-label">{{ $offlineQtySpareParts }}</div>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
                             @endif
                         @endforeach
+
                     </ul>
                 </div>
                 <div class="card-footer pt-3 d-flex justify-content-center">
@@ -247,9 +307,13 @@
                         <div class="budget-price-square bg-primary" data-width="20" style="width: 20px;"></div>
                         <div class="budget-price-label">Online</div>
                     </div>
+                    <div class="budget-price justify-content-center">
+                        <div class="budget-price-square bg-warning" data-width="20" style="width: 20px;"></div>
+                        <div class="budget-price-label">Offline</div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
+
 @endsection
