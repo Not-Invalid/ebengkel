@@ -255,14 +255,14 @@ style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom:
                     <div class="form-group mb-3" id="namaRekeningGroup">
                         <div class="did-floating-label-content">
                             <input class="did-floating-input" type="text" placeholder=" " id="nama_rekening" name="nama_rekening" />
-                            <label class="did-floating-label">Nama Rekening<span class="text-danger">*</span></label>
+                            <label class="did-floating-label">Nama Rekening Pembeli<span class="text-danger">*</span></label>
                         </div>
                     </div>
 
                     <div class="form-group mb-3" id="noRekeningGroup">
                         <div class="did-floating-label-content">
                             <input class="did-floating-input" type="text" placeholder=" " id="no_rekening" name="no_rekening" />
-                            <label class="did-floating-label">No Rekening<span class="text-danger">*</span></label>
+                            <label class="did-floating-label">No Rekening Pembeli<span class="text-danger">*</span></label>
                         </div>
                     </div>
 
@@ -344,6 +344,10 @@ style="position: relative; overflow: hidden; padding-top: 100px; padding-bottom:
 </section>
 
 <script>
+    document.getElementById('no_rekening').addEventListener('input', function (e) {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
     function formatRupiahJS(angka) {
         return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
