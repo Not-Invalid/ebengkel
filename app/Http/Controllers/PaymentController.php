@@ -13,12 +13,8 @@ use App\Services\RajaOngkirService;
 
 class PaymentController extends Controller
 {
-    public function index(
-        Request $request,
-        $order_id,
-        $id,
-        RajaOngkirService $rajaOngkirService
-    ) {
+    public function index(Request $request, $order_id, $id, RajaOngkirService $rajaOngkirService)
+    {
         $order = OrderOnline::where("order_id", $order_id)->first();
 
         if (!$order) {
@@ -88,8 +84,8 @@ class PaymentController extends Controller
         $isDueDatePassed = $currentDate->greaterThan($dueDate);
 
         $orderItems = OrderItemOnline::with(["produk", "sparepart"])
-            ->where("id_order_online", $order->id)
-            ->get();
+                                      ->where("id_order_online", $order->id)
+                                      ->get();
 
         $produkItem = null;
         $sparepartItem = null;
@@ -101,12 +97,9 @@ class PaymentController extends Controller
             }
         }
 
-        $paymentMethods = $bengkel->payment
-            ? json_decode($bengkel->payment, true)
-            : [];
-        $rekeningBank = $bengkel->rekening_bank
-            ? json_decode($bengkel->rekening_bank, true)
-            : [];
+        $paymentMethods = is_array($bengkel->payment) ? $bengkel->payment : json_decode($bengkel->payment, true);
+        $rekeningBank = is_array($bengkel->rekening_bank) ? $bengkel->rekening_bank : json_decode($bengkel->rekening_bank, true);
+
 
         return view(
             "transaction.payment",
