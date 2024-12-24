@@ -28,7 +28,6 @@
     <link rel="stylesheet" href="{{ asset('template_pos/modules/bootstrap-daterangepicker/daterangepicker.css') }}">
     <link rel="stylesheet"
         href="{{ asset('template_pos/modules/bootstrap-timepicker/css/bootstrap-timepicker.min.css') }}">
-
     {{-- Css libraries --}}
     <link rel="stylesheet" href="{{ asset('template_pos/modules/jqvmap/dist/jqvmap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('template_pos/modules/weather-icon/css/weather-icons.min.css') }}" />
@@ -166,9 +165,8 @@
                                     <a class="nav-link"
                                         href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
                                 </li>
-                                <li class="{{ request()->routeIs('pos.tranksaksi_pesanan.index') ? 'active' : '' }}">
-                                    <a class="nav-link"
-                                        href="{{ route('pos.tranksaksi_pesanan.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">Pesanan</a>
+                                <li class="">
+                                    <a class="nav-link">Pesanan</a>
                                 </li>
                             </ul>
                         </li>
@@ -225,8 +223,15 @@
                                 <span>Orders</span></a>
                             <ul class="dropdown-menu">
                                 <li class="{{ request()->routeIs('pos.order-online') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}">
                                         Online Orders
+                                    </a>
+                                </li>
+                                <li class="{{ request()->routeIs('pos.service-order') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.service-order', ['id_bengkel' => $bengkel->id_bengkel]) }}">
+                                        Service Orders
                                     </a>
                                 </li>
                             </ul>
@@ -341,9 +346,12 @@
     <script src="{{ asset('template_pos/js/custom.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></scrip>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js">
+        < /scrip>
 
-    <script src="{{ asset('template_pos/js/page/forms-advanced-forms.js') }}"></script>
+        <
+        script src = "{{ asset('template_pos/js/page/forms-advanced-forms.js') }}" >
+    </script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -351,27 +359,27 @@
     {{-- Toastr JS --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-  <script>
-    toastr.options = {
-      "closeButton": true,
-      "progressBar": true,
-      "positionClass": "toast-top-right",
-      "timeOut": "3000"
-    };
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
+        };
 
 
-    // Display success message
-    @if (session('status'))
-      toastr.success("{{ session('status') }}");
-    @endif
+        // Display success message
+        @if (session('status'))
+            toastr.success("{{ session('status') }}");
+        @endif
 
-    // Display error message
-    @if (session('status_error'))
-      toastr.error("{{ session('status_error') }}");
-    @endif
-  </script>
+        // Display error message
+        @if (session('status_error'))
+            toastr.error("{{ session('status_error') }}");
+        @endif
+    </script>
     {{-- Loader script --}}
     <script>
         function show(value) {
