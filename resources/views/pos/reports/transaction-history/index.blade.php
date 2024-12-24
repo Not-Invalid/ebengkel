@@ -13,14 +13,30 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-body">
-          <div class="d-flex justify-start mb-4">
-            <div class="form-group">
-              <label class="d-block">Date Range Picker With Button</label>
-              <a href="javascript:;" class="btn btn-primary daterange-btn icon-left btn-icon"><i class="fas fa-calendar"></i>
-                Choose Date
-              </a>
+          <div class="d-flex flex-column flex-md-row mb-4">
+            <!-- Start Date -->
+            <div class="form-group mb-3 mb-md-0 mr-md-3">
+              <label class="d-block">Start Date</label>
+              <input type="date" name="start_date" id="start_date" class="form-control" value="{{ $startDate }}"
+                min="2000-01-01" max="{{ now()->format('Y-m-d') }}" />
+            </div>
+
+            <!-- End Date -->
+            <div class="form-group mb-3 mb-md-0 mr-md-3">
+              <label class="d-block">End Date</label>
+              <input type="date" name="end_date" id="end_date" class="form-control" value="{{ $endDate }}"
+                min="2000-01-01" max="{{ now()->format('Y-m-d') }}" />
+            </div>
+
+            <!-- Apply Date Range Button -->
+            <div class="form-group  mb-3 mb-md-0 mr-md-3 align-self-end">
+              <button type="button" id="applyDateRange" class="btn btn-info text-white px-4 py-2 mx-2">Apply Date
+                Range</button>
             </div>
           </div>
+
+
+
 
           <div class="d-flex justify-between">
             <div class="d-flex justify-start mb-4">
@@ -202,6 +218,35 @@
       };
 
       filterTable('transaction-table-body', [1, 2]);
+    });
+    document.getElementById('applyDateRange').addEventListener('click', function() {
+      const startDate = document.getElementById('start_date').value;
+      const endDate = document.getElementById('end_date').value;
+
+      // Pastikan kedua tanggal dipilih
+      if (!startDate || !endDate) {
+        toastr.error('Please select both start and end dates.');
+        return;
+      }
+
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+
+      // Hitung selisih hari antara startDate dan endDate
+      const timeDifference = end - start;
+      const dayDifference = timeDifference / (1000 * 3600 * 24); // Convert to days
+
+      // Jika lebih dari 31 hari, tampilkan toastr error
+      if (dayDifference > 31) {
+        toastr.error('The date range cannot be more than 31 days.');
+        return;
+      }
+
+      // Jika valid, lanjutkan dengan memperbarui URL
+      let url = new URL(window.location.href);
+      url.searchParams.set('start_date', startDate);
+      url.searchParams.set('end_date', endDate);
+      window.location.href = url;
     });
   </script>
 @endsection
