@@ -9,6 +9,7 @@ use App\Models\SpareParts;
 use App\Models\Product;
 use App\Models\OrderOnline;
 use App\Models\OrderItemOnline;
+use App\Models\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -44,36 +45,73 @@ class HomeController extends Controller
                                         ->count();
 
         $orders = OrderOnline::with('orderItems.produk', 'orderItems.sparepart', 'pelanggan', 'bengkel')
-                            ->where('id_bengkel', $id_bengkel)
-                            ->orderBy('tanggal', 'desc')
-                            ->take(6)
-                            ->get();
+                             ->where('id_bengkel', $id_bengkel)
+                             ->orderBy('tanggal', 'desc')
+                             ->take(6)
+                             ->get();
+
+        $salesDataOnline = OrderItemOnline::with(['produk', 'sparepart'])
+                                          ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
+                                              $query->where('id_bengkel', $id_bengkel)
+                                                    ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
+                                          })
+                                          ->get();
+
+        $salesDataOffline = OrderItem::with(['produk', 'sparepart'])
+                                     ->whereHas('order', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
+                                         $query->where('id_bengkel', $id_bengkel)
+                                               ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
+                                     })
+                                     ->get();
+
+        $salesDataOnlineProducts = $salesDataOnline->whereNotNull('id_produk');
+        $salesDataOfflineProducts = $salesDataOffline->whereNotNull('id_produk');
 
 
-        $salesData = OrderItemOnline::with(['produk', 'sparepart'])
-                                    ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
-                                        $query->where('id_bengkel', $id_bengkel)
-                                            ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
-                                    })
-                                    ->get();
+        $salesDataOnlineSpareParts = $salesDataOnline->whereNotNull('id_spare_part');
+        $salesDataOfflineSpareParts = $salesDataOffline->whereNotNull('id_spare_part');
 
 
-        $topProducts = $salesData->whereNotNull('id_produk')
-                                ->groupBy('id_produk')
-                                ->map(function ($item) {
-                                    return $item->sum('qty');
-                                })
-                                ->sortDesc()
-                                ->take(5);
+        $topProductsOnline = $salesDataOnlineProducts->groupBy('id_produk')
+                                                     ->map(function ($item) {
+                                                         return $item->sum('qty');
+                                                     })
+                                                     ->sortDesc()
+                                                     ->take(5);
 
+        $topProductsOffline = $salesDataOfflineProducts->groupBy('id_produk')
+                                                      ->map(function ($item) {
+                                                          return $item->sum('qty');
+                                                      })
+                                                      ->sortDesc()
+                                                      ->take(5);
 
-        $topSpareParts = $salesData->whereNotNull('id_spare_part')
-                                ->groupBy('id_spare_part')
-                                ->map(function ($item) {
-                                    return $item->sum('qty');
-                                })
-                                ->sortDesc()
-                                ->take(5);
+        $topSparePartsOnline = $salesDataOnlineSpareParts->groupBy('id_spare_part')
+                                                        ->map(function ($item) {
+                                                            return $item->sum('qty');
+                                                        })
+                                                        ->sortDesc()
+                                                        ->take(5);
+
+        $topSparePartsOffline = $salesDataOfflineSpareParts->groupBy('id_spare_part')
+                                                          ->map(function ($item) {
+                                                              return $item->sum('qty');
+                                                          })
+                                                          ->sortDesc()
+                                                          ->take(5);
+
+        $totalQtyProducts = [];
+        $totalQtySpareParts = [];
+
+        foreach ($topProductsOnline as $id_produk => $onlineQtyProduct) {
+            $offlineQtyProducts = $topProductsOffline[$id_produk] ?? 0;
+            $totalQtyProducts[$id_produk] = $onlineQtyProduct + $offlineQtyProducts;
+        }
+
+        foreach ($topSparePartsOnline as $sparePartId => $onlineQtySparePart) {
+            $offlineQtySpareParts = $topSparePartsOffline[$sparePartId] ?? 0;
+            $totalQtySpareParts[$sparePartId] = $onlineQtySparePart + $offlineQtySpareParts;
+        }
 
         return view('pos.index', compact(
             'bengkel',
@@ -82,11 +120,14 @@ class HomeController extends Controller
             'totalProducts',
             'totalOrderOnline',
             'orders',
-            'topProducts',
-            'topSpareParts',
+            'topProductsOnline',
+            'topProductsOffline',
+            'topSparePartsOnline',
+            'topSparePartsOffline',
             'periodeProduk',
-            'periodeSpareParts'
+            'periodeSpareParts',
+            'totalQtyProducts',
+            'totalQtySpareParts'
         ));
     }
-
 }
