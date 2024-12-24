@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 class CreateVLabaRugiView extends Migration
 {
@@ -39,13 +38,32 @@ class CreateVLabaRugiView extends Migration
     private function createView()
     {
         return <<<SQL
-            CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_laba_rugi` AS
-            SELECT CAST(`a`.`tanggal` AS DATE) AS `tanggal`,
-                   'Penjualan' AS `keterangan`,
-                   '0' AS `nominal_debit`,
-                   `a`.`total_harga` AS `nominal_kredit`
-            FROM `t_order` AS `a`;
-        SQL;
+        CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_laba_rugi` AS
+        SELECT
+            CAST(`t_order`.`tanggal` AS DATE) AS `tanggal`,
+            'Penjualan Offline' AS `keterangan`,
+            0 AS `nominal_debit`,
+            `t_order`.`total_harga` AS `nominal_kredit`
+        FROM `t_order`
+
+        UNION ALL
+
+        SELECT
+            CAST(`t_order_online`.`tanggal` AS DATE) AS `tanggal`,
+            'Penjualan Online' AS `keterangan`,
+            0 AS `nominal_debit`,
+            `t_order_online`.`total_harga` AS `nominal_kredit`
+        FROM `t_order_online`
+
+        UNION ALL
+
+        SELECT
+            `t_pengeluaran`.`tanggal` AS `tanggal`,
+            'Pengeluaran' AS `keterangan`,
+            `t_pengeluaran`.`nominal` AS `nominal_debit`,
+            0 AS `nominal_kredit`
+        FROM `t_pengeluaran`;
+    SQL;
     }
 
     /**
