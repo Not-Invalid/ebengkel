@@ -19,7 +19,10 @@ class PesananService extends Model
         'nama_pemesan',
         'tgl_pesanan',
         'nama_services',
+        'jumlah_services_online',
+        'jumlah_services_offline',
         'status',
+        'jenis',
         'total_pesanan',
     ];
     public function pelanggan()
@@ -29,9 +32,9 @@ class PesananService extends Model
     public function service()
     {
         return $this->belongsTo(Service::class, 'nama_services', 'id_services');
-    }public function pegawai()
+    }
+    public function pegawai()
     {
         return $this->belongsTo(Pegawai::class, 'id_pegawai', 'id_pegawai');
     }
-
 }
