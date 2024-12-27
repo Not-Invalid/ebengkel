@@ -1,0 +1,189 @@
+
+ .custom-tab-link {
+    color: #000;
+    font-weight: 600;
+    text-align: center;
+    font-size: 13px;
+    text-decoration: none;
+    padding: 1.2rem 2rem;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    transition: color 0.3s ease;
+  }
+
+  .custom-tabs .custom-tab-link i {
+    margin-right: 5px;
+  }
+
+  .custom-dropdown option {
+    padding-left: 10px;
+    /* Menambahkan jarak kiri di dalam option */
+  }
+
+  .custom-tabs {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .custom-tab-item {
+    margin-bottom: -1px;
+    position: relative;
+  }
+
+  .custom-tab-item::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 15%;
+    height: 70%;
+    width: 0.1px;
+    background-color: #d7e2ee;
+  }
+
+  .custom-tab-item:last-child::after {
+    display: none;
+  }
+
+  .custom-tab-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 50%;
+    height: 2px;
+    background-color: var(--main-blue);
+    transition: transform 0.3s ease;
+  }
+
+  .custom-tab-link.active {
+    color: #000;
+  }
+
+  .custom-tab-link.active::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  .custom-tabs-container {
+    position: relative;
+  }
+
+  .custom-dropdown {
+    display: none;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    background-color: white;
+    outline: none;
+  }
+
+  .custom-dropdown:focus,
+  .custom-dropdown:active {
+    border: none;
+  }
+
+  .tab-pane {
+    display: none;
+    /* Menyembunyikan semua tab secara default */
+  }
+
+  .tab-pane.active {
+    display: block;
+    /* Menampilkan tab yang aktif */
+  }
+
+  .tab-pane.show {
+    display: block;
+    /* Menampilkan tab yang sedang aktif dengan kelas show */
+  }
+
+  .cart-item {
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  .cart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+
+  .cart-item img {
+    border-radius: 8px;
+    height: 100px;
+    width: 100px;
+  }
+/* Tambahkan media query untuk tampilan mobile */
+@media (max-width: 576px) {
+    .cart-item {
+      flex-direction: column; /* Tata letak menjadi vertikal */
+      align-items: flex-start; /* Pusatkan item ke kiri */
+    }
+  
+    .cart-item-image {
+      margin-bottom: 15px; /* Tambahkan jarak bawah gambar */
+      width: 100%; /* Gambar memenuhi lebar item */
+      display: flex;
+      justify-content: center; /* Pusatkan gambar */
+    }
+  
+    .cart-item img {
+      max-width: 80px; /* Kurangi ukuran gambar di layar kecil */
+      max-height: 80px;
+    }
+  
+    .cart-item-details {
+      width: 100%; /* Detail produk memenuhi lebar */
+    }
+  
+    .cart-item-details h6 {
+      font-size: 1rem; /* Kurangi ukuran font pada judul */
+    }
+  
+    .cart-item-details .btn {
+      width: 100%; /* Tombol memenuhi lebar di layar kecil */
+      text-align: center;
+    }
+  }
+  
+
+  /* Menyembunyikan tab pada perangkat mobile dan tablet */
+  @media (max-width: 768px) {
+    .custom-tabs {
+      display: none;
+      /* Sembunyikan tab pada layar kecil */
+    }
+
+    .custom-dropdown {
+      display: block;
+      /* Tampilkan dropdown pada perangkat mobile/tablet */
+    }
+  }
+
+  /* Menampilkan tab pada layar besar */
+  @media (min-width: 769px) {
+    .custom-dropdown {
+      display: none;
+      /* Sembunyikan dropdown pada perangkat desktop */
+    }
+
+    .custom-tabs {
+      display: flex;
+      /* Menampilkan tab pada layar besar */
+    }
+  }
