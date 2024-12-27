@@ -50,19 +50,21 @@ class HomeController extends Controller
                              ->take(6)
                              ->get();
 
-        $salesDataOnline = OrderItemOnline::with(['produk', 'sparepart'])
-                                          ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
-                                              $query->where('id_bengkel', $id_bengkel)
-                                                    ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
-                                          })
-                                          ->get();
+                             $salesDataOnline = OrderItemOnline::with(['produk', 'sparepart'])
+                             ->whereHas('orderOnline', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
+                                 $query->where('id_bengkel', $id_bengkel)
+                                       ->where('status_order', 'SELESAI')
+                                       ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
+                             })
+                             ->get();
 
-        $salesDataOffline = OrderItem::with(['produk', 'sparepart'])
-                                     ->whereHas('order', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
-                                         $query->where('id_bengkel', $id_bengkel)
-                                               ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
-                                     })
-                                     ->get();
+    $salesDataOffline = OrderItem::with(['produk', 'sparepart'])
+                        ->whereHas('order', function ($query) use ($id_bengkel, $startDateProduk, $endDateProduk) {
+                            $query->where('id_bengkel', $id_bengkel)
+                                  ->where('status', 'SUCCESS')
+                                  ->whereBetween('tanggal', [$startDateProduk, $endDateProduk]);
+                        })
+                        ->get();
 
         $salesDataOnlineProducts = $salesDataOnline->whereNotNull('id_produk');
         $salesDataOfflineProducts = $salesDataOffline->whereNotNull('id_produk');
