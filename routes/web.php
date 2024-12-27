@@ -14,6 +14,7 @@ use App\Http\Controllers\Pos\AuthController as PosAuthController;
 use App\Http\Controllers\Pos\ExpenseRecordController as PosExpenseRecordController;
 use App\Http\Controllers\Pos\HomeController as PosHomeController;
 use App\Http\Controllers\Pos\JenisPengeluaranController as PosExpenseTypeController;
+use App\Http\Controllers\Pos\LabaRugiController as PosLabaRugiController;
 use App\Http\Controllers\Pos\OrderOnlineController as PosOrderOnlineController;
 use App\Http\Controllers\Pos\ServiceOrderController as PosServiceOrderController;
 use App\Http\Controllers\Pos\PegawaiController as PosPegawaiController;
@@ -334,6 +335,9 @@ Route::middleware(['lang'])->group(function () {
         Route::get('accounting/expense-record/{id_bengkel}/edit/{id_pengeluaran}', [PosExpenseRecordController::class, 'edit'])->name('pos.expense-record.edit');
         Route::put('accounting/expense-record/{id_bengkel}/update/{id_pengeluaran}', [PosExpenseRecordController::class, 'update'])->name('pos.expense-record.update');
         Route::delete('accounting/expense-record/{id_bengkel}/delete/{id_pengeluaran}', [PosExpenseRecordController::class, 'delete'])->name('pos.expense-record.delete');
+        Route::get('accounting/laba-rugi/{id_bengkel}', [PosLabaRugiController::class, 'index'])->name('pos.laba_rugi');
+        Route::get('accounting/laporan-labarugi/export-pdf/{id_bengkel}', [PosLabaRugiController::class, 'exportPdf'])->name('labarugi.export.pdf');
+        Route::get('accounting/laporan-labarugi/export-excel/{id_bengkel}', [PosLabaRugiController::class, 'exportExcel'])->name('labarugi.export.excel');
 
         Route::get('report/achievement-summary/{id_bengkel}', [PosAchievementSummaryController::class, 'index'])->name('pos.achievement-summary');
         Route::get('report/monitoring-stock/{id_bengkel}', [PosMonitoringStockController::class, 'index'])->name('pos.monitoring-stock');

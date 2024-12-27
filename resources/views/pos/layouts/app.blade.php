@@ -206,7 +206,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown ">
+                        <li
+                            class="dropdown {{ request()->routeIs('pos.expense-record.*') || request()->routeIs('pos.laba_rugi') ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-calculator"></i>
                                 <span>Accounting</span></a>
                             <ul class="dropdown-menu">
@@ -214,6 +215,11 @@
                                     <a class="nav-link"
                                         href="{{ route('pos.expense-record', ['id_bengkel' => $bengkel->id_bengkel]) }}">Expense
                                         Record</a>
+                                </li>
+                                <li class="{{ request()->routeIs('pos.laba_rugi') ? 'active' : '' }}">
+                                    <a class="nav-link"
+                                        href="{{ route('pos.laba_rugi', ['id_bengkel' => $bengkel->id_bengkel]) }}">Laba
+                                        / Rugi</a>
                                 </li>
                             </ul>
                         </li>
