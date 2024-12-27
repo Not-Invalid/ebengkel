@@ -28,49 +28,55 @@ class TransactionHistoryController extends Controller
             return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
-        // Get the list of orders (Pesanan, PesananService, and OrderOnline)
+        // Default to current month's start and end if no date range is provided
+        $startDate = $request->get('start_date', now()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->get('end_date', now()->endOfMonth()->format('Y-m-d'));
+
+        // Get the list of orders based on date range
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
+            ->whereBetween('tanggal', [$startDate, $endDate])
             ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
 
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
-            ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan', 'id_pegawai']); // Ensure id_pegawai is fetched
+            ->whereBetween('tgl_pesanan', [$startDate, $endDate])
+            ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan', 'id_pegawai']);
 
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
+            ->whereBetween('tanggal', [$startDate, $endDate])
             ->get(['id_pelanggan', 'total_harga', 'atas_nama']);
 
         $transactions = [];
 
-        // Adding regular orders (Pesanan)
+        // Add regular orders (Pesanan)
         foreach ($pesanan as $order) {
             $transactions[] = [
                 'customer_name' => $order->nama_customer,
                 'transaction_type' => $order->tipe,
                 'payment_method' => $order->jenis_pembayaran,
                 'total_price' => $order->total_harga,
-                'cashier' => $order->input_by, // Cashier info is stored as 'input_by' here
+                'cashier' => $order->input_by,
                 'action' => 'View',
             ];
         }
 
-        // Get all employees (pegawai) for the given bengkel to reduce queries in loop
+        // Get employees (pegawai) for the given bengkel
         $pegawaiData = Pegawai::where('id_bengkel', $id_bengkel)->get()->keyBy('id_pegawai');
 
-        // Adding PesananService orders
+        // Add PesananService orders
         foreach ($pesanan_service as $service) {
-            // Retrieve cashier (if stored, else assign 'Unknown')
-            $cashier = $pegawaiData->get($service->id_pegawai); // Get the employee using the id_pegawai
+            $cashier = $pegawaiData->get($service->id_pegawai);
             $transactions[] = [
                 'customer_name' => $service->nama_pemesan,
                 'transaction_type' => 'Service',
-                'payment_method' => 'Cash', // Fixed value for service orders
+                'payment_method' => 'Cash',
                 'total_price' => $service->total_pesanan,
-                'cashier' => $cashier ? $cashier->nama_pegawai : 'Online Order', // If the cashier is not found, default to 'Unknown Cashier'
+                'cashier' => $cashier ? $cashier->nama_pegawai : 'Online Order',
                 'action' => 'View',
             ];
         }
 
-        // Adding Online Orders
+        // Add Online Orders
         foreach ($order_online as $online_order) {
             $transactions[] = [
                 'customer_name' => $online_order->atas_nama,
@@ -82,7 +88,7 @@ class TransactionHistoryController extends Controller
             ];
         }
 
-        return view('pos.reports.transaction-history.index', compact('bengkel', 'transactions', 'id_bengkel'));
+        return view('pos.reports.transaction-history.index', compact('bengkel', 'transactions', 'id_bengkel', 'startDate', 'endDate'));
     }
 
     public function downloadPdf($id_bengkel)
