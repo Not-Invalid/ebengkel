@@ -5,7 +5,7 @@
 @stop
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/myorder.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/myorder.css') }}">
 @endpush
 
 @section('content')
@@ -15,12 +15,9 @@
         @foreach ($statusNames as $key => $name)
           <li class="custom-tab-item">
             <a class="custom-tab-link {{ $status == $key ? 'active' : '' }}"
-               href="{{ route('my-order.index', ['status' => $key]) }}" data-tab="{{ $key }}">
+              href="{{ route('my-order.index', ['status' => $key]) }}" data-tab="{{ $key }}">
               <i class="fas
-                {{ $key == 'PENDING' ? 'fa-credit-card' :
-                   ($key == 'Waiting_Confirmation' ? 'fa-hourglass' :
-                   ($key == 'DIKEMAS' ? 'fa-box-open' :
-                   ($key == 'DIKIRIM' ? 'fa-truck-fast' : 'fa-check-circle'))) }}">
+                {{ $key == 'PENDING' ? 'fa-credit-card' : ($key == 'Waiting_Confirmation' ? 'fa-hourglass' : ($key == 'DIKEMAS' ? 'fa-box-open' : ($key == 'DIKIRIM' ? 'fa-truck-fast' : 'fa-check-circle'))) }} ">
               </i>
               {{ $name }}
             </a>
@@ -40,7 +37,6 @@
 
     <div class="w-100 shadow bg-white rounded my-5" style="padding: 1rem;">
       <div class="container my-4">
-        <!-- Konten Tab -->
         <div class="tab-content">
           @foreach ($statusNames as $key => $name)
             <div class="tab-pane {{ $status == $key ? 'active show' : '' }}" id="{{ $key }}">
@@ -56,42 +52,45 @@
                   </div>
                 @else
                   @foreach ($filteredOrders as $order)
-                    <a href="{{ route('my-order.detail', ['order_id' => $order->order_id]) }}" class="cart-item text-decoration-none d-flex flex-column flex-sm-row align-items-center mb-3 p-3 border rounded shadow-sm"
-                         data-id="{{ $order->order_id }}" data-stock="{{ $order->orderItems->sum('qty') }}"
-                         data-price="{{ $order->grand_total }}" data-href="{{ route('my-order.detail', ['order_id' => $order->order_id]) }}">
+                    <a href="{{ route('my-order.detail', ['order_id' => $order->order_id]) }}"
+                      class="text-decoration-none">
+                      <div
+                        class="cart-item d-flex flex-column flex-sm-row align-items-center justify-content-between mb-3 p-3 border rounded shadow-sm"
+                        data-id="{{ $order->order_id }}" data-stock="{{ $order->orderItems->sum('qty') }}"
+                        data-price="{{ $order->grand_total }}">
 
-                      <div class="cart-item-image me-3 mb-3 mb-sm-0">
-                        @foreach ($order->orderItems as $orderItem)
-                          <img src="{{ $orderItem->imageUrl }}" class="card-img-top"
-                               alt="{{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Default Image') }}">
-                        @endforeach
-                      </div>
-
-                      <div class="cart-item-details flex-grow-1">
-                        <h6>
+                        <div class="cart-item-image flex-shrink-0 me-3">
                           @foreach ($order->orderItems as $orderItem)
-                            {{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Produk / Spare Part Tidak Ditemukan') }}
+                            <img src="{{ $orderItem->imageUrl }}" class="rounded"
+                              alt="{{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Default Image') }}"
+                              style="width: 100px; height: 100px; object-fit: cover;">
                           @endforeach
-                        </h6>
-                        <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
-                        <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga) }}</p>
-                      </div>
+                        </div>
 
-                      <!-- Order Quantity -->
-                      <div class="cart-item-quantity d-flex align-items-center me-3 mb-3 mb-sm-0">
-                        <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }} Produk</p>
+                        <div class="cart-item-details d-flex flex-column flex-grow-1">
+                          <h6 class="mb-2">
+                            @foreach ($order->orderItems as $orderItem)
+                              {{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Produk / Spare Part Tidak Ditemukan') }}
+                            @endforeach
+                          </h6>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
+                            <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }}
+                              Produk</p>
+                          </div>
+                          <div class="d-flex justify-content-between align-items-center mt-2">
+                            <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga) }}</p>
+                            @if ($order->status_order == 'PENDING')
+                              <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
+                                class="btn btn-custom-2">Bayar Sekarang</a>
+                            @elseif($order->status_order == 'SELESAI')
+                              <a href="#" class="btn btn-custom-2 beli-lagi-btn" data-order-id="{{ $order->order_id }}">
+                                Beli Lagi
+                              </a>
+                            @endif
+                          </div>
+                        </div>
                       </div>
-
-                      <!-- Action Buttons -->
-                      <div class="d-flex flex-column mt-2">
-                        @if ($order->status_order == 'PENDING')
-                          <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
-                             class="btn btn-custom-2 mb-2">Bayar Sekarang</a>
-                        @elseif($order->status_order == 'SELESAI')
-                          <a href="{{ route('order.buy-again', $order->order_id) }}" class="btn btn-success mb-2">Beli Lagi</a>
-                        @endif
-                      </div>
-
                     </a>
                   @endforeach
                 @endif
@@ -102,4 +101,57 @@
       </div>
     </div>
   </section>
+
+  <script>
+document.querySelectorAll('.beli-lagi-btn').forEach(function(button) {
+  button.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default behavior (e.g., following a link)
+
+    const orderId = this.dataset.orderId; // Get the order ID from the button's data attribute
+    const products = []; // Array to store the product data
+
+    // Find the order by ID
+    @foreach ($orders as $order)
+      if (orderId == '{{ $order->order_id }}') {
+        @foreach ($order->orderItems as $orderItem)
+          products.push({
+            id_produk: '{{ $orderItem->produk->id_produk ?? null }}',
+            id_spare_part: '{{ $orderItem->sparepart->id_spare_part ?? null }}',
+            quantity: '{{ $orderItem->qty }}'
+          });
+        @endforeach
+      }
+    @endforeach
+
+    // Send AJAX request to add products to cart
+    fetch("{{ route('cart.add') }}", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      },
+      body: JSON.stringify({
+        products: products,
+        buy_now: false  // Set to true if you want to redirect to checkout after adding to cart
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        toastr.success(data.message);  // Show success toast with message
+        window.location.href = data.redirect_url; // Optionally redirect
+      } else {
+        toastr.error(data.message);  // Show error toast if the request fails
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      toastr.error('There was an error processing your request.'); // Show generic error message
+    });
+  });
+});
+
+
+
+  </script>
 @endsection
