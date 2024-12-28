@@ -5,10 +5,10 @@ namespace App\Http\Controllers\POS;
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
 use App\Models\LabaRugi;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Mpdf\Mpdf;
 
 class LabaRugiController extends Controller
 {
@@ -44,7 +44,7 @@ class LabaRugiController extends Controller
         $totalDebit = $query->sum('nominal_debit');
         $totalKredit = $query->sum('nominal_kredit');
 
-        return view('pos.accounting.laporan-laba-rugi', compact('bengkel', 'labarugi', 'start', 'end', 'totalEntries', 'totalDebit', 'totalKredit'));
+        return view('pos.accounting.report-profit-loss', compact('bengkel', 'labarugi', 'start', 'end', 'totalEntries', 'totalDebit', 'totalKredit'));
     }
 
     public function exportPdf(Request $request, $id_bengkel)
@@ -63,37 +63,62 @@ class LabaRugiController extends Controller
         $totalDebit = $query->sum('nominal_debit');
         $totalKredit = $query->sum('nominal_kredit');
 
-        $pdf = Pdf::loadView('pos.download.laporan-laba-rugi-pdf', compact('bengkel', 'labarugi', 'totalDebit', 'totalKredit'));
-        return $pdf->download('laporan_laba_rugi.pdf');
+        $html = view('pos.download.laporan-laba-rugi-pdf', compact('bengkel', 'labarugi', 'totalDebit', 'totalKredit'))->render();
+
+        // Generate PDF using mPDF
+        $mpdf = new Mpdf();
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('laporan_laba_rugi.pdf', 'D');
     }
 
-    public function exportExcel($id_bengkel)
+    public function exportExcel(Request $request, $id_bengkel)
     {
         $bengkel = Bengkel::findOrFail($id_bengkel);
+
         $query = LabaRugi::query();
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('tanggal', 'like', "%{$search}%")
+                    ->orWhere('keterangan', 'like', "%{$search}%");
+            });
+        }
+
         $labarugi = $query->get();
         $totalDebit = $query->sum('nominal_debit');
         $totalKredit = $query->sum('nominal_kredit');
 
-        $fileName = 'laporan_laba_rugi.xlsx';
+        // Menyiapkan data untuk Excel
+        $data = [];
+        $data[] = ['No', 'Tanggal', 'Keterangan', 'Nominal Debit', 'Nominal Kredit'];
 
-        return Excel::create($fileName, function ($excel) use ($labarugi, $totalDebit, $totalKredit) {
-            $excel->sheet('Laporan Laba Rugi', function ($sheet) use ($labarugi, $totalDebit, $totalKredit) {
-                $sheet->row(1, ['No', 'Tanggal', 'Keterangan', 'Nominal Debit', 'Nominal Kredit']);
+        foreach ($labarugi as $index => $item) {
+            $data[] = [
+                $index + 1,
+                $item->tanggal,
+                $item->keterangan,
+                $item->nominal_debit,
+                $item->nominal_kredit,
+            ];
+        }
 
-                $row = 2;
-                foreach ($labarugi as $index => $item) {
-                    $sheet->row($row++, [
-                        $index + 1,
-                        $item->tanggal,
-                        $item->keterangan,
-                        $item->nominal_debit,
-                        $item->nominal_kredit,
-                    ]);
-                }
+        // Tambahkan baris total
+        $data[] = ['Total', '', '', $totalDebit, $totalKredit];
 
-                $sheet->row($row, ['Total', '', '', $totalDebit, $totalKredit]);
-            });
-        })->export('xlsx');
+        // Generate Excel dengan Laravel Excel
+        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray
+        {
+            protected $data;
+
+            public function __construct(array $data)
+            {
+                $this->data = $data;
+            }
+
+            public function array(): array
+            {
+                return $this->data;
+            }
+        }, 'laporan_laba_rugi.xlsx');
     }
+
 }
