@@ -4,35 +4,10 @@
   eBengkelku | Order Detail
 @stop
 
-<style>
-  .cart-item-details h6 {
-    font-size: 1rem;
-  }
+@push('css')
+  <link rel="stylesheet" href="{{ asset('assets/css/detail-order.css') }}">
+@endpush
 
-  .cart-item-details p {
-    font-size: 0.9rem;
-  }
-
-  .cart-item-image img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .cart-item-details .d-flex.flex-column {
-    gap: 10px;
-  }
-
-  .product-quantity {
-    font-size: 0.9rem;
-    padding-left: 10px;
-  }
-
-  .info-p {
-    margin-bottom: 0;
-    font-size: 14px;
-    color: gray;
-  }
-</style>
 
 @section('content')
   <section class="mt-5">
@@ -62,60 +37,91 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <p><strong>Status:</strong>
-                <span class="fw-semibold
-                    @if($order->status_order == 'PENDING')
-                        text-warning
-                    @elseif($order->status_order == 'SELESAI')
-                        text-success
-                    @else
-                        text-dark
-                    @endif
-                ">
-                    {{ $order->status_order }}
-                </span>
+              <span class="fw-semibold">
+                {{ $statusNames[$order->status_order] ?? $order->status_order }}
+              </span>
             </p>
+          </div>
 
-          </div>
+
           <div class="col-md-6 text-md-end">
-            <p><strong>Total Price:</strong> <span class="text-primary fw-bold">Rp {{ number_format($order->grand_total, 0, ',', '.') }}</span></p>
+            <p><strong>Total Price:</strong> <span class="text-primary fw-bold">Rp
+                {{ number_format(
+                    $order->orderItems->sum(function ($item) {
+                        return $item->harga * $item->qty;
+                    }),
+                    0,
+                    ',',
+                    '.',
+                ) }}</span>
+            </p>
           </div>
+
         </div>
 
         <h6 class="mt-4"><strong>Product Details:</strong></h6>
         <div class="order-items">
-          @foreach($order->orderItems as $item)
-          <div class="cart-item d-flex flex-column flex-md-row align-items-center mb-3 p-3 border rounded shadow-sm">
-            <div class="cart-item-image me-3 mb-3 mb-md-0">
-              <img src="{{ asset('assets/images/components/image.png') }}" alt="Product Image" class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;" />
-            </div>
-            <div class="cart-item-details flex-grow-1">
-              <h6 class="mb-1">@foreach ($order->orderItems as $orderItem)
-                @if ($orderItem->produk)
-                    {{ $orderItem->produk->nama_produk }}
-                @elseif ($orderItem->sparepart)
-                    {{ $orderItem->sparepart->nama_spare_part }}
-                @else
-                    Produk / Spare Part Tidak Ditemukan
-                @endif
-            @endforeach
+          @foreach ($order->orderItems as $item)
+            @php
+              $type = null;
+              $id = null;
 
-              </h6>
-              <div class="d-flex justify-content-between align-items-center">
-                <p class="text-muted mb-1">{{ $order->bengkel->name }}</p>
-                <span class="product-quantity ms-3">x{{ $item->qty }}</span>
-              </div>
-              <div class="d-flex flex-column flex-md-row justify-content-between">
-                <p class="text-primary fw-bold mb-1">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
-                <p class="fw-bold mb-1">Total: Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
-              </div>
-            </div>
-          </div>
+              // Periksa apakah produk ada
+              if ($item->produk) {
+                  $type = 'product';
+                  $id = $item->produk->id_produk; // Ambil ID produk
+              }
+              // Periksa apakah sparepart ada
+              elseif ($item->sparepart) {
+                  $type = 'sparepart';
+                  $id = $item->sparepart->id_spare_part; // Ambil ID sparepart
+              }
+            @endphp
+
+            @if ($type && $id)
+              <!-- Buat link hanya jika produk atau sparepart ada -->
+              <a href="{{ route('Detail-ProductSparePart', ['type' => $type, 'id' => $id]) }}"
+                class="text-decoration-none">
+                <div
+                  class="cart-item d-flex flex-column flex-sm-row align-items-center justify-content-between mb-3 p-3 border rounded shadow-sm">
+                  <!-- Gambar produk atau sparepart -->
+                  <div class="cart-item-image flex-shrink-0 mb-3 mb-sm-0 me-3">
+                    <img src="{{ $item->imageUrl }}" class="rounded"
+                      alt="{{ $item->produk->nama_produk ?? ($item->sparepart->nama_spare_part ?? 'Default Image') }}">
+                  </div>
+
+                  <div class="cart-item-details d-flex flex-column flex-grow-1">
+                    <h6 class="mb-2">
+                      {{ $item->produk->nama_produk ?? ($item->sparepart->nama_spare_part ?? 'Produk / Spare Part Tidak Ditemukan') }}
+                    </h6>
+
+                    <div
+                      class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                      <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
+                      <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }} Produk</p>
+                    </div>
+
+                    <div
+                      class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-2">
+                      <p class="text-primary fw-bold mb-1">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
+                      <p class="fw-bold mb-1">Total: Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            @else
+              <!-- Tampilkan pesan jika produk atau sparepart tidak ada -->
+              <p>Item unavailable or missing details</p>
+            @endif
           @endforeach
+
+
+
         </div>
 
         <div class="mt-4">
           <h6><strong>Order Notes:</strong></h6>
-          <p>{{ $order->invoice->note ?? 'No additional notes for this order.' }}</p>
+          <p>{{ $order->invoice->note ?? '' }}</p>
         </div>
 
         <div class="mt-4">
@@ -136,9 +142,9 @@
               <p><strong>ID Order</strong></p>
             </div>
             <div class="col-6 text-end">
-              <p>{{ $order->order_id }}
+              <p id="orderIdText">{{ $order->order_id }}
                 <span>
-                  <a href="" target="_blank" class="btn btn-custom-2"
+                  <a href="javascript:void(0);" id="copyButton" class="btn btn-custom-2"
                     style="padding: 1px 5px !important; background-color:white !important; border-color:grey !important; color:black !important;">
                     Salin
                   </a>
@@ -146,12 +152,13 @@
               </p>
             </div>
           </div>
+
           <div class="row">
             <div class="col-6">
               <p class="info-p">Payment Method</p>
             </div>
             <div class="col-6 text-end">
-              <p class="info-p">{{ $order->invoice->nama_rekening ?? 'Bank BRI' }}</p>
+              <p class="info-p">{{ $order->invoice->jenis_pembayaran ?? '' }}</p>
             </div>
           </div>
           <div class="row">
@@ -175,7 +182,7 @@
                 <p class="info-p">Order Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">2024-12-05 10:00</p>
+                <p class="info-p">{{ $order->tanggal }}</p>
               </div>
             </div>
             <div class="row">
@@ -183,7 +190,7 @@
                 <p class="info-p">Payment Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">2024-12-05 11:00</p>
+                <p class="info-p">{{ $order->invoice->tanggal_bayar }}</p>
               </div>
             </div>
             <div class="row">
@@ -191,7 +198,7 @@
                 <p class="info-p">Shipping Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">2024-12-06 08:00</p>
+                <p class="info-p">{{ $order->tanggal_kirim }}</p>
               </div>
             </div>
             <div class="row">
@@ -199,7 +206,7 @@
                 <p class="info-p">Completed Order Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">2024-12-06 12:00</p>
+                <p class="info-p">{{ $order->tanggal_diterima }}</p>
               </div>
             </div>
           </div>
@@ -215,8 +222,6 @@
     </div>
   </div>
 
-
-  <!-- Modal for Proof of Payment -->
   <div class="modal fade" id="paymentProofModal" tabindex="-1" aria-labelledby="paymentProofModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -227,8 +232,8 @@
         </div>
         <div class="modal-body">
           <div class="d-flex justify-content-center">
-            <img src="{{ isset($invoice) && $invoice->bukti_bayar ? url($invoice->bukti_bayar) : asset('assets/images/components/image.png') }}" alt="Bukti Pembayaran" class="img-fluid"
-              id="paymentImage" style="max-width: 100%; max-height: 400px; cursor: zoom-in;">
+            <img src="{{ $order->invoice->bukti_bayar }}" class="img-fluid" alt="Bukti Pembayaran" id="paymentImage"
+              style="max-width: 100%; max-height: 400px; cursor: zoom-in;">
           </div>
         </div>
       </div>
@@ -236,12 +241,47 @@
   </div>
 
   <script>
+    document.getElementById('copyButton').addEventListener('click', function() {
+      // Ambil teks ID Order dari elemen dengan id 'orderIdText', kecuali tombol "Salin"
+      const orderId = document.getElementById('orderIdText').textContent.trim().split(" ")[0];
+
+      // Salin teks ID Order ke clipboard
+      navigator.clipboard.writeText(orderId).then(function() {
+        // Tampilkan Toastr sukses jika berhasil menyalin
+        toastr.success('ID Order telah disalin ke clipboard!', '', {
+          positionClass: 'toast-top-right', // Posisi toast
+          closeButton: true, // Tombol close
+          progressBar: true, // Menampilkan progress bar
+          timeOut: 3000, // Waktu tampil
+        });
+      }).catch(function(err) {
+        // Tampilkan Toastr error jika gagal
+        toastr.error('Gagal menyalin ID Order.', '', {
+          positionClass: 'toast-top-right',
+          closeButton: true,
+          progressBar: true,
+          timeOut: 3000,
+        });
+      });
+    });
+
+
+
+
     const paymentImage = document.getElementById('paymentImage');
     paymentImage.addEventListener('click', function() {
-      const currentZoom = parseFloat(window.getComputedStyle(paymentImage).getPropertyValue('transform').split(',')[3]) || 1;
+      // Ambil nilai transform saat ini
+      const currentTransform = window.getComputedStyle(paymentImage).getPropertyValue('transform');
+
+      // Jika belum ada transformasi, anggap scale=1
+      const currentZoom = currentTransform === 'none' ? 1 : parseFloat(currentTransform.split(',')[3]);
+
+      // Tentukan zoom baru (zoom in jika scale 1, zoom out jika sudah lebih dari 1)
       const newZoom = currentZoom === 1 ? 2 : 1;
+
+      // Terapkan transformasi dengan zoom baru
       paymentImage.style.transform = `scale(${newZoom})`;
-      paymentImage.style.transition = 'transform 0.3s ease';
+      paymentImage.style.transition = 'transform 0.3s ease'; // Animasi halus saat zoom
     });
   </script>
 @endsection

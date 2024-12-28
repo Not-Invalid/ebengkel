@@ -92,7 +92,8 @@
                           </div>
                           <div
                             class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-2">
-                            <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga) }}</p>
+                            <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga, 0, ',', '.') }}
+                            </p>
                             @if ($order->status_order == 'PENDING')
                               <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
                                 class="btn btn-custom-2 mt-2 mt-sm-0">Bayar Sekarang</a>
