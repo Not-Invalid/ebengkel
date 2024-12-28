@@ -9,6 +9,8 @@ use App\Models\FotoSparepart;
 use App\Models\KategoriSparePart;
 use App\Models\Product;
 use App\Models\SpareParts;
+use App\Models\OrderItem;
+use App\Models\OrderItemOnline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -23,14 +25,12 @@ class ProductSparePartController extends Controller
         $querySparepart = SpareParts::where('delete_spare_part', 'N')->with('bengkel', 'fotoSparepart');
         $queryProduct = Product::where('delete_produk', 'N')->with('bengkel', 'fotoProduk');
 
-        // Jika ada pencarian
         if ($request->has('search')) {
             $search = $request->input('search');
             $querySparepart->where('nama_spare_part', 'LIKE', '%' . $search . '%');
             $queryProduct->where('nama_produk', 'LIKE', '%' . $search . '%');
         }
 
-        // Filter berdasarkan kategori
         if ($category === 'product') {
             $product = $queryProduct->paginate(12);
             $sparepart = null;
@@ -50,9 +50,31 @@ class ProductSparePartController extends Controller
         if ($type == 'product') {
             $data = Product::where('id_produk', $id)->first();
             $photos = FotoProduk::where('id_produk', $id)->first();
+
+            $soldQuantity = OrderItemOnline::where('id_produk', $id)
+                            ->whereHas('orderOnline', function ($query) {
+                                $query->where('status_order', 'SELESAI');
+                            })
+                            ->sum('qty') +
+                            OrderItem::where('id_produk', $id)
+                            ->whereHas('order', function ($query) {
+                                $query->where('status', 'SUCCESS');
+                            })
+                            ->sum('qty');
         } elseif ($type == 'sparepart') {
             $data = SpareParts::where('id_spare_part', $id)->first();
             $photos = FotoSparepart::where('id_spare_part', $id)->first();
+
+            $soldQuantity = OrderItemOnline::where('id_spare_part', $id)
+                            ->whereHas('orderOnline', function ($query) {
+                                $query->where('status_order', 'SELESAI');
+                            })
+                            ->sum('qty') +
+                            OrderItem::where('id_spare_part', $id)
+                            ->whereHas('order', function ($query) {
+                                $query->where('status', 'SUCCESS');
+                            })
+                            ->sum('qty');
         } else {
             abort(404);
         }
@@ -61,7 +83,6 @@ class ProductSparePartController extends Controller
             abort(404);
         }
 
-        // Proses foto menjadi array dinamis
         $photoArray = [];
         for ($i = 1; $i <= 5; $i++) {
             $column = $type === 'product' ? "file_foto_produk_$i" : "file_foto_spare_part_$i";
@@ -70,242 +91,11 @@ class ProductSparePartController extends Controller
             }
         }
 
-        // Tentukan foto utama dan foto kecil
         $mainPhoto = $photoArray[0] ?? asset('assets/images/default.png');
         $thumbnailPhotos = array_slice($photoArray, 1);
 
         $data->load('bengkel');
 
-        return view('ProductSparepart.detail-ProductSparePart', compact('data', 'mainPhoto', 'thumbnailPhotos'));
+        return view('ProductSparepart.detail-ProductSparePart', compact('data', 'mainPhoto', 'thumbnailPhotos', 'soldQuantity'));
     }
-
-    public function createSparepart()
-    {
-        if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in.');
-        }
-
-        $id_pelanggan = Session::get('id_pelanggan');
-        $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
-
-        if (!$bengkel) {
-            return redirect()->route('home')->with('status_error', 'No associated workshop found.');
-        }
-
-        $id_bengkel = $bengkel->id_bengkel;
-
-        $kategoriSparePart = KategoriSparePart::all();
-        return view('profile.workshop.workshopSET.Sparepart.create', compact('kategoriSparePart', 'id_bengkel', 'bengkel'));
-    }
-    public function saveSparePart(Request $request)
-    {
-        $request->validate([
-            'id_bengkel' => 'nullable|integer',
-            'id_kategori_spare_part' => 'nullable|integer',
-            'kualitas_spare_part' => 'nullable|string',
-            'merk_spare_part' => 'nullable|string',
-            'nama_spare_part' => 'nullable|string',
-            'harga_spare_part' => 'nullable|integer',
-            'keterangan_spare_part' => 'nullable|string',
-            'stok_spare_part' => 'nullable|integer',
-            'foto_spare_part' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $sparePart = new SpareParts();
-        $sparePart->id_bengkel = $request->id_bengkel;
-        $sparePart->id_kategori_spare_part = $request->id_kategori_spare_part;
-        $sparePart->kualitas_spare_part = $request->kualitas_spare_part;
-        $sparePart->merk_spare_part = $request->merk_spare_part;
-        $sparePart->nama_spare_part = $request->nama_spare_part;
-        $sparePart->harga_spare_part = $request->harga_spare_part;
-        $sparePart->keterangan_spare_part = $request->keterangan_spare_part;
-        $sparePart->stok_spare_part = $request->stok_spare_part;
-
-        if ($request->hasFile('foto_spare_part')) {
-            $imageName = 'foto_spare_part_' . now()->format('Ymd_His') . '.' . $request->foto_spare_part->extension();
-            $request->foto_spare_part->move(public_path('assets/images/spareparts'), $imageName);
-            $sparePart->foto_spare_part = 'assets/images/spareparts/' . $imageName;
-        }
-
-        $sparePart->save();
-
-        return redirect()->route('profile.workshop.detail', ['id_bengkel' => $sparePart->id_bengkel])
-            ->with('status', 'Spare part berhasil ditambahkan.');
-    }
-    public function editSparepart($id_spare_part)
-    {
-        if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in .');
-        }
-
-        $id_pelanggan = Session::get('id_pelanggan');
-        $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
-        $sparePart = SpareParts::findOrFail($id_spare_part);
-
-        $kategoriSparePart = KategoriSparePart::all();
-        return view('profile.workshop.workshopSET.Sparepart.edit', compact('sparePart', 'kategoriSparePart', 'bengkel'));
-    }
-
-    public function updateSparepart(Request $request, $id)
-    {
-        $request->validate([
-            'id_kategori_spare_part' => 'nullable|integer',
-            'kualitas_spare_part' => 'nullable|string',
-            'merk_spare_part' => 'nullable|string',
-            'nama_spare_part' => 'nullable|string',
-            'harga_spare_part' => 'nullable|integer',
-            'keterangan_spare_part' => 'nullable|string',
-            'stok_spare_part' => 'nullable|integer',
-            'foto_spare_part' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $sparePart = SpareParts::findOrFail($id);
-        $sparePart->id_kategori_spare_part = $request->id_kategori_spare_part;
-        $sparePart->kualitas_spare_part = $request->kualitas_spare_part;
-        $sparePart->merk_spare_part = $request->merk_spare_part;
-        $sparePart->nama_spare_part = $request->nama_spare_part;
-        $sparePart->harga_spare_part = $request->harga_spare_part;
-        $sparePart->keterangan_spare_part = $request->keterangan_spare_part;
-        $sparePart->stok_spare_part = $request->stok_spare_part;
-
-        if ($request->hasFile('foto_spare_part')) {
-            $imageName = 'foto_spare_part_' . now()->format('Ymd_His') . '.' . $request->foto_spare_part->extension();
-            $request->foto_spare_part->move(public_path('assets/images/spareparts'), $imageName);
-            $sparePart->foto_spare_part = 'assets/images/spareparts/' . $imageName;
-        }
-
-        $sparePart->save();
-
-        return redirect()->route('profile.workshop.detail', ['id_bengkel' => $sparePart->id_bengkel])
-            ->with('status', 'Spare part berhasil diupdate.');
-    }
-    public function delete($id_spare_part)
-    {
-        $sparePart = DB::table('tb_spare_part')->where('id_spare_part', $id_spare_part)->first();
-
-        if ($sparePart) {
-            DB::table('tb_spare_part')->where('id_spare_part', $id_spare_part)->update([
-                'delete_spare_part' => 'Y',
-            ]);
-            return back()->with('status', 'Spare part deleted successfully.');
-        } else {
-            return back()->with('status_error', 'Address not found.');
-        }
-    }
-
-    public function createProduct()
-    {
-        if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in to add a service.');
-        }
-
-        $id_pelanggan = Session::get('id_pelanggan');
-        $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
-
-        if (!$bengkel) {
-            return redirect()->route('home')->with('status_error', 'No associated workshop found.');
-        }
-
-        $id_bengkel = $bengkel->id_bengkel;
-
-        $kategoriSparePart = KategoriSparePart::all();
-        return view('profile.workshop.workshopSET.products.create', compact('kategoriSparePart', 'id_bengkel', 'bengkel'));
-    }
-
-    public function saveProduct(Request $request)
-    {
-        $request->validate([
-            'id_bengkel' => 'nullable|integer',
-            'id_kategori_spare_part' => 'nullable|integer',
-            'kualitas_produk' => 'nullable|string',
-            'merk_produk' => 'nullable|string',
-            'nama_produk' => 'nullable|string',
-            'harga_produk' => 'nullable|integer',
-            'keterangan_produk' => 'nullable|string',
-            'stok_produk' => 'nullable|integer',
-            'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $Produk = new Product();
-        $Produk->id_bengkel = $request->id_bengkel;
-        $Produk->id_kategori_spare_part = $request->id_kategori_spare_part;
-        $Produk->kualitas_produk = $request->kualitas_produk;
-        $Produk->merk_produk = $request->merk_produk;
-        $Produk->nama_produk = $request->nama_produk;
-        $Produk->harga_produk = $request->harga_produk;
-        $Produk->keterangan_produk = $request->keterangan_produk;
-        $Produk->stok_produk = $request->stok_produk;
-
-        if ($request->hasFile('foto_produk')) {
-            $imageName = 'foto_produk_' . now()->format('Ymd_His') . '.' . $request->foto_produk->extension();
-            $request->foto_produk->move(public_path('assets/images/product'), $imageName);
-            $Produk->foto_produk = 'assets/images/product/' . $imageName;
-        }
-
-        $Produk->save();
-
-        return redirect()->route('profile.workshop.detail', ['id_bengkel' => $Produk->id_bengkel])
-            ->with('status', 'Produk berhasil ditambahkan.');
-    }
-    public function editProduct($id_product)
-    {
-        if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in .');
-        }
-
-        $id_pelanggan = Session::get('id_pelanggan');
-        $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
-
-        $product = Product::findOrFail($id_product);
-        $kategoriSparePart = KategoriSparePart::all();
-        return view('profile.workshop.workshopSET.products.edit', compact('product', 'kategoriSparePart', 'bengkel'));
-    }
-
-    public function updateProduct(Request $request, $id)
-    {
-        $request->validate([
-            'id_kategori_spare_part' => 'nullable|integer',
-            'kualitas_produk' => 'nullable|string',
-            'merk_produk' => 'nullable|string',
-            'nama_produk' => 'nullable|string',
-            'harga_produk' => 'nullable|integer',
-            'keterangan_produk' => 'nullable|string',
-            'stok_produk' => 'nullable|integer',
-            'foto_produk' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $product = Product::findOrFail($id);
-        $product->id_kategori_spare_part = $request->id_kategori_spare_part;
-        $product->kualitas_produk = $request->kualitas_produk;
-        $product->merk_produk = $request->merk_produk;
-        $product->nama_produk = $request->nama_produk;
-        $product->harga_produk = $request->harga_produk;
-        $product->keterangan_produk = $request->keterangan_produk;
-        $product->stok_produk = $request->stok_produk;
-
-        if ($request->hasFile('foto_produk')) {
-            $imageName = 'foto_produk_' . now()->format('Ymd_His') . '.' . $request->foto_produk->extension();
-            $request->foto_produk->move(public_path('assets/images/spareparts'), $imageName);
-            $product->foto_produk = 'assets/images/spareparts/' . $imageName;
-        }
-
-        $product->save();
-
-        return redirect()->route('profile.workshop.detail', ['id_bengkel' => $product->id_bengkel])
-            ->with('status', 'Product berhasil diupdate.');
-    }
-    public function deleteProduct($id_produk)
-    {
-        $produk = DB::table('tb_produk')->where('id_produk', $id_produk)->first();
-
-        if ($produk) {
-            DB::table('tb_produk')->where('id_produk', $id_produk)->update([
-                'delete_produk' => 'Y',
-            ]);
-            return back()->with('status', 'Product deleted successfully.');
-        } else {
-            return back()->with('status_error', 'Address not found.');
-        }
-    }
-
 }
