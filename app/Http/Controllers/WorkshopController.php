@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bengkel;
+use App\Models\Kecamatan;
+use App\Models\Kota;
 use App\Models\PesananService;
 use App\Models\Product;
+use App\Models\Provinsi;
 use App\Models\ReviewWorkshop;
 use App\Models\Service;
 use App\Models\SpareParts;
-use App\Models\Provinsi;
-use App\Models\Kota;
-use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -111,7 +111,7 @@ class WorkshopController extends Controller
     public function showWorkshop()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in to add an address.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to see workshop.');
         }
 
         $bengkels = Bengkel::with('pelanggan')
@@ -124,7 +124,7 @@ class WorkshopController extends Controller
     public function createWorkshop()
     {
         if (!Session::has('id_pelanggan')) {
-            return redirect()->route('home')->with('status_error', 'You must be logged in to add an address.');
+            return redirect()->route('home')->with('status_error', 'You must be logged in to see workshop.');
         }
 
         $provinces = Provinsi::all();

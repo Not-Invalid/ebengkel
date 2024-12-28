@@ -70,69 +70,63 @@
     background-color: var(--main-light-grey);
     color: var(--main-dark-blue);
 }
-/* Adjustments for desktop and mobile responsiveness */
-@media (max-width: 992px) {
+/* Adjustments for mobile view */
+@media (max-width: 576px) {
   .cart-item {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
+      flex-direction: column;
+      align-items: center; /* Center align the items horizontally */
+      padding: 10px;
   }
 
-  .cart-item img {
-    width: 80px;
-    height: 80px;
+  .cart-item-image {
+      margin-bottom: 10px;
   }
 
   .cart-item-details {
-    margin-left: 0;
-    margin-top: 10px;
+      margin-left: 0;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Center content vertically */
+      align-items: center; /* Center content horizontally */
+      width: 100%; /* Ensure full width */
+      margin: 0 auto; /* Center the entire content */
+      margin-left: -2%; /* Slightly shift to the left */
   }
 
-  .cart-item-quantity {
-    margin-top: 10px;
+  /* Position the checkbox and trash button at the top and align them to opposite sides */
+  .cart-item .item-select {
+      position: absolute;
+      top: 10px;
+      left: 10px;
   }
 
-  .cart-summary {
-    padding: 20px;
-    margin-top: 20px;
+  .cart-item .remove-item {
+    font-size: 1.3rem;
+      position: absolute;
+      top: 10px;
+      right: 10px;
   }
 
-  .cart-summary h5 {
-    font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .cart-summary {
-    padding: 15px;
-  }
-
-  .cart-item {
-    padding: 10px;
-  }
-
+  /* Adjusting other elements for mobile */
   .cart-item img {
-    width: 70px;
-    height: 70px;
+      width: 80px;
+      height: 80px;
   }
 
   .cart-item-details h6 {
-    font-size: 14px;
-  }
-
-  .cart-item-quantity input {
-    width: 45px;
+      font-size: 14px;
   }
 
   .btn {
-    font-size: 14px;
+      font-size: 14px;
   }
 
   .cart-summary h5 {
-    font-size: 1.2rem;
+      font-size: 1.2rem;
   }
 
   .item-select {
-    margin-top: 10px;
+      margin-top: 10px;
   }
 }
