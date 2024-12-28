@@ -1,0 +1,27 @@
+.cart-item-details h6 {
+    font-size: 1rem;
+  }
+
+  .cart-item-details p {
+    font-size: 0.9rem;
+  }
+
+  .cart-item-image img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cart-item-details .d-flex.flex-column {
+    gap: 10px;
+  }
+
+  .product-quantity {
+    font-size: 0.9rem;
+    padding-left: 10px;
+  }
+
+  .info-p {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: gray;
+  }
