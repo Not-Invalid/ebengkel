@@ -83,10 +83,6 @@
                             @if ($order->status_order == 'PENDING')
                               <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
                                 class="btn btn-custom-2">Bayar Sekarang</a>
-                            @elseif($order->status_order == 'SELESAI')
-                              <a href="#" class="btn btn-custom-2 beli-lagi-btn" data-order-id="{{ $order->order_id }}">
-                                Beli Lagi
-                              </a>
                             @endif
                           </div>
                         </div>
@@ -102,56 +98,4 @@
     </div>
   </section>
 
-  <script>
-document.querySelectorAll('.beli-lagi-btn').forEach(function(button) {
-  button.addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent default behavior (e.g., following a link)
-
-    const orderId = this.dataset.orderId; // Get the order ID from the button's data attribute
-    const products = []; // Array to store the product data
-
-    // Find the order by ID
-    @foreach ($orders as $order)
-      if (orderId == '{{ $order->order_id }}') {
-        @foreach ($order->orderItems as $orderItem)
-          products.push({
-            id_produk: '{{ $orderItem->produk->id_produk ?? null }}',
-            id_spare_part: '{{ $orderItem->sparepart->id_spare_part ?? null }}',
-            quantity: '{{ $orderItem->qty }}'
-          });
-        @endforeach
-      }
-    @endforeach
-
-    // Send AJAX request to add products to cart
-    fetch("{{ route('cart.add') }}", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      },
-      body: JSON.stringify({
-        products: products,
-        buy_now: false  // Set to true if you want to redirect to checkout after adding to cart
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        toastr.success(data.message);  // Show success toast with message
-        window.location.href = data.redirect_url; // Optionally redirect
-      } else {
-        toastr.error(data.message);  // Show error toast if the request fails
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      toastr.error('There was an error processing your request.'); // Show generic error message
-    });
-  });
-});
-
-
-
-  </script>
 @endsection
