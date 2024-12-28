@@ -99,15 +99,17 @@ class MyorderController extends Controller
             ->where('is_delete', 'N')
             ->firstOrFail();
 
-        // Proses setiap item order untuk memasukkan URL gambar
+        // Proses setiap item order untuk memasukkan URL gambar dan ID produk/sparepart
         $order->orderItems = $order->orderItems->map(function ($orderItem) {
             // Tentukan path gambar berdasarkan produk atau sparepart
             $imagePath = null;
 
             if ($orderItem->produk && $orderItem->produk->fotoProduk) {
                 $imagePath = $orderItem->produk->fotoProduk->file_foto_produk_1;
+                $orderItem->id_produk = $orderItem->produk->id_produk; // Tambahkan ID produk
             } elseif ($orderItem->sparepart && $orderItem->sparepart->fotoSparepart) {
                 $imagePath = $orderItem->sparepart->fotoSparepart->file_foto_spare_part_1;
+                $orderItem->id_spare_part = $orderItem->sparepart->id_spare_part; // Tambahkan ID sparepart
             }
 
             // Tentukan URL gambar
@@ -133,5 +135,4 @@ class MyorderController extends Controller
         // Kirim data order ke tampilan
         return view('profile.my-order.order_detail', compact('order', 'statusNames', 'bengkel'));
     }
-
 }
