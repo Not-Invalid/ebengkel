@@ -49,6 +49,15 @@ class OrderOnline extends Model
     {
         return $this->belongsTo(Bengkel::class, 'id_bengkel');
     }
+    public function produk()
+    {
+        return $this->belongsTo(Product::class, 'id_produk');
+    }
+
+    public function sparepart()
+    {
+        return $this->belongsTo(SpareParts::class, 'id_spare_part');
+    }
     public function invoice()
     {
         return $this->hasOne(Invoice::class, 'id_order', 'order_id');
