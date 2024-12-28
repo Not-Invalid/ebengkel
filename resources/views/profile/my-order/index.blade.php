@@ -18,15 +18,15 @@
               href="{{ route('my-order.index', ['status' => $key]) }}" data-tab="{{ $key }}">
               <i
                 class="fas
-                {{ $key == 'PENDING'
-                    ? 'fa-credit-card'
-                    : ($key == 'Waiting_Confirmation'
-                        ? 'fa-hourglass'
-                        : ($key == 'DIKEMAS'
-                            ? 'fa-box-open'
-                            : ($key == 'DIKIRIM'
-                                ? 'fa-truck-fast'
-                                : 'fa-check-circle'))) }} ">
+                  {{ $key == 'PENDING'
+                      ? 'fa-credit-card'
+                      : ($key == 'Waiting_Confirmation'
+                          ? 'fa-hourglass'
+                          : ($key == 'DIKEMAS'
+                              ? 'fa-box-open'
+                              : ($key == 'DIKIRIM'
+                                  ? 'fa-truck-fast'
+                                  : 'fa-check-circle'))) }} ">
               </i>
               {{ $name }}
             </a>
@@ -46,7 +46,6 @@
 
     <div class="w-100 shadow bg-white rounded my-5" style="padding: 1rem;">
       <div class="container my-4">
-        <!-- Konten Tab -->
         <div class="tab-content">
           @foreach ($statusNames as $key => $name)
             <div class="tab-pane {{ $status == $key ? 'active show' : '' }}" id="{{ $key }}">
@@ -69,36 +68,45 @@
                         data-id="{{ $order->order_id }}" data-stock="{{ $order->orderItems->sum('qty') }}"
                         data-price="{{ $order->grand_total }}">
 
-                        <!-- Product Image -->
-                        <div class="cart-item-image flex-shrink-0 mb-3 mb-sm-0 me-3">
+                        <div class="cart-item-image flex-shrink-0 me-3">
                           @foreach ($order->orderItems as $orderItem)
                             <img src="{{ $orderItem->imageUrl }}" class="rounded"
-                              alt="{{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Default Image') }}">
+                              alt="{{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Default Image') }}"
+                              style="width: 100px; height: 100px; object-fit: cover;">
                           @endforeach
                         </div>
 
-                        <!-- Product Details -->
                         <div class="cart-item-details d-flex flex-column flex-grow-1">
                           <h6 class="mb-2">
                             @foreach ($order->orderItems as $orderItem)
                               {{ $orderItem->produk->nama_produk ?? ($orderItem->sparepart->nama_spare_part ?? 'Produk / Spare Part Tidak Ditemukan') }}
                             @endforeach
                           </h6>
-                          <div
-                            class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
-                            <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
-                            <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }}
+                          <div class="d-flex justify-content-between align-items-center">
+                            <p class="text-muted mb-1">
+                              {{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
+                            <p class="product-quantity fw-semibold mb-0">Total
+                              {{ $order->orderItems->sum('qty') }}
                               Produk</p>
                           </div>
-                          <div
-                            class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-2">
-                            <p class="text-primary fw-bold mb-1">Rp {{ number_format($order->total_harga, 0, ',', '.') }}
-                            </p>
+                          <div class="d-flex justify-content-between align-items-center mt-2">
+                            <p class="text-primary fw-bold mb-1">Rp
+                              {{ number_format($order->total_harga) }}</p>
                             @if ($order->status_order == 'PENDING')
                               <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
-                                class="btn btn-custom-2 mt-2 mt-sm-0">Bayar Sekarang</a>
-                            @elseif($order->status_order == 'SELESAI')
-                              <a href="#" class="btn btn-custom-2 mt-2 mt-sm-0">Beli Lagi</a>
+                                class="btn btn-custom-2">Bayar Sekarang</a>
+                            @elseif ($order->status_order == 'SELESAI')
+                              <form action="{{ route('cart.add') }}" method="POST" class="d-flex">
+                                @csrf
+                                <input type="hidden" name="id_produk"
+                                  value="{{ $order->orderItems[0]->id_produk ?? '' }}">
+                                <input type="hidden" name="id_spare_part"
+                                  value="{{ $order->orderItems[0]->id_spare_part ?? '' }}">
+                                <input type="hidden" name="quantity" value="1" class="quantity-input">
+                                <button class="btn btn-custom-2 buy-again-btn" type="button">
+                                  Beli Lagi
+                                </button>
+                              </form>
                             @endif
                           </div>
                         </div>
@@ -113,4 +121,29 @@
       </div>
     </div>
   </section>
+
+  <script>
+    document.getElementById('mobileOrderDropdown').addEventListener('change', function() {
+      window.location.href = this.value;
+    });
+  </script>
+  <script>
+    document.querySelectorAll('.buy-again-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah aksi default
+        var form = this.closest('form');
+        var buyAgainInput = document.createElement('input');
+        buyAgainInput.type = 'hidden';
+        buyAgainInput.name = 'buy_again';
+        buyAgainInput.value = 'true';
+        form.appendChild(buyAgainInput);
+
+        var quantityInput = form.querySelector('.quantity-input');
+        quantityInput.value = quantityInput.value || 1; // Jika tidak ada nilai, set ke 1
+
+        form.submit(); // Kirim formulir
+      });
+    });
+  </script>
+
 @endsection
