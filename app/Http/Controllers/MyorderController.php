@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bengkel;
 use App\Models\OrderOnline;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MyorderController extends Controller
 {
@@ -23,8 +25,10 @@ class MyorderController extends Controller
 
         // Query untuk mengambil data order dengan relasi produk, sparepart, invoice, bengkel
         $ordersQuery = OrderOnline::with([
-            'orderItems.produk.fotoProduk', // Pastikan fotoProduk ada pada produk
-            'orderItems.sparepart.fotoSparepart', // Pastikan fotoSparepart ada pada sparepart
+            'orderItems.produk', // Pastikan produk ada
+            'orderItems.sparepart', // Pastikan sparepart ada
+            'orderItems.produk.fotoProduk', // Jika ada foto produk
+            'orderItems.sparepart.fotoSparepart', // Jika ada foto sparepart
             'invoice',
             'bengkel',
         ])
@@ -67,18 +71,35 @@ class MyorderController extends Controller
 
     public function detailOrder($orderId)
     {
-        // Fetch the order with its related items, invoice, and bengkel
+        // Ambil id_pelanggan dari sesi
+        $id_pelanggan = Session::get('id_pelanggan');
+
+        // Ambil bengkel terkait pelanggan
+        $bengkel = Bengkel::where('id_pelanggan', $id_pelanggan)->first();
+
+        // Pemetaan status
+        $statusNames = [
+            'PENDING' => 'Belum Dibayar',
+            'Waiting_Confirmation' => 'Menunggu Konfirmasi',
+            'DIKEMAS' => 'Dikemas',
+            'DIKIRIM' => 'Dikirim',
+            'SELESAI' => 'Selesai',
+        ];
+
+        // Ambil order dengan relasi orderItems, produk, sparepart, invoice, bengkel
         $order = OrderOnline::with([
-            'orderItems.produk.fotoProduk', // Eager load foto produk
-            'orderItems.sparepart.fotoSparepart', // Eager load foto sparepart
-            'invoice',
-            'bengkel',
+            'orderItems.produk', // Produk yang dipesan
+            'orderItems.sparepart', // Sparepart yang dipesan
+            'orderItems.produk.fotoProduk', // Foto produk jika ada
+            'orderItems.sparepart.fotoSparepart', // Foto sparepart jika ada
+            'invoice', // Relasi invoice untuk mendapatkan bukti pembayaran
+            'bengkel', // Relasi bengkel
         ])
             ->where('order_id', $orderId)
             ->where('is_delete', 'N')
             ->firstOrFail();
 
-        // Proses data order untuk memasukkan imageUrl ke setiap order item
+        // Proses setiap item order untuk memasukkan URL gambar
         $order->orderItems = $order->orderItems->map(function ($orderItem) {
             // Tentukan path gambar berdasarkan produk atau sparepart
             $imagePath = null;
@@ -91,13 +112,26 @@ class MyorderController extends Controller
 
             // Tentukan URL gambar
             $orderItem->imageUrl = $imagePath && file_exists(public_path($imagePath))
-            ? asset($imagePath)
+            ? asset($imagePath) // Gambar yang valid
             : asset('assets/images/components/image.png'); // Gambar fallback
 
             return $orderItem;
         });
 
-        // Kirim data order ke view
-        return view('profile.my-order.order_detail', compact('order'));
+        // Ambil bukti bayar dari invoice
+        if ($order->invoice && $order->invoice->bukti_bayar) {
+            // Periksa apakah file bukti bayar ada di server
+            $buktiBayarPath = $order->invoice->bukti_bayar;
+            $order->invoice->bukti_bayar_url = file_exists(public_path($buktiBayarPath))
+            ? asset($buktiBayarPath) // Gambar bukti bayar yang valid
+            : asset('assets/images/components/image.png'); // Gambar fallback
+        } else {
+            // Jika tidak ada bukti bayar, tampilkan gambar fallback
+            $order->invoice->bukti_bayar_url = asset('assets/images/components/image.png');
+        }
+
+        // Kirim data order ke tampilan
+        return view('profile.my-order.order_detail', compact('order', 'statusNames', 'bengkel'));
     }
+
 }
