@@ -74,16 +74,16 @@ class TransactionHistoryController extends Controller
 
         foreach ($order_online as $online_order) {
             $transactions[] = [
-                'id' => $online_order->id_order_online, // Ganti sesuai field ID online order
+                'id' => $online_order->id_order_online,
                 'customer_name' => $online_order->atas_nama,
                 'transaction_type' => 'Online Order',
-                'payment_method' => 'transfer',
+                'payment_method' => 'Manual Transfer',
                 'total_price' => $online_order->total_harga,
-                'cashier' => $online_order->id_bengkel,
+                'cashier' => '-',
             ];
         }
 
-        $perPage = $request->get('per_page', 10); // Default items per page
+        $perPage = $request->get('per_page', 10);
         $currentPage = $request->get('page', 1);
         $totalEntries = count($transactions);
         $paginatedItems = new LengthAwarePaginator(
@@ -112,7 +112,7 @@ class TransactionHistoryController extends Controller
 
     public function downloadPdf($id_bengkel)
     {
-        // Ambil data dari database
+
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
             ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
@@ -264,7 +264,7 @@ class TransactionHistoryController extends Controller
 
     public function printRowPdf($id)
     {
-        // Cari data transaksi berdasarkan ID
+
         $transaction = $this->getTransactionById($id);
 
         if (!$transaction) {
@@ -340,7 +340,7 @@ class TransactionHistoryController extends Controller
         $service = PesananService::find($id);
         if ($service) {
             return [
-                'id' => $service->id_pesanan_service, // Sesuaikan dengan nama field
+                'id' => $service->id_pesanan_service,
                 'customer_name' => $service->nama_pemesan,
                 'transaction_type' => 'Service',
                 'payment_method' => 'Cash',
@@ -352,7 +352,7 @@ class TransactionHistoryController extends Controller
         $onlineOrder = OrderOnline::find($id);
         if ($onlineOrder) {
             return [
-                'id' => $onlineOrder->id_order_online, // Sesuaikan dengan nama field
+                'id' => $onlineOrder->id_order_online,
                 'customer_name' => $onlineOrder->atas_nama,
                 'transaction_type' => 'Online Order',
                 'payment_method' => $onlineOrder->status_order,
