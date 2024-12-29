@@ -169,23 +169,28 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown ">
+                        <li class="dropdown {{ request()->routeIs('pos.management-stock.*') ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-boxes-stacked"></i>
                                 <span>Management Stock</span></a>
                             <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.management-stock.inbound') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.management-stock.inbound*') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.management-stock.inbound', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock
                                         Inbound</a>
                                 </li>
-                                <li class="{{ request()->routeIs('pos.management-stock.opname') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.management-stock.opname*') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.management-stock.opname', ['id_bengkel' => $bengkel->id_bengkel]) }}">Stock
                                         Opname</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown ">
+                        <li
+                            class="dropdown {{ request()->routeIs('pos.achievement-summary') ||
+                            request()->routeIs('pos.monitoring-stock') ||
+                            request()->routeIs('pos.transaction-history')
+                                ? 'active'
+                                : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-chart-pie"></i>
                                 <span>Reports</span></a>
                             <ul class="dropdown-menu">
@@ -207,33 +212,34 @@
                             </ul>
                         </li>
                         <li
-                            class="dropdown {{ request()->routeIs('pos.expense-record.*') || request()->routeIs('pos.laba_rugi') ? 'active' : '' }}">
+                            class="dropdown {{ request()->routeIs('pos.expense-record*') || request()->routeIs('pos.laba_rugi') ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-calculator"></i>
                                 <span>Accounting</span></a>
                             <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.expense-record') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.expense-record*') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.expense-record', ['id_bengkel' => $bengkel->id_bengkel]) }}">Expense
                                         Record</a>
                                 </li>
                                 <li class="{{ request()->routeIs('pos.laba_rugi') ? 'active' : '' }}">
                                     <a class="nav-link"
-                                        href="{{ route('pos.laba_rugi', ['id_bengkel' => $bengkel->id_bengkel]) }}">Laba
-                                        / Rugi</a>
+                                        href="{{ route('pos.laba_rugi', ['id_bengkel' => $bengkel->id_bengkel]) }}">Net
+                                        Profit & Loss</a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="dropdown ">
+                        <li
+                            class="dropdown {{ request()->routeIs('pos.order-online*') || request()->routeIs('pos.service-order*') ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-clipboard-list"></i>
                                 <span>Orders</span></a>
                             <ul class="dropdown-menu">
-                                <li class="{{ request()->routeIs('pos.order-online') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.order-online*') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.order-online', ['id_bengkel' => $bengkel->id_bengkel]) }}">
                                         Online Orders
                                     </a>
                                 </li>
-                                <li class="{{ request()->routeIs('pos.service-order') ? 'active' : '' }}">
+                                <li class="{{ request()->routeIs('pos.service-order*') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.service-order', ['id_bengkel' => $bengkel->id_bengkel]) }}">
                                         Service Orders
@@ -272,7 +278,7 @@
                                 <span>Service</span>
                             </a>
                         </li>
-                        <li class="{{ request()->routeIs('pos.expense-type.*') ? 'active' : '' }}">
+                        <li class="{{ request()->routeIs('pos.expense-type*') ? 'active' : '' }}">
                             <a class="nav-link"
                                 href="{{ route('pos.expense-type', ['id_bengkel' => $bengkel->id_bengkel]) }}">
                                 <i class="fas fa-clipboard-list"></i>
@@ -283,25 +289,22 @@
 
                     <ul class="sidebar-menu">
                         <li class="menu-header">General</li>
-                        <li class="{{ request()->routeIs('pos.management-user') ? 'active' : '' }}">
+                        <li class="{{ request()->routeIs('pos.management-user*') ? 'active' : '' }}">
                             <a class="nav-link"
                                 href="{{ route('pos.management-user', ['id_bengkel' => $bengkel->id_bengkel]) }}"><i
                                     class="fas fa-users"></i>
                                 <span>Management Users</span>
                             </a>
                         </li>
-                        <li class="dropdown">
+                        <li class="dropdown {{ request()->routeIs('pos.change-password') ? 'active' : '' }}">
                             <a href="#" class="nav-link has-dropdown"><i class="fas fa-gear"></i>
                                 <span>Settings</span></a>
                             <ul class="dropdown-menu">
-                                <li>
+                                <li class=" {{ request()->routeIs('pos.change-password') ? 'active' : '' }}">
                                     <a class="nav-link"
                                         href="{{ route('pos.change-password', ['id_bengkel' => $bengkel->id_bengkel]) }}">Change
                                         Password</a>
                                 </li>
-                                {{-- <li>
-                    <a class="nav-link" href="{{ route('pos.language', ['id_bengkel' => $bengkel->id_bengkel]) }}">Language</a>
-                </li> --}}
                             </ul>
                         </li>
                     </ul>

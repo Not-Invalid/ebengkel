@@ -23,13 +23,13 @@
 
                 <!-- Nama Customer -->
                 <div class="mb-3">
-                    <label for="nama_customer" class="form-label">Nama Customer</label>
+                    <label for="nama_customer" class="form-label">Nama Customer <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>
                 </div>
 
                 <!-- Tanggal -->
                 <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
+                    <label for="tanggal" class="form-label">Tanggal <span class="text-danger">*</span></label>
                     <input type="datetime-local" class="form-control" id="tanggal" name="tanggal"
                         value="{{ now()->format('Y-m-d\TH:i') }}">
                 </div>
@@ -68,7 +68,7 @@
 
                 <!-- Harga -->
                 <div class="mb-3">
-                    <label for="harga" class="form-label">Harga (Total)</label>
+                    <label for="harga" class="form-label">Harga (Total) <span class="text-danger">*</span></label>
                     <input type="hidden" id="harga" name="harga" value="{{ $order->total_harga }}">
                     <input type="text" class="form-control" id="harga_display"
                         value="{{ number_format($order->total_harga, 0, ',', '.') }}" readonly>
@@ -76,7 +76,7 @@
 
                 <!-- Qty -->
                 <div class="mb-3">
-                    <label for="qty" class="form-label">Qty (Total)</label>
+                    <label for="qty" class="form-label">Qty (Total) <span class="text-danger">*</span></label>
                     <input type="number" class="form-control" id="qty" name="qty"
                         value="{{ $order->total_qty }}" readonly>
                 </div>
@@ -95,21 +95,21 @@
 
                 <!-- Total Harga -->
                 <div class="mb-3">
-                    <label for="total_harga" class="form-label">Total Harga</label>
+                    <label for="total_harga" class="form-label">Total Harga <span class="text-danger">*</span></label>
                     <input type="hidden" id="total_harga" name="total_harga">
                     <input type="text" class="form-control" id="total_harga_display" readonly>
                 </div>
 
                 <!-- Nominal Bayar -->
                 <div class="mb-3">
-                    <label for="nominal_bayar" class="form-label">Nominal Bayar</label>
+                    <label for="nominal_bayar" class="form-label">Nominal Bayar <span class="text-danger">*</span></label>
                     <input type="hidden" id="nominal_bayar_hidden" name="nominal_bayar">
                     <input type="text" class="form-control" id="nominal_bayar" value="0">
                 </div>
 
                 <!-- Kembali -->
                 <div class="mb-3">
-                    <label for="kembali" class="form-label">Kembali</label>
+                    <label for="kembali" class="form-label">Kembali <span class="text-danger">*</span></label>
                     <input type="hidden" id="kembali" name="kembali">
                     <input type="text" class="form-control" id="kembali_display" readonly>
                 </div>

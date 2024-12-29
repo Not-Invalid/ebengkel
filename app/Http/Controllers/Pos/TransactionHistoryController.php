@@ -8,19 +8,21 @@ use App\Models\Order;
 use App\Models\OrderOnline;
 use App\Models\Pegawai;
 use App\Models\PesananService;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Facades\Excel;
+use Mpdf\Mpdf;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class TransactionHistoryController extends Controller
 {
+
     public function index(Request $request, $id_bengkel)
     {
         $bengkel = Bengkel::find($id_bengkel);
@@ -28,71 +30,89 @@ class TransactionHistoryController extends Controller
             return redirect()->route('profile.workshop')->with('status_error', 'Workshop not found.');
         }
 
-        // Default to current month's start and end if no date range is provided
         $startDate = $request->get('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->get('end_date', now()->endOfMonth()->format('Y-m-d'));
 
-        // Get the list of orders based on date range
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
             ->whereBetween('tanggal', [$startDate, $endDate])
-            ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
+            ->get();
 
         $pesanan_service = PesananService::where('id_bengkel', $id_bengkel)
             ->whereBetween('tgl_pesanan', [$startDate, $endDate])
-            ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan', 'id_pegawai']);
+            ->get();
 
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
             ->whereBetween('tanggal', [$startDate, $endDate])
-            ->get(['id_pelanggan', 'total_harga', 'atas_nama']);
+            ->get();
 
         $transactions = [];
 
-        // Add regular orders (Pesanan)
         foreach ($pesanan as $order) {
             $transactions[] = [
+                'id' => $order->id_order,
                 'customer_name' => $order->nama_customer,
                 'transaction_type' => $order->tipe,
                 'payment_method' => $order->jenis_pembayaran,
                 'total_price' => $order->total_harga,
                 'cashier' => $order->input_by,
-                'action' => 'View',
             ];
         }
 
-        // Get employees (pegawai) for the given bengkel
         $pegawaiData = Pegawai::where('id_bengkel', $id_bengkel)->get()->keyBy('id_pegawai');
-
-        // Add PesananService orders
         foreach ($pesanan_service as $service) {
             $cashier = $pegawaiData->get($service->id_pegawai);
             $transactions[] = [
+                'id' => $service->id_pesanan_service,
                 'customer_name' => $service->nama_pemesan,
                 'transaction_type' => 'Service',
                 'payment_method' => 'Cash',
                 'total_price' => $service->total_pesanan,
                 'cashier' => $cashier ? $cashier->nama_pegawai : 'Online Order',
-                'action' => 'View',
             ];
         }
 
-        // Add Online Orders
         foreach ($order_online as $online_order) {
             $transactions[] = [
+                'id' => $online_order->id_order_online, // Ganti sesuai field ID online order
                 'customer_name' => $online_order->atas_nama,
                 'transaction_type' => 'Online Order',
                 'payment_method' => 'transfer',
                 'total_price' => $online_order->total_harga,
                 'cashier' => $online_order->id_bengkel,
-                'action' => 'View',
             ];
         }
 
-        return view('pos.reports.transaction-history.index', compact('bengkel', 'transactions', 'id_bengkel', 'startDate', 'endDate'));
+        $perPage = $request->get('per_page', 10); // Default items per page
+        $currentPage = $request->get('page', 1);
+        $totalEntries = count($transactions);
+        $paginatedItems = new LengthAwarePaginator(
+            collect($transactions)->forPage($currentPage, $perPage),
+            $totalEntries,
+            $perPage,
+            $currentPage,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        $start = $paginatedItems->firstItem();
+        $end = $paginatedItems->lastItem();
+
+        return view('pos.reports.transaction-history.index', compact(
+            'bengkel',
+            'paginatedItems',
+            'id_bengkel',
+            'startDate',
+            'endDate',
+            'start',
+            'transactions',
+            'end',
+            'totalEntries'
+        ));
     }
 
     public function downloadPdf($id_bengkel)
     {
+        // Ambil data dari database
         $pesanan = Order::where('id_order', $id_bengkel)
             ->where('is_delete', false)
             ->get(['id_order', 'nama_customer', 'tipe', 'jenis_pembayaran', 'total_harga', 'input_by']);
@@ -100,10 +120,11 @@ class TransactionHistoryController extends Controller
             ->get(['id_pelanggan', 'nama_pemesan', 'status', 'total_pesanan']);
         $order_online = OrderOnline::where('id_bengkel', $id_bengkel)
             ->get(['id_pelanggan', 'total_harga', 'status_order', 'atas_nama']);
+
         $transactions = [];
         foreach ($pesanan as $order) {
             $transactions[] = [
-                'customer_name' => $order->nama,
+                'customer_name' => $order->nama_customer,
                 'transaction_type' => $order->tipe,
                 'payment_method' => $order->jenis_pembayaran,
                 'total_price' => $order->total_harga,
@@ -131,14 +152,25 @@ class TransactionHistoryController extends Controller
                 'action' => 'View',
             ];
         }
+
         $data = [
             'title' => 'Checkout Transaction',
             'date' => date('d/m/Y'),
             'transaction' => $transactions,
         ];
-        $pdf = Pdf::loadView('pos.download.Transaction-history-pdf', $data);
-        return $pdf->download('Transaction-history-pdf.pdf');
+
+        $html = view('pos.download.Transaction-history-pdf', $data)->render();
+
+        $mpdf = new Mpdf();
+
+        $mpdf->WriteHTML($html);
+
+        return response($mpdf->Output('Transaction-history-pdf.pdf', 'S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="Transaction-history-pdf.pdf"',
+        ]);
     }
+
     public function downloadExcel($id_bengkel)
     {
         $pesanan = Order::where('id_order', $id_bengkel)
@@ -229,4 +261,107 @@ class TransactionHistoryController extends Controller
             }
         }, 'Transaction-History.xlsx');
     }
+
+    public function printRowPdf($id)
+    {
+        // Cari data transaksi berdasarkan ID
+        $transaction = $this->getTransactionById($id);
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
+        $data = [
+            'title' => 'Transaction Detail',
+            'date' => date('d/m/Y'),
+            'transaction' => $transaction,
+        ];
+
+        $html = view('pos.download.transaction-row-pdf', $data)->render();
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML($html);
+
+        return response($mpdf->Output('Transaction-row.pdf', 'S'), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="Transaction-row.pdf"',
+        ]);
+    }
+
+    public function printRowExcel($id)
+    {
+        $transaction = $this->getTransactionById($id);
+
+        if (!$transaction) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
+        return Excel::download(new class([$transaction]) implements FromCollection, WithHeadings
+        {
+            protected $transactions;
+
+            public function __construct($transactions)
+            {
+                $this->transactions = $transactions;
+            }
+
+            public function collection()
+            {
+                return collect($this->transactions);
+            }
+
+            public function headings(): array
+            {
+                return [
+                    'Customer Name',
+                    'Transaction Type',
+                    'Payment Method',
+                    'Total Price',
+                    'Cashier',
+                ];
+            }
+        }, 'Transaction-row.xlsx');
+    }
+
+    private function getTransactionById($id)
+    {
+        $order = Order::find($id);
+        if ($order) {
+            return [
+                'id' => $order->id_order,
+                'customer_name' => $order->nama_customer,
+                'transaction_type' => $order->tipe,
+                'payment_method' => $order->jenis_pembayaran,
+                'total_price' => $order->total_harga,
+                'cashier' => $order->input_by,
+            ];
+        }
+
+        $service = PesananService::find($id);
+        if ($service) {
+            return [
+                'id' => $service->id_pesanan_service, // Sesuaikan dengan nama field
+                'customer_name' => $service->nama_pemesan,
+                'transaction_type' => 'Service',
+                'payment_method' => 'Cash',
+                'total_price' => $service->total_pesanan,
+                'cashier' => $service->id_bengkel,
+            ];
+        }
+
+        $onlineOrder = OrderOnline::find($id);
+        if ($onlineOrder) {
+            return [
+                'id' => $onlineOrder->id_order_online, // Sesuaikan dengan nama field
+                'customer_name' => $onlineOrder->atas_nama,
+                'transaction_type' => 'Online Order',
+                'payment_method' => $onlineOrder->status_order,
+                'total_price' => $onlineOrder->total_harga,
+                'cashier' => $onlineOrder->id_bengkel,
+            ];
+        }
+
+        return null;
+    }
+
 }
