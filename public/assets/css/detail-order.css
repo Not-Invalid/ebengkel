@@ -48,24 +48,4 @@
     justify-content: end;
     font-size: 14px;
   }
-  @media (max-width: 768px) {
-    /* Hanya untuk mobile */
-    .desktop-format {
-      display: none; /* Sembunyikan format lengkap */
-    }
-    .mobile-format {
-      display: inline; /* Tampilkan format singkat */
-    }
-  }
-
-  @media (min-width: 769px) {
-    /* Untuk tablet dan desktop */
-    .mobile-format {
-      display: none; /* Sembunyikan format singkat */
-    }
-    .desktop-format {
-      display: inline; /* Tampilkan format lengkap */
-    }
-  }
-
 }
