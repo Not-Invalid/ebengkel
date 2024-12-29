@@ -246,7 +246,7 @@ class WorkshopController extends Controller
         // Decode the 'payment' and 'service_available' fields if they are stored as JSON strings
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) :
-        $bengkel->service_available;
+            $bengkel->service_available;
 
         // Decode the 'rekening_bank' field as well
         $bankAccounts = is_string($bengkel->rekening_bank) ? json_decode($bengkel->rekening_bank, true) : $bengkel->rekening_bank;
@@ -370,7 +370,7 @@ class WorkshopController extends Controller
 
         $bengkel->payment = is_string($bengkel->payment) ? json_decode($bengkel->payment, true) : $bengkel->payment;
         $bengkel->service_available = is_string($bengkel->service_available) ? json_decode($bengkel->service_available, true) :
-        $bengkel->service_available;
+            $bengkel->service_available;
 
         $serviceAvailable = $bengkel->service_available ?? [];
         $paymentMethods = $bengkel->payment ?? [];
@@ -414,66 +414,126 @@ class WorkshopController extends Controller
 
     public function showPesananService($id_bengkel, $id_services)
     {
-        // Retrieve the service details from the database
-        $service = Service::with('bengkel') // Mengambil relasi bengkel
+        // Get service information
+        $service = Service::with('bengkel')
             ->where('id_services', $id_services)
             ->where('id_bengkel', $id_bengkel)
             ->where('delete_services', '!=', 'Y')
             ->first();
 
-        // Check if the service exists
         if (!$service) {
             return redirect()->back()->with('status_error', 'Service not found.');
         }
 
-        $bookedDates = PesananService::where('id_bengkel', $id_bengkel)
-            ->pluck('tgl_pesanan')
-            ->toArray();
+        // Initialize arrays for tracking
+        $bookedDates = [];
+        $availableDates = [];
+        $stockPerDate = [];
 
-        // Controller
-        $services = Service::with('bengkel')->find($id_bengkel);
+        // Check availability for next 3 days
+        for ($i = 0; $i < 3; $i++) {
+            $date = now()->addDays($i)->format('Y-m-d');
 
-        // Check if the variables are correctly passed
-        return view('service.pesanan', compact('id_bengkel', 'id_services', 'service', 'bookedDates'));
+            // Get count of existing bookings for this service on this date
+            $existingOrdersCount = PesananService::where('id_bengkel', $id_bengkel)
+                ->where('tgl_pesanan', $date)
+                ->where('nama_services', $service->nama_services)
+                ->count();
+
+            // Calculate remaining stock for this date
+            $remainingStock = $service->jumlah_services_online - $existingOrdersCount;
+
+            // Store the remaining stock information
+            $stockPerDate[$date] = $remainingStock;
+
+            if ($remainingStock > 0) {
+                $availableDates[] = $date;
+            } else {
+                $bookedDates[] = $date;
+            }
+        }
+
+        return view('service.pesanan', compact(
+            'id_bengkel',
+            'id_services',
+            'service',
+            'bookedDates',
+            'availableDates',
+            'stockPerDate'
+        ));
     }
 
     public function storePesananServices(Request $request, $id_bengkel, $id_services)
     {
         $customerId = Session::get('id_pelanggan');
         if (!$customerId) {
-            return redirect()->back()->with('error', 'ID pelanggan tidak ditemukan. Silakan login.');
+            return redirect()->back()->with('status', 'ID pelanggan tidak ditemukan. Silakan login.');
         }
 
-        // Validate the input
-        $validated = $request->validate([
-            'nama_pemesan' => 'required|string|max:255',
-            'telp_pelanggan' => 'required|numeric',
-            'tgl_pesanan' => 'required|date',
-        ]);
-
-        // Find the service by ID
         $service = Service::find($id_services);
         if (!$service) {
-            return redirect()->back()->with('error', 'Layanan tidak ditemukan.');
+            return redirect()->back()->with('status', 'Layanan tidak ditemukan.');
         }
 
-        // Get the price of the service
-        $totalHarga = $service->harga_services ?? 0;
+        $request->validate([
+            'nama_pemesan' => 'required|string|max:255',
+            'telp_pelanggan' => 'required|numeric',
+            'nama_services' => 'required|string|max:255',
+            'tgl_pesanan' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $selectedDate = Carbon::parse($value)->format('Y-m-d');
+                    $minDate = now()->format('Y-m-d');
+                    $maxDate = now()->addDays(2)->format('Y-m-d');
 
-        // Create PesananService record with the relevant fields
+                    if ($selectedDate < $minDate || $selectedDate > $maxDate) {
+                        $fail('Tanggal pesanan harus dalam rentang 3 hari ke depan.');
+                    }
+                },
+            ],
+        ]);
+
+        $selectedDate = $request->tgl_pesanan;
+
+        // Check if selected date is within the 3-day range
+        if (
+            Carbon::parse($selectedDate)->lt(now()) ||
+            Carbon::parse($selectedDate)->gt(now()->addDays(2))
+        ) {
+            return redirect()->back()->withErrors([
+                'tgl_pesanan' => 'Tanggal pesanan harus dalam rentang 3 hari ke depan.'
+            ]);
+        }
+
+        // Check stock availability for the selected date
+        $existingOrdersCount = PesananService::where('id_bengkel', $id_bengkel)
+            ->where('tgl_pesanan', $selectedDate)
+            ->where('nama_services', $service->nama_services)
+            ->count();
+
+        if ($existingOrdersCount >= $service->jumlah_services_online) {
+            return redirect()->back()->withErrors([
+                'status' => 'Stok layanan untuk tanggal ini sudah habis. Silakan pilih tanggal lain.'
+            ]);
+        }
+
         PesananService::create([
             'id_pelanggan' => $customerId,
             'id_bengkel' => $id_bengkel,
             'telp_pelanggan' => $request->telp_pelanggan,
             'nama_pemesan' => $request->nama_pemesan,
-            'tgl_pesanan' => $request->tgl_pesanan,
-            'nama_services' => $service->nama_services, // Use the service's name directly
-            'status' => 'pending',
-            'total_pesanan' => $totalHarga,
+            'tgl_pesanan' => $selectedDate,
+            'nama_services' => $service->nama_services,
+            'status' => 'Waiting_List',
+            'jumlah_services_online' => $existingOrdersCount + 1,
+            'total_pesanan' => $service->harga_services,
         ]);
+
         return redirect()->route('service.detail', ['id_bengkel' => $id_bengkel, 'id_services' => $id_services])
-            ->with('status', 'Pesanan berhasil dibuat.');
+            ->with('status', 'Pesanan layanan berhasil dibuat.');
     }
+
     public function storeReview(Request $request)
     {
         $customerId = Session::get('id_pelanggan');
