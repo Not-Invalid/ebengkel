@@ -22,7 +22,6 @@ class PesananService extends Model
         'jumlah_services_online',
         'jumlah_services_offline',
         'status',
-        'jenis',
         'total_pesanan',
     ];
     public function pelanggan()
