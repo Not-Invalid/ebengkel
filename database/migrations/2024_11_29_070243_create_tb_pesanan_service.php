@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('jumlah_services_online')->nullable();
             $table->integer('jumlah_services_offline')->nullable();
             $table->string('status');
-            $table->string('jenis');
             $table->integer('total_pesanan')->nullable();
             $table->foreign('id_pelanggan')->references('id_pelanggan')->on('tb_pelanggan')->onDelete('cascade');
             $table->foreign('id_bengkel')->references('id_bengkel')->on('tb_bengkel')->onDelete('cascade');
