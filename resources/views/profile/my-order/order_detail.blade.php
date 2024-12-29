@@ -90,19 +90,17 @@
                       alt="{{ $item->produk->nama_produk ?? ($item->sparepart->nama_spare_part ?? 'Default Image') }}">
                   </div>
 
-                  <div class="cart-item-details d-flex flex-column flex-grow-1">
+                  <div class="cart-item-details flex-grow-1">
                     <h6 class="mb-2">
                       {{ $item->produk->nama_produk ?? ($item->sparepart->nama_spare_part ?? 'Produk / Spare Part Tidak Ditemukan') }}
                     </h6>
 
-                    <div
-                      class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
                       <p class="text-muted mb-1">{{ $order->bengkel->nama_bengkel ?? 'Workshop' }}</p>
                       <p class="product-quantity fw-semibold mb-0">Total {{ $order->orderItems->sum('qty') }} Produk</p>
                     </div>
 
-                    <div
-                      class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-2">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-2">
                       <p class="text-primary fw-bold mb-1">Rp {{ number_format($item->harga, 0, ',', '.') }}</p>
                       <p class="fw-bold mb-1">Total: Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>
                     </div>
@@ -137,23 +135,25 @@
         </div>
 
         <div class="p-3 border rounded bg-light">
-          <div class="row">
-            <div class="col-6">
-              <p><strong>ID Order</strong></p>
+          <div class="row align-items-center">
+            <div class="col-6 col-sm-6">
+              <p class="mb-1"><strong>ID Order</strong></p>
             </div>
-            <div class="col-6 text-end">
-              <p id="orderIdText">{{ $order->order_id }}
+            <div class="col-6 col-sm-6 text-sm-end">
+              <p id="orderIdText" class="mb-1">
+                {{ $order->order_id }}&nbsp;
                 <span>
                   <a href="javascript:void(0);" id="copyButton" class="btn btn-custom-2"
                     style="padding: 1px 5px !important; background-color:white !important; border-color:grey !important; color:black !important;">
-                    Salin
+                    <i class="fa-solid fa-copy text-primary"></i>
                   </a>
                 </span>
               </p>
             </div>
           </div>
 
-          <div class="row">
+
+          <div class="row align-items-center">
             <div class="col-6">
               <p class="info-p">Payment Method</p>
             </div>
@@ -161,19 +161,24 @@
               <p class="info-p">{{ $order->invoice->jenis_pembayaran ?? '' }}</p>
             </div>
           </div>
-          <div class="row">
+
+          <!-- Periksa apakah ada bukti pembayaran -->
+          <div class="row align-items-center">
             <div class="col-6">
               <p class="info-p">Proof of Payment</p>
             </div>
-            <div class="col-6 text-end">
-              <p class="info-p d-flex align-items-center justify-content-end">
-                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#paymentProofModal"
-                  style="text-decoration: none; display: flex; align-items: center;">
-                  Lihat <span class="fs-5 ms-2">></span>
-                </a>
-              </p>
-            </div>
+            @if (!empty($order->invoice->bukti_bayar))
+              <div class="col-6 text-end">
+                <p class="info-p d-flex align-items-center justify-content-end">
+                  <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#paymentProofModal"
+                    style="text-decoration: none; display: flex; align-items: center;">
+                    Lihat <span class="fs-5 ms-2">></span>
+                  </a>
+                </p>
+              </div>
+            @endif
           </div>
+
 
           <div class="collapse" id="additionalInfo">
             <hr>
@@ -182,7 +187,10 @@
                 <p class="info-p">Order Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">{{ $order->tanggal }}</p>
+                <p class="info-p">
+                  <span class="mobile-format">{{ substr($order->tanggal, 0, 10) }}</span>
+                  <span class="desktop-format">{{ $order->tanggal }}</span>
+                </p>
               </div>
             </div>
             <div class="row">
@@ -190,7 +198,10 @@
                 <p class="info-p">Payment Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">{{ $order->invoice->tanggal_bayar }}</p>
+                <p class="info-p">
+                  <span class="mobile-format">{{ substr($order->invoice->tanggal_bayar, 0, 10) }}</span>
+                  <span class="desktop-format">{{ $order->invoice->tanggal_bayar }}</span>
+                </p>
               </div>
             </div>
             <div class="row">
@@ -198,18 +209,25 @@
                 <p class="info-p">Shipping Time</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">{{ $order->tanggal_kirim }}</p>
+                <p class="info-p">
+                  <span class="mobile-format">{{ substr($order->tanggal_kirim, 0, 10) }}</span>
+                  <span class="desktop-format">{{ $order->tanggal_kirim }}</span>
+                </p>
               </div>
             </div>
             <div class="row">
               <div class="col-6">
-                <p class="info-p">Completed Order Time</p>
+                <p class="info-p">Completed Order</p>
               </div>
               <div class="col-6 text-end">
-                <p class="info-p">{{ $order->tanggal_diterima }}</p>
+                <p class="info-p">
+                  <span class="mobile-format">{{ substr($order->tanggal_diterima, 0, 10) }}</span>
+                  <span class="desktop-format">{{ $order->tanggal_diterima }}</span>
+                </p>
               </div>
             </div>
           </div>
+
           <div class="text-center mt-2">
             <hr>
             <button class="btn btn-link" style="text-decoration: none;" type="button" data-bs-toggle="collapse"
@@ -217,6 +235,23 @@
               Lihat Semua
             </button>
           </div>
+        </div>
+        <!-- Tombol berdasarkan status order -->
+        <div class="text-center mt-3">
+          @if ($order->status_order == 'PENDING')
+            <a href="{{ route('payment', ['order_id' => $order->order_id, 'id' => $order->invoice->id]) }}"
+              class="btn btn-custom-2 w-100">Bayar Sekarang</a>
+          @elseif ($order->status_order == 'SELESAI')
+            <form action="{{ route('cart.add') }}" method="POST" class="d-flex">
+              @csrf
+              <input type="hidden" name="id_produk" value="{{ $order->orderItems[0]->id_produk ?? '' }}">
+              <input type="hidden" name="id_spare_part" value="{{ $order->orderItems[0]->id_spare_part ?? '' }}">
+              <input type="hidden" name="quantity" value="1" id="quantity-input">
+              <button class="btn btn-custom-2 flex-grow-1 py-2" type="button" id="buy-again-btn">
+                Beli Lagi <!-- Ganti teks di sini -->
+              </button>
+            </form>
+          @endif
         </div>
       </div>
     </div>
@@ -248,7 +283,7 @@
       // Salin teks ID Order ke clipboard
       navigator.clipboard.writeText(orderId).then(function() {
         // Tampilkan Toastr sukses jika berhasil menyalin
-        toastr.success('ID Order telah disalin ke clipboard!', '', {
+        toastr.success('ID Order Copied!', '', {
           positionClass: 'toast-top-right', // Posisi toast
           closeButton: true, // Tombol close
           progressBar: true, // Menampilkan progress bar
@@ -264,9 +299,6 @@
         });
       });
     });
-
-
-
 
     const paymentImage = document.getElementById('paymentImage');
     paymentImage.addEventListener('click', function() {
@@ -284,4 +316,21 @@
       paymentImage.style.transition = 'transform 0.3s ease'; // Animasi halus saat zoom
     });
   </script>
+  <script>
+    document.getElementById('buy-again-btn').addEventListener('click', function() {
+      var form = this.closest('form');
+      var buyAgainInput = document.createElement('input');
+      buyAgainInput.type = 'hidden';
+      buyAgainInput.name = 'buy_again';
+      buyAgainInput.value = 'true';
+      form.appendChild(buyAgainInput);
+
+      // Pastikan untuk mendapatkan nilai dari input quantity yang benar
+      var quantityInput = document.getElementById('quantity-input');
+      quantityInput.value = quantityInput.value || 1; // Jika tidak ada nilai, set ke 1
+
+      form.submit(); // Kirim formulir
+    });
+  </script>
+
 @endsection

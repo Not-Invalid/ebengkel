@@ -46,17 +46,20 @@
               data-price="{{ optional($item->produk)->harga_produk ?? optional($item->sparepart)->harga_spare_part }}">
               <input type="checkbox" class="form-check-input me-3 item-select"
                 @if (request()->get('buy_now') && $item->id == session('last_added_item_id')) checked @endif>
-
               <div class="cart-item-image me-3">
-                @if ($item->produk)
-                  <img
-                    src="{{ optional($item->produk)->foto_produk ? url($item->produk->foto_produk) : asset('assets/images/components/image.png') }}"
-                    alt="Product Image" style="width: 100px; height: 100px; object-fit: cover;" />
-                @elseif ($item->sparepart)
-                  <img
-                    src="{{ optional($item->sparepart)->foto_spare_part ? url($item->sparepart->foto_spare_part) : asset('assets/images/components/image.png') }}"
-                    alt="Spare Part Image" style="width: 100px; height: 100px; object-fit: cover;" />
-                @endif
+                <div class="cart-item-image flex-shrink-0 me-3">
+                  @if ($item->produk && $item->produk->fotoProduk)
+                    <img src="{{ $item->produk->fotoProduk->file_foto_produk_1 }}" class="rounded"
+                      alt="{{ $item->produk->nama_produk }}" style="width: 100px; height: 100px; object-fit: cover;">
+                  @elseif ($item->sparepart && $item->sparepart->fotoSparepart)
+                    <img src="{{ $item->sparepart->fotoSparepart->file_foto_spare_part_1 }}" class="rounded"
+                      alt="{{ $item->sparepart->nama_spare_part }}"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                  @else
+                    <img src="{{ asset('assets/images/components/image.png') }}" class="rounded" alt="Default Image"
+                      style="width: 100px; height: 100px; object-fit: cover;">
+                  @endif
+                </div>
               </div>
               <div class="cart-item-details flex-grow-1">
                 <h6>
@@ -81,8 +84,7 @@
             </div>
           @endforeach
           <div class="d-flex justify-content-center my-3">
-            <a href="{{ route('ProductSparePart') }}" class="shop-more btn text-primary text-decoration-none"><i
-                class="fas fa-circle-left"></i>
+            <a href="{{ route('ProductSparePart') }}" class="shop-more"><i class="fas fa-circle-left"></i>
               See Other Products & Spareparts</a>
           </div>
         </div>

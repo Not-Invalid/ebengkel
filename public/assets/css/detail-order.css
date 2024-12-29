@@ -22,7 +22,6 @@
   }
   .product-quantity {
     font-size: 0.9rem;
-    padding-left: 10px;
   }
 
   .info-p {
@@ -30,3 +29,43 @@
     font-size: 14px;
     color: gray;
   }
+  @media (max-width: 576px) {
+  .cart-item-details {
+    text-align: center;
+    display: flex;
+    margin-left: -5%; /* Slightly shift to the left */
+    flex-direction: column;
+    align-items: center; /* Rata tengah secara vertikal */
+    justify-content: center; /* Rata tengah secara horizontal */
+  }
+
+  .cart-item-details h6,
+  .cart-item-details p {
+    text-align: center; /* Teks rata tengah */
+  }
+  #orderIdText{
+    display: flex;
+    justify-content: end;
+    font-size: 14px;
+  }
+  @media (max-width: 768px) {
+    /* Hanya untuk mobile */
+    .desktop-format {
+      display: none; /* Sembunyikan format lengkap */
+    }
+    .mobile-format {
+      display: inline; /* Tampilkan format singkat */
+    }
+  }
+
+  @media (min-width: 769px) {
+    /* Untuk tablet dan desktop */
+    .mobile-format {
+      display: none; /* Sembunyikan format singkat */
+    }
+    .desktop-format {
+      display: inline; /* Tampilkan format lengkap */
+    }
+  }
+
+}

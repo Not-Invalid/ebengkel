@@ -1,3 +1,4 @@
+
 .custom-tab-link {
     color: #000;
     font-weight: 600;
@@ -127,38 +128,39 @@
     height: 100px;
     width: 100px;
   }
-/* Tambahkan media query untuk tampilan mobile */
+/* Adjustments for mobile view */
 @media (max-width: 576px) {
-    .cart-item {
-      flex-direction: column; /* Tata letak menjadi vertikal */
-      align-items: flex-start; /* Pusatkan item ke kiri */
-    }
+  .cart-item {
+    flex-direction: column; /* Susun vertikal */
+    text-align: center; /* Teks rata tengah */
+    padding: 1rem; /* Tambahkan ruang */
 
-    .cart-item-image {
-      margin-bottom: 15px; /* Tambahkan jarak bawah gambar */
-      width: 100%; /* Gambar memenuhi lebar item */
-      display: flex;
-      justify-content: center; /* Pusatkan gambar */
-    }
-
-    .cart-item img {
-      max-width: 80px; /* Kurangi ukuran gambar di layar kecil */
-      max-height: 80px;
-    }
-
-    .cart-item-details {
-      width: 100%; /* Detail produk memenuhi lebar */
-    }
-
-    .cart-item-details h6 {
-      font-size: 1rem; /* Kurangi ukuran font pada judul */
-    }
-
-    .cart-item-details .btn {
-      width: 100%; /* Tombol memenuhi lebar di layar kecil */
-      text-align: center;
-    }
   }
+
+  .cart-item-image {
+    margin-bottom: 1rem; /* Beri jarak di bawah gambar */
+  }
+
+  .cart-item-details {
+    align-items: center; /* Pusatkan konten */
+    justify-content: center; /* Rata tengah vertikal */
+    margin-left: -5%;
+  }
+
+  .cart-item-details h6 {
+    font-size: 1rem; /* Sesuaikan ukuran teks */
+  }
+
+  .cart-item-details .d-flex {
+    flex-direction: column; /* Susun elemen vertikal */
+    gap: 0.5rem; /* Tambahkan jarak antar elemen */
+  }
+
+  .btn-custom-2 {
+    width: 100%; /* Tombol penuh di layar kecil */
+    margin-top: 0.5rem; /* Tambahkan jarak atas */
+  }
+}
 
 
   /* Menyembunyikan tab pada perangkat mobile dan tablet */
