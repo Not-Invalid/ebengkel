@@ -8,44 +8,43 @@
     width: 100%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-  }
-
-  .cart-item:hover {
+}
+.cart-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  }
-
-  .cart-item img {
+}
+.cart-item img {
     border-radius: 8px;
     height: 100px;
     width: 100px;
-  }
-  .product-quantity {
+}
+.product-quantity {
     font-size: 0.9rem;
-  }
-
-  .info-p {
+}
+.info-p {
     margin-bottom: 0;
     font-size: 14px;
     color: gray;
-  }
-  @media (max-width: 576px) {
-  .cart-item-details {
-    text-align: center;
-    display: flex;
-    margin-left: -5%; /* Slightly shift to the left */
-    flex-direction: column;
-    align-items: center; /* Rata tengah secara vertikal */
-    justify-content: center; /* Rata tengah secara horizontal */
-  }
+}
+@media (max-width: 576px) {
+    .cart-item-details {
+        text-align: center;
+        display: flex;
+        margin-left: -5%;
 
-  .cart-item-details h6,
-  .cart-item-details p {
-    text-align: center; /* Teks rata tengah */
-  }
-  #orderIdText{
-    display: flex;
-    justify-content: end;
-    font-size: 14px;
-  }
+        flex-direction: column;
+        align-items: center;
+
+        justify-content: center;
+
+   }
+    .cart-item-details h6, .cart-item-details p {
+        text-align: center;
+
+   }
+    #orderIdText{
+        display: flex;
+        justify-content: end;
+        font-size: 14px;
+   }
 }
