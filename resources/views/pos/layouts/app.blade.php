@@ -165,9 +165,9 @@
                                     <a class="nav-link"
                                         href="{{ route('pos.tranksaksi_pos.index', ['id_bengkel' => $bengkel->id_bengkel]) }}">POS</a>
                                 </li>
-                                <li class="">
+                                {{-- <li class="">
                                     <a class="nav-link">Pesanan</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                         <li class="dropdown ">
