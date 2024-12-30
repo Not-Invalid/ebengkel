@@ -38,41 +38,55 @@ class ServiceOrderController extends Controller
         $services = Service::where('id_bengkel', $id_bengkel)->get();
         return view('pos.order.service-order.create', compact('bengkel', 'services'));
     }
+
     public function store(Request $request, $id_bengkel)
     {
         $pegawai = Auth::guard('pegawai')->user();
         if (!$pegawai) {
             return redirect()->back()->withErrors(['error' => 'Employee not authenticated.']);
         }
+
         $id_pegawai = $pegawai->id_pegawai;
+
         $request->validate([
             'nama_pemesan' => 'required|string|max:255',
             'telp_pelanggan' => 'required|digits_between:10,15',
             'nama_services' => 'required|exists:tb_services,id_services',
         ]);
+
         $service = Service::findOrFail($request->nama_services);
         $today = now()->format('Y-m-d');
+
+        // Hitung jumlah pesanan service ini yang sudah ada hari ini
         $existingOrdersCount = PesananService::where('id_bengkel', $id_bengkel)
             ->where('tgl_pesanan', $today)
-            ->where('nama_services', $service->id_services)
+            ->where('nama_services', $service->nama_services)
             ->count();
-        if ($existingOrdersCount >= $service->jumlah_services_offline) {
-            return redirect()->back()->withErrors(['error' => 'No more offline services available for today.']);
+
+        // Cek apakah masih ada stock tersisa untuk hari ini
+        if ($existingOrdersCount < $service->jumlah_services_offline) {
+            // Masih ada stock tersisa, buat pesanan baru
+            $newOrder = PesananService::create([
+                'id_pelanggan' => null,
+                'id_bengkel' => $id_bengkel,
+                'telp_pelanggan' => $request->telp_pelanggan,
+                'nama_pemesan' => $request->nama_pemesan,
+                'tgl_pesanan' => now(),
+                'nama_services' => $service->nama_services,
+                'id_services' => $service->id_services,
+                'status' => 'Waiting_List',
+                'total_pesanan' => $service->harga_services,
+                'id_pegawai' => $id_pegawai,
+            ]);
+
+            return redirect()->route('pos.service-order', ['id_bengkel' => $id_bengkel])
+                ->with('status', 'Service order created successfully.');
+        } else {
+            // Stock sudah habis untuk hari ini
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['error' => 'Maaf, stock service ini untuk hari ini sudah habis.']);
         }
-        PesananService::create([
-            'id_pelanggan' => null,
-            'id_bengkel' => $id_bengkel,
-            'telp_pelanggan' => $request->telp_pelanggan,
-            'nama_pemesan' => $request->nama_pemesan,
-            'tgl_pesanan' => now(),
-            'nama_services' => $service->nama_services,
-            'jumlah_services_offline' => $existingOrdersCount + 1,
-            'status' => 'Waiting_List',
-            'total_pesanan' => $service->harga_services,
-            'id_pegawai' => $id_pegawai,
-        ]);
-        return redirect()->route('pos.service-order', ['id_bengkel' => $id_bengkel])
-            ->with('status', 'Service order created successfully.');
     }
     public function updateStatus(Request $request, $id_bengkel, $id)
     {

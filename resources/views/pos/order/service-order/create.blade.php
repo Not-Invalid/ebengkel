@@ -27,7 +27,7 @@
                 enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
-                <input type="hidden" name="jenis" value="offline"> <!-- Add this line -->
+                <input type="hidden" name="jenis" value="offline">
 
                 <div class="form-group">
                     <label for="tgl_pesanan">Order Date<span class="text-danger">*</span></label>
@@ -37,20 +37,21 @@
 
                 <div class="form-group">
                     <label for="nama_pemesan">Customer Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nama_pemesan" required>
+                    <input type="text" class="form-control" name="nama_pemesan" required
+                        value="{{ old('nama_pemesan') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="telp_pelanggan">Customer Phone Number <span class="text-danger">*</span></label>
                     <input type="tel" class="form-control" name="telp_pelanggan" required
-                        oninput="validatePhoneNumber(this)" maxlength="15">
+                        oninput="validatePhoneNumber(this)" maxlength="15" value="{{ old('telp_pelanggan') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="nama_services">Choose Service Name <span class="text-danger">*</span></label>
                     <select class="form-control select2" name="nama_services" id="nama_services" required
                         onchange="updateTotalOrder()">
-                        <option value="" disabled selected hidden>Pilih Layanan</option>
+                        <option value="" disabled selected hidden>Choose Service</option>
                         @foreach ($services as $service)
                             <option value="{{ $service->id_services }}" data-price="{{ $service->harga_services }}">
                                 {{ $service->nama_services }}
@@ -64,21 +65,18 @@
                     <input type="text" class="form-control" id="total_pesanan" name="total_pesanan" readonly>
                 </div>
 
-
                 <div class="d-flex gap-2 justify-content-end">
                     <button type="submit" class="btn btn-custom-icon">Submit</button>
                     <a href="{{ route('pos.service-order', ['id_bengkel' => $bengkel->id_bengkel]) }}"
                         class="btn btn-cancel">Cancel</a>
                 </div>
             </form>
-
         </div>
     </div>
 
     <script>
         function validatePhoneNumber(input) {
             input.value = input.value.replace(/[^0-9]/g, '');
-
             if (input.value.length > 15) {
                 input.value = input.value.slice(0, 15);
             }
@@ -91,5 +89,4 @@
             document.getElementById('total_pesanan').value = price ? price : '';
         }
     </script>
-
 @endsection
