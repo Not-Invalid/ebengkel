@@ -1,4 +1,4 @@
-@extends('pos.layouts.app')
+{{-- @extends('pos.layouts.app')
 
 @section('title')
     eBengkelku | Pesanan Service
@@ -189,4 +189,4 @@
         });
     </script>
 
-@endsection
+@endsection --}}

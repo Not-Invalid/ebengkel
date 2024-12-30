@@ -7,6 +7,16 @@
 @endphp
 @section('content')
     <div class="card">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="card-header">
             <h4 class="text-danger">
                 * Indicated required fields
@@ -17,6 +27,7 @@
                 enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id_bengkel" value="{{ $bengkel->id_bengkel }}">
+                <input type="hidden" name="jenis" value="offline">
 
                 <div class="form-group">
                     <label for="tgl_pesanan">Order Date<span class="text-danger">*</span></label>
@@ -26,23 +37,23 @@
 
                 <div class="form-group">
                     <label for="nama_pemesan">Customer Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nama_pemesan" required>
+                    <input type="text" class="form-control" name="nama_pemesan" required
+                        value="{{ old('nama_pemesan') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="telp_pelanggan">Customer Phone Number <span class="text-danger">*</span></label>
                     <input type="tel" class="form-control" name="telp_pelanggan" required
-                        oninput="validatePhoneNumber(this)" maxlength="15">
+                        oninput="validatePhoneNumber(this)" maxlength="15" value="{{ old('telp_pelanggan') }}">
                 </div>
 
                 <div class="form-group">
-                    <label for="nama_service">Pilih Nama Service <span class="text-danger">*</span></label>
-                    <select class="form-control select2" name="nama_service" id="nama_service" required>
-                        <option value="" disabled selected hidden>Pilih Layanan</option>
+                    <label for="nama_services">Choose Service Name <span class="text-danger">*</span></label>
+                    <select class="form-control select2" name="nama_services" id="nama_services" required
+                        onchange="updateTotalOrder()">
+                        <option value="" disabled selected hidden>Choose Service</option>
                         @foreach ($services as $service)
-                            <option value="{{ $service->nama_services }}" data-price="{{ $service->harga_services }}"
-                                data-online="{{ $service->jumlah_services_online }}"
-                                data-offline="{{ $service->jumlah_services_offline }}">
+                            <option value="{{ $service->id_services }}" data-price="{{ $service->harga_services }}">
                                 {{ $service->nama_services }}
                             </option>
                         @endforeach
@@ -50,19 +61,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="service_type">Service Type <span class="text-danger">*</span></label>
-                    <select class="form-control" id="service_type" name="service_type" required>
-                        <option value="" disabled selected hidden>Pilih Tipe Layanan</option>
-                        <option value="online">Online</option>
-                        <option value="offline">Offline</option>
-                    </select>
-                </div>
-
-                <input type="hidden" name="status" id="status">
-
-                <div class="form-group">
-                    <label for="total_pesanan">Order Price<span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" name="total_pesanan" id="total_pesanan" readonly>
+                    <label for="total_pesanan">Total Order Price</label>
+                    <input type="text" class="form-control" id="total_pesanan" name="total_pesanan" readonly>
                 </div>
 
                 <div class="d-flex gap-2 justify-content-end">
@@ -77,77 +77,16 @@
     <script>
         function validatePhoneNumber(input) {
             input.value = input.value.replace(/[^0-9]/g, '');
-
             if (input.value.length > 15) {
                 input.value = input.value.slice(0, 15);
             }
         }
+
+        function updateTotalOrder() {
+            const select = document.getElementById('nama_services');
+            const selectedOption = select.options[select.selectedIndex];
+            const price = selectedOption ? selectedOption.getAttribute('data-price') : 0;
+            document.getElementById('total_pesanan').value = price ? price : '';
+        }
     </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const serviceSelect = document.getElementById('nama_service');
-            const serviceTypeSelect = document.getElementById('service_type');
-            const totalPesananInput = document.getElementById('total_pesanan');
-            const statusInput = document.getElementById('status');
-            const submitButton = document.querySelector('button[type="submit"]');
-
-            function checkStockAndUpdateUI() {
-                const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
-                const serviceType = serviceTypeSelect.value;
-                if (selectedOption && serviceType) {
-                    const availableStock = serviceType === 'online' ?
-                        parseInt(selectedOption.dataset.online) :
-                        parseInt(selectedOption.dataset.offline);
-                    if (selectedOption.dataset.price) {
-                        totalPesananInput.value = parseFloat(selectedOption.dataset.price);
-                    }
-                    if (availableStock > 0) {
-                        statusInput.value = 'pending';
-                        submitButton.disabled = false;
-                    } else {
-                        statusInput.value = 'waiting';
-                        submitButton.disabled = false;
-                    }
-                } else {
-                    resetForm();
-                }
-            }
-
-            function resetForm() {
-                totalPesananInput.value = '';
-                statusInput.value = '';
-                submitButton.disabled = true;
-            }
-            if (serviceSelect) {
-                serviceSelect.addEventListener('change', checkStockAndUpdateUI);
-            }
-            if (serviceTypeSelect) {
-                serviceTypeSelect.addEventListener('change', checkStockAndUpdateUI);
-            }
-            if (typeof jQuery !== 'undefined' && typeof jQuery.fn.select2 !== 'undefined') {
-                jQuery('.select2').select2().on('select2:select', checkStockAndUpdateUI);
-            }
-            form.addEventListener('submit', function(e) {
-                const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
-                const serviceType = serviceTypeSelect.value;
-                if (selectedOption && serviceType) {
-                    const availableStock = serviceType === 'online' ?
-                        parseInt(selectedOption.dataset.online) :
-                        parseInt(selectedOption.dataset.offline);
-                    if (availableStock <= 0) {
-                        if (!confirm(
-                                'This service is currently out of stock. Do you want to be added to the waiting list?'
-                            )) {
-                            e.preventDefault();
-                            return false;
-                        }
-                    }
-                }
-            });
-            resetForm();
-        });
-    </script>
-
 @endsection

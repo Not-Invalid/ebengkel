@@ -21,7 +21,7 @@
                             <h2>We couldn't find any data</h2>
                             <a href="{{ route('pos.service-order.create', $bengkel->id_bengkel) }}"
                                 class="btn btn-primary mt-4">Create
-                                new One</a>
+                                new One Service Orders</a>
                         </div>
                     @else
                         <div class="d-flex justify-between">
@@ -37,6 +37,11 @@
                             <div class="d-flex justify-center w-100 mx-2 mb-4">
                                 <input type="text" id="search" class="form-control w-60" placeholder="Search">
                             </div>
+
+                            <div class="d-flex justify-end mb-4">
+                                <a href="{{ route('pos.service-order.create', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+                                    class="btn btn-info text-white px-4 py-2 mx-2">Add Service Orders </a>
+                            </div>
                         </div>
                         <div class="table-responsive bg-white rounded shadow-sm">
                             <table class="table table-bordered table-striped text-center">
@@ -44,6 +49,7 @@
                                     <tr>
                                         <th class="text-center">No</th>
                                         <th class="text-center">Order Date</th>
+                                        <th class="text-center">Cashier</th>
                                         <th class="text-center">Customer Name</th>
                                         <th class="text-center">Phone Number</th>
                                         <th class="text-center">Service Name</th>
@@ -57,13 +63,43 @@
                                         <tr>
                                             <td>{{ ($orders->currentPage() - 1) * $orders->perPage() + $index + 1 }}</td>
                                             <td>{{ $order->tgl_pesanan }}</td>
+                                            <td>{{ $order->pegawai ? $order->pegawai->nama_pegawai : 'Online' }}</td>
+                                            <!-- Display employee name or 'N/A' -->
                                             <td>{{ $order->nama_pemesan }}</td>
                                             <td>{{ $order->telp_pelanggan }}</td>
-                                            <td>{{ $order->nama_service }}</td>
+                                            <td>{{ $order->nama_services }}</td>
                                             <td>{{ ucfirst($order->status) }}</td>
                                             <td>Rp {{ number_format($order->total_pesanan, 2, ',', '.') }}</td>
                                             <td class="d-flex justify-content-center align-items-center gap-4">
-                                                {{-- Action buttons --}}
+                                                @if ($order->status === 'DONE')
+                                                    <form
+                                                        action="{{ route('pos.transaction-history', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+                                                        class="info-transaction">
+                                                        <button type="submit" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-info-circle align-icon"></i> Info
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                    <form
+                                                        action="{{ route('pos.service-order.delete', ['id_bengkel' => $bengkel->id_bengkel]) }}"
+                                                        method="POST" class="delete-form">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash-alt"></i> Delete
+                                                        </button>
+                                                    </form>
+
+                                                    <form
+                                                        action="{{ route('pos.service-order.update-status', ['id_bengkel' => $bengkel->id_bengkel, 'id' => $order->id_pesanan]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-sm btn-success">
+                                                            <i class="fas fa-check"></i> Done
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

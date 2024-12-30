@@ -365,12 +365,17 @@ Route::middleware(['lang'])->group(function () {
         Route::put('/pos/tranksaksi_pos/{id_bengkel}/{id_order}/update', [PosTransaksiController::class, 'update'])->name('pos.tranksaksi_pos.update');
         Route::get('/preview/struk/{id_order}', [PosTransaksiController::class, 'preview'])->name('preview.struk');
 
+        // order online
         Route::get('order-online/{id_bengkel}', [PosOrderOnlineController::class, 'index'])->name('pos.order-online');
         Route::get('/order-online/{id_bengkel}/edit/{order_id}', [PosOrderOnlineController::class, 'edit'])->name('pos.order-online.edit');
         Route::post('/order-online/{id_bengkel}/update/{order_id}', [PosOrderOnlineController::class, 'update'])->name('pos.order-online.update');
+
+        // service order
         Route::get('service-order/{id_bengkel}', [PosServiceOrderController::class, 'index'])->name('pos.service-order');
         Route::get('service-order/{id_bengkel}/create', [PosServiceOrderController::class, 'create'])->name('pos.service-order.create');
         Route::post('service-order/{id_bengkel}/store', [PosServiceOrderController::class, 'store'])->name('pos.service-order.store');
+        Route::put('service-order/{id_bengkel}/update/{id}', [PosServiceOrderController::class, 'updateStatus'])->name('pos.service-order.update-status');
+        Route::delete('service-order/{id_bengkel}/delete', [PosServiceOrderController::class, 'delete'])->name('pos.service-order.delete');
 
         Route::prefix('Master-data')->group(function () {
             Route::prefix('pos/{id_bengkel}/product')->group(function () {
