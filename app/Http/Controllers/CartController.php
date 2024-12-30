@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\Invoice;
-use App\Models\OrderItemOnline;
-use App\Models\OrderOnline;
 use App\Models\Product;
 use App\Models\SpareParts;
 use Illuminate\Http\Request;
+use App\Services\MidtransService;
+use App\Models\OrderOnline;
+use App\Models\Bengkel;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Midtrans\Snap;
+use App\Models\OrderItemOnline;
 use Illuminate\Support\Str;
 
 class CartController extends Controller
@@ -20,27 +24,26 @@ class CartController extends Controller
         if (Auth::check()) {
             $pelanggan_id = Auth::user()->id_pelanggan;
 
-            // Ambil cart berdasarkan pelanggan
-            $cart = Cart::with([
-                'cartItems.produk.fotoProduk', // Pastikan foto produk ada
-                'cartItems.sparepart.fotoSparepart', // Pastikan foto sparepart ada
-            ])
-                ->where('id_pelanggan', $pelanggan_id)
-                ->first(); // Ambil satu cart yang sesuai
+            $cartItems = Cart::where("id_pelanggan", $pelanggan_id)
+                ->with("produk", "sparepart")
+                ->get();
 
-            // Ambil shipping address
-            $shippingAddress = Auth::user()->alamatPengiriman->where("delete_alamat_pengiriman", "N");
+            $shippingAddress = Auth::user()->alamatPengiriman->where(
+                "delete_alamat_pengiriman",
+                "N"
+            );
 
-            // Periksa apakah cart ada dan memiliki item
-            $cartItems = $cart ? $cart->cartItems : collect(); // Jika cart tidak ada, buat koleksi kosong
-
-            return view("transaction.cart", compact("cartItems", "shippingAddress"));
+            return view(
+                "transaction.cart",
+                compact("cartItems", "shippingAddress")
+            );
         } else {
             return redirect()
                 ->route("login")
                 ->with("status_error", "Please log in to view the cart");
         }
     }
+
     public function addToCart(Request $request)
     {
         if (Auth::check()) {
@@ -66,10 +69,10 @@ class CartController extends Controller
                 if ($cartItem) {
                     $cartItem->quantity += $request->quantity;
                     $cartItem->total_price =
-                    $cartItem->quantity *
+                        $cartItem->quantity *
                         ($produk
-                        ? $produk->harga_produk
-                        : $sparepart->harga_spare_part);
+                            ? $produk->harga_produk
+                            : $sparepart->harga_spare_part);
                     $cartItem->save();
                 } else {
                     $cart = new Cart();
@@ -78,10 +81,10 @@ class CartController extends Controller
                     $cart->id_spare_part = $id_spare_part;
                     $cart->quantity = $request->quantity;
                     $cart->total_price =
-                    ($produk
-                        ? $produk->harga_produk
-                        : $sparepart->harga_spare_part) *
-                    $request->quantity;
+                        ($produk
+                            ? $produk->harga_produk
+                            : $sparepart->harga_spare_part) *
+                        $request->quantity;
                     $cart->save();
                 }
 
@@ -150,10 +153,10 @@ class CartController extends Controller
 
                 if ($produk) {
                     $cartItem->total_price =
-                    $produk->harga_produk * $request->quantity;
+                        $produk->harga_produk * $request->quantity;
                 } elseif ($sparepart) {
                     $cartItem->total_price =
-                    $sparepart->harga_spare_part * $request->quantity;
+                        $sparepart->harga_spare_part * $request->quantity;
                 }
 
                 $cartItem->quantity = $request->quantity;
@@ -188,16 +191,25 @@ class CartController extends Controller
         if (Auth::check()) {
             $pelanggan_id = Auth::user()->id_pelanggan;
 
-            $cartItems = Cart::where("id_pelanggan", $pelanggan_id)->get();
+            $selectedItemIds = json_decode($request->input('selected_items'), true);
+
+            if (empty($selectedItemIds)) {
+                return redirect()
+                    ->route("cart.index")
+                    ->with("error", "No items selected for the order.");
+            }
+
+            $cartItems = Cart::where("id_pelanggan", $pelanggan_id)
+                ->whereIn('id', $selectedItemIds)
+                ->get();
 
             if ($cartItems->isEmpty()) {
                 return redirect()
                     ->route("cart.index")
-                    ->with("error", "Keranjang Anda kosong.");
+                    ->with("error", "Selected items not found in the cart.");
             }
 
             $totalPrice = 0;
-
             $order = new OrderOnline();
             $order->id_pelanggan = $pelanggan_id;
             $order->order_id = Str::random(10);
@@ -236,7 +248,6 @@ class CartController extends Controller
             }
 
             $order->total_harga = $totalPrice;
-
             $order->save();
 
             foreach ($cartItems as $item) {
@@ -256,9 +267,7 @@ class CartController extends Controller
 
                 $orderItem = new OrderItemOnline();
                 $orderItem->id_order_online = $order->id;
-                $orderItem->id_bengkel = $product
-                ? $product->id_bengkel
-                : $sparepart->id_bengkel;
+                $orderItem->id_bengkel = $product ? $product->id_bengkel : $sparepart->id_bengkel;
                 $orderItem->id_produk = $product ? $itemId : null;
                 $orderItem->id_spare_part = $sparepart ? $itemId : null;
                 $orderItem->tanggal = now();
@@ -274,27 +283,24 @@ class CartController extends Controller
             $invoice->id_order = $order->order_id;
             $invoice->status_invoice = "PENDING";
             $invoice->tanggal_invoice = now();
-            $invoice->jatuh_tempo = now()
-                ->addDays(1)
-                ->setTime(now()->hour, now()->minute, now()->second);
-            $invoice->nominal_transfer = $order->grand_total;
+            $invoice->jatuh_tempo = now()->addDays(1)->setTime(now()->hour, now()->minute, now()->second);
+            $invoice->nominal_transfer = $order->total_harga;
             $invoice->save();
 
-            $cartItems->each->delete();
+            Cart::where("id_pelanggan", $pelanggan_id)
+                ->whereIn('id', $selectedItemIds)
+                ->delete();
 
             return redirect()
                 ->route("payment", [
                     "order_id" => $order->order_id,
                     "id" => $invoice->id,
                 ])
-                ->with(
-                    "status",
-                    "Pesanan Anda berhasil diproses. Segera lakukan pembayaran untuk melanjutkan."
-                );
+                ->with("status", "Your order has been processed. Please make the payment to continue.");
         }
         return redirect()
             ->route("login")
-            ->with("status_error", "Anda harus login terlebih dahulu.");
+            ->with("status_error", "You must log in first.");
     }
 
     public function getCartCount()
